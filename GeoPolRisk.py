@@ -73,6 +73,12 @@ class main(comtrade):
     """User can modify this section along with another section in the calculation
     if more trade blocs, regions or group of countries is necessary for the study
     """
+    """It is important to note that the region EU is existing in the countries
+    database which shall be used to call the COMTRADE API. Unfortunately, other 
+    trade blocs or regions are unavailable and has to be called separately tallied
+    and accounted. In version 1, such feature is not available in the code. If users
+    modify the regions, ensure the countries and # section is modified accordingly. 
+    """
             
     #Method 3
     def regions(self):
@@ -85,7 +91,10 @@ class main(comtrade):
                    'Slovakia', 'Slovenia', 'Spain', 'Sweden']
 
       
-    
+    """
+    Method 1, is the first method that will be called if exucting the main function 
+    i.e Method 0 of API class. It ensures if the other methods are loaded before.
+    """
     #Method 1    
     def run(self):
         if self.module != True:
@@ -93,22 +102,44 @@ class main(comtrade):
             self.regions()
 
 
+    """
+    A simple guided step by step method for new users. This method can be called 
+    to any console based application if needed.
+    """
     #Method 4   
     def simplerun(self):
         #4.1 Call Method 1
         self.run()
         
+        """
+        List of available production information of metals which is later cross
+        verified for confirmation with the hs code. Also, the production information
+        is organized using the common name of the raw material which can later be altered
+        when automatic download of data is created.
+        """
         #4.2 Extracting data from linking database
         MetalsDF = pd.read_csv(self.metals)
         Metals = MetalsDF.id.tolist()
         HS = MetalsDF.hs.tolist()
         
+        """
+        Connect country to country codes. These codes and files are only necessary
+        for guided run.
+        """
         #4.3 Extracting data from ISO country codes database
         json_file = open(self.reporter_path, 'r')
         data = pd.json_normalize(json.loads(json_file.read())['results'])
         Country = data.text.tolist()
         
         
+        """
+        Following section gets the input of the resource/raw material from the user.
+        Keeping in mind the possibility of error from the user, get close matches 
+        library is used and reverified by the user. If found cumbersome an additional 
+        code to verify letter to letter can be created. The input is fed as key to 
+        fetch the resource hscode to be used in the API. Sections 4.5 also follows
+        the same pattern.
+        """
         #4.4 Input information on raw material
         print('Enter the name the resource whose supply risk you want to assess')
         metal = input('Resource Name : ')
@@ -158,21 +189,33 @@ class main(comtrade):
         print("Calculating the GeoPolRisk of "+str(resource)+" for "+
         str(country)+" over the period "+str(period))
         
+        """
+        Raw material name as defined in the hs file is important to reassure the user
+        of which kind of assessment they are following. The following code has no other 
+        purpose.
+        """
         #4.7 Extracting information of hs files
         try:
             json_file = open(self.hs, 'r')
             hs_element = pd.json_normalize(json.loads(json_file.read())['results'])
-            hs_element = hs_element.loc[hs_element['id'] == str(2602), 'text'].iloc[0]
+            hs_element = hs_element.loc[hs_element['id'] == str(HSCode), 'text'].iloc[0]
         except Exception as e:
             self.logging.debug(e)
             raise RUNError(1)
         print("Info: The HS code used for the analysis is "+str(hs_element))
+        
+        #4.8 API CALL
         self.TotalCalculation(period = int(period), 
                               reporter = int(reporter), 
                               HSCode = int(HSCode))
         print("The GeoPolRisk Value for "+metal+" during "+str(period)+" for "+country+" is "+str(self.GPRS))
 
 
+    
+    """
+    SQL select method, to pull records in method 5 and 6. This program is used
+    only to pull records (ONLY SELECT STATEMENT)
+    """
     def select(self, sqlstatement):
             try:
                 connect = sqlite3.connect('./lib/datarecords.db')
@@ -185,8 +228,9 @@ class main(comtrade):
             connect.close()
             return row
 
-
-
+    """
+    Records the data to an sqlite database. The database is not protected.
+    """
     #Method 5   
     def recorddata(self, Year, GPRS, WA, HHI, Country, Metal):
         #5.1 Method to execute non select
@@ -200,7 +244,12 @@ class main(comtrade):
             connect.commit()
             connect.close()
         
-        #Initial run to create a database if not exists
+        """
+        The sql statement below is executed everytime this method (Method 5) is
+        called. Negates any error in storing data by verifying the existance of 
+        such table.
+        """
+        #5.1 Initial run to create a database if not exists
         try:
             sqlstatement = """CREATE TABLE IF NOT EXISTS recordData 
             (id INTEGER PRIMARY KEY, Country TEXT NOT NULL, Resource 
@@ -209,7 +258,10 @@ class main(comtrade):
         except Exception as e:
             self.logging.debug(e)
                    
-        #Select run to fetch if the data preexists
+        """
+        
+        """
+        #5.2 Select run to fetch if the data preexists
         try:
             sqlstatement = "SELECT Year FROM recordData WHERE Country = '"+Country+"' AND Resource= '"+Metal+"';"
             row = [str(item[0]) for item in self.select(sqlstatement)]   
