@@ -259,7 +259,7 @@ class main(comtrade):
             self.logging.debug(e)
                    
         """
-        
+        Insert new data after verifying if the data is not available.
         """
         #5.2 Select run to fetch if the data preexists
         try:
