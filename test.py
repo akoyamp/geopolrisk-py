@@ -28,12 +28,13 @@ except Exception as e:
 
 
 try:
-    sqlstatement = "SELECT Year FROM recordData WHERE Country = '"+Country+"' AND Resource= '"+Metal+"';"
-    row = [str(item[0]) for item in self.select(sqlstatement)]   
-    if len(row) == 0 or Year not in row:
-        sqlstatement = "INSERT INTO recordData (Country, Resource, Year, GeoPolRisk, Weightavg) VALUES ('"+Country+"','"+Metal+"','"+Year+"','"+GPRS+"','"+WA+"');"
-        execute(sqlstatement)
-    else:
-        self.logging.debug("Redundancy detected!")
+    sqlstatement = "INSERT INTO recordData (Country, Resource, Year, GeoPolRisk, Weightavg) VALUES ('Australia','Magnesium','2002','0','0') WHERE NOT EXISTS (SELECT * FROM recordData WHERE Country = 'Australia' AND Resource= 'Magnesium' AND Year = '2002')"
+    execute(sqlstatement)
+    # row = [str(item[0]) for item in self.select(sqlstatement)]   
+    # if len(row) == 0 or Year not in row:
+    #     sqlstatement = "INSERT INTO recordData (Country, Resource, Year, GeoPolRisk, Weightavg) VALUES ('"+Country+"','"+Metal+"','"+Year+"','"+GPRS+"','"+WA+"');"
+    #     
+    # else:
+    #     self.logging.debug("Redundancy detected!")
 except Exception as e:
-    self.logging.debug(e)
+    print(e)
