@@ -12,7 +12,7 @@ outputDF = pd.DataFrame(columns = _columns)
 def extractdata( Year, Country, Metal):
     def select(sqlstatement):
         try:
-            connect = sqlite3.connect('datarecords.db')
+            connect = sqlite3.connect('./lib/datarecords.db')
             cursor = connect.cursor()
         except Exception as e:
             print(e)
@@ -26,7 +26,6 @@ def extractdata( Year, Country, Metal):
     except Exception as e:
         print(e)
         
-    print(data)
     if len(data) !=0:
         toappend = [Year,Metal,Country,data[0][0],0,data[0][1]]
         outputDF.loc[len(outputDF)] = toappend

@@ -143,8 +143,9 @@ class comtrade:
         hs_element = data.loc[data['hs'] == HSCode, 'id'].iloc[0]
         self.logging.debug("The period is "+str(period)+" for the Country "+str(reporter_country[0])+" for the resource "+str(hs_element))
         self.productionQTY(hs_element,reporter_country)
-        self.Pass = self.getdata(str(period), str(reporter_country[0]), str(hs_element) )
-        if self.Pass != True:
+        sqlstatement = "SELECT * FROM recordData WHERE Country = '"+Country+"' AND Resource= '"+Metal+"' AND Year = '"+Year+"';"
+        row = self.select(sqlstatement)
+        if len(row) == 0:
             try:
                 self.traderequest(frequency, classification, str(period), partner, str(reporter), str(HSCode),TradeFlow)
             except Exception as e:

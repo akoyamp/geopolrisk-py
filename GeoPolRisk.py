@@ -263,34 +263,29 @@ class main(comtrade):
         """
         #5.2 Select run to fetch if the data preexists
         try:
-            sqlstatement = "SELECT Year FROM recordData WHERE Country = '"+Country+"' AND Resource= '"+Metal+"';"
-            row = [str(item[0]) for item in self.select(sqlstatement)]   
+            sqlstatement = "SELECT * FROM recordData WHERE Country = '"+Country+"' AND Resource= '"+Metal+"' AND Year = '"+Year+"';"
+            row = self.select(sqlstatement)   
             if len(row) == 0 or Year not in row:
                 sqlstatement = "INSERT INTO recordData (Country, Resource, Year, GeoPolRisk, Weightavg) VALUES ('"+Country+"','"+Metal+"','"+Year+"','"+GPRS+"','"+WA+"');"
                 execute(sqlstatement)
             else:
-                self.logging.debug("Redundancy detected!")
+                self.logging.debug("Redundancy detected! Entry not recorded.")
         except Exception as e:
             self.logging.debug(e)
     
-     
+    
+    """
+    Data extraction method, into csv, json or excel
+    """        
     #Method 6
-    def getdata(self, Year, Country, Metal):
-        API =  False
-        try:
-            sqlstatement = "SELECT Year FROM recordData WHERE Country = '"+Country+"' AND Resource= '"+Metal+"';"
-            row = [str(item[0]) for item in self.select(sqlstatement)]   
-            if len(row) != 0 and Year in row:
-                self.logging.debug("Requested information exists in database.")
-                API = True
-            else:
-                API = False
-        except Exception as e:
-            self.logging.debug(e)
-        return API
-            
-    #Method 7
-    def extractdata(self, Year, Country, Metal):
+    def extractdata(self, Year, Country, Metal, Type="csv"):
+        exportF = ['csv', 'excel', 'json']
+        if Type in exportF:
+            self.logging.debug("Exporting database in the format {}".format(Type))
+            self.outputDFType=Type
+        else:
+            self.logging.debug("Exporting format not supported {}. Using default format [csv]".format(Type))
+            self.outputDFType="csv"
         try:
             data = self.select("SELECT GeoPolRisk, WeightAvg FROM recordData WHERE Country = '"+Country+"' AND Resource= '"+Metal+"' AND Year='"+Year+"'")
         except Exception as e:
@@ -299,9 +294,17 @@ class main(comtrade):
             toappend = [Year,Metal,Country,data[0][0],0,data[0][1]]
             self.GPRS = data[0][0]
             self.outputDF.loc[len(self.outputDF)] = toappend
-        
+            
+    """
+    End of script logging and exporting database to specified format. End log 
+    method requires extractdata method to be precalled to work. 
+    """
     def endlog(self):
         self.logging.debug("Number of successfull COMTRADE API attempts {}".format(self.counter))
         self.logging.debug("Number of total attempts {}".format(self.totcounter))
-        self.outputDF.to_json('./export.json', orient='columns')
-        self.outputDF.to_csv('./export.csv')
+        if self.outputDFType == 'json':
+            self.outputDF.to_json('./output/export.json', orient='columns')
+        elif self.outputDFType =='csv':
+            self.outputDF.to_csv('./output/export.csv')
+        elif self.outputDFType == 'excel':
+            self.outputDF.to_excel('./output/export.excel')
