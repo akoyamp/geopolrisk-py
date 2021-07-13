@@ -19,7 +19,9 @@
 from urllib.request import Request, urlopen
 
 import json, pandas as pd , sys   
-class APIError(Exception): pass
+class APIError(Exception): 
+    def __init__(self, ):
+        pass
 class RUNError(Exception):
     def __init__(self, value):
         if value == 1:
@@ -34,6 +36,7 @@ class comtrade:
         HSCode = "2602",
         TradeFlow = "1"):
         _request = "https://comtrade.un.org/api/get?max=50000&type=C&freq="+frequency+"&px="+classification+"&ps="+period+"&r="+reporter+"&p="+partner+"&cc="+HSCode+"&rg="+TradeFlow+"&fmt=json"
+        self.logging.debug(_request)
         try:
             self.counter += 1
             self.totcounter += 1
@@ -143,7 +146,7 @@ class comtrade:
         hs_element = data.loc[data['hs'] == HSCode, 'id'].iloc[0]
         self.logging.debug("The period is "+str(period)+" for the Country "+str(reporter_country[0])+" for the resource "+str(hs_element))
         self.productionQTY(hs_element,reporter_country)
-        sqlstatement = "SELECT * FROM recordData WHERE Country = '"+Country+"' AND Resource= '"+Metal+"' AND Year = '"+Year+"';"
+        sqlstatement = "SELECT * FROM recordData WHERE Country = '"+reporter_country[0]+"' AND Resource= '"+hs_element+"' AND Year = '"+str(period)+"';"
         row = self.select(sqlstatement)
         if len(row) == 0:
             try:

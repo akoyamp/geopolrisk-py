@@ -1,0 +1,5 @@
+2021-07-13 16:25:55,083 | DEBUG | MainThread | GeoPolRisk.py:52 -             __init__() | Username: ploubet001
+2021-07-13 16:26:03,840 | INFO | MainThread | utils.py:157 -    _init_num_threads() | NumExpr defaulting to 8 threads.
+2021-07-13 16:26:03,840 | DEBUG | MainThread | api.py:147 -     TotalCalculation() | The period is 2010 for the Country Germany for the resource Cobalt
+2021-07-13 16:26:04,306 | DEBUG | MainThread | api.py:39 -         traderequest() | https://comtrade.un.org/api/get?max=50000&type=C&freq=A&px=HS&ps=2010&r=276&p=all&cc=810520&rg=1&fmt=json
+2021-07-13 16:26:05,197 | DEBUG | MainThread | api.py:156 -     TotalCalculation() | Expecting value: line 1 column 1 (char 0)

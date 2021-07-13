@@ -1,0 +1,871 @@
+2021-07-13 15:31:17,365 | DEBUG | MainThread | GeoPolRisk.py:52 -             __init__() | Username: akoyamparamb
+2021-07-13 15:31:17,377 | INFO | MainThread | utils.py:157 -    _init_num_threads() | NumExpr defaulting to 8 threads.
+2021-07-13 15:31:17,377 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2002 for the Country Australia for the resource Manganese
+2021-07-13 15:31:17,957 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:17,957 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:17,967 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2003 for the Country Australia for the resource Manganese
+2021-07-13 15:31:18,127 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:18,127 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:18,137 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2004 for the Country Australia for the resource Manganese
+2021-07-13 15:31:18,287 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:18,287 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:18,297 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2005 for the Country Australia for the resource Manganese
+2021-07-13 15:31:18,462 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:18,462 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:18,476 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2006 for the Country Australia for the resource Manganese
+2021-07-13 15:31:18,647 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:18,647 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:18,657 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2007 for the Country Australia for the resource Manganese
+2021-07-13 15:31:18,827 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:18,827 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:18,837 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2008 for the Country Australia for the resource Manganese
+2021-07-13 15:31:18,998 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:18,998 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:19,007 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2009 for the Country Australia for the resource Manganese
+2021-07-13 15:31:19,171 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:19,171 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:19,183 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2010 for the Country Australia for the resource Manganese
+2021-07-13 15:31:19,344 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:19,344 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:19,352 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2011 for the Country Australia for the resource Manganese
+2021-07-13 15:31:19,518 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:19,518 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:19,529 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2012 for the Country Australia for the resource Manganese
+2021-07-13 15:31:19,689 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:19,689 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:19,697 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2013 for the Country Australia for the resource Manganese
+2021-07-13 15:31:19,841 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:19,841 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:19,852 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2014 for the Country Australia for the resource Manganese
+2021-07-13 15:31:20,007 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:20,007 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:20,017 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2015 for the Country Australia for the resource Manganese
+2021-07-13 15:31:20,179 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:20,179 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:20,189 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2016 for the Country Australia for the resource Manganese
+2021-07-13 15:31:20,361 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:20,361 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:20,372 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2017 for the Country Australia for the resource Manganese
+2021-07-13 15:31:20,514 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:20,514 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:20,524 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2002 for the Country Australia for the resource Iron
+2021-07-13 15:31:20,707 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:20,707 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:20,717 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2003 for the Country Australia for the resource Iron
+2021-07-13 15:31:20,927 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:20,927 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:20,931 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2004 for the Country Australia for the resource Iron
+2021-07-13 15:31:21,147 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:21,147 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:21,157 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2005 for the Country Australia for the resource Iron
+2021-07-13 15:31:21,367 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:21,367 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:21,377 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2006 for the Country Australia for the resource Iron
+2021-07-13 15:31:21,547 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:21,547 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:21,557 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2007 for the Country Australia for the resource Iron
+2021-07-13 15:31:21,742 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:21,742 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:21,750 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2008 for the Country Australia for the resource Iron
+2021-07-13 15:31:21,945 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:21,945 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:21,955 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2009 for the Country Australia for the resource Iron
+2021-07-13 15:31:22,138 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:22,138 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:22,152 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2010 for the Country Australia for the resource Iron
+2021-07-13 15:31:22,351 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:22,351 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:22,359 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2011 for the Country Australia for the resource Iron
+2021-07-13 15:31:22,547 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:22,547 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:22,557 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2012 for the Country Australia for the resource Iron
+2021-07-13 15:31:22,747 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:22,747 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:22,757 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2013 for the Country Australia for the resource Iron
+2021-07-13 15:31:22,962 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:22,962 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:22,967 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2014 for the Country Australia for the resource Iron
+2021-07-13 15:31:23,160 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:23,160 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:23,168 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2015 for the Country Australia for the resource Iron
+2021-07-13 15:31:23,381 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:23,381 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:23,387 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2016 for the Country Australia for the resource Iron
+2021-07-13 15:31:23,566 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:23,566 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:23,574 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2017 for the Country Australia for the resource Iron
+2021-07-13 15:31:23,759 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:23,759 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:23,769 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2002 for the Country Australia for the resource Copper
+2021-07-13 15:31:23,970 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:23,970 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:23,977 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2003 for the Country Australia for the resource Copper
+2021-07-13 15:31:24,167 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:24,167 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:24,177 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2004 for the Country Australia for the resource Copper
+2021-07-13 15:31:24,379 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:24,379 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:24,389 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2005 for the Country Australia for the resource Copper
+2021-07-13 15:31:24,577 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:24,577 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:24,587 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2006 for the Country Australia for the resource Copper
+2021-07-13 15:31:24,797 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:24,797 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:24,807 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2007 for the Country Australia for the resource Copper
+2021-07-13 15:31:25,008 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:25,008 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:25,018 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2008 for the Country Australia for the resource Copper
+2021-07-13 15:31:25,211 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:25,211 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:25,219 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2009 for the Country Australia for the resource Copper
+2021-07-13 15:31:25,412 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:25,412 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:25,417 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2010 for the Country Australia for the resource Copper
+2021-07-13 15:31:25,595 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:25,595 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:25,602 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2011 for the Country Australia for the resource Copper
+2021-07-13 15:31:25,828 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:25,828 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:25,838 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2012 for the Country Australia for the resource Copper
+2021-07-13 15:31:26,047 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:26,050 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:26,057 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2013 for the Country Australia for the resource Copper
+2021-07-13 15:31:26,287 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:26,287 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:26,295 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2014 for the Country Australia for the resource Copper
+2021-07-13 15:31:26,500 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:26,500 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:26,510 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2015 for the Country Australia for the resource Copper
+2021-07-13 15:31:26,713 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:26,713 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:26,721 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2016 for the Country Australia for the resource Copper
+2021-07-13 15:31:26,897 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:26,897 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:26,907 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2017 for the Country Australia for the resource Copper
+2021-07-13 15:31:27,100 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:27,100 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:27,113 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2002 for the Country Australia for the resource Barytes
+2021-07-13 15:31:27,287 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:27,287 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:27,297 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2003 for the Country Australia for the resource Barytes
+2021-07-13 15:31:27,478 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:27,478 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:27,488 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2004 for the Country Australia for the resource Barytes
+2021-07-13 15:31:27,640 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:27,640 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:27,650 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2005 for the Country Australia for the resource Barytes
+2021-07-13 15:31:27,827 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:27,827 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:27,837 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2006 for the Country Australia for the resource Barytes
+2021-07-13 15:31:28,017 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:28,017 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:28,027 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2007 for the Country Australia for the resource Barytes
+2021-07-13 15:31:28,219 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:28,219 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:28,227 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2008 for the Country Australia for the resource Barytes
+2021-07-13 15:31:28,400 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:28,400 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:28,407 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2009 for the Country Australia for the resource Barytes
+2021-07-13 15:31:28,566 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:28,566 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:28,574 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2010 for the Country Australia for the resource Barytes
+2021-07-13 15:31:28,749 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:28,749 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:28,759 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2011 for the Country Australia for the resource Barytes
+2021-07-13 15:31:28,937 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:28,938 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:28,947 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2012 for the Country Australia for the resource Barytes
+2021-07-13 15:31:29,125 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:29,127 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:29,135 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2013 for the Country Australia for the resource Barytes
+2021-07-13 15:31:29,317 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:29,317 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:29,327 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2014 for the Country Australia for the resource Barytes
+2021-07-13 15:31:29,497 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:29,497 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:29,507 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2015 for the Country Australia for the resource Barytes
+2021-07-13 15:31:29,681 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:29,681 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:29,687 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2016 for the Country Australia for the resource Barytes
+2021-07-13 15:31:29,864 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:29,864 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:29,872 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2017 for the Country Australia for the resource Barytes
+2021-07-13 15:31:30,897 | DEBUG | MainThread | api.py:155 -     TotalCalculation() | Expecting value: line 1 column 1 (char 0)
+2021-07-13 15:31:30,911 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2002 for the Country Australia for the resource Bismuth
+2021-07-13 15:31:31,032 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:31,032 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:31,042 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2003 for the Country Australia for the resource Bismuth
+2021-07-13 15:31:31,177 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:31,177 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:31,187 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2004 for the Country Australia for the resource Bismuth
+2021-07-13 15:31:31,324 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:31,324 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:31,332 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2005 for the Country Australia for the resource Bismuth
+2021-07-13 15:31:31,468 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:31,468 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:31,478 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2006 for the Country Australia for the resource Bismuth
+2021-07-13 15:31:31,609 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:31,609 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:31,619 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2007 for the Country Australia for the resource Bismuth
+2021-07-13 15:31:31,739 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:31,739 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:31,747 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2008 for the Country Australia for the resource Bismuth
+2021-07-13 15:31:31,884 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:31,887 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:31,894 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2009 for the Country Australia for the resource Bismuth
+2021-07-13 15:31:32,037 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:32,043 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:32,052 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2010 for the Country Australia for the resource Bismuth
+2021-07-13 15:31:32,197 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:32,197 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:32,206 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2011 for the Country Australia for the resource Bismuth
+2021-07-13 15:31:32,327 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:32,327 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:32,330 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2012 for the Country Australia for the resource Bismuth
+2021-07-13 15:31:32,481 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:32,481 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:32,491 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2013 for the Country Australia for the resource Bismuth
+2021-07-13 15:31:32,632 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:32,632 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:32,637 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2014 for the Country Australia for the resource Bismuth
+2021-07-13 15:31:32,778 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:32,778 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:32,788 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2015 for the Country Australia for the resource Bismuth
+2021-07-13 15:31:32,900 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:32,900 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:32,910 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2016 for the Country Australia for the resource Bismuth
+2021-07-13 15:31:33,061 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:33,061 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:33,071 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2017 for the Country Australia for the resource Bismuth
+2021-07-13 15:31:33,967 | DEBUG | MainThread | api.py:155 -     TotalCalculation() | Expecting value: line 1 column 1 (char 0)
+2021-07-13 15:31:33,982 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2002 for the Country Australia for the resource Gold
+2021-07-13 15:31:34,207 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:34,207 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:34,217 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2003 for the Country Australia for the resource Gold
+2021-07-13 15:31:34,419 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:34,419 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:34,427 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2004 for the Country Australia for the resource Gold
+2021-07-13 15:31:34,652 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:34,652 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:34,659 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2005 for the Country Australia for the resource Gold
+2021-07-13 15:31:34,885 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:34,885 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:34,893 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2006 for the Country Australia for the resource Gold
+2021-07-13 15:31:35,122 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:35,122 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:35,132 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2007 for the Country Australia for the resource Gold
+2021-07-13 15:31:35,353 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:35,353 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:35,361 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2008 for the Country Australia for the resource Gold
+2021-07-13 15:31:35,579 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:35,579 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:35,590 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2009 for the Country Australia for the resource Gold
+2021-07-13 15:31:35,794 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:35,794 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:35,804 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2010 for the Country Australia for the resource Gold
+2021-07-13 15:31:36,027 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:36,027 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:36,036 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2011 for the Country Australia for the resource Gold
+2021-07-13 15:31:36,267 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:36,267 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:36,277 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2012 for the Country Australia for the resource Gold
+2021-07-13 15:31:37,257 | DEBUG | MainThread | api.py:155 -     TotalCalculation() | Expecting value: line 1 column 1 (char 0)
+2021-07-13 15:31:37,262 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2002 for the Country Australia for the resource Molybdenum
+2021-07-13 15:31:37,397 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:37,397 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:37,412 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2003 for the Country Australia for the resource Molybdenum
+2021-07-13 15:31:37,542 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:37,542 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:37,547 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2004 for the Country Australia for the resource Molybdenum
+2021-07-13 15:31:37,687 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:37,687 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:37,697 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2005 for the Country Australia for the resource Molybdenum
+2021-07-13 15:31:37,837 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:37,837 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:37,846 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2006 for the Country Australia for the resource Molybdenum
+2021-07-13 15:31:37,986 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:37,986 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:37,996 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2007 for the Country Australia for the resource Molybdenum
+2021-07-13 15:31:38,120 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:38,120 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:38,131 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2008 for the Country Australia for the resource Molybdenum
+2021-07-13 15:31:38,270 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:38,270 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:38,279 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2009 for the Country Australia for the resource Molybdenum
+2021-07-13 15:31:38,427 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:38,427 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:38,436 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2010 for the Country Australia for the resource Molybdenum
+2021-07-13 15:31:38,579 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:38,580 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:38,588 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2011 for the Country Australia for the resource Molybdenum
+2021-07-13 15:31:38,705 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:38,705 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:38,714 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2012 for the Country Australia for the resource Molybdenum
+2021-07-13 15:31:38,854 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:38,854 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:38,863 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2013 for the Country Australia for the resource Molybdenum
+2021-07-13 15:31:39,003 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:39,003 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:39,012 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2014 for the Country Australia for the resource Molybdenum
+2021-07-13 15:31:39,151 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:39,151 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:39,160 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2015 for the Country Australia for the resource Molybdenum
+2021-07-13 15:31:39,278 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:39,278 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:39,289 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2016 for the Country Australia for the resource Molybdenum
+2021-07-13 15:31:39,426 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:39,426 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:39,435 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2017 for the Country Australia for the resource Molybdenum
+2021-07-13 15:31:40,267 | DEBUG | MainThread | api.py:155 -     TotalCalculation() | Expecting value: line 1 column 1 (char 0)
+2021-07-13 15:31:40,267 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2002 for the Country Australia for the resource Nickel
+2021-07-13 15:31:40,432 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:40,432 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:40,442 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2003 for the Country Australia for the resource Nickel
+2021-07-13 15:31:40,577 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:40,577 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:40,587 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2004 for the Country Australia for the resource Nickel
+2021-07-13 15:31:40,747 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:40,747 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:40,750 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2005 for the Country Australia for the resource Nickel
+2021-07-13 15:31:40,907 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:40,907 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:40,917 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2006 for the Country Australia for the resource Nickel
+2021-07-13 15:31:41,087 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:41,087 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:41,090 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2007 for the Country Australia for the resource Nickel
+2021-07-13 15:31:41,227 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:41,227 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:41,237 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2008 for the Country Australia for the resource Nickel
+2021-07-13 15:31:41,397 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:41,397 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:41,407 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2009 for the Country Australia for the resource Nickel
+2021-07-13 15:31:41,561 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:41,561 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:41,572 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2010 for the Country Australia for the resource Nickel
+2021-07-13 15:31:41,722 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:41,722 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:41,727 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2011 for the Country Australia for the resource Nickel
+2021-07-13 15:31:41,871 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:41,871 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:41,881 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2012 for the Country Australia for the resource Nickel
+2021-07-13 15:31:42,047 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:42,047 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:42,062 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2013 for the Country Australia for the resource Nickel
+2021-07-13 15:31:42,222 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:42,222 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:42,231 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2014 for the Country Australia for the resource Nickel
+2021-07-13 15:31:42,390 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:42,391 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:42,397 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2015 for the Country Australia for the resource Nickel
+2021-07-13 15:31:42,571 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:42,571 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:42,582 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2016 for the Country Australia for the resource Nickel
+2021-07-13 15:31:42,776 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:42,776 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:42,786 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2017 for the Country Australia for the resource Nickel
+2021-07-13 15:31:43,057 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:43,057 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:43,087 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2002 for the Country Australia for the resource Zinc
+2021-07-13 15:31:43,543 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:43,543 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:43,547 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2003 for the Country Australia for the resource Zinc
+2021-07-13 15:31:43,757 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:43,757 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:43,767 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2004 for the Country Australia for the resource Zinc
+2021-07-13 15:31:43,947 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:43,947 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:43,957 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2005 for the Country Australia for the resource Zinc
+2021-07-13 15:31:44,162 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:44,162 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:44,171 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2006 for the Country Australia for the resource Zinc
+2021-07-13 15:31:44,369 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:44,369 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:44,378 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2007 for the Country Australia for the resource Zinc
+2021-07-13 15:31:44,577 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:44,577 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:44,587 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2008 for the Country Australia for the resource Zinc
+2021-07-13 15:31:44,777 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:44,777 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:44,782 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2009 for the Country Australia for the resource Zinc
+2021-07-13 15:31:44,949 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:44,949 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:44,959 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2010 for the Country Australia for the resource Zinc
+2021-07-13 15:31:45,156 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:45,156 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:45,167 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2011 for the Country Australia for the resource Zinc
+2021-07-13 15:31:45,351 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:45,351 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:45,361 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2012 for the Country Australia for the resource Zinc
+2021-07-13 15:31:45,552 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:45,552 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:45,561 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2013 for the Country Australia for the resource Zinc
+2021-07-13 15:31:45,752 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:45,752 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:45,760 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2014 for the Country Australia for the resource Zinc
+2021-07-13 15:31:45,957 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:45,957 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:45,967 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2015 for the Country Australia for the resource Zinc
+2021-07-13 15:31:46,131 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:46,131 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:46,141 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2016 for the Country Australia for the resource Zinc
+2021-07-13 15:31:46,345 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:46,345 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:46,353 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2017 for the Country Australia for the resource Zinc
+2021-07-13 15:31:46,552 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:46,552 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:46,561 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2002 for the Country Australia for the resource Cadmium
+2021-07-13 15:31:46,717 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:46,717 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:46,722 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2003 for the Country Australia for the resource Cadmium
+2021-07-13 15:31:46,857 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:46,857 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:46,866 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2004 for the Country Australia for the resource Cadmium
+2021-07-13 15:31:47,027 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:47,027 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:47,036 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2005 for the Country Australia for the resource Cadmium
+2021-07-13 15:31:47,197 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:47,197 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:47,206 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2006 for the Country Australia for the resource Cadmium
+2021-07-13 15:31:47,377 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:47,377 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:47,387 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2007 for the Country Australia for the resource Cadmium
+2021-07-13 15:31:47,547 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:47,547 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:47,557 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2008 for the Country Australia for the resource Cadmium
+2021-07-13 15:31:47,700 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:47,700 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:47,710 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2009 for the Country Australia for the resource Cadmium
+2021-07-13 15:31:47,872 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:47,872 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:47,882 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2010 for the Country Australia for the resource Cadmium
+2021-07-13 15:31:48,041 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:48,041 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:48,047 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2011 for the Country Australia for the resource Cadmium
+2021-07-13 15:31:48,218 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:48,218 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:48,228 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2012 for the Country Australia for the resource Cadmium
+2021-07-13 15:31:48,366 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:48,366 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:48,371 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2013 for the Country Australia for the resource Cadmium
+2021-07-13 15:31:48,537 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:48,537 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:48,546 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2014 for the Country Australia for the resource Cadmium
+2021-07-13 15:31:48,708 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:48,708 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:48,717 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2015 for the Country Australia for the resource Cadmium
+2021-07-13 15:31:48,873 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:48,873 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:48,882 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2016 for the Country Australia for the resource Cadmium
+2021-07-13 15:31:49,038 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:49,038 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:49,048 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2017 for the Country Australia for the resource Cadmium
+2021-07-13 15:31:49,193 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:49,193 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:49,204 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2002 for the Country Australia for the resource Rare earth
+2021-07-13 15:31:49,338 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:49,338 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:49,348 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2003 for the Country Australia for the resource Rare earth
+2021-07-13 15:31:49,479 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:49,479 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:49,487 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2004 for the Country Australia for the resource Rare earth
+2021-07-13 15:31:49,617 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:49,617 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:49,627 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2005 for the Country Australia for the resource Rare earth
+2021-07-13 15:31:49,737 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:49,737 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:49,739 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2006 for the Country Australia for the resource Rare earth
+2021-07-13 15:31:49,873 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:49,873 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:49,883 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2007 for the Country Australia for the resource Rare earth
+2021-07-13 15:31:50,016 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:50,016 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:50,025 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2008 for the Country Australia for the resource Rare earth
+2021-07-13 15:31:50,138 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:50,138 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:50,147 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2009 for the Country Australia for the resource Rare earth
+2021-07-13 15:31:50,277 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:50,277 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:50,287 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2010 for the Country Australia for the resource Rare earth
+2021-07-13 15:31:50,417 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:50,417 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:50,427 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2011 for the Country Australia for the resource Rare earth
+2021-07-13 15:31:50,557 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:50,557 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:50,567 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2012 for the Country Australia for the resource Rare earth
+2021-07-13 15:31:50,681 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:50,681 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:50,687 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2013 for the Country Australia for the resource Rare earth
+2021-07-13 15:31:50,819 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:50,819 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:50,829 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2014 for the Country Australia for the resource Rare earth
+2021-07-13 15:31:50,963 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:50,963 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:50,973 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2015 for the Country Australia for the resource Rare earth
+2021-07-13 15:31:51,105 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:51,105 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:51,112 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2016 for the Country Australia for the resource Rare earth
+2021-07-13 15:31:51,229 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:51,229 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:51,236 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2017 for the Country Australia for the resource Rare earth
+2021-07-13 15:31:51,366 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:51,366 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:51,377 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2002 for the Country Australia for the resource Silver
+2021-07-13 15:31:51,582 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:51,582 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:51,590 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2003 for the Country Australia for the resource Silver
+2021-07-13 15:31:51,788 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:51,788 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:51,799 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2004 for the Country Australia for the resource Silver
+2021-07-13 15:31:52,013 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:52,013 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:52,021 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2005 for the Country Australia for the resource Silver
+2021-07-13 15:31:52,212 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:52,212 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:52,221 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2006 for the Country Australia for the resource Silver
+2021-07-13 15:31:52,431 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:52,431 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:52,442 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2007 for the Country Australia for the resource Silver
+2021-07-13 15:31:52,642 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:52,642 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:52,652 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2008 for the Country Australia for the resource Silver
+2021-07-13 15:31:52,862 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:52,862 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:52,871 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2009 for the Country Australia for the resource Silver
+2021-07-13 15:31:53,070 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:53,070 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:53,079 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2010 for the Country Australia for the resource Silver
+2021-07-13 15:31:53,261 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:53,261 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:53,270 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2011 for the Country Australia for the resource Silver
+2021-07-13 15:31:53,467 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:53,467 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:53,476 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2012 for the Country Australia for the resource Silver
+2021-07-13 15:31:53,677 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:53,677 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:53,686 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2013 for the Country Australia for the resource Silver
+2021-07-13 15:31:53,882 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:53,882 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:53,891 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2014 for the Country Australia for the resource Silver
+2021-07-13 15:31:54,098 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:54,098 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:54,107 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2015 for the Country Australia for the resource Silver
+2021-07-13 15:31:54,312 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:54,312 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:54,317 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2016 for the Country Australia for the resource Silver
+2021-07-13 15:31:54,501 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:54,501 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:54,511 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2017 for the Country Australia for the resource Silver
+2021-07-13 15:31:54,711 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:54,711 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:54,721 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2002 for the Country Australia for the resource Magnesium
+2021-07-13 15:31:54,859 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:54,859 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:54,866 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2003 for the Country Australia for the resource Magnesium
+2021-07-13 15:31:55,004 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:55,004 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:55,012 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2004 for the Country Australia for the resource Magnesium
+2021-07-13 15:31:55,127 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:55,127 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:55,137 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2005 for the Country Australia for the resource Magnesium
+2021-07-13 15:31:55,277 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:55,277 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:55,286 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2006 for the Country Australia for the resource Magnesium
+2021-07-13 15:31:55,421 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:55,421 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:55,431 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2007 for the Country Australia for the resource Magnesium
+2021-07-13 15:31:55,566 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:55,566 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:55,577 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2008 for the Country Australia for the resource Magnesium
+2021-07-13 15:31:55,703 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:55,704 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:55,714 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2009 for the Country Australia for the resource Magnesium
+2021-07-13 15:31:55,857 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:55,857 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:55,867 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2010 for the Country Australia for the resource Magnesium
+2021-07-13 15:31:56,006 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:56,006 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:56,017 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2011 for the Country Australia for the resource Magnesium
+2021-07-13 15:31:56,156 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:56,156 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:56,167 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2012 for the Country Australia for the resource Magnesium
+2021-07-13 15:31:56,297 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:56,297 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:56,307 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2013 for the Country Australia for the resource Magnesium
+2021-07-13 15:31:56,440 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:56,440 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:56,450 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2014 for the Country Australia for the resource Magnesium
+2021-07-13 15:31:56,586 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:56,586 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:56,597 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2015 for the Country Australia for the resource Magnesium
+2021-07-13 15:31:56,730 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:56,730 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:56,740 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2016 for the Country Australia for the resource Magnesium
+2021-07-13 15:31:56,856 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:56,856 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:56,864 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2017 for the Country Australia for the resource Magnesium
+2021-07-13 15:31:56,998 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:56,998 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:57,008 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2002 for the Country Australia for the resource Zirconium
+2021-07-13 15:31:57,151 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:57,151 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:57,161 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2003 for the Country Australia for the resource Zirconium
+2021-07-13 15:31:57,301 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:57,301 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:57,308 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2004 for the Country Australia for the resource Zirconium
+2021-07-13 15:31:57,426 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:57,426 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:57,432 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2005 for the Country Australia for the resource Zirconium
+2021-07-13 15:31:57,572 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:57,572 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:57,581 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2006 for the Country Australia for the resource Zirconium
+2021-07-13 15:31:57,711 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:57,717 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:57,721 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2007 for the Country Australia for the resource Zirconium
+2021-07-13 15:31:57,861 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:57,861 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:57,872 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2008 for the Country Australia for the resource Zirconium
+2021-07-13 15:31:57,991 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:57,991 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:58,000 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2009 for the Country Australia for the resource Zirconium
+2021-07-13 15:31:58,137 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:58,137 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:58,147 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2010 for the Country Australia for the resource Zirconium
+2021-07-13 15:31:58,289 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:58,289 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:58,297 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2011 for the Country Australia for the resource Zirconium
+2021-07-13 15:31:58,437 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:58,437 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:58,442 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2012 for the Country Australia for the resource Zirconium
+2021-07-13 15:31:58,567 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:58,567 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:58,576 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2013 for the Country Australia for the resource Zirconium
+2021-07-13 15:31:58,710 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:58,710 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:58,721 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2014 for the Country Australia for the resource Zirconium
+2021-07-13 15:31:58,856 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:58,856 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:58,866 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2015 for the Country Australia for the resource Zirconium
+2021-07-13 15:31:59,008 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:59,008 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:59,016 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2016 for the Country Australia for the resource Zirconium
+2021-07-13 15:31:59,141 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:31:59,141 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:31:59,146 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2017 for the Country Australia for the resource Zirconium
+2021-07-13 15:32:00,032 | DEBUG | MainThread | api.py:155 -     TotalCalculation() | Expecting value: line 1 column 1 (char 0)
+2021-07-13 15:32:00,296 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2002 for the Country Australia for the resource Antimony
+2021-07-13 15:32:00,467 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:00,467 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:00,470 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2003 for the Country Australia for the resource Antimony
+2021-07-13 15:32:00,627 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:00,627 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:00,632 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2004 for the Country Australia for the resource Antimony
+2021-07-13 15:32:00,766 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:00,766 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:00,777 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2005 for the Country Australia for the resource Antimony
+2021-07-13 15:32:00,928 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:00,928 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:00,937 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2006 for the Country Australia for the resource Antimony
+2021-07-13 15:32:01,102 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:01,102 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:01,112 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2007 for the Country Australia for the resource Antimony
+2021-07-13 15:32:01,259 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:01,259 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:01,269 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2008 for the Country Australia for the resource Antimony
+2021-07-13 15:32:01,401 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:01,401 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:01,407 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2009 for the Country Australia for the resource Antimony
+2021-07-13 15:32:01,561 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:01,561 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:01,571 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2010 for the Country Australia for the resource Antimony
+2021-07-13 15:32:01,722 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:01,722 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:01,730 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2011 for the Country Australia for the resource Antimony
+2021-07-13 15:32:01,881 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:01,881 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:01,892 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2012 for the Country Australia for the resource Antimony
+2021-07-13 15:32:02,019 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:02,019 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:02,029 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2013 for the Country Australia for the resource Antimony
+2021-07-13 15:32:02,186 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:02,186 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:02,197 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2014 for the Country Australia for the resource Antimony
+2021-07-13 15:32:02,351 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:02,351 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:02,361 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2015 for the Country Australia for the resource Antimony
+2021-07-13 15:32:02,507 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:02,507 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:02,516 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2016 for the Country Australia for the resource Antimony
+2021-07-13 15:32:02,668 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:02,668 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:02,678 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2017 for the Country Australia for the resource Antimony
+2021-07-13 15:32:03,522 | DEBUG | MainThread | api.py:155 -     TotalCalculation() | Expecting value: line 1 column 1 (char 0)
+2021-07-13 15:32:03,532 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2002 for the Country Australia for the resource Asbestos
+2021-07-13 15:32:03,677 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:03,677 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:03,682 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2003 for the Country Australia for the resource Asbestos
+2021-07-13 15:32:03,827 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:03,827 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:03,836 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2004 for the Country Australia for the resource Asbestos
+2021-07-13 15:32:03,976 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:03,976 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:03,986 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2005 for the Country Australia for the resource Asbestos
+2021-07-13 15:32:04,106 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:04,106 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:04,117 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2006 for the Country Australia for the resource Asbestos
+2021-07-13 15:32:04,263 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:04,263 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:04,276 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2007 for the Country Australia for the resource Asbestos
+2021-07-13 15:32:04,417 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:04,417 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:04,426 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2008 for the Country Australia for the resource Asbestos
+2021-07-13 15:32:04,571 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:04,571 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:04,581 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2009 for the Country Australia for the resource Asbestos
+2021-07-13 15:32:04,707 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:04,707 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:04,717 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2010 for the Country Australia for the resource Asbestos
+2021-07-13 15:32:04,862 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:04,862 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:04,870 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2011 for the Country Australia for the resource Asbestos
+2021-07-13 15:32:05,012 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:05,012 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:05,017 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2012 for the Country Australia for the resource Asbestos
+2021-07-13 15:32:05,161 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:05,161 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:05,172 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2013 for the Country Australia for the resource Asbestos
+2021-07-13 15:32:05,297 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:05,297 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:05,306 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2014 for the Country Australia for the resource Asbestos
+2021-07-13 15:32:05,450 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:05,456 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:05,460 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2015 for the Country Australia for the resource Asbestos
+2021-07-13 15:32:05,622 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:05,622 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:05,631 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2016 for the Country Australia for the resource Asbestos
+2021-07-13 15:32:05,757 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:05,757 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:05,766 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2017 for the Country Australia for the resource Asbestos
+2021-07-13 15:32:06,707 | DEBUG | MainThread | api.py:155 -     TotalCalculation() | Expecting value: line 1 column 1 (char 0)
+2021-07-13 15:32:06,717 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2002 for the Country Australia for the resource Chromium
+2021-07-13 15:32:06,863 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:06,863 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:06,874 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2003 for the Country Australia for the resource Chromium
+2021-07-13 15:32:07,018 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:07,018 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:07,028 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2004 for the Country Australia for the resource Chromium
+2021-07-13 15:32:07,176 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:07,176 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:07,187 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2005 for the Country Australia for the resource Chromium
+2021-07-13 15:32:07,317 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:07,317 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:07,326 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2006 for the Country Australia for the resource Chromium
+2021-07-13 15:32:07,473 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:07,473 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:07,481 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2007 for the Country Australia for the resource Chromium
+2021-07-13 15:32:07,634 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:07,634 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:07,643 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2008 for the Country Australia for the resource Chromium
+2021-07-13 15:32:07,812 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:07,812 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:07,831 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2009 for the Country Australia for the resource Chromium
+2021-07-13 15:32:07,966 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:07,966 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:07,976 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2010 for the Country Australia for the resource Chromium
+2021-07-13 15:32:08,120 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:08,120 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:08,130 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2011 for the Country Australia for the resource Chromium
+2021-07-13 15:32:08,276 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:08,276 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:08,286 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2012 for the Country Australia for the resource Chromium
+2021-07-13 15:32:08,446 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:08,446 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:08,448 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2013 for the Country Australia for the resource Chromium
+2021-07-13 15:32:08,582 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:08,582 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:08,592 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2014 for the Country Australia for the resource Chromium
+2021-07-13 15:32:08,736 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:08,736 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:08,747 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2015 for the Country Australia for the resource Chromium
+2021-07-13 15:32:08,907 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:08,907 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:08,918 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2016 for the Country Australia for the resource Chromium
+2021-07-13 15:32:09,136 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:09,136 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:09,146 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2017 for the Country Australia for the resource Chromium
+2021-07-13 15:32:10,036 | DEBUG | MainThread | api.py:155 -     TotalCalculation() | Expecting value: line 1 column 1 (char 0)
+2021-07-13 15:32:10,036 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2002 for the Country Australia for the resource Graphite
+2021-07-13 15:32:10,191 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:10,191 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:10,202 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2003 for the Country Australia for the resource Graphite
+2021-07-13 15:32:10,354 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:10,354 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:10,363 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2004 for the Country Australia for the resource Graphite
+2021-07-13 15:32:10,506 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:10,506 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:10,521 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2005 for the Country Australia for the resource Graphite
+2021-07-13 15:32:10,646 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:10,646 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:10,656 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2006 for the Country Australia for the resource Graphite
+2021-07-13 15:32:10,801 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:10,801 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:10,811 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2007 for the Country Australia for the resource Graphite
+2021-07-13 15:32:10,972 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:10,972 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:10,992 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2008 for the Country Australia for the resource Graphite
+2021-07-13 15:32:11,138 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:11,138 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:11,151 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2009 for the Country Australia for the resource Graphite
+2021-07-13 15:32:11,277 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:11,277 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:11,281 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2010 for the Country Australia for the resource Graphite
+2021-07-13 15:32:11,431 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:11,431 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:11,437 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2011 for the Country Australia for the resource Graphite
+2021-07-13 15:32:11,587 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:11,587 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:11,590 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2012 for the Country Australia for the resource Graphite
+2021-07-13 15:32:11,736 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:11,736 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:11,751 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2013 for the Country Australia for the resource Graphite
+2021-07-13 15:32:11,878 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:11,878 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:11,889 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2014 for the Country Australia for the resource Graphite
+2021-07-13 15:32:12,036 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:12,036 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:12,047 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2015 for the Country Australia for the resource Graphite
+2021-07-13 15:32:12,208 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:12,208 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:12,216 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2016 for the Country Australia for the resource Graphite
+2021-07-13 15:32:12,360 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:12,360 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:12,370 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2017 for the Country Australia for the resource Graphite
+2021-07-13 15:32:12,518 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:12,518 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:12,528 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2002 for the Country Australia for the resource Natural gas
+2021-07-13 15:32:12,716 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:12,716 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:12,727 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2003 for the Country Australia for the resource Natural gas
+2021-07-13 15:32:12,939 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:12,939 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:12,947 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2004 for the Country Australia for the resource Natural gas
+2021-07-13 15:32:13,167 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:13,167 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:13,176 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2005 for the Country Australia for the resource Natural gas
+2021-07-13 15:32:13,391 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:13,391 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:13,401 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2006 for the Country Australia for the resource Natural gas
+2021-07-13 15:32:13,608 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:13,608 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:13,618 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2007 for the Country Australia for the resource Natural gas
+2021-07-13 15:32:13,813 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:13,813 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:13,821 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2008 for the Country Australia for the resource Natural gas
+2021-07-13 15:32:14,030 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:14,030 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:14,041 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2009 for the Country Australia for the resource Natural gas
+2021-07-13 15:32:14,266 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:14,266 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:14,277 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2010 for the Country Australia for the resource Natural gas
+2021-07-13 15:32:14,490 | DEBUG | MainThread | api.py:172 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-07-13 15:32:14,490 | DEBUG | MainThread | GeoPolRisk.py:284 -          extractdata() | Exporting database in the format csv
+2021-07-13 15:32:14,500 | DEBUG | MainThread | api.py:146 -     TotalCalculation() | The period is 2011 for the Country Australia for the resource Natural gas
