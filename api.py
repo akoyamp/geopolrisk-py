@@ -18,7 +18,12 @@
 
 from urllib.request import Request, urlopen
 
-import json, pandas as pd , sys   
+import json, pandas as pd , sys  
+
+"""
+The first two classes are error classes that shall be raised in order to break
+an operation or close an operation. The users are free to modify this class.
+""" 
 class APIError(Exception): 
     def __init__(self, ):
         pass
@@ -27,7 +32,20 @@ class RUNError(Exception):
         if value == 1:
             sys.exit(1)
 
+"""
+The main calculation class that shall be inherted in the main class of GeoPolRisk module.
+This class mainly has methods intended for connecting to API and calculation.
+The main methodological calculation is embeded within the methods defined here
+"""
 class comtrade:
+    
+    """
+    The following method connects to the COMTRADE API using request from urlopen module.
+    Several inputs required to connect are provided as optional arguments. The user must
+    modify the values of these optional arguments before calling the calculation function. 
+    
+    """
+    #Method 1
     def traderequest(self, frequency = "A", 
         classification = "HS",
         period = "2010",
@@ -36,6 +54,15 @@ class comtrade:
         HSCode = "2602",
         TradeFlow = "1"):
         _request = "https://comtrade.un.org/api/get?max=50000&type=C&freq="+frequency+"&px="+classification+"&ps="+period+"&r="+reporter+"&p="+partner+"&cc="+HSCode+"&rg="+TradeFlow+"&fmt=json"
+        
+        """
+        Section 1.1 connects to the COMTRADE API using the requests method of urlopen library.
+        Variable counter and totcounter counts the number of requests made to the COMTRADE API,
+        as the number of connection per hour is limited to 100 as a public user. The connections 
+        are logged in the end of script. User must call Method 7 of GeoPolRisk module in order to be logged.
+        ----> Remember Method 7 requires Method 6 to be called as a prerequisite.
+        """
+        #1.1 Section to connect to the COMTRADE API
         self.logging.debug(_request)
         try:
             self.counter += 1
@@ -59,8 +86,12 @@ class comtrade:
             self.countries = self.data.ptTitle.to_list()
             self.quantity = self.data.TradeQuantity.to_list()
             
-            
-            #Section to calculate the numerator and trade total
+            """
+            Section 1.2 is dedicated to calculation of a part of second factor of GeoPolRisk method also
+            known as Weighted Trade Average (WTA). The trade information is weighted with the WGI values
+            pulled from the csv file in the library. 
+            """
+            #1.2 Section to calculate the numerator and trade total
             self.WGI = pd.read_excel('./lib/NOR.xlsx', sheet_name = 'INVNOR')
             self.WGI.columns = self.WGI.columns.astype(str)
             self.WGI_year = [str(i) for i in self.WGI.Year.to_list()]
@@ -87,6 +118,16 @@ class comtrade:
             self.tradetotal = 0
             self.logging.warning("The dataframe is empty")
             
+    """
+    The first factor of the GeoPolRisk method involved calculating the herfindahl-hirschmann
+    index (hhi) and total domestic production required for calculating the second factor (WTA).
+    Regions, economic units or trade blocs such as the EU can also be a part of the calculation.
+    However, COMTRADE by default has the aggregated data for the EU, for others such as OECD etc 
+    the code has to be manipulated inorder to aggregate the trade data. The regions has to be first
+    defind in the 'regions' method in GeoPolRisk module. The production information is available in 
+    excel file in library.
+    """
+    #Method 2
     def productionQTY(self, Element, EconomicUnit):
         if EconomicUnit[0] == "EU28":
             EconomicUnit = self.EU
@@ -101,7 +142,6 @@ class comtrade:
             sys.exit(1)
 
         #P2. Fetching the production quantity from 'prod' dataframe.
-        
         self.Prod_Year = prod.Year.to_list()
         temp = [0]*len(self.Prod_Year)
         for i in EconomicUnit:
@@ -117,7 +157,6 @@ class comtrade:
         #logging.debug("The following will be the list of data", "This is the country "+str(i), "Next should be the list ",str(self.Prod_Qty))
        
         #P3. Calculating the HHI.
-        
         Nom = pd.Series()
         for i in range(1,prod.shape[1]):
             temp = prod.iloc[:,i]*prod.iloc[:,i]
@@ -125,7 +164,14 @@ class comtrade:
         DeNom = prod.sum(axis = 1)
         HHI = (Nom /(DeNom*DeNom)).tolist() 
         self.HHI = [round(i,3) for i in HHI]
-    
+    """
+    Main calculation class that will call the required methods and calculate the GeoPolRisk of a
+    raw material to a country/region for a period. 
+    For all user not trying to manipulate each factor of the GeoPolRisk method is recommended to call
+    this method by modifying the optional arguments. This method can be used as a direct input to calculate.
+    Proceed with caution while modyfing this method.
+    """
+    #Method 3
     def TotalCalculation(self, frequency = "A", 
         classification = "HS",
         period = 2010,
@@ -133,7 +179,17 @@ class comtrade:
         reporter = 36,
         HSCode = 2602,
         TradeFlow = "1" ):
+        
+        """
+        self.run is a method from GeoPolRisk Module. It ensures all the required methods are
+        precalled before proceeding.
+        """
         self.run()
+        """
+        The setpath method is called in the beginning to define the path for database files. 
+        The reporter file has the iso codes and country names which is aligned with the
+        production database. 
+        """
         json_file = open(self.reporter_path, 'r')
         data = pd.json_normalize(json.loads(json_file.read())['results'])
         reporter_country = data.loc[data['id'] == str(reporter), 'text'].iloc[0]
@@ -141,20 +197,47 @@ class comtrade:
             reporter_country = ["EU28"]
         else:
             reporter_country = [reporter_country]
+            
+        """
+        hs file contains the database of hs code to the original product name. 
+        Only used for logging, while metals file contain available code to the 
+        raw material name which is aligned to the production database.
+        """
         json_file = open(self.hs, 'r')
         data = pd.read_csv(self.metals)
         hs_element = data.loc[data['hs'] == HSCode, 'id'].iloc[0]
         self.logging.debug("The period is "+str(period)+" for the Country "+str(reporter_country[0])+" for the resource "+str(hs_element))
-        self.productionQTY(hs_element,reporter_country)
+        
+        
+        
+        """
+        First step before proceeding is to verify if the value is pre existing in the database.
+        If not it will call the API. This step is necessary because of the limits of API calls.
+        The counter and totcounter logs the number of API calls.
+        """
         sqlstatement = "SELECT * FROM recordData WHERE Country = '"+reporter_country[0]+"' AND Resource= '"+hs_element+"' AND Year = '"+str(period)+"';"
         row = self.select(sqlstatement)
         if len(row) == 0:
             try:
+                #Call Method 2
+                self.productionQTY(hs_element,reporter_country)
+                #call Method 1
                 self.traderequest(frequency, classification, str(period), partner, str(reporter), str(HSCode),TradeFlow)
             except Exception as e:
                 self.counter -= 1
                 self.logging.debug(e)
                 raise APIError
+            
+            """
+            Each of the following steps calculate the GeoPolRisk value in whole.
+            The Method 2 calculates the HHI (first factor) and the total domestic production.
+            The Method 1 pulls trade data and weights it with the political instability indicator 
+            forming the numerator of the WTA (second factor) and the total trade value (mass).
+            self.WA completes the second factor calculation and it is multiplied with the
+            HHI as self.GPRS. The information is then recorded in the database also
+            in an extractable form that should be chosen using the Method 7 of the GeoPolRisk module.
+            """
+            #3.1 Calculate the GeoPolRisk Value
             try:    
                 index = self.Prod_Year.index(period)
             except ValueError as e:
@@ -171,5 +254,5 @@ class comtrade:
             self.logging.debug("Complete Transaction")
         else:
             self.logging.debug("No transaction has been made, as data preexists")
-        self.extractdata(str(period), str(reporter_country[0]), str(hs_element))
+        self.extractdata(str(period), str(reporter_country[0]), str(hs_element), Type="csv")
            

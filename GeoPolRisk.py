@@ -16,7 +16,7 @@
 
 
 
-import pandas as pd, os, sys, getpass, json, sqlite3, logging
+import pandas as pd, sys, getpass, json, sqlite3, logging
 from api import comtrade, RUNError
 from difflib import get_close_matches
 from datetime import datetime
@@ -25,10 +25,6 @@ from datetime import datetime
 
 #Fetch username for the purpose of logging.
 username = getpass.getuser()
-directory = os.path.dirname(os.path.abspath('__main__.py'))
-
-
-
 
 class main(comtrade):
     """Do not modify the path for the logs folder unless you specifically need
@@ -299,6 +295,7 @@ class main(comtrade):
     End of script logging and exporting database to specified format. End log 
     method requires extractdata method to be precalled to work. 
     """
+    #Method 7
     def endlog(self):
         self.logging.debug("Number of successfull COMTRADE API attempts {}".format(self.counter))
         self.logging.debug("Number of total attempts {}".format(self.totcounter))
