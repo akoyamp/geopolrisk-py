@@ -1,7 +1,0 @@
-2021-07-02 15:18:27,954 | DEBUG | MainThread | GeoPolRisk.py:52 -             __init__() | Username: akoyamparamb
-2021-07-02 15:18:28,012 | INFO | MainThread | utils.py:157 -    _init_num_threads() | NumExpr defaulting to 8 threads.
-2021-07-02 15:18:28,017 | DEBUG | MainThread | api.py:148 -     TotalCalculation() | The period is 2002 for the Country Australia for the resource Manganese
-2021-07-02 15:18:29,042 | DEBUG | MainThread | api.py:107 -        productionQTY() | The metal is Manganese
-2021-07-02 15:18:29,069 | DEBUG | MainThread | GeoPolRisk.py:235 -               select() | The size of the returned row
-2021-07-02 15:18:29,069 | DEBUG | MainThread | GeoPolRisk.py:249 -              getdata() | 'main' object has no attribute 'row'
-2021-07-02 15:18:29,070 | DEBUG | MainThread | api.py:44 -         traderequest() | The request made to COMTRADE is https://comtrade.un.org/api/get?max=50000&type=C&freq=A&px=HS&ps=2002&r=36&p=all&cc=2602&rg=1&fmt=json
