@@ -23,6 +23,7 @@ import json, pandas as pd , sys
 """
 The first two classes are error classes that shall be raised in order to break
 an operation or close an operation. The users are free to modify this class.
+BREAK THE CODE IF EXCEPT AN APIERROR
 """ 
 class APIError(Exception): 
     def __init__(self, ):
@@ -52,7 +53,10 @@ class comtrade:
         partner = "all",
         reporter = "276",
         HSCode = "2602",
-        TradeFlow = "1"):
+        TradeFlow = "1",
+        _Rrate = 0,
+        scenario = 0
+        ):
         _request = "https://comtrade.un.org/api/get?max=50000&type=C&freq="+frequency+"&px="+classification+"&ps="+period+"&r="+reporter+"&p="+partner+"&cc="+HSCode+"&rg="+TradeFlow+"&fmt=json"
         
         """
@@ -95,13 +99,54 @@ class comtrade:
             self.WGI = pd.read_excel('./lib/NOR.xlsx', sheet_name = 'INVNOR')
             self.WGI.columns = self.WGI.columns.astype(str)
             self.WGI_year = [str(i) for i in self.WGI.Year.to_list()]
-            index = self.WGI_year.index(period)
-            self.WGI_score = []
-            for i in self.code:
-                if str(i) in self.WGI.columns.to_list():
-                    self.WGI_score.append(self.WGI[str(i)].tolist()[index])
-            zipped_list = zip(self.quantity, self.WGI_score)
+            try:    
+                index = self.WGI_year.index(period)
+                self.WGI_score = []
+                for i in self.code:
+                    if str(i) in self.WGI.columns.to_list():
+                        self.WGI_score.append(self.WGI[str(i)].tolist()[index])
+            except Exception as e:
+                self.logging.debug(e)
+                raise APIError
+                    
+            """
+            Version 0.2: Domestic recycling mitigates the supply risk of a raw material. However domestic recycling
+            can be attributed to decrease of imports from a country with low WGI score or high WGI score.
+            In other words, there can be two scenarios where imports are reduced from 
+            a riskier country (best case scenario) or imports are reduced from 
+            much stable country (worst case scenario). Both the cases are determined by the 
+            WGI score, a higher WGI score is for a riskier country while lower for a stable
+            country. The following code intends to manipulate the trade data to incorporate
+            the domestic recycling.
+            """
+            #Recyclability factor of GeoPolRisk
+            _maxscore = max(self.WGI_score)
+            _minscore = max(self.WGI_score)
             try:
+                if scenario == 0:
+                    _reduce = [i for i, x in enumerate(self.WGI_score) if x == _maxscore]
+                else:
+                    _reduce = [i for i, x in enumerate(self.WGI_score) if x == _minscore]
+            except Exception as e:
+                self.logging.debug(e)
+                raise APIError
+            reducedmass = 0
+            try:
+                for i in _reduce:
+                    reducedmass = (self.quantity[i])*_Rrate
+                    self.quantity[i] = (self.quantity[i])-reducedmass
+                    self.totalreduce += reducedmass
+            except Exception as e:
+                self.logging.debug(e)
+                raise APIError 
+            
+            """
+            After manipulation of the trade data it is multiplied with the WGI
+            score forming the numerator of the second factor of GeoPolRisk (WTA)
+            """
+            
+            try:
+                zipped_list = zip(self.quantity, self.WGI_score)
                 self.wgiavg = [x * y for (x,y) in zipped_list]
             except TypeError as e:
                 self.logging.debug(e)
@@ -138,6 +183,7 @@ class comtrade:
             prod = pd.DataFrame(x)
             Col = prod.columns.tolist()
         except Exception as e:
+            self.logging.debug(e)
             self.logging.warning("There was an error while acessing the file Metals_Raw.xlsx with an exception as ", exc_info = True)
             sys.exit(1)
 
@@ -178,7 +224,9 @@ class comtrade:
         partner = "all",
         reporter = 36,
         HSCode = 2602,
-        TradeFlow = "1" ):
+        TradeFlow = "1",
+        recyclingrate = 0,
+        scenario = 0):
         
         """
         self.run is a method from GeoPolRisk Module. It ensures all the required methods are
@@ -222,7 +270,7 @@ class comtrade:
                 #Call Method 2
                 self.productionQTY(hs_element,reporter_country)
                 #call Method 1
-                self.traderequest(frequency, classification, str(period), partner, str(reporter), str(HSCode),TradeFlow)
+                self.traderequest(frequency, classification, str(period), partner, str(reporter), str(HSCode),TradeFlow, float(recyclingrate), int(scenario))
             except Exception as e:
                 self.counter -= 1
                 self.logging.debug(e)
@@ -245,7 +293,7 @@ class comtrade:
                 self.logging.debug("Please update Production database!")
                 raise APIError
             try:
-                self.WA = self.numerator/(self.tradetotal+(self.Prod_Qty[index]*1000))
+                self.WA = self.numerator/(self.tradetotal+(self.Prod_Qty[index]*1000)-self.totalreduce)
             except ZeroDivisionError as e:
                 self.logging.debug(e)
                 self.WA = 0

@@ -46,6 +46,7 @@ class main(comtrade):
         self.counter = 0
         self.totcounter = 0
         self.logging.debug('Username: {}'.format(username))
+        self.totalreduce = 0
         
     """The program is equipped with a predefined database for production of a 
     raw material, HS codes of those raw materials, ISO country codes and a
@@ -179,7 +180,35 @@ class main(comtrade):
         else:
             country = countrycloselist[0]
         reporter = data.loc[data['text'] == str(country), 'id'].iloc[0]
+        
         period = input("Enter the year of assessment :")
+        try:
+            period = int(period)
+        except Exception as e:
+            self.logging.debug(e)
+            raise RUNError(1)
+        
+        print("Enter the rate of domestic recycling input of the raw material (in fractions)")
+        recyclingrate = input("Enter the recycling input rate: ")
+        try:
+            if float(recyclingrate) in range(0,101):
+                recyclingrate = float(recyclingrate)
+        except Exception as e:
+            print("Provide correct inputs! Try again")
+            self.logging.debug(e)
+            raise RUNError(1)
+        
+        print("Select 0 for assuming a best case scenario where the imports from a riskier country is reduced")
+        print("Select 1 for assuming a best case scenario where the imports from a stable country is reduced")
+        scenario = input("Select 1 or 0: ")
+        
+        try:
+            if int(scenario) in [0, 1]:
+                scenario = int(scenario)
+        except Exception as e:
+            print("Provide correct inputs! Try again")
+            self.logging.debug(e)
+            raise RUNError(1)
         
         #4.6 Calculating GeoPolRisk, calling method from api module
         print("Calculating the GeoPolRisk of "+str(resource)+" for "+
@@ -203,7 +232,9 @@ class main(comtrade):
         #4.8 API CALL
         self.TotalCalculation(period = int(period), 
                               reporter = int(reporter), 
-                              HSCode = int(HSCode))
+                              HSCode = int(HSCode),
+                              recyclingrate = recyclingrate,
+                              scenario = scenario)
         print("The GeoPolRisk Value for "+metal+" during "+str(period)+" for "+country+" is "+str(self.GPRS))
 
 
