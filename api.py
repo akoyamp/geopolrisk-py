@@ -18,7 +18,7 @@
 
 from urllib.request import Request, urlopen
 
-import json, pandas as pd , sys  
+import json, pandas as pd , sys
 
 """
 The first two classes are error classes that shall be raised in order to break
@@ -226,7 +226,8 @@ class comtrade:
         HSCode = 2602,
         TradeFlow = "1",
         recyclingrate = 0,
-        scenario = 0):
+        scenario = 0,
+        exportType = "csv"):
         
         """
         self.run is a method from GeoPolRisk Module. It ensures all the required methods are
@@ -263,7 +264,7 @@ class comtrade:
         If not it will call the API. This step is necessary because of the limits of API calls.
         The counter and totcounter logs the number of API calls.
         """
-        sqlstatement = "SELECT * FROM recordData WHERE Country = '"+reporter_country[0]+"' AND Resource= '"+hs_element+"' AND Year = '"+str(period)+"';"
+        sqlstatement = "SELECT * FROM recordData WHERE Country = '"+reporter_country[0]+"' AND Resource= '"+hs_element+"' AND Year = '"+str(period)+"' AND RecyclRate = '"+str(recyclingrate)+"';"
         row = self.select(sqlstatement)
         if len(row) == 0:
             try:
@@ -298,9 +299,12 @@ class comtrade:
                 self.logging.debug(e)
                 self.WA = 0
             self.GPRS = self.HHI[index] * self.WA
-            self.recorddata(str(period), str(self.GPRS), str(self.WA), str(self.HHI), str(reporter_country[0]), str(hs_element))
+            self.recorddata(str(period), str(self.GPRS), str(self.WA), str(self.HHI[index]), str(reporter_country[0]), str(hs_element), str(recyclingrate), str(scenario))
             self.logging.debug("Complete Transaction")
         else:
             self.logging.debug("No transaction has been made, as data preexists")
-        self.extractdata(str(period), str(reporter_country[0]), str(hs_element), Type="csv")
+        self.extractdata(str(period), str(reporter_country[0]), str(hs_element), Type=exportType)
            
+
+    
+    

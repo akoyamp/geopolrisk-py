@@ -1,0 +1,2 @@
+2021-08-25 11:50:47,548 | DEBUG | MainThread | GeoPolRisk.py:48 -             __init__() | Username: anish
+2021-08-25 11:50:47,548 | DEBUG | MainThread | GeoPolRisk.py:352 -           generateCF() | Exporting database in the format json

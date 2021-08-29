@@ -1,0 +1,7 @@
+2021-08-25 11:51:24,308 | DEBUG | MainThread | GeoPolRisk.py:48 -             __init__() | Username: anish
+2021-08-25 11:51:24,308 | DEBUG | MainThread | GeoPolRisk.py:352 -           generateCF() | Exporting database in the format json
+2021-08-25 11:52:42,528 | DEBUG | MainThread | GeoPolRisk.py:48 -             __init__() | Username: anish
+2021-08-25 11:52:42,528 | DEBUG | MainThread | GeoPolRisk.py:352 -           generateCF() | Exporting database in the format json
+2021-08-25 11:52:42,530 | DEBUG | MainThread | GeoPolRisk.py:368 -           generateCF() | 'index=False' is only valid when 'orient' is 'split' or 'table'
+2021-08-25 11:56:39,284 | DEBUG | MainThread | GeoPolRisk.py:48 -             __init__() | Username: anish
+2021-08-25 11:56:39,284 | DEBUG | MainThread | GeoPolRisk.py:352 -           generateCF() | Exporting database in the format json
