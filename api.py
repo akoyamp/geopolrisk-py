@@ -125,7 +125,7 @@ class comtrade:
             try:
                 if scenario == 0:
                     _reduce = [i for i, x in enumerate(self.WGI_score) if x == _maxscore]
-                else
+                else:
                     _reduce = [i for i, x in enumerate(self.WGI_score) if x == _minscore]
             except Exception as e:
                 self.logging.debug(e)
