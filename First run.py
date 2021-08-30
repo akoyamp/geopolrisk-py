@@ -11,6 +11,7 @@ Testing the functionality of the module.
 
 from api import APIError
 from GeoPolRisk import main as main
+#from plots import graphics
 from tqdm import tqdm
 main = main()
 
@@ -22,14 +23,15 @@ ListofCountries = [36, 124, 97, 251, 276, 392, 826, 842] #810520, 283691, 2606,2
 Year = [2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 
         2011, 2012, 2013, 2014, 2015, 2016, 2017]
 
-# for i in tqdm(ListofCountries):
-#     for j in (ListofMetals):
-#         for K in Year:
-#             try:
-#                 main.TotalCalculation(period = K, reporter = i, HSCode = j)
-#             except APIError:
-#                 break
-# main.endlog()
-main.generateCF("json", "split")
+for i in tqdm(ListofCountries):
+    for j in (ListofMetals):
+        for K in Year:
+            try:
+                main.TotalCalculation(period = K, reporter = i, HSCode = j)
+            except APIError:
+                break
+main.endlog()
+#main.generateCF("json", "split")
 # main.simplerun()
 # main.endlog()
+

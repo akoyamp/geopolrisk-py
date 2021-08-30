@@ -345,6 +345,8 @@ class main(comtrade):
             
     """Convert entire database to required format
         **CHARACTERIZATION FACTORS
+    Refer to python json documentation for more information on types of
+    orientation required for the output.
     """
     def generateCF(self, exportType, orient):
         exportF = ['csv', 'excel', 'json']
