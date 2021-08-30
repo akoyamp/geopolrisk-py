@@ -162,6 +162,7 @@ class comtrade:
             self.numerator = 0
             self.tradetotal = 0
             self.logging.warning("The dataframe is empty")
+            self.emptycounter += 1 
             
     """
     The first factor of the GeoPolRisk method involved calculating the herfindahl-hirschmann

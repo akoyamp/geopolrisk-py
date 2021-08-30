@@ -43,8 +43,7 @@ class main(comtrade):
             )
         _columns = ["Year", "Resource", "Country","Recycling Rate","Recycling Scenario", "GeoPolRisk", "HHI", "Weighted Trade AVerage"]
         self.outputDF = pd.DataFrame(columns = _columns)
-        self.counter = 0
-        self.totcounter = 0
+        self.counter, self.totcounter, self.emptycounter = 0 ,0 , 0
         self.logging.debug('Username: {}'.format(username))
         self.totalreduce = 0
         
@@ -338,6 +337,7 @@ class main(comtrade):
     def endlog(self):
         self.logging.debug("Number of successfull COMTRADE API attempts {}".format(self.counter))
         self.logging.debug("Number of total attempts {}".format(self.totcounter))
+        self.logging.debug("Number of empty dataframes {}".format(self.emptycounter))
         if self.outputDFType == 'json':
             self.outputDF.to_json('./output/export.json', orient='columns')
         elif self.outputDFType =='csv':
