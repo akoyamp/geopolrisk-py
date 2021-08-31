@@ -271,6 +271,13 @@ class comtrade:
             try:
                 #Call Method 2
                 self.productionQTY(hs_element,reporter_country)
+                #Avoid calling API if Production data does not exist
+                try:    
+                    index = self.Prod_Year.index(period)
+                except ValueError as e:
+                    self.logging.debug(e)
+                    self.logging.debug("Please update Production database!")
+                    raise APIError          
                 #call Method 1
                 self.traderequest(frequency, classification, str(period), partner, str(reporter), str(HSCode),TradeFlow, float(recyclingrate), int(scenario))
             except Exception as e:
@@ -288,12 +295,6 @@ class comtrade:
             in an extractable form that should be chosen using the Method 7 of the GeoPolRisk module.
             """
             #3.1 Calculate the GeoPolRisk Value
-            try:    
-                index = self.Prod_Year.index(period)
-            except ValueError as e:
-                self.logging.debug(e)
-                self.logging.debug("Please update Production database!")
-                raise APIError
             try:
                 self.WA = self.numerator/(self.tradetotal+(self.Prod_Qty[index]*1000)-self.totalreduce)
             except ZeroDivisionError as e:
