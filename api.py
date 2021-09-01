@@ -72,10 +72,11 @@ class comtrade:
             self.counter += 1
             self.totcounter += 1
             request = Request(_request)
+            response = urlopen(request)
         except Exception as e:
+            self.counter -= 1
             self.logging.debug(e)
             raise APIError
-        response = urlopen(request)
         try:
             elevations = response.read()
         except Exception as e:
@@ -281,7 +282,6 @@ class comtrade:
                 #call Method 1
                 self.traderequest(frequency, classification, str(period), partner, str(reporter), str(HSCode),TradeFlow, float(recyclingrate), int(scenario))
             except Exception as e:
-                self.counter -= 1
                 self.logging.debug(e)
                 raise APIError
             
