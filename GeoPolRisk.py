@@ -41,11 +41,11 @@ class main(comtrade):
             filename = Filename,
             filemode = 'w'
             )
-        _columns = ["Year", "Resource", "Country", "GeoPolRisk", "HHI", "WA"]
+        _columns = ["Year", "Resource", "Country","Recycling Rate","Recycling Scenario", "GeoPolRisk", "HHI", "Weighted Trade AVerage"]
         self.outputDF = pd.DataFrame(columns = _columns)
-        self.counter = 0
-        self.totcounter = 0
+        self.counter, self.totcounter, self.emptycounter = 0 ,0 , 0
         self.logging.debug('Username: {}'.format(username))
+        self.totalreduce = 0
         
     """The program is equipped with a predefined database for production of a 
     raw material, HS codes of those raw materials, ISO country codes and a
@@ -93,6 +93,7 @@ class main(comtrade):
     """
     #Method 1    
     def run(self):
+        self.createTable()
         if self.module != True:
             self.setpath()
             self.regions()
@@ -179,7 +180,35 @@ class main(comtrade):
         else:
             country = countrycloselist[0]
         reporter = data.loc[data['text'] == str(country), 'id'].iloc[0]
+        
         period = input("Enter the year of assessment :")
+        try:
+            period = int(period)
+        except Exception as e:
+            self.logging.debug(e)
+            raise RUNError(1)
+        
+        print("Enter the rate of domestic recycling input of the raw material (in fractions)")
+        recyclingrate = input("Enter the recycling input rate: ")
+        try:
+            if float(recyclingrate) in range(0,101):
+                recyclingrate = float(recyclingrate)
+        except Exception as e:
+            print("Provide correct inputs! Try again")
+            self.logging.debug(e)
+            raise RUNError(1)
+        
+        print("Select 0 for assuming a best case scenario where the imports from a riskier country is reduced")
+        print("Select 1 for assuming a best case scenario where the imports from a stable country is reduced")
+        scenario = input("Select 1 or 0: ")
+        
+        try:
+            if int(scenario) in [0, 1]:
+                scenario = int(scenario)
+        except Exception as e:
+            print("Provide correct inputs! Try again")
+            self.logging.debug(e)
+            raise RUNError(1)
         
         #4.6 Calculating GeoPolRisk, calling method from api module
         print("Calculating the GeoPolRisk of "+str(resource)+" for "+
@@ -203,7 +232,9 @@ class main(comtrade):
         #4.8 API CALL
         self.TotalCalculation(period = int(period), 
                               reporter = int(reporter), 
-                              HSCode = int(HSCode))
+                              HSCode = int(HSCode),
+                              recyclingrate = recyclingrate,
+                              scenario = scenario)
         print("The GeoPolRisk Value for "+metal+" during "+str(period)+" for "+country+" is "+str(self.GPRS))
 
 
@@ -224,11 +255,31 @@ class main(comtrade):
             connect.close()
             return row
 
+    def createTable(self):
+        #5.1 Initial run to create a database if not exists
+        try:
+            sqlstatement = """CREATE TABLE IF NOT EXISTS recordData 
+            (id INTEGER PRIMARY KEY, Country TEXT NOT NULL, Resource 
+            TEXT NOT NULL, Year INTEGER NOT NULL, RecyclRate TEXT, RecyclScene TEXT,
+            GeoPolRisk TEXT,HHI TEXT, WeightAvg TEXT);""" 
+            try:
+                connect = sqlite3.connect('./lib/datarecords.db')
+                cursor = connect.cursor()
+            except:
+                self.logging.debug('Database not found')
+            cursor.execute(sqlstatement)
+            connect.commit()
+            connect.close()
+        except Exception as e:
+            self.logging.debug(e)
+
+
+
     """
     Records the data to an sqlite database. The database is not protected.
     """
     #Method 5   
-    def recorddata(self, Year, GPRS, WA, HHI, Country, Metal):
+    def recorddata(self, Year, GPRS, WA, HHI, Country, Metal, RRate, RScene):
         #5.1 Method to execute non select
         def execute(sqlstatement):
             try:
@@ -240,29 +291,16 @@ class main(comtrade):
             connect.commit()
             connect.close()
         
-        """
-        The sql statement below is executed everytime this method (Method 5) is
-        called. Negates any error in storing data by verifying the existance of 
-        such table.
-        """
-        #5.1 Initial run to create a database if not exists
-        try:
-            sqlstatement = """CREATE TABLE IF NOT EXISTS recordData 
-            (id INTEGER PRIMARY KEY, Country TEXT NOT NULL, Resource 
-            TEXT NOT NULL, Year INTEGER NOT NULL, GeoPolRisk TEXT, WeightAvg TEXT);""" 
-            execute(sqlstatement)
-        except Exception as e:
-            self.logging.debug(e)
                    
         """
         Insert new data after verifying if the data is not available.
         """
         #5.2 Select run to fetch if the data preexists
         try:
-            sqlstatement = "SELECT * FROM recordData WHERE Country = '"+Country+"' AND Resource= '"+Metal+"' AND Year = '"+Year+"';"
+            sqlstatement = "SELECT * FROM recordData WHERE Country = '"+Country+"' AND Resource= '"+Metal+"' AND Year = '"+Year+"' AND RecyclRate= '"+RRate+"' AND RecyclScene = '"+RScene+"';"
             row = self.select(sqlstatement)   
             if len(row) == 0 or Year not in row:
-                sqlstatement = "INSERT INTO recordData (Country, Resource, Year, GeoPolRisk, Weightavg) VALUES ('"+Country+"','"+Metal+"','"+Year+"','"+GPRS+"','"+WA+"');"
+                sqlstatement = "INSERT INTO recordData (Country, Resource, Year, RecyclRate, RecyclScene, GeoPolRisk, HHI, Weightavg) VALUES ('"+Country+"','"+Metal+"','"+Year+"','"+RRate+"','"+RScene+"','"+GPRS+"','"+HHI+"','"+WA+"');"
                 execute(sqlstatement)
             else:
                 self.logging.debug("Redundancy detected! Entry not recorded.")
@@ -283,11 +321,11 @@ class main(comtrade):
             self.logging.debug("Exporting format not supported {}. Using default format [csv]".format(Type))
             self.outputDFType="csv"
         try:
-            data = self.select("SELECT GeoPolRisk, WeightAvg FROM recordData WHERE Country = '"+Country+"' AND Resource= '"+Metal+"' AND Year='"+Year+"'")
+            data = self.select("SELECT RecyclRate, RecyclScene, GeoPolRisk, HHI, WeightAvg FROM recordData WHERE Country = '"+Country+"' AND Resource= '"+Metal+"' AND Year='"+Year+"'")
         except Exception as e:
             self.logging.debug(e)
         if len(data) !=0:
-            toappend = [Year,Metal,Country,data[0][0],0,data[0][1]]
+            toappend = [Year,Metal,Country,data[0][0],data[0][1],data[0][2],data[0][3],data[0][4]]
             self.GPRS = data[0][0]
             self.outputDF.loc[len(self.outputDF)] = toappend
             
@@ -299,9 +337,34 @@ class main(comtrade):
     def endlog(self):
         self.logging.debug("Number of successfull COMTRADE API attempts {}".format(self.counter))
         self.logging.debug("Number of total attempts {}".format(self.totcounter))
+        self.logging.debug("Number of empty dataframes {}".format(self.emptycounter))
         if self.outputDFType == 'json':
             self.outputDF.to_json('./output/export.json', orient='columns')
         elif self.outputDFType =='csv':
             self.outputDF.to_csv('./output/export.csv')
-        elif self.outputDFType == 'excel':
-            self.outputDF.to_excel('./output/export.excel')
+            
+    """Convert entire database to required format
+        **CHARACTERIZATION FACTORS
+    Refer to python json documentation for more information on types of
+    orientation required for the output.
+    """
+    def generateCF(self, exportType, orient):
+        exportF = ['csv', 'excel', 'json']
+        if exportType in exportF:
+            self.logging.debug("Exporting database in the format {}".format(exportType))
+            CFType=exportType
+        else:
+            self.logging.debug("Exporting format not supported {}. Using default format [csv]".format(exportType))
+            CFType="csv"
+        try:
+            conn = sqlite3.connect('./lib/datarecords.db', isolation_level=None,
+                       detect_types=sqlite3.PARSE_COLNAMES)
+            db_df = pd.read_sql_query("SELECT * FROM recorddata", conn)
+            if CFType == "csv":
+                db_df.to_csv('./output/database.csv', index=False)
+            elif CFType == "excel":
+                db_df.to_excel('./output/database.xlsx', index=False)
+            elif CFType == "json":
+                 db_df.to_json('./output/database.json', orient = orient, index=False)
+        except Exception as e:
+            self.logging.debug(e)

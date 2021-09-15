@@ -11,6 +11,7 @@ Testing the functionality of the module.
 
 from api import APIError
 from GeoPolRisk import main as main
+#from plots import graphics
 from tqdm import tqdm
 main = main()
 
@@ -30,5 +31,7 @@ for i in tqdm(ListofCountries):
             except APIError:
                 break
 main.endlog()
+#main.generateCF("json", "split")
 # main.simplerun()
 # main.endlog()
+
