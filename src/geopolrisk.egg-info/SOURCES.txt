@@ -1,0 +1,26 @@
+README.md
+pyproject.toml
+setup.py
+src/Geopolrisk.egg-info/PKG-INFO
+src/Geopolrisk.egg-info/SOURCES.txt
+src/Geopolrisk.egg-info/dependency_links.txt
+src/Geopolrisk.egg-info/top_level.txt
+src/geopolrisk/First run.py
+src/geopolrisk/GeoPolRisk.py
+src/geopolrisk/__init__.py
+src/geopolrisk/api.py
+src/geopolrisk/plots.py
+src/geopolrisk.egg-info/PKG-INFO
+src/geopolrisk.egg-info/SOURCES.txt
+src/geopolrisk.egg-info/dependency_links.txt
+src/geopolrisk.egg-info/top_level.txt
+src/geopolrisk/lib/Code.xlsx
+src/geopolrisk/lib/Countries.xlsx
+src/geopolrisk/lib/NOR.xlsx
+src/geopolrisk/lib/datarecords.db
+src/geopolrisk/lib/hs.json
+src/geopolrisk/lib/hs_prod.json
+src/geopolrisk/lib/metalsg.csv
+src/geopolrisk/lib/metalslist.json
+src/geopolrisk/lib/rep.json
+src/geopolrisk/lib/reporterAreas.json

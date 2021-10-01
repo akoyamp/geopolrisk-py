@@ -1,0 +1,105 @@
+2021-09-22 12:07:42,386 | DEBUG | MainThread | GeoPolRisk.py:47 -             __init__() | Username: akoyamparamb
+2021-09-22 12:08:17,213 | INFO | MainThread | utils.py:157 -    _init_num_threads() | NumExpr defaulting to 8 threads.
+2021-09-22 12:08:17,213 | DEBUG | MainThread | api.py:260 -     TotalCalculation() | The period is 2010 for the Country France for the resource Cobalt
+2021-09-22 12:08:17,213 | DEBUG | MainThread | api.py:307 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-09-22 12:08:17,213 | DEBUG | MainThread | GeoPolRisk.py:318 -          extractdata() | Exporting database in the format csv
+2021-09-22 12:30:15,323 | DEBUG | MainThread | GeoPolRisk.py:47 -             __init__() | Username: akoyamparamb
+2021-09-22 12:35:28,589 | DEBUG | MainThread | GeoPolRisk.py:206 -            simplerun() | invalid literal for int() with base 10: '2d5f1561sd65f1g65d1sf6g51df'
+2021-09-22 12:44:25,490 | DEBUG | MainThread | GeoPolRisk.py:47 -             __init__() | Username: akoyamparamb
+2021-09-22 12:46:11,228 | DEBUG | MainThread | GeoPolRisk.py:47 -             __init__() | Username: akoyamparamb
+2021-09-22 12:46:28,613 | DEBUG | MainThread | api.py:260 -     TotalCalculation() | The period is 2010 for the Country Germany for the resource Cobalt
+2021-09-22 12:46:29,627 | DEBUG | MainThread | api.py:70 -         traderequest() | https://comtrade.un.org/api/get?max=50000&type=C&freq=A&px=HS&ps=2010&r=276&p=all&cc=810520&rg=1&fmt=json
+2021-09-22 12:46:31,825 | WARNING | MainThread | api.py:165 -         traderequest() | The dataframe is empty
+2021-09-22 12:46:31,825 | DEBUG | MainThread | api.py:301 -     TotalCalculation() | division by zero
+2021-09-22 12:46:31,851 | DEBUG | MainThread | api.py:305 -     TotalCalculation() | Complete Transaction
+2021-09-22 12:46:31,852 | DEBUG | MainThread | GeoPolRisk.py:353 -          extractdata() | Exporting database in the format csv
+2021-09-22 12:57:00,378 | DEBUG | MainThread | GeoPolRisk.py:47 -             __init__() | Username: akoyamparamb
+2021-09-22 12:58:01,641 | DEBUG | MainThread | GeoPolRisk.py:47 -             __init__() | Username: akoyamparamb
+2021-09-22 13:01:06,066 | DEBUG | MainThread | api.py:260 -     TotalCalculation() | The period is 2010 for the Country Germany for the resource Cobalt
+2021-09-22 13:01:06,067 | DEBUG | MainThread | api.py:307 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-09-22 13:01:06,067 | DEBUG | MainThread | GeoPolRisk.py:360 -          extractdata() | Exporting database in the format csv
+2021-09-22 13:01:40,159 | DEBUG | MainThread | api.py:260 -     TotalCalculation() | The period is 2010 for the Country Germany for the resource Cobalt
+2021-09-22 13:01:40,160 | DEBUG | MainThread | api.py:308 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-09-22 13:01:40,160 | DEBUG | MainThread | GeoPolRisk.py:360 -          extractdata() | Exporting database in the format csv
+2021-09-22 13:03:48,692 | DEBUG | MainThread | api.py:260 -     TotalCalculation() | The period is 2010 for the Country Germany for the resource Cobalt
+2021-09-22 13:03:48,693 | DEBUG | MainThread | api.py:307 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-09-22 13:03:48,694 | DEBUG | MainThread | GeoPolRisk.py:360 -          extractdata() | Exporting database in the format csv
+2021-09-22 13:06:48,423 | DEBUG | MainThread | api.py:260 -     TotalCalculation() | The period is 2010 for the Country Germany for the resource Cobalt
+2021-09-22 13:06:48,425 | DEBUG | MainThread | api.py:307 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-09-22 13:06:48,425 | DEBUG | MainThread | GeoPolRisk.py:361 -          extractdata() | Exporting database in the format csv
+2021-09-22 13:08:00,963 | DEBUG | MainThread | GeoPolRisk.py:47 -             __init__() | Username: akoyamparamb
+2021-09-22 13:08:10,184 | DEBUG | MainThread | api.py:260 -     TotalCalculation() | The period is 2010 for the Country Germany for the resource Cobalt
+2021-09-22 13:08:10,185 | DEBUG | MainThread | api.py:307 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-09-22 13:08:10,185 | DEBUG | MainThread | GeoPolRisk.py:360 -          extractdata() | Exporting database in the format csv
+2021-09-22 13:09:30,260 | DEBUG | MainThread | api.py:260 -     TotalCalculation() | The period is 2010 for the Country France for the resource Cobalt
+2021-09-22 13:09:30,260 | DEBUG | MainThread | api.py:307 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-09-22 13:09:30,260 | DEBUG | MainThread | GeoPolRisk.py:360 -          extractdata() | Exporting database in the format csv
+2021-09-22 13:10:58,130 | DEBUG | MainThread | api.py:260 -     TotalCalculation() | The period is 2010 for the Country France for the resource Cobalt
+2021-09-22 13:10:58,131 | DEBUG | MainThread | api.py:307 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-09-22 13:10:58,132 | DEBUG | MainThread | GeoPolRisk.py:361 -          extractdata() | Exporting database in the format csv
+2021-09-22 13:11:56,554 | DEBUG | MainThread | api.py:260 -     TotalCalculation() | The period is 2010 for the Country France for the resource Cobalt
+2021-09-22 13:11:56,556 | DEBUG | MainThread | api.py:307 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-09-22 13:11:56,556 | DEBUG | MainThread | GeoPolRisk.py:361 -          extractdata() | Exporting database in the format csv
+2021-09-22 13:13:09,749 | DEBUG | MainThread | api.py:260 -     TotalCalculation() | The period is 0 for the Country France for the resource Cobalt
+2021-09-22 13:13:09,874 | DEBUG | MainThread | api.py:279 -     TotalCalculation() | 0 is not in list
+2021-09-22 13:13:09,874 | DEBUG | MainThread | api.py:280 -     TotalCalculation() | Please update Production database!
+2021-09-22 13:13:09,874 | DEBUG | MainThread | api.py:285 -     TotalCalculation() | 
+2021-09-22 13:13:20,641 | DEBUG | MainThread | api.py:260 -     TotalCalculation() | The period is 2010 for the Country France for the resource Cobalt
+2021-09-22 13:13:20,642 | DEBUG | MainThread | api.py:307 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-09-22 13:13:20,642 | DEBUG | MainThread | GeoPolRisk.py:361 -          extractdata() | Exporting database in the format csv
+2021-09-22 13:13:42,228 | DEBUG | MainThread | api.py:260 -     TotalCalculation() | The period is 0 for the Country France for the resource Cobalt
+2021-09-22 13:13:42,419 | DEBUG | MainThread | api.py:279 -     TotalCalculation() | 0 is not in list
+2021-09-22 13:13:42,419 | DEBUG | MainThread | api.py:280 -     TotalCalculation() | Please update Production database!
+2021-09-22 13:13:42,419 | DEBUG | MainThread | api.py:285 -     TotalCalculation() | 
+2021-09-22 13:13:54,508 | DEBUG | MainThread | api.py:260 -     TotalCalculation() | The period is 2010 for the Country France for the resource Cobalt
+2021-09-22 13:13:54,509 | DEBUG | MainThread | api.py:307 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-09-22 13:13:54,509 | DEBUG | MainThread | GeoPolRisk.py:361 -          extractdata() | Exporting database in the format csv
+2021-09-22 13:13:54,513 | DEBUG | MainThread | GeoPolRisk.py:382 -               endlog() | Number of successfull COMTRADE API attempts 0
+2021-09-22 13:13:54,513 | DEBUG | MainThread | GeoPolRisk.py:383 -               endlog() | Number of total attempts 0
+2021-09-22 13:13:54,513 | DEBUG | MainThread | GeoPolRisk.py:384 -               endlog() | Number of empty dataframes 0
+2021-09-22 14:07:23,232 | DEBUG | MainThread | GeoPolRisk.py:47 -             __init__() | Username: akoyamparamb
+2021-09-22 14:10:43,805 | DEBUG | MainThread | GeoPolRisk.py:47 -             __init__() | Username: akoyamparamb
+2021-09-22 14:16:29,365 | DEBUG | MainThread | api.py:260 -     TotalCalculation() | The period is 2010 for the Country France for the resource Cobalt
+2021-09-22 14:16:29,365 | DEBUG | MainThread | api.py:309 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-09-22 14:16:29,365 | DEBUG | MainThread | GeoPolRisk.py:361 -          extractdata() | Exporting database in the format csv
+2021-09-22 14:16:29,365 | DEBUG | MainThread | GeoPolRisk.py:381 -               endlog() | Number of successfull COMTRADE API attempts 0
+2021-09-22 14:16:29,365 | DEBUG | MainThread | GeoPolRisk.py:382 -               endlog() | Number of total attempts 0
+2021-09-22 14:16:29,365 | DEBUG | MainThread | GeoPolRisk.py:383 -               endlog() | Number of empty dataframes 0
+2021-09-22 14:18:04,059 | DEBUG | MainThread | api.py:260 -     TotalCalculation() | The period is 2010 for the Country France for the resource Cobalt
+2021-09-22 14:18:04,061 | DEBUG | MainThread | api.py:309 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-09-22 14:18:04,061 | DEBUG | MainThread | GeoPolRisk.py:361 -          extractdata() | Exporting database in the format csv
+2021-09-22 14:18:04,068 | DEBUG | MainThread | GeoPolRisk.py:384 -               endlog() | Number of successfull COMTRADE API attempts 0
+2021-09-22 14:18:04,068 | DEBUG | MainThread | GeoPolRisk.py:385 -               endlog() | Number of total attempts 0
+2021-09-22 14:18:04,068 | DEBUG | MainThread | GeoPolRisk.py:386 -               endlog() | Number of empty dataframes 0
+2021-09-22 14:18:33,578 | DEBUG | MainThread | api.py:260 -     TotalCalculation() | The period is 2010 for the Country France for the resource Cobalt
+2021-09-22 14:18:33,578 | DEBUG | MainThread | api.py:309 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-09-22 14:18:33,578 | DEBUG | MainThread | GeoPolRisk.py:361 -          extractdata() | Exporting database in the format csv
+2021-09-22 14:18:33,625 | DEBUG | MainThread | GeoPolRisk.py:385 -               endlog() | Number of successfull COMTRADE API attempts 0
+2021-09-22 14:18:33,625 | DEBUG | MainThread | GeoPolRisk.py:386 -               endlog() | Number of total attempts 0
+2021-09-22 14:18:33,625 | DEBUG | MainThread | GeoPolRisk.py:387 -               endlog() | Number of empty dataframes 0
+2021-09-22 14:18:57,140 | DEBUG | MainThread | api.py:260 -     TotalCalculation() | The period is 2010 for the Country France for the resource Aluminium
+2021-09-22 14:18:57,297 | DEBUG | MainThread | api.py:70 -         traderequest() | https://comtrade.un.org/api/get?max=50000&type=C&freq=A&px=HS&ps=2010&r=251&p=all&cc=2606&rg=1&fmt=json
+2021-09-22 14:19:01,640 | DEBUG | MainThread | api.py:307 -     TotalCalculation() | Complete Transaction
+2021-09-22 14:19:01,640 | DEBUG | MainThread | GeoPolRisk.py:361 -          extractdata() | Exporting database in the format csv
+2021-09-22 14:19:01,685 | DEBUG | MainThread | GeoPolRisk.py:385 -               endlog() | Number of successfull COMTRADE API attempts 1
+2021-09-22 14:19:01,685 | DEBUG | MainThread | GeoPolRisk.py:386 -               endlog() | Number of total attempts 1
+2021-09-22 14:19:01,685 | DEBUG | MainThread | GeoPolRisk.py:387 -               endlog() | Number of empty dataframes 0
+2021-09-22 14:22:13,840 | DEBUG | MainThread | api.py:260 -     TotalCalculation() | The period is 2010 for the Country France for the resource Aluminium
+2021-09-22 14:22:13,842 | DEBUG | MainThread | api.py:309 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-09-22 14:22:13,842 | DEBUG | MainThread | GeoPolRisk.py:361 -          extractdata() | Exporting database in the format csv
+2021-09-22 14:23:13,184 | DEBUG | MainThread | api.py:260 -     TotalCalculation() | The period is 2010 for the Country France for the resource Aluminium
+2021-09-22 14:23:13,186 | DEBUG | MainThread | api.py:309 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-09-22 14:23:13,186 | DEBUG | MainThread | GeoPolRisk.py:361 -          extractdata() | Exporting database in the format csv
+2021-09-22 14:23:54,220 | DEBUG | MainThread | api.py:260 -     TotalCalculation() | The period is 2010 for the Country France for the resource Aluminium
+2021-09-22 14:23:54,221 | DEBUG | MainThread | api.py:309 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-09-22 14:23:54,221 | DEBUG | MainThread | GeoPolRisk.py:361 -          extractdata() | Exporting database in the format csv
+2021-09-22 14:24:10,886 | DEBUG | MainThread | api.py:260 -     TotalCalculation() | The period is 0 for the Country France for the resource Aluminium
+2021-09-22 14:24:11,062 | DEBUG | MainThread | api.py:279 -     TotalCalculation() | 0 is not in list
+2021-09-22 14:24:11,062 | DEBUG | MainThread | api.py:280 -     TotalCalculation() | Please update Production database!
+2021-09-22 14:24:11,062 | DEBUG | MainThread | api.py:285 -     TotalCalculation() | 
+2021-09-22 14:24:22,601 | DEBUG | MainThread | api.py:260 -     TotalCalculation() | The period is 2010 for the Country France for the resource Aluminium
+2021-09-22 14:24:22,602 | DEBUG | MainThread | api.py:309 -     TotalCalculation() | No transaction has been made, as data preexists
+2021-09-22 14:24:22,602 | DEBUG | MainThread | GeoPolRisk.py:361 -          extractdata() | Exporting database in the format csv
+2021-09-22 14:24:22,610 | DEBUG | MainThread | GeoPolRisk.py:384 -               endlog() | Number of successfull COMTRADE API attempts 1
+2021-09-22 14:24:22,610 | DEBUG | MainThread | GeoPolRisk.py:385 -               endlog() | Number of total attempts 1
+2021-09-22 14:24:22,610 | DEBUG | MainThread | GeoPolRisk.py:386 -               endlog() | Number of empty dataframes 0
