@@ -15,11 +15,11 @@
 
 
 #Imports
-import pandas as pd, sys, getpass, json, sqlite3, logging
-from geopolrisk.api import comtrade, RUNError
+import pandas as pd, sys, getpass, sqlite3, logging
+from __init__ import APIError, _commodity, _reporter, _resource
 from difflib import get_close_matches
 from datetime import datetime
-
+from gprs import comtrade
 
 
 #Fetch username for the purpose of logging.
@@ -31,6 +31,9 @@ class main(comtrade):
     """
     #Method 0
     def __init__(self):
+        self.commodity = _commodity
+        self.reporter = _reporter
+        self.resource = _resource
         Filename = './logs//function({:%Y-%m-%d(%H-%M-%S)}).log'.format(datetime.now())
         self.module = False
         self.logging = logging
@@ -40,27 +43,25 @@ class main(comtrade):
             filename = Filename,
             filemode = 'w'
             )
-        _columns = ["Year", "Resource", "Country","Recycling Rate","Recycling Scenario", "GeoPolRisk", "HHI", "Weighted Trade AVerage"]
+        _columns = ["Year", "Resource", "Country","Recycling Rate","Recycling Scenario", "Risk","GeoPolRisk Characterization Factor", "HHI", "Weighted Trade AVerage"]
         self.outputDF = pd.DataFrame(columns = _columns)
         self.counter, self.totcounter, self.emptycounter = 0 ,0 , 0
         self.logging.debug('Username: {}'.format(username))
         self.totalreduce = 0
         
     """The program is equipped with a predefined database for production of a 
-    raw material, HS codes of those raw materials, ISO country codes and a
-    database to link the HS codes to the production of raw material. Change the 
-    path of the respective databases to customize the calculation.
+    raw materia. Change the path of the respective databases to customize the 
+    calculation.
     """    
     #Method 2
     def setpath(self,
              prod_path = './lib/production.xlsx',
-             reporter_path = './lib/rep.json',
-             hs_code = './lib/hs.json',
-             metals = './lib/metalsg.csv'):
+             trade_path = None,
+             wgi_path = './lib/wgidataset.xlsx',
+             ):
         self.prod_path = prod_path
-        self.reporter_path = reporter_path
-        self.hs = hs_code
-        self.metals = metals
+        self.trade_path = trade_path
+        self.wgi_path = wgi_path
         self.regions()
         #Confirmation of loading this function
         self.module = True
@@ -97,7 +98,6 @@ class main(comtrade):
             self.setpath()
             self.regions()
 
-
     """
     A simple guided step by step method for new users. This method can be called 
     to any console based application if needed.
@@ -125,19 +125,15 @@ class main(comtrade):
         when automatic download of data is created.
         """
         #4.2 Extracting data from linking database
-        MetalsDF = pd.read_csv(self.metals)
-        Metals = MetalsDF.id.tolist()
-        
-        HS = MetalsDF.hs.tolist()
+        Metals = self.resource.id.tolist()
+        HS = self.resource.hs.tolist()
         
         """
         Connect country to country codes. These codes and files are only necessary
         for guided run.
         """
         #4.3 Extracting data from ISO country codes database
-        json_file = open(self.reporter_path, 'r')
-        data = pd.json_normalize(json.loads(json_file.read())['results'])
-        Country = data.text.tolist()
+        Country = self.reporter.Country.tolist()
         
         
         """
@@ -178,6 +174,15 @@ class main(comtrade):
                 resource = Metalcloselist[0]
                 print("Selected resource is {} \n".format(resource))
                 _exit = False
+                
+        """
+        self.resource countains data that is formated to general audience. i.e
+        a description of a hs code is more detailed and not usually known to
+        every user. Hence it is concised to the detail of the raw material name.
+        However, for the assessment, neither the description nor consice name
+        can be used and hence the following code extracts the hscode of the 
+        raw material.
+        """
         metal = resource
         HSCode = HS[Metals.index(resource)]
         
@@ -204,12 +209,18 @@ class main(comtrade):
             elif len(countrycloselist) == 0 and metal.lower() != "exit":
                 print("The entered Country not found")
             elif metal.lower() == "exit":
-                raise RUNError
+                raise APIError
             else:
                 country = countrycloselist[0]
                 print("Selected country is {} \n".format(country))
                 _exit = False
-        reporter = data.loc[data['text'] == str(country), 'id'].iloc[0]
+                
+        """
+        Similar to hscode data, the assessment requires the iso digit code of
+        the country/region in question.
+        """
+        reporter = self.reporter.iloc[Country.index(country),0]
+        
         
         _exit = True
         while _exit:
@@ -229,7 +240,7 @@ class main(comtrade):
                     recyclingrate = float(recyclingrate)
                     _exit = False
                 elif recyclingrate.lower() == 'exit':
-                    raise RUNError
+                    raise APIError
             except Exception as e:
                 print("Provide correct inputs! Try again")
                 self.logging.debug(e)
@@ -261,12 +272,10 @@ class main(comtrade):
         """
         #4.7 Extracting information of hs files
         try:
-            json_file = open(self.hs, 'r')
-            hs_element = pd.json_normalize(json.loads(json_file.read())['results'])
-            hs_element = hs_element.loc[hs_element['id'] == str(HSCode), 'text'].iloc[0]
+            hs_element = self.commodity.iloc[self.commodity.HSCODE.to_list().index(HSCode),2]
         except Exception as e:
             self.logging.debug(e)
-            raise RUNError(1)
+            raise APIError
         print("Info: The HS code used for the analysis is "+str(hs_element))
         
         #4.8 API CALL
@@ -282,31 +291,28 @@ class main(comtrade):
 
 
     
-    """
-    SQL select method, to pull records in method 5 and 6. This program is used
-    only to pull records (ONLY SELECT STATEMENT)
-    """
-    def select(self, sqlstatement):
-            try:
-                connect = sqlite3.connect('./lib/datarecords.db')
-                cursor = connect.cursor()
-            except:
-                self.logging.debug('Database not found')
-            cursor.execute(sqlstatement)
-            row = cursor.fetchall()
-            connect.commit()
-            connect.close()
-            return row
+
 
     def createTable(self):
         #5.1 Initial run to create a database if not exists
         try:
-            sqlstatement = """CREATE TABLE IF NOT EXISTS recordData 
-            (id INTEGER PRIMARY KEY, Country TEXT NOT NULL, Resource 
-            TEXT NOT NULL, Year INTEGER NOT NULL, RecyclRate TEXT, RecyclScene TEXT,
-            GeoPolRisk TEXT,HHI TEXT, WeightAvg TEXT);""" 
+            sqlstatement = """CREATE TABLE "recordData" (
+            	"id"	INTEGER,
+            	"country"	TEXT,
+            	"resource"	TEXT,
+            	"year"	INTEGER,
+            	"recycling_rate"	REAL,
+            	"scenario"	REAL,
+            	"geopolrisk"	REAL,
+            	"hhi"	REAL,
+            	"wta"	REAL,
+            	"geopol_cf"	REAL,
+            	"resource_hscode"	REAL,
+            	"iso"	TEXT,
+            	PRIMARY KEY("id")
+            );""" 
             try:
-                connect = sqlite3.connect('./lib/datarecords.db')
+                connect = sqlite3.connect(self.datarecords)
                 cursor = connect.cursor()
             except:
                 self.logging.debug('Database not found')
@@ -318,62 +324,62 @@ class main(comtrade):
 
 
 
-    """
-    Records the data to an sqlite database. The database is not protected.
-    """
-    #Method 5   
-    def recorddata(self, Year, GPRS, WA, HHI, Country, Metal, RRate, RScene):
-        #5.1 Method to execute non select
-        def execute(sqlstatement):
-            try:
-                connect = sqlite3.connect('./lib/datarecords.db')
-                cursor = connect.cursor()
-            except:
-                self.logging.debug('Database not found')
-            cursor.execute(sqlstatement)
-            connect.commit()
-            connect.close()
-        
+    # """
+    # Records the data to an sqlite database. The database is not protected.
+    # """
+    # #Method 5   
+    # def recorddata(self, Year, GPRS, WA, HHI, Country, Metal, RRate, RScene, indicator):
+    #     #5.1 Method to execute non select
+    #     def execute(sqlstatement):
+    #         try:
+    #             connect = sqlite3.connect()
+    #             cursor = connect.cursor()
+    #         except:
+    #             self.logging.debug('Database not found')
+    #         cursor.execute(sqlstatement)
+    #         connect.commit()
+    #         connect.close()
+    
                    
-        """
-        Insert new data after verifying if the data is not available.
-        """
-        #5.2 Select run to fetch if the data preexists
-        try:
-            sqlstatement = "SELECT * FROM recordData WHERE Country = '"+Country+"' AND Resource= '"+Metal+"' AND Year = '"+Year+"' AND RecyclRate= '"+RRate+"' AND RecyclScene = '"+RScene+"';"
-            row = self.select(sqlstatement)   
-            if len(row) == 0 or Year not in row:
-                sqlstatement = "INSERT INTO recordData (Country, Resource, Year, RecyclRate, RecyclScene, GeoPolRisk, HHI, Weightavg) VALUES ('"+Country+"','"+Metal+"','"+Year+"','"+RRate+"','"+RScene+"','"+GPRS+"','"+HHI+"','"+WA+"');"
-                execute(sqlstatement)
-            else:
-                self.logging.debug("Redundancy detected! Entry not recorded.")
-        except Exception as e:
-            self.logging.debug(e)
+    #     """
+    #     Insert new data after verifying if the data is not available.
+    #     """
+    #     #5.2 Select run to fetch if the data preexists
+    #     try:
+    #         sqlstatement = "SELECT * FROM recordData WHERE Country = '"+Country+"' AND Resource= '"+Metal+"' AND Year = '"+Year+"' AND RecyclRate= '"+RRate+"' AND RecyclScene = '"+RScene+"';"
+    #         row = self.select(sqlstatement)   
+    #         if len(row) == 0 or Year not in row:
+    #             sqlstatement = "INSERT INTO recordData (Country, Resource, Year, RecyclRate, RecyclScene, GeoPolRisk, HHI, Weightavg) VALUES ('"+Country+"','"+Metal+"','"+Year+"','"+RRate+"','"+RScene+"','"+GPRS+"','"+HHI+"','"+WA+"');"
+    #             execute(sqlstatement)
+    #         else:
+    #             self.logging.debug("Redundancy detected! Entry not recorded.")
+    #     except Exception as e:
+    #         self.logging.debug(e)
     
     
-    """
-    Data extraction method, into csv, json or excel
-    """        
-    #Method 6
-    def extractdata(self, Year, Country, Metal, Type="csv"):
-        exportF = ['csv', 'excel', 'json']
-        if Type in exportF:
-            self.logging.debug("Exporting database in the format {}".format(Type))
-            self.outputDFType=Type
-        else:
-            self.logging.debug("Exporting format not supported {}. Using default format [csv]".format(Type))
-            self.outputDFType="csv"
-        try:
-            data = self.select("SELECT RecyclRate, RecyclScene, GeoPolRisk, HHI, WeightAvg FROM recordData WHERE Country = '"+Country+"' AND Resource= '"+Metal+"' AND Year='"+Year+"'")
-        except Exception as e:
-            self.logging.debug(e)
-        if len(data) !=0:
-            toappend = [Year,Metal,Country,data[0][0],data[0][1],data[0][2],data[0][3],data[0][4]]
-            self.GPRS = float(data[0][2])
-            Mdata = pd.read_csv(self.metals)
-            self.GPSRP = self.GPRS * Mdata.loc[Mdata['id'] == Metal, str(Year)].iloc[0]
+    # """
+    # Data extraction method, into csv, json or excel
+    # """        
+    # #Method 6
+    # def extractdata(self, Year, Country, Metal, Type="csv"):
+    #     exportF = ['csv', 'excel', 'json']
+    #     if Type in exportF:
+    #         self.logging.debug("Exporting database in the format {}".format(Type))
+    #         self.outputDFType=Type
+    #     else:
+    #         self.logging.debug("Exporting format not supported {}. Using default format [csv]".format(Type))
+    #         self.outputDFType="csv"
+    #     try:
+    #         data = self.select("SELECT recycling_rate, scenario, geopolrisk, hhi, wta, geopol_cf FROM recordData WHERE country = '"+Country+"' AND resource= '"+Metal+"' AND year='"+Year+"'")
+    #     except Exception as e:
+    #         self.logging.debug(e)
+    #     if len(data) !=0:
+    #         toappend = [Year,Metal,Country,data[0][0],data[0][1],data[0][2],data[0][5],data[0][3],data[0][4]]
+    #         self.GPRS = float(data[0][2])
+    #         Mdata = pd.read_csv(self.metals)
+    #         self.GPSRP = self.GPRS * Mdata.loc[Mdata['id'] == Metal, str(Year)].iloc[0]
             
-            self.outputDF.loc[len(self.outputDF)] = toappend
+    #         self.outputDF.loc[len(self.outputDF)] = toappend
             
     """
     End of script logging and exporting database to specified format. End log 

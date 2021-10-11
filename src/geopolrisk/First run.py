@@ -8,9 +8,9 @@ Testing the functionality of the module.
 
 """
 #%autoreload
-
-from geopolrisk.api import APIError
-from geopolrisk.GeoPolRisk import main as main
+import __init__
+from __init__ import APIError
+from main import main as main
 #from plots import graphics
 from tqdm import tqdm
 main = main()

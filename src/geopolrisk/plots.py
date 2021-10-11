@@ -18,8 +18,8 @@
 import pandas as pd ,numpy as np, matplotlib.pyplot as plt, sqlite3
 from scipy.interpolate import make_interp_spline, BSpline
 from matplotlib.ticker import MaxNLocator
-from geopolrisk.api import APIError
-from geopolrisk.GeoPolRisk import main
+from __init__ import APIError
+from main import main
 from textwrap import wrap  
 
 """
