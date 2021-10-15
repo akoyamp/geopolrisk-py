@@ -48,6 +48,8 @@ class main(comtrade):
         self.counter, self.totcounter, self.emptycounter = 0 ,0 , 0
         self.logging.debug('Username: {}'.format(username))
         self.totalreduce = 0
+        self.DBIMPORTFAIL = False
+        self.recordspath = './lib/datarecords.db'
         
     """The program is equipped with a predefined database for production of a 
     raw materia. Change the path of the respective databases to customize the 
@@ -312,7 +314,7 @@ class main(comtrade):
             	PRIMARY KEY("id")
             );""" 
             try:
-                connect = sqlite3.connect(self.datarecords)
+                connect = sqlite3.connect(self.recordspath)
                 cursor = connect.cursor()
             except:
                 self.logging.debug('Database not found')
@@ -322,64 +324,47 @@ class main(comtrade):
         except Exception as e:
             self.logging.debug(e)
 
+    
+    """
+    SQL select method. This program is used
+    only to pull records (ONLY SELECT STATEMENT)
+    """
+    def select(self, sqlstatement):
+        try:
+            connect = sqlite3.connect(self.recordspath)
+            cursor = connect.cursor()
+        except:
+            self.logging.debug('Datarecords database not found')
+            self.DBIMPORTFAIL = True
+        if not self.DBIMPORTFAIL:
+            cursor.execute(sqlstatement)
+            row = cursor.fetchall()
+            connect.commit()
+            connect.close()
+            return row
+        else:
+            connect.commit()
+            connect.close()
+            return None
+        
 
-
-    # """
-    # Records the data to an sqlite database. The database is not protected.
-    # """
-    # #Method 5   
-    # def recorddata(self, Year, GPRS, WA, HHI, Country, Metal, RRate, RScene, indicator):
-    #     #5.1 Method to execute non select
-    #     def execute(sqlstatement):
-    #         try:
-    #             connect = sqlite3.connect()
-    #             cursor = connect.cursor()
-    #         except:
-    #             self.logging.debug('Database not found')
-    #         cursor.execute(sqlstatement)
-    #         connect.commit()
-    #         connect.close()
-    
-                   
-    #     """
-    #     Insert new data after verifying if the data is not available.
-    #     """
-    #     #5.2 Select run to fetch if the data preexists
-    #     try:
-    #         sqlstatement = "SELECT * FROM recordData WHERE Country = '"+Country+"' AND Resource= '"+Metal+"' AND Year = '"+Year+"' AND RecyclRate= '"+RRate+"' AND RecyclScene = '"+RScene+"';"
-    #         row = self.select(sqlstatement)   
-    #         if len(row) == 0 or Year not in row:
-    #             sqlstatement = "INSERT INTO recordData (Country, Resource, Year, RecyclRate, RecyclScene, GeoPolRisk, HHI, Weightavg) VALUES ('"+Country+"','"+Metal+"','"+Year+"','"+RRate+"','"+RScene+"','"+GPRS+"','"+HHI+"','"+WA+"');"
-    #             execute(sqlstatement)
-    #         else:
-    #             self.logging.debug("Redundancy detected! Entry not recorded.")
-    #     except Exception as e:
-    #         self.logging.debug(e)
-    
-    
-    # """
-    # Data extraction method, into csv, json or excel
-    # """        
-    # #Method 6
-    # def extractdata(self, Year, Country, Metal, Type="csv"):
-    #     exportF = ['csv', 'excel', 'json']
-    #     if Type in exportF:
-    #         self.logging.debug("Exporting database in the format {}".format(Type))
-    #         self.outputDFType=Type
-    #     else:
-    #         self.logging.debug("Exporting format not supported {}. Using default format [csv]".format(Type))
-    #         self.outputDFType="csv"
-    #     try:
-    #         data = self.select("SELECT recycling_rate, scenario, geopolrisk, hhi, wta, geopol_cf FROM recordData WHERE country = '"+Country+"' AND resource= '"+Metal+"' AND year='"+Year+"'")
-    #     except Exception as e:
-    #         self.logging.debug(e)
-    #     if len(data) !=0:
-    #         toappend = [Year,Metal,Country,data[0][0],data[0][1],data[0][2],data[0][5],data[0][3],data[0][4]]
-    #         self.GPRS = float(data[0][2])
-    #         Mdata = pd.read_csv(self.metals)
-    #         self.GPSRP = self.GPRS * Mdata.loc[Mdata['id'] == Metal, str(Year)].iloc[0]
-            
-    #         self.outputDF.loc[len(self.outputDF)] = toappend
+    def execute(self, sqlstatement):
+        try:
+            connect = sqlite3.connect(self.recordspath)
+            cursor = connect.cursor()
+        except:
+            self.logging.debug('Datarecords database not found')
+            self.DBIMPORTFAIL = True
+        if not self.DBIMPORTFAIL:
+            cursor.execute(sqlstatement)
+            self.logging.debug(sqlstatement)
+            connect.commit()
+            connect.close()
+            return True
+        else:
+            connect.commit()
+            connect.close()
+            return None
             
     """
     End of script logging and exporting database to specified format. End log 
@@ -420,3 +405,6 @@ class main(comtrade):
                  db_df.to_json('./output/database.json', orient = orient, index=False)
         except Exception as e:
             self.logging.debug(e)
+            
+
+        

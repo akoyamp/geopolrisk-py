@@ -17,7 +17,7 @@
 
 
 from urllib.request import Request, urlopen
-from __init__ import APIError, select, execute
+from __init__ import APIError
 import pandas as pd , json
 
 
@@ -254,7 +254,7 @@ class comtrade:
         The counter and totcounter logs the number of API calls.
         """
         sqlstatement = "SELECT geopolrisk, hhi, wta, geopol_cf FROM recordData WHERE country = '"+reporter_country[0]+"' AND resource= '"+hs_element+"' AND year = '"+str(period)+"' AND recycling_rate = '"+str(recyclingrate)+"' AND scenario = '"+str(scenario)+"';"
-        row = select(sqlstatement)
+        row = self.select(sqlstatement)
         if len(row) == 0:
             try:
                 #Call Method 2
@@ -289,15 +289,24 @@ class comtrade:
                 self.WA = 0
             self.GPRS = self.HHI[index] * self.WA
             self.GPSRP = self.GPRS * self.resource.loc[self.resource['hs'] == HSCode, str(period)].iloc[0]
-            execute("INSERT INTO recordData (country, resource, year, recycling_rate, scenario, geopolrisk, hhi, wta, geopol_cf, resource_hscode, iso) VALUES ('"+reporter_country[0]+"','"+hs_element+"','"+period+"','"+recyclingrate+"','"+scenario+"','"+self.GPRS+"','"+self.HHI[index]+"','"+self.WA+"','"+self.GPSRP+"','"+HSCode+"','"+reporter+"');")
+            _return = self.execute("INSERT INTO recordData (country, resource, year, recycling_rate, scenario, geopolrisk, hhi, wta, geopol_cf, resource_hscode, iso) VALUES ('"+
+                         reporter_country[0]+"','"+hs_element+"','"+str(period)+
+                         "','"+str(recyclingrate)+"','"+str(scenario)+"','"+
+                         str(self.GPRS)+"','"+str(self.HHI[index])+"','"+str(self.WA)+
+                         "','"+str(self.GPSRP)+"','"+str(HSCode)+"','"+str(reporter)+
+                         "');")
+            if _return != True:
+                self.logging.debug("Writing to database failed!")
             toappend = [period,hs_element,reporter_country[0],recyclingrate,scenario,self.GPRS,self.GPSRP,self.HHI[index],self.WA]
             self.outputDF.loc[len(self.outputDF)] = toappend
             self.logging.debug("Complete Transaction")
         else:
             self.logging.debug("No transaction has been made, as data preexists")
             toappend = [period,hs_element,reporter_country[0],recyclingrate,scenario,row[0][0],row[0][3],row[0][1],row[0][2]]
+            self.GPRS = row[0][0]
+            self.GPSRP = row[0][3]
             self.outputDF.loc[len(self.outputDF)] = toappend
-        self.extractdata(str(period), str(reporter_country[0]), str(hs_element), Type=exportType)
+        self.outputDFType = exportType
            
 
     

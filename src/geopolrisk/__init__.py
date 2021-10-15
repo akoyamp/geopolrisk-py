@@ -57,7 +57,7 @@ if LOGFAIL != True:
         connect = sqlite3.connect('./lib/inputs.db')
         cursor = connect.cursor()
     except:
-        logging.debug('Database not found')
+        logging.debug('Import database not found')
         DBIMPORTFAIL = True
     
     
@@ -98,40 +98,7 @@ if LOGFAIL != True:
         _commodity, _resource, _reporter = None, None, None 
         
 
-"""
-SQL select method. This program is used
-only to pull records (ONLY SELECT STATEMENT)
-"""
-def select(sqlstatement):
-    try:
-        connect = sqlite3.connect('./lib/datarecords.db')
-        cursor = connect.cursor()
-    except:
-        logging.debug('Datarecords database not found')
-        DBIMPORTFAIL = True
-    if not DBIMPORTFAIL:
-        cursor.execute(sqlstatement)
-        row = cursor.fetchall()
-        return row
-    else:
-        return None
-    connect.commit()
-    connect.close()
 
-def execute(sqlstatement):
-    try:
-        connect = sqlite3.connect('./lib/datarecords.db')
-        cursor = connect.cursor()
-    except:
-        logging.debug('Datarecords database not found')
-        DBIMPORTFAIL = True
-    if not DBIMPORTFAIL:
-        cursor.execute(sqlstatement)
-        return True
-    else:
-        return None
-    connect.commit()
-    connect.close()
 
 
 """
