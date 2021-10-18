@@ -12,7 +12,6 @@ pip install -i https://test.pypi.org/simple/ Geopolrisk==0.9
 A module is a file containing Python definitions and statements. The file name is the module name with the suffix .py appended. A module can be imported in any python script to use the variables and methods declared within. 
 
 To import the methods and variables to calculate the user must import the module using the following code.
-### The code:
 ~~~
 from geopolrisk import main
 
@@ -35,7 +34,6 @@ newclassinstance.simplerun()
 
 ~~~
 
-Note: Green: User Inputs
 
 
 ## totalcalculation:
