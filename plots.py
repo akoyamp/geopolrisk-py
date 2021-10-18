@@ -18,8 +18,8 @@
 import pandas as pd ,numpy as np, matplotlib.pyplot as plt, sqlite3
 from scipy.interpolate import make_interp_spline, BSpline
 from matplotlib.ticker import MaxNLocator
-from __init__ import APIError
-from main import main
+from geopolrisk.__init__ import APIError, _outputfile, _libfile
+from geopolrisk.main import operations
 from textwrap import wrap  
 
 """
@@ -32,14 +32,18 @@ bar graph that can also accomodate multiple resources and countries for one year
 """
 #Class of graphs
 
-class graphics(main):
+class graphics(operations):
     """
     Initialize the graphics by calling the variables from the main class required
     for logging. 
     Current initialization loads the exported csv file from the calculation.
     """
-    def __init__(self, data=pd.read_csv('./output/export.csv')):
-        main.__init__(self)
+    def __init__(self, data="" ):
+        try:
+            data=pd.read_csv(_outputfile+'/export.csv')
+        except:
+            self.logging.debug("Export file failed to access")
+        operations.__init__(self)
         try:
             self.logging.debug("graphics class accessed!")
         except Exception as e:
@@ -48,7 +52,7 @@ class graphics(main):
             self._data = data
             self._data= self._data.drop(self._data.columns[0], axis = 1)
             self._data.columns = ["Year", "Resource", "Country", "RR", 
-                                  "RRScenario", "GeoPolRisk", "HHI", "WTA"]
+                                  "RRScenario", "GeoPolRisk", "CF", "HHI", "WTA"]
         except Exception as e:
             self.logging.debug(e)
             raise APIError
@@ -58,15 +62,15 @@ class graphics(main):
         alongside the individual bar graphs for analysis
         """
         try:
-            conn = sqlite3.connect('./lib/datarecords.db', isolation_level=None,
+            conn = sqlite3.connect(_libfile+'/datarecords.db', isolation_level=None,
                        detect_types=sqlite3.PARSE_COLNAMES)
             db_df = pd.read_sql_query("SELECT * FROM recorddata", conn)
-            GPRS = [float(x) for x in db_df.GeoPolRisk.to_list()]
-            HHI = [float(x) for x in db_df.HHI.to_list()]
-            WA = [float(x) for x in db_df.WeightAvg.to_list()]
-            maxGPRS = ["for "+str(db_df.Country[GPRS.index(max(GPRS))]), db_df.Year[GPRS.index(max(GPRS))], db_df.Resource[GPRS.index(max(GPRS))], max(GPRS)]
-            maxHHI = ["", db_df.Year[HHI.index(max(HHI))], db_df.Resource[HHI.index(max(HHI))], max(HHI)]
-            maxWA = ["for "+str(db_df.Country[WA.index(max(WA))]), db_df.Year[WA.index(max(WA))], db_df.Resource[WA.index(max(WA))], max(WA)]
+            GPRS = [float(x) for x in db_df.geopolrisk.to_list()]
+            HHI = [float(x) for x in db_df.hhi.to_list()]
+            WA = [float(x) for x in db_df.wta.to_list()]
+            maxGPRS = ["for "+str(db_df.country[GPRS.index(max(GPRS))]), db_df.year[GPRS.index(max(GPRS))], db_df.resource[GPRS.index(max(GPRS))], max(GPRS)]
+            maxHHI = ["", db_df.year[HHI.index(max(HHI))], db_df.resource[HHI.index(max(HHI))], max(HHI)]
+            maxWA = ["for "+str(db_df.country[WA.index(max(WA))]), db_df.year[WA.index(max(WA))], db_df.resource[WA.index(max(WA))], max(WA)]
             self.maxdict = {'GeoPolRisk': maxGPRS, 'HHI': maxHHI, 'WTA': maxWA }
         except Exception as e:
             self.logging.debug(e)

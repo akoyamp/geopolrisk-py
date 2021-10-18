@@ -17,7 +17,7 @@
 
 
 from urllib.request import Request, urlopen
-from __init__ import APIError
+from geopolrisk.__init__ import APIError
 import pandas as pd , json
 
 
@@ -44,7 +44,7 @@ class comtrade:
         reporter = "276",
         HSCode = "2602",
         TradeFlow = "1",
-        _Rrate = 0,
+        recyclingrate = 0,
         scenario = 0
         ):
         _request = "https://comtrade.un.org/api/get?max=50000&type=C&freq="+frequency+"&px="+classification+"&ps="+period+"&r="+reporter+"&p="+partner+"&cc="+HSCode+"&rg="+TradeFlow+"&fmt=json"
@@ -124,7 +124,7 @@ class comtrade:
             reducedmass = 0
             try:
                 for i in _reduce:
-                    reducedmass = (self.quantity[i])*_Rrate
+                    reducedmass = (self.quantity[i])*recyclingrate
                     self.quantity[i] = (self.quantity[i])-reducedmass
                     self.totalreduce += reducedmass
             except Exception as e:

@@ -16,16 +16,16 @@
 
 #Imports
 import pandas as pd, sys, getpass, sqlite3, logging
-from __init__ import APIError, _commodity, _reporter, _resource
+from geopolrisk.__init__ import APIError, _commodity, _reporter, _resource, _logfile, _outputfile, _libfile
 from difflib import get_close_matches
 from datetime import datetime
-from gprs import comtrade
+from geopolrisk.gprs import comtrade
 
 
 #Fetch username for the purpose of logging.
 username = getpass.getuser()
 
-class main(comtrade):
+class operations(comtrade):
     """Do not modify the path for the logs folder unless you specifically need
     it elsewhere. Modify the alert level depending on requirements for debugging. 
     """
@@ -34,7 +34,7 @@ class main(comtrade):
         self.commodity = _commodity
         self.reporter = _reporter
         self.resource = _resource
-        Filename = './logs//function({:%Y-%m-%d(%H-%M-%S)}).log'.format(datetime.now())
+        Filename = _logfile+'//function({:%Y-%m-%d(%H-%M-%S)}).log'.format(datetime.now())
         self.module = False
         self.logging = logging
         self.logging.basicConfig(
@@ -45,11 +45,11 @@ class main(comtrade):
             )
         _columns = ["Year", "Resource", "Country","Recycling Rate","Recycling Scenario", "Risk","GeoPolRisk Characterization Factor", "HHI", "Weighted Trade AVerage"]
         self.outputDF = pd.DataFrame(columns = _columns)
+        self.outputDFType = 'csv'
         self.counter, self.totcounter, self.emptycounter = 0 ,0 , 0
         self.logging.debug('Username: {}'.format(username))
         self.totalreduce = 0
-        self.DBIMPORTFAIL = False
-        self.recordspath = './lib/datarecords.db'
+        self.recordspath = _libfile+'/datarecords.db'
         
     """The program is equipped with a predefined database for production of a 
     raw materia. Change the path of the respective databases to customize the 
@@ -57,9 +57,9 @@ class main(comtrade):
     """    
     #Method 2
     def setpath(self,
-             prod_path = './lib/production.xlsx',
+             prod_path = _libfile+'/production.xlsx',
              trade_path = None,
-             wgi_path = './lib/wgidataset.xlsx',
+             wgi_path = _libfile+'/wgidataset.xlsx',
              ):
         self.prod_path = prod_path
         self.trade_path = trade_path
@@ -98,7 +98,6 @@ class main(comtrade):
         self.createTable()
         if self.module != True:
             self.setpath()
-            self.regions()
 
     """
     A simple guided step by step method for new users. This method can be called 
@@ -294,7 +293,10 @@ class main(comtrade):
 
     
 
-
+    #5 Create table
+    """
+    Create a database file incase the preexisting database doesnt exist.
+    """
     def createTable(self):
         #5.1 Initial run to create a database if not exists
         try:
@@ -325,6 +327,7 @@ class main(comtrade):
             self.logging.debug(e)
 
     
+    #Method 6.1 SQL SELECT Method
     """
     SQL select method. This program is used
     only to pull records (ONLY SELECT STATEMENT)
@@ -333,37 +336,27 @@ class main(comtrade):
         try:
             connect = sqlite3.connect(self.recordspath)
             cursor = connect.cursor()
-        except:
-            self.logging.debug('Datarecords database not found')
-            self.DBIMPORTFAIL = True
-        if not self.DBIMPORTFAIL:
             cursor.execute(sqlstatement)
             row = cursor.fetchall()
             connect.commit()
             connect.close()
             return row
-        else:
+        except:
+            self.logging.debug('Datarecords database not found')
             connect.commit()
             connect.close()
             return None
         
-
+    #Method 6.2 SQL EXECUTE
     def execute(self, sqlstatement):
         try:
             connect = sqlite3.connect(self.recordspath)
             cursor = connect.cursor()
-        except:
-            self.logging.debug('Datarecords database not found')
-            self.DBIMPORTFAIL = True
-        if not self.DBIMPORTFAIL:
             cursor.execute(sqlstatement)
             self.logging.debug(sqlstatement)
-            connect.commit()
-            connect.close()
             return True
-        else:
-            connect.commit()
-            connect.close()
+        except:
+            self.logging.debug('Datarecords database not found')
             return None
             
     """
@@ -376,9 +369,11 @@ class main(comtrade):
         self.logging.debug("Number of total attempts {}".format(self.totcounter))
         self.logging.debug("Number of empty dataframes {}".format(self.emptycounter))
         if self.outputDFType == 'json':
-            self.outputDF.to_json('./output/export.json', orient='columns')
-        elif self.outputDFType =='csv':
-            self.outputDF.to_csv('./output/export.csv')
+            self.outputDF.to_json(_outputfile+'/export.json', orient='columns')
+        elif self.outputDFType =='excel':
+            self.outputDF.to_excel(_outputfile+'/export.xlsx')
+        else:
+            self.outputDF.to_csv(_outputfile+'/export.csv')
             
     """Convert entire database to required format
         **CHARACTERIZATION FACTORS
@@ -394,15 +389,15 @@ class main(comtrade):
             self.logging.debug("Exporting format not supported {}. Using default format [csv]".format(exportType))
             CFType="csv"
         try:
-            conn = sqlite3.connect('./lib/datarecords.db', isolation_level=None,
+            conn = sqlite3.connect(self.recordspath, isolation_level=None,
                        detect_types=sqlite3.PARSE_COLNAMES)
             db_df = pd.read_sql_query("SELECT * FROM recorddata", conn)
             if CFType == "csv":
-                db_df.to_csv('./output/database.csv', index=False)
+                db_df.to_csv(_outputfile+'/database.csv', index=False)
             elif CFType == "excel":
-                db_df.to_excel('./output/database.xlsx', index=False)
+                db_df.to_excel(_outputfile+'/database.xlsx', index=False)
             elif CFType == "json":
-                 db_df.to_json('./output/database.json', orient = orient, index=False)
+                 db_df.to_json(_outputfile+'/database.json', orient = orient, index=False)
         except Exception as e:
             self.logging.debug(e)
             
