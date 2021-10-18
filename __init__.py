@@ -15,8 +15,10 @@ __author__ = "Anish Koyamparambath <CyVi- University of Bordeaux>"
 __status__ = "testing"
 __version__ = "0.7"
 __data__ = "30 September 2021"
-FILES = {"/inputs.db":"geopolrisk/lib/inputs.db","/Production.xlsx":"geopolrisk/lib/Production.xlsx",
-         "/datarecords.db":"geopolrisk/lib/datarecords.db","/wgidataset.xlsx":"geopolrisk/lib/wgidataset.xlsx"}
+dir_path = os.path.dirname(os.path.realpath(__file__))
+print(dir_path)
+FILES = {"/inputs.db":dir_path+"/lib/inputs.db","/Production.xlsx":dir_path+"/lib/Production.xlsx",
+         "/datarecords.db":dir_path+"/lib/datarecords.db","/wgidataset.xlsx":dir_path+"/lib/wgidataset.xlsx"}
 
 
 #Test fail variables
