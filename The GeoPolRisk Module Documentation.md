@@ -1,4 +1,4 @@
-﻿The GeoPolRisk Module Documentation
+#The GeoPolRisk Module Documentation
 
 # Getting started
 ## Installing the GeoPolRisk Module
