@@ -17,21 +17,11 @@
 
 
 from urllib.request import Request, urlopen
+from geopolrisk.__init__ import APIError
+import pandas as pd , json
 
-import json, pandas as pd , sys
 
-"""
-The first two classes are error classes that shall be raised in order to break
-an operation or close an operation. The users are free to modify this class.
-BREAK THE CODE IF EXCEPT AN APIERROR
-""" 
-class APIError(Exception): 
-    def __init__(self, ):
-        pass
-class RUNError(Exception):
-    def __init__(self, value):
-        if value == 1:
-            sys.exit(1)
+
 
 """
 The main calculation class that shall be inherted in the main class of GeoPolRisk module.
@@ -54,7 +44,7 @@ class comtrade:
         reporter = "276",
         HSCode = "2602",
         TradeFlow = "1",
-        _Rrate = 0,
+        recyclingrate = 0,
         scenario = 0
         ):
         _request = "https://comtrade.un.org/api/get?max=50000&type=C&freq="+frequency+"&px="+classification+"&ps="+period+"&r="+reporter+"&p="+partner+"&cc="+HSCode+"&rg="+TradeFlow+"&fmt=json"
@@ -97,7 +87,7 @@ class comtrade:
             pulled from the csv file in the library. 
             """
             #1.2 Section to calculate the numerator and trade total
-            self.WGI = pd.read_excel('./lib/NOR.xlsx', sheet_name = 'INVNOR')
+            self.WGI = pd.read_excel(self.wgi_path, sheet_name = 'INVNOR')
             self.WGI.columns = self.WGI.columns.astype(str)
             self.WGI_year = [str(i) for i in self.WGI.Year.to_list()]
             try:    
@@ -134,7 +124,7 @@ class comtrade:
             reducedmass = 0
             try:
                 for i in _reduce:
-                    reducedmass = (self.quantity[i])*_Rrate
+                    reducedmass = (self.quantity[i])*recyclingrate
                     self.quantity[i] = (self.quantity[i])-reducedmass
                     self.totalreduce += reducedmass
             except Exception as e:
@@ -187,7 +177,7 @@ class comtrade:
         except Exception as e:
             self.logging.debug(e)
             self.logging.warning("There was an error while acessing the file Metals_Raw.xlsx with an exception as ", exc_info = True)
-            sys.exit(1)
+            raise APIError
 
         #P2. Fetching the production quantity from 'prod' dataframe.
         self.Prod_Year = prod.Year.to_list()
@@ -241,11 +231,10 @@ class comtrade:
         The reporter file has the iso codes and country names which is aligned with the
         production database. 
         """
-        json_file = open(self.reporter_path, 'r')
-        data = pd.json_normalize(json.loads(json_file.read())['results'])
-        reporter_country = data.loc[data['id'] == str(reporter), 'text'].iloc[0]
+        
+        reporter_country = self.reporter.iloc[self.reporter.ISO.to_list().index(reporter),1]
         if reporter_country == "European Union":
-            reporter_country = ["EU28"]
+            reporter_country = [reporter_country]
         else:
             reporter_country = [reporter_country]
             
@@ -254,9 +243,7 @@ class comtrade:
         Only used for logging, while metals file contain available code to the 
         raw material name which is aligned to the production database.
         """
-        json_file = open(self.hs, 'r')
-        data = pd.read_csv(self.metals)
-        hs_element = data.loc[data['hs'] == HSCode, 'id'].iloc[0]
+        hs_element = self.resource.iloc[self.resource.hs.tolist().index(HSCode),0]
         self.logging.debug("The period is "+str(period)+" for the Country "+str(reporter_country[0])+" for the resource "+str(hs_element))
         
         
@@ -266,7 +253,7 @@ class comtrade:
         If not it will call the API. This step is necessary because of the limits of API calls.
         The counter and totcounter logs the number of API calls.
         """
-        sqlstatement = "SELECT * FROM recordData WHERE Country = '"+reporter_country[0]+"' AND Resource= '"+hs_element+"' AND Year = '"+str(period)+"' AND RecyclRate = '"+str(recyclingrate)+"';"
+        sqlstatement = "SELECT geopolrisk, hhi, wta, geopol_cf FROM recordData WHERE country = '"+reporter_country[0]+"' AND resource= '"+hs_element+"' AND year = '"+str(period)+"' AND recycling_rate = '"+str(recyclingrate)+"' AND scenario = '"+str(scenario)+"';"
         row = self.select(sqlstatement)
         if len(row) == 0:
             try:
@@ -301,11 +288,25 @@ class comtrade:
                 self.logging.debug(e)
                 self.WA = 0
             self.GPRS = self.HHI[index] * self.WA
-            self.recorddata(str(period), str(self.GPRS), str(self.WA), str(self.HHI[index]), str(reporter_country[0]), str(hs_element), str(recyclingrate), str(scenario))
+            self.GPSRP = self.GPRS * self.resource.loc[self.resource['hs'] == HSCode, str(period)].iloc[0]
+            _return = self.execute("INSERT INTO recordData (country, resource, year, recycling_rate, scenario, geopolrisk, hhi, wta, geopol_cf, resource_hscode, iso) VALUES ('"+
+                         reporter_country[0]+"','"+hs_element+"','"+str(period)+
+                         "','"+str(recyclingrate)+"','"+str(scenario)+"','"+
+                         str(self.GPRS)+"','"+str(self.HHI[index])+"','"+str(self.WA)+
+                         "','"+str(self.GPSRP)+"','"+str(HSCode)+"','"+str(reporter)+
+                         "');")
+            if _return != True:
+                self.logging.debug("Writing to database failed!")
+            toappend = [period,hs_element,reporter_country[0],recyclingrate,scenario,self.GPRS,self.GPSRP,self.HHI[index],self.WA]
+            self.outputDF.loc[len(self.outputDF)] = toappend
             self.logging.debug("Complete Transaction")
         else:
             self.logging.debug("No transaction has been made, as data preexists")
-        self.extractdata(str(period), str(reporter_country[0]), str(hs_element), Type=exportType)
+            toappend = [period,hs_element,reporter_country[0],recyclingrate,scenario,row[0][0],row[0][3],row[0][1],row[0][2]]
+            self.GPRS = row[0][0]
+            self.GPSRP = row[0][3]
+            self.outputDF.loc[len(self.outputDF)] = toappend
+        self.outputDFType = exportType
            
 
     
