@@ -10,13 +10,30 @@ import sqlite3, pandas as pd, getpass, logging, os, shutil
 from datetime import datetime
 from pathlib import Path
 
+
 __all__ = ["main", "gprs", "plots"]
 __author__ = "Anish Koyamparambath <CyVi- University of Bordeaux>"
 __status__ = "testing"
 __version__ = "0.7"
 __data__ = "30 September 2021"
+
+hard_dependencies = ("pandas", "logging", "urllib")
+missing_dependencies = []
+
+for dependency in hard_dependencies:
+    try:
+        __import__(dependency)
+    except ImportError as e:
+        missing_dependencies.append(f"{dependency}: {e}")
+
+if missing_dependencies:
+    raise ImportError(
+        "Unable to import required dependencies:\n" + "\n".join(missing_dependencies)
+    )
+del hard_dependencies, dependency, missing_dependencies
+
+
 dir_path = os.path.dirname(os.path.realpath(__file__))
-print(dir_path)
 FILES = {"/inputs.db":dir_path+"/lib/inputs.db","/Production.xlsx":dir_path+"/lib/Production.xlsx",
          "/datarecords.db":dir_path+"/lib/datarecords.db","/wgidataset.xlsx":dir_path+"/lib/wgidataset.xlsx"}
 
