@@ -3,8 +3,10 @@
 # Getting started
 ## Installing the GeoPolRisk Module
 The GeoPolRisk module is a python package that contains methods to calculate the GeoPolitical Related Supply Risk Potential of a resource for a specific macroeconomic unit during a period. To download this package, the user can use the command prompt or if they have downloaded Python using anaconda, then use anaconda prompt. Type the following to download the GeoPolRisk Module.
-
+~~~
 pip install -i https://test.pypi.org/simple/ Geopolrisk==0.9
+~~~
+
 # Modules and Methods
    ## Main module
 A module is a file containing Python definitions and statements. The file name is the module name with the suffix .py appended. A module can be imported in any python script to use the variables and methods declared within. 
@@ -12,7 +14,10 @@ A module is a file containing Python definitions and statements. The file name i
 To import the methods and variables to calculate the user must import the module using the following code.
 ### The code:
 ~~~
-pip install -i https://test.pypi.org/simple/ Geopolrisk==0.9
+from geopolrisk import main
+
+newclassinstance = main.operations()
+
 ~~~
 geopolrisk is the name of the package that contains several modules within. One of the modules, which contain all the necessary methods, is main. Within the main module, a class named operations is instantiated in the script. 
 
