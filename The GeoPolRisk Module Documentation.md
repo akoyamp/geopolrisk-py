@@ -1,11 +1,7 @@
 ﻿The GeoPolRisk Module Documentation
 
 # Getting started
-   ## Python
-Python is an interpreted high-level, general-purpose programming language.  The user must download Python to the device in order to use the GeoPolRisk module. Python can be downloaded from its [official web page](https://www.python.org/downloads/) or downloaded using its user-friendly package manager [anaconda](https://www.anaconda.com/products/individual) [\[docs\]](https://docs.anaconda.com/anaconda/install/index.html).
-## Using Python
-Python can be used within any supporting ide found online such as [PyCharm](https://www.jetbrains.com/pycharm/), [Atom](https://atom.io/), [Eclipse](https://www.eclipse.org/eclipseide/) and [others](https://wiki.python.org/moin/IntegratedDevelopmentEnvironments). Anaconda comes with a built-in ide known as [spyder](https://www.spyder-ide.org/) designed to run Python by default, while Python has its ide to use known as [idle](https://docs.python.org/3/library/idle.html) (Python's Integrated Development and Learning Environment).
-1. ## Installing the GeoPolRisk Module
+## Installing the GeoPolRisk Module
 The GeoPolRisk module is a python package that contains methods to calculate the GeoPolitical Related Supply Risk Potential of a resource for a specific macroeconomic unit during a period. To download this package, the user can use the command prompt or if they have downloaded Python using anaconda, then use anaconda prompt. Type the following to download the GeoPolRisk Module.
 
 pip install -i https://test.pypi.org/simple/ Geopolrisk==0.9
@@ -71,22 +67,22 @@ newclassinstance.TotalCalculation(period = 2010,reporter = 97,HSCode = 810520,re
 ~~~
 This method is a calculation function that uses other methods and provides the risk value and characterization factor as an exporting file. It calls run, productionQTY, traderequest.
 ## run:
-	### setpath: 
-	A function that sets the path of production data, trade data and worldwide governance indicator data. Any user intending to use private data, especially for trade and the indicator, can modify the arguments.
+### setpath: 
+A function that sets the path of production data, trade data and worldwide governance indicator data. Any user intending to use private data, especially for trade and the indicator, can modify the arguments.
 
-	**Arguments:**
+**Arguments:**
 
-	- **prod\_path:** The path of the production database.
-	- **trade\_path:** The path of the trade database.
-	- **wgi\_path:** The path of the indicator database. 
+- **prod\_path:** The path of the production database.
+- **trade\_path:** The path of the trade database.
+- **wgi\_path:** The path of the indicator database. 
 
-	Note: The trade\_path is currently under development in version 0.9.
-	### regions:
-	This method sets other user-defined regions required for the study that shall be used in the assessment. 
+Note: The trade\_path is currently under development in version 0.9.
+### regions:
+This method sets other user-defined regions required for the study that shall be used in the assessment. 
 
-	Note: This method is not yet fully implemented in version 0.9
-	### createTable: 
-	This method creates a database if the user does not possess the predefined database.
+Note: This method is not yet fully implemented in version 0.9
+### createTable: 
+This method creates a database if the user does not possess the predefined database.
 
 The run method calls setpath, regions and createTable methods if the user has not specifically set the path for private database or has not defined any regions. 
 ## traderequest:
