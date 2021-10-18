@@ -100,7 +100,7 @@ which is imported as three dataframes
 if LOGFAIL != True:
     logging.debug('Username: {}'.format(getpass.getuser()))
     try:
-        connect = sqlite3.connect('geopolrisk/lib/inputs.db')
+        connect = sqlite3.connect(_libfile+'/inputs.db')
         cursor = connect.cursor()
     except:
         logging.debug('Import database not found')
