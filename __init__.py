@@ -1,9 +1,18 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Sep 22 14:33:21 2021
-
-@author: akoyamparamb
-"""
+# Copyright 2020-2021 by Anish Koyamparambath and University of Bordeaux. All Rights Reserved.
+#
+# Permission to use, copy, modify, and distribute this software and its
+# documentation for any purpose and without fee is hereby granted,
+# provided that the above copyright notice appear in all copies and that
+# both that copyright notice and this permission notice appear in
+# supporting documentation, and that the name of Anish Koyamparambath (AK) or 
+# University of Bordeaux (UBx) will not be used in advertising or publicity pertaining 
+# to distribution of the software without specific, written prior permission.
+# BOTH AK AND UBx DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
+# ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL
+# BOTH AK AND UBx BE LIABLE FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR
+# ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
+# IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
+# OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 
 import sqlite3, pandas as pd, getpass, logging, os, shutil
@@ -14,8 +23,8 @@ from pathlib import Path
 __all__ = ["main", "gprs", "plots"]
 __author__ = "Anish Koyamparambath <CyVi- University of Bordeaux>"
 __status__ = "testing"
-__version__ = "0.7"
-__data__ = "30 September 2021"
+__version__ = "0.95"
+__data__ = "30 March 2022"
 
 hard_dependencies = ("pandas", "logging", "urllib")
 missing_dependencies = []
@@ -153,4 +162,14 @@ BREAK THE CODE IF EXCEPT AN APIERROR
 """ 
 class APIError(Exception): 
     def __init__(self, ):
-        pass
+        print("Error in the API call")
+
+class PRODError(Exception):
+    def __init__(self,):
+        print("Error in the production file")
+        
+class FUNCError(Exception):
+    def __init__(self, e = None):
+        error = ["OutputFile", "SQLFile", "PLTError" ]
+        self.error = e if e in error else ": Refer log file"
+        print("Error in the functionality", self.error)
