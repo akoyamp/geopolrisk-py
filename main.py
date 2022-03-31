@@ -36,6 +36,7 @@ class operations(comtrade):
         self.resource = _resource
         Filename = _logfile+'//function({:%Y-%m-%d(%H-%M-%S)}).log'.format(datetime.now())
         self.module = False
+        self.notCOMTRADE = False
         self.logging = logging
         self.logging.basicConfig(
             level = logging.DEBUG,
@@ -67,6 +68,8 @@ class operations(comtrade):
         self.regions()
         #Confirmation of loading this function
         self.module = True
+        if self.trade_path != None:
+            self.notCOMTRADE = True
 
     """User can modify this section along with another section in the calculation
     if more trade blocs, regions or group of countries is necessary for the study
@@ -79,7 +82,7 @@ class operations(comtrade):
     """
             
     #Method 3
-    def regions(self):
+    def regions(self, **kwargs):
         self.EU = ['Austria', 'Belgium', 'Belgium-Luxembourg', 'Bulgaria',
                    'Croatia', 'Czechia', 'Czechoslovakia', 'Denmark', 
                    'Estonia','Finland', 'France', 'Fmr Dem. Rep. of Germany',
@@ -87,8 +90,18 @@ class operations(comtrade):
                    'Ireland', 'Italy', 'Latvia', 'Lithuania', 'Luxembourg', 
                    'Malta', 'Netherlands', 'Poland', 'Portugal', 'Romania', 
                    'Slovakia', 'Slovenia', 'Spain', 'Sweden']
+        region_list = {}
+        countries = _reporter.Country.to_list()
+        ISO = _reporter["ISO"].astype(str).tolist()
+        for key, value in kwargs.items():
+            print(countries)
+            Print_Error = [x for x in value if str(x) not in countries and str(x) not in ISO]
+            if len(Print_Error) != 0:
+                print("""Error in creating a region! Following list of countries not found in the ISO list {}. Please conform with the ISO list or use 3 digit ISO country codes.""".format(Print_Error))
+            else:
+                region_list[key] = value
+        self.regionslist = region_list
 
-      
     """
     Method 1, is the first method that will be called if exucting the main function 
     i.e Method 0 of API class. It ensures if the other methods are loaded before.
