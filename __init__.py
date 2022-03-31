@@ -20,6 +20,7 @@ from datetime import datetime
 from pathlib import Path
 
 
+logging = logging
 __all__ = ["main", "gprs", "plots"]
 __author__ = "Anish Koyamparambath <CyVi- University of Bordeaux>"
 __status__ = "testing"
@@ -81,6 +82,8 @@ Creating a log file for the init not to mix with the log of the main function.
 Logging is a sophisticated module that allows to record values or strings into 
 a defined format. The required format is altered with the function basicConfig
 as declared below.
+Do not modify the path for the logs folder unless you specifically need
+it elsewhere. Modify the alert level depending on requirements for debugging. 
 """
 Filename = _logfile+'//import({:%Y-%m-%d(%H-%M-%S)}).log'.format(datetime.now())
 try:
@@ -149,9 +152,17 @@ if LOGFAIL != True:
         #close db
         connect.commit()
         connect.close()
+        
+        
     else:
         _commodity, _resource, _reporter = None, None, None 
         
+
+_columns = ["Year", "Resource", "Country","Recycling Rate","Recycling Scenario", "Risk","GeoPolRisk Characterization Factor", "HHI", "Weighted Trade AVerage"]
+outputDF = pd.DataFrame(columns = _columns)
+
+
+
 
 
 
