@@ -228,7 +228,8 @@ def InputTrade(trade_path, sheetname):
         raise APIError
         return None
     
-def WTA_calculation(TradeData = None, ProductionData = None, PIData = None):
+def WTA_calculation(period, TradeData = None, ProductionData = None, PIData = None,
+                    scenario = 0, recyclingrate = 0.00):
     if TradeData == None or ProductionData == None or PIData == None:
         return None
     else:
@@ -240,6 +241,8 @@ def WTA_calculation(TradeData = None, ProductionData = None, PIData = None):
         code = TradeData[0]
         countries = TradeData[1]
         quantity = TradeData[2]
+        reducedmass = 0
+        totalreduce = 0
         #1.2 Section to calculate the numerator and trade total
         PIData.columns = PIData.columns.astype(str)
         PI_year = [str(i) for i in PIData.Year.to_list()]
@@ -265,25 +268,26 @@ def WTA_calculation(TradeData = None, ProductionData = None, PIData = None):
         the domestic recycling.
         """
         #Recyclability factor of GeoPolRisk
-        _maxscore = max(self.WGI_score)
-        _minscore = max(self.WGI_score)
+        _maxscore = max(PI_score)
+        _minscore = min(PI_score)
         try:
             if scenario == 0:
-                _reduce = [i for i, x in enumerate(self.WGI_score) if x == _maxscore]
+                _reduce = [i for i, x in enumerate(PI_score) if x == _maxscore]
             else:
-                _reduce = [i for i, x in enumerate(self.WGI_score) if x == _minscore]
+                _reduce = [i for i, x in enumerate(PI_score) if x == _minscore]
         except Exception as e:
-            self.logging.debug(e)
+            logging.debug(e)
             raise APIError
-        reducedmass = 0
+            return None
         try:
             for i in _reduce:
-                reducedmass = (self.quantity[i])*recyclingrate
-                self.quantity[i] = (self.quantity[i])-reducedmass
-                self.totalreduce += reducedmass
+                reducedmass = (quantity[i])*recyclingrate
+                quantity[i] = (quantity[i])-reducedmass
+                totalreduce += reducedmass
         except Exception as e:
-            self.logging.debug(e)
-            raise APIError 
+            logging.debug(e)
+            raise APIError
+            return None
         
         """
         After manipulation of the trade data it is multiplied with the WGI
@@ -291,23 +295,20 @@ def WTA_calculation(TradeData = None, ProductionData = None, PIData = None):
         """
         
         try:
-            zipped_list = zip(self.quantity, self.WGI_score)
-            self.wgiavg = [x * y for (x,y) in zipped_list]
+            zipped_list = zip(quantity, PI_score)
+            wgiavg = [x * y for (x,y) in zipped_list]
         except TypeError as e:
-            self.logging.debug(e)
-            self.logging.debug("The Comtrade API is broken")
+            logging.debug(e)
+            logging.debug("The Comtrade API is broken")
             raise APIError
         try:
-            self.numerator = sum(self.wgiavg)
-            self.tradetotal = sum(self.quantity)
+            numerator = sum(wgiavg)
+            tradetotal = sum(quantity)
         except Exception as e:
-            self.logging.debug(e)
+            logging.debug(e)
             raise APIError
-    else:
-        self.numerator = 0
-        self.tradetotal = 0
-        self.logging.warning("The dataframe is empty")
-        self.emptycounter += 1 
+        
+        return numerator, tradetotal
         
 """
 The first factor of the GeoPolRisk method involved calculating the herfindahl-hirschmann
