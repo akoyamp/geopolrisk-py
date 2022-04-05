@@ -132,7 +132,7 @@ if LOGFAIL != True:
         sqlstatement = "SELECT * FROM pricedata"
         cursor.execute(sqlstatement)
         row = cursor.fetchall()
-        _resource = pd.DataFrame(row, columns = ["id", "hs", "2000", "2001", 
+        _price = pd.DataFrame(row, columns = ["id", "hs", "2000", "2001", 
                                                  "2002", "2003", "2004",
                                                  "2005", "2006", "2007",
                                                  "2008", "2009", "2010",
@@ -155,7 +155,7 @@ if LOGFAIL != True:
         
         
     else:
-        _commodity, _resource, _reporter = None, None, None 
+        _commodity, _price, _reporter = None, None, None 
         
 
 _columns = ["Year", "Resource", "Country","Recycling Rate","Recycling Scenario", "Risk","GeoPolRisk Characterization Factor", "HHI", "Weighted Trade AVerage"]
@@ -172,15 +172,19 @@ an operation or close an operation. The users are free to modify this class.
 BREAK THE CODE IF EXCEPT AN APIERROR
 """ 
 class APIError(Exception): 
-    def __init__(self, ):
-        print("Error in the API call")
+    pass
 
 class PRODError(Exception):
-    def __init__(self,):
-        print("Error in the production file")
+    pass
         
-class FUNCError(Exception):
-    def __init__(self, e = None):
-        error = ["OutputFile", "SQLFile", "PLTError" ]
-        self.error = e if e in error else ": Refer log file"
-        print("Error in the functionality", self.error)
+# class FUNCError(Exception):
+#     def __init__( e = None):
+#         error = ["OutputFile", "SQLFile", "PLTError" ]
+#         self.error = e if e in error else ": Refer log file"
+#         print("Error in the functionality", self.error)
+        
+class IncompleteProcessFlow(Exception):
+    pass
+
+class InputError(Exception):
+    pass

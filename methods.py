@@ -17,20 +17,24 @@
 #Imports
 import pandas as pd, sqlite3, json
 from urllib.request import Request, urlopen
-from geopolrisk.__init__ import (
+from functools import wraps
+from __init__ import (
+    IncompleteProcessFlow,
+    InputError,
     APIError,
     _commodity,
     _reporter,
-    _resource,
     _outputfile,
     _libfile,
     outputDF,
     logging)
 
 #Define Paths
-recordspath = _libfile+'/datarecords.db'
-prod_path = _libfile+'/production.xlsx'
-wgi_path = _libfile+'/wgidataset.xlsx'
+
+variables = [_libfile+'/datarecords.db',
+             ]
+regionslist = {}
+
 
 """The program is equipped with a predefined database for production of a 
 raw materia. Change the path of the respective databases to customize the 
@@ -46,7 +50,7 @@ def SQL(sqlstatement, SQL = 'select' ):
     
     if SQL == 'select':
         try:
-            connect = sqlite3.connect(recordspath)
+            connect = sqlite3.connect(variables[0])
             cursor = connect.cursor()
             cursor.execute(sqlstatement)
             row = cursor.fetchall()
@@ -60,7 +64,7 @@ def SQL(sqlstatement, SQL = 'select' ):
             return None
     elif SQL == 'execute':
         try:
-            connect = sqlite3.connect(recordspath)
+            connect = sqlite3.connect(variables[0])
             cursor = connect.cursor()
             cursor.execute(sqlstatement)
             #logging.debug(sqlstatement)
@@ -71,14 +75,14 @@ def SQL(sqlstatement, SQL = 'select' ):
  
 #Method define library path
 def path(
-     prod_path = prod_path,
+     prod_path = _libfile+'/production.xlsx',
      trade_path = None,
-     wgi_path = wgi_path,
+     wgi_path = _libfile+'/wgidataset.xlsx',
      ):
     
     #Create table if not available. The database file should be present.
     try:
-        sqlstatement = """CREATE TABLE "recordData" (
+        sqlstatement = """CREATE TABLE IF NOT EXISTS "recordData" (
         	"id"	INTEGER,
         	"country"	TEXT,
         	"resource"	TEXT,
@@ -94,7 +98,7 @@ def path(
         	PRIMARY KEY("id")
         );""" 
         try:
-            connect = sqlite3.connect(recordspath)
+            connect = sqlite3.connect(variables[0])
             cursor = connect.cursor()
         except:
             logging.debug('Database not found')
@@ -103,10 +107,16 @@ def path(
         connect.close()
     except Exception as e:
         logging.debug(e)
+        return None
         
     #Pull WGI data
-    WGI = pd.read_excel(wgi_path, sheet_name = 'INVNOR')
+    try:
+        WGI = pd.read_excel(wgi_path, sheet_name = 'INVNOR')
+    except Exception as e:
+        logging.debug(e)
+        return None
     
+    variables.extend([prod_path, trade_path, wgi_path, WGI])
     
     #Confirmation of loading this function
     
@@ -123,17 +133,21 @@ modify the regions, ensure the countries and # section is modified accordingly.
     
 #Method 3
 def regions(**kwargs):
-    regionslist = {
-    'EU' : ['Austria', 'Belgium', 'Belgium-Luxembourg', 'Bulgaria',
+    if len(variables) < 5:
+        raise IncompleteProcessFlow("Path of the files must be defined before regions.")
+    regionslist['EU'] = ['Austria', 'Belgium', 'Belgium-Luxembourg', 'Bulgaria',
            'Croatia', 'Czechia', 'Czechoslovakia', 'Denmark', 
            'Estonia','Finland', 'France', 'Fmr Dem. Rep. of Germany',
            'Fmr Fed. Rep. of Germany', 'Germany', 'Greece', 'Hungary',
            'Ireland', 'Italy', 'Latvia', 'Lithuania', 'Luxembourg', 
            'Malta', 'Netherlands', 'Poland', 'Portugal', 'Romania', 
            'Slovakia', 'Slovenia', 'Spain', 'Sweden'],
-    }
+    
 
     for key, value in kwargs.items():
+        if key != str and value != list:
+            raise InputError("Inputs does not match the required format")
+            return None
         Print_Error = [x for x in value if str(x) not
                        in _reporter.Country.to_list() and str(x) not 
                        in _reporter["ISO"].astype(str).tolist()]
@@ -143,11 +157,32 @@ def regions(**kwargs):
                           " found in the ISO list {}. "
                           "Please conform with the ISO list or use"
                           " 3 digit ISO country codes.".format(Print_Error))
+            raise InputError("Countries in the list does not match ISO naming standards: "
+                             "Please refer to documentation.")
+            return None
         else:
             regionslist[key] = value
+    for i in _reporter.Country.to_list():
+        if i in regionslist.keys():
+            raise InputError("Country or region already exists cannot overwrite.")
+            return None
+        regionslist[i] = [i]
 
-    return regionslist
-        
+
+
+#Decorator for path and regions required
+def definitonrequired(func):
+    @wraps(func)
+    def verify(*args, **kwargs):
+        if len(variables) < 5 or len(regionslist) < 257:
+            raise IncompleteProcessFlow("The path and regions must be defined before execution :"
+                                )
+            
+        else: 
+            return func(*args, **kwargs)
+    return verify
+
+
    
 """
 The following method connects to the COMTRADE API using request from urlopen module.
@@ -156,6 +191,7 @@ modify the values of these optional arguments before calling the calculation fun
 
 """
 #Method 1
+@definitonrequired
 def COMTRADE_API(
     classification = "HS",
     period = "2010",
@@ -186,15 +222,18 @@ def COMTRADE_API(
         response = urlopen(request)
     except Exception as e:
         logging.debug(e)
-        raise APIError
+        raise APIError("Unable to access COMTRADE api. Refer to geopolrisk.logs")
         return None
+    
     try:
         elevations = response.read()
     except Exception as e:
         logging.debug(e)
-        raise APIError
+        raise APIError("Unable to read API data. Refer to geopolrisk.logs")
+    
     data = json.loads(elevations)
     data = pd.json_normalize(data['dataset'])
+    
     if data.shape[0] !=0:
         Worldindex = data.ptCode.to_list().index(0)
         data = data.drop(data.index[[Worldindex]])
@@ -206,15 +245,21 @@ def COMTRADE_API(
     else:
         TradeData = [None, None, None]
     
+    COMTRADE_API.called = True
     return TradeData
-         
-
-def InputTrade(trade_path, sheetname):
+     
+@definitonrequired
+def InputTrade( sheetname = None):
+    trade_path = variables[2]
     try:
-        data = pd.read_excel(trade_path, sheet_name="")
+        data = pd.read_excel(trade_path, sheet_name=sheetname)
+        data = data[list(data.keys())[0]]
         if data.shape[0] !=0:
-            Worldindex = data.ptCode.to_list().index(0)
-            data = data.drop(data.index[[Worldindex]])
+            try:
+                Worldindex = data.ptCode.to_list().index(0)
+                data = data.drop(data.index[[Worldindex]])
+            except Exception as e:
+                logging.debug(e)
             code = data.ptCode.to_list()
             countries = data.ptTitle.to_list()
             quantity = data.TradeQuantity.to_list()
@@ -222,15 +267,19 @@ def InputTrade(trade_path, sheetname):
             TradeData = [code, countries, quantity]
         else:
             TradeData = [None, None, None]
+        InputTrade.called = True
         return TradeData
+    
     except Exception as e:
         logging.debug(e)
         raise APIError
         return None
-    
-def WTA_calculation(period, TradeData = None, ProductionData = None, PIData = None,
+   
+@definitonrequired   
+def WTA_calculation(period, TradeData = None, PIData = None,
                     scenario = 0, recyclingrate = 0.00):
-    if TradeData == None or ProductionData == None or PIData == None:
+    PIData = variables[4]
+    if TradeData == None:
         return None
     else:
         """
@@ -238,14 +287,17 @@ def WTA_calculation(period, TradeData = None, ProductionData = None, PIData = No
         known as Weighted Trade Average (WTA). The trade information is weighted with the WGI values
         pulled from the csv file in the library. 
         """
-        code = TradeData[0]
-        countries = TradeData[1]
-        quantity = TradeData[2]
-        reducedmass = 0
-        totalreduce = 0
+        code, countries, quantity = TradeData[0], TradeData[1], TradeData[2]
+
+        reducedmass, totalreduce = 0, 0
+
         #1.2 Section to calculate the numerator and trade total
-        PIData.columns = PIData.columns.astype(str)
-        PI_year = [str(i) for i in PIData.Year.to_list()]
+        try:
+            PIData.columns = PIData.columns.astype(str)
+            PI_year = [str(i) for i in PIData.Year.to_list()]
+        except Exception as e:
+            logging.debug(e)
+            return None
         try:    
             index = PI_year.index(period)
             PI_score = []
@@ -307,7 +359,7 @@ def WTA_calculation(period, TradeData = None, ProductionData = None, PIData = No
         except Exception as e:
             logging.debug(e)
             raise APIError
-        
+        WTA_calculation.called = True
         return numerator, tradetotal
         
 """
@@ -319,34 +371,36 @@ the code has to be manipulated inorder to aggregate the trade data. The regions 
 defind in the 'regions' method in GeoPolRisk module. The production information is available in 
 excel file in library.
 """
-#Method 2
-def productionQTY(self, Element, EconomicUnit):
-    if EconomicUnit[0] == "EU28":
-        EconomicUnit = self.EU
+
+@definitonrequired
+def productionQTY(Resource, EconomicUnit):
+    EconomicUnit = regionslist[EconomicUnit]
+    
     try:
-        if Element in ['Cerium', 'Lanthanum']:
-            Element = 'Rare Earth'
-        x = pd.read_excel(self.prod_path, sheet_name = Element)
+        if Resource in ['Cerium', 'Lanthanum']:
+            Resource = 'Rare Earth'
+        x = pd.read_excel(variables[1], sheet_name = Resource)
         prod = pd.DataFrame(x)
         Col = prod.columns.tolist()
     except Exception as e:
-        self.logging.debug(e)
-        self.logging.warning("There was an error while acessing the file Metals_Raw.xlsx with an exception as ", exc_info = True)
+        logging.debug(e)
+        logging.warning("There was an error while acessing the file Metals_Raw.xlsx with an exception as ", exc_info = True)
         raise APIError
+        return None
 
     #P2. Fetching the production quantity from 'prod' dataframe.
-    self.Prod_Year = prod.Year.to_list()
-    temp = [0]*len(self.Prod_Year)
+    Prod_Year = prod.Year.to_list()
+    temp = [0]*len(Prod_Year)
     for i in EconomicUnit:
         if i in Col:
             Prod_Qty = prod[i].values.tolist()
             for k in range(len(Prod_Qty)):
                 if str(Prod_Qty[k]) == 'nan':
                     Prod_Qty[k] = 0
-            self.Prod_Qty = [sum(j) for j in zip(temp, Prod_Qty)]
-            temp = self.Prod_Qty
+            Prod_Qty = [sum(j) for j in zip(temp, Prod_Qty)]
+            temp = Prod_Qty
         else:
-            self.Prod_Qty = temp
+            Prod_Qty = temp
     #logging.debug("The following will be the list of data", "This is the country "+str(i), "Next should be the list ",str(self.Prod_Qty))
    
     #P3. Calculating the HHI.
@@ -355,22 +409,20 @@ def productionQTY(self, Element, EconomicUnit):
         temp = prod.iloc[:,i]*prod.iloc[:,i]
         Nom = Nom.add(temp, fill_value=0)
     DeNom = prod.sum(axis = 1)
-    HHI = (Nom /(DeNom*DeNom)).tolist() 
-    self.HHI = [round(i,3) for i in HHI]
-"""
-Main calculation class that will call the required methods and calculate the GeoPolRisk of a
-raw material to a country/region for a period. 
-For all user not trying to manipulate each factor of the GeoPolRisk method is recommended to call
-this method by modifying the optional arguments. This method can be used as a direct input to calculate.
-Proceed with caution while modyfing this method.
-"""
+    hhi = (Nom /(DeNom*DeNom)).tolist() 
+    HHI = [round(i,3) for i in hhi]
+    
+    
+    productionQTY.called = True
+    return [HHI, Prod_Qty, Prod_Year]
     
 """
 End of script logging and exporting database to specified format. End log 
 method requires extractdata method to be precalled to work. 
 """
-#Method 7
-def endlog(self, counter=0, totcounter=0, emptycounter=0, outputDFType='csv'):
+
+@definitonrequired
+def endlog( counter=0, totcounter=0, emptycounter=0, outputDFType='csv'):
     logging.debug("Number of successfull COMTRADE API attempts {}".format(counter))
     logging.debug("Number of total attempts {}".format(totcounter))
     logging.debug("Number of empty dataframes {}".format(emptycounter))
@@ -387,6 +439,8 @@ def endlog(self, counter=0, totcounter=0, emptycounter=0, outputDFType='csv'):
 Refer to python json documentation for more information on types of
 orientation required for the output.
 """
+
+@definitonrequired
 def generateCF(exportType='csv', orient=""):
     exportF = ['csv', 'excel', 'json']
     if exportType in exportF:
@@ -397,7 +451,7 @@ def generateCF(exportType='csv', orient=""):
                       "Using default format [csv]".format(exportType))
         CFType="csv"
     try:
-        conn = sqlite3.connect(recordspath, isolation_level=None,
+        conn = sqlite3.connect(variables[0], isolation_level=None,
                    detect_types=sqlite3.PARSE_COLNAMES)
         db_df = pd.read_sql_query("SELECT * FROM recorddata", conn)
         if CFType == "csv":
