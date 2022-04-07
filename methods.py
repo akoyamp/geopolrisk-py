@@ -132,7 +132,7 @@ modify the regions, ensure the countries and # section is modified accordingly.
 """
     
 #Method 3
-def regions(**kwargs):
+def regions(*args):
     if len(variables) < 5:
         raise IncompleteProcessFlow("Path of the files must be defined before regions.")
     regionslist['EU'] = ['Austria', 'Belgium', 'Belgium-Luxembourg', 'Bulgaria',
@@ -144,8 +144,8 @@ def regions(**kwargs):
            'Slovakia', 'Slovenia', 'Spain', 'Sweden'],
     
 
-    for key, value in kwargs.items():
-        if key != str and value != list:
+    for key, value in args[0].items():
+        if type(key) is not str and type(value) is not list:
             raise InputError("Inputs does not match the required format")
             return None
         Print_Error = [x for x in value if str(x) not
@@ -171,7 +171,7 @@ def regions(**kwargs):
 
 
 #Decorator for path and regions required
-def definitonrequired(func):
+def definitionrequired(func):
     @wraps(func)
     def verify(*args, **kwargs):
         if len(variables) < 5 or len(regionslist) < 257:
@@ -191,7 +191,7 @@ modify the values of these optional arguments before calling the calculation fun
 
 """
 #Method 1
-@definitonrequired
+@definitionrequired
 def COMTRADE_API(
     classification = "HS",
     period = "2010",
@@ -204,7 +204,7 @@ def COMTRADE_API(
     ):
     
     
-    _request = "https://comtrade.un.org/api/get?max=50000&type=C&freq=A&px="+classification+"&ps="+period+"&r="+reporter+"&p="+partner+"&cc="+HSCode+"&rg="+TradeFlow+"&fmt=json"
+    _request = "https://comtrade.un.org/api/get?max=50000&type=C&freq=A&px="+classification+"&ps="+str(period)+"&r="+str(reporter)+"&p="+str(partner)+"&cc="+str(HSCode)+"&rg="+TradeFlow+"&fmt=json"
     
     """
     Section 1.1 connects to the COMTRADE API using the requests method of urlopen library.
@@ -246,7 +246,7 @@ def COMTRADE_API(
     COMTRADE_API.called = True
     return TradeData
      
-@definitonrequired
+@definitionrequired
 def InputTrade( sheetname = None):
     trade_path = variables[2]
     if trade_path == None:
@@ -276,7 +276,7 @@ def InputTrade( sheetname = None):
         raise APIError
         return None
    
-@definitonrequired   
+@definitionrequired   
 def WTA_calculation(period, TradeData = None, PIData = None,
                     scenario = 0, recyclingrate = 0.00):
     PIData = variables[4]
@@ -373,7 +373,7 @@ defind in the 'regions' method in GeoPolRisk module. The production information 
 excel file in library.
 """
 
-@definitonrequired
+@definitionrequired
 def productionQTY(Resource, EconomicUnit):
     EconomicUnit = regionslist[EconomicUnit]
     
@@ -413,12 +413,11 @@ def productionQTY(Resource, EconomicUnit):
     hhi = (Nom /(DeNom*DeNom)).tolist() 
     HHI = [round(i,3) for i in hhi]
     
-    
     productionQTY.called = True
     return [HHI, Prod_Qty, Prod_Year]
 
 def GeoPolRisk(ProductionData, WTAData, Year, AVGPrice):
-    Index = ProductionData[2].index(Year)
+    Index = ProductionData[2].index(int(Year))
     HHI = ProductionData[0][Index]
     PQT = ProductionData[0][0]
     WTA = (WTAData[0]/ (WTAData[1]+PQT))
@@ -433,7 +432,7 @@ End of script logging and exporting database to specified format. End log
 method requires extractdata method to be precalled to work. 
 """
 
-@definitonrequired
+@definitionrequired
 def endlog( counter=0, totcounter=0, emptycounter=0, outputDFType='csv'):
     logging.debug("Number of successfull COMTRADE API attempts {}".format(counter))
     logging.debug("Number of total attempts {}".format(totcounter))
@@ -452,7 +451,7 @@ Refer to python json documentation for more information on types of
 orientation required for the output.
 """
 
-@definitonrequired
+@definitionrequired
 def generateCF(exportType='csv', orient=""):
     exportF = ['csv', 'excel', 'json']
     if exportType in exportF:

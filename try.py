@@ -6,5 +6,10 @@ Created on Tue Apr  5 17:07:11 2022
 """
 
 
-
+from methods import *
 from operations import *
+
+path()
+regions({"TRIO" : ["France", "Germany", "Italy"]})
+
+regional_totcal([2601,], ["TRIO",], [2015,2016], 0, 0)
