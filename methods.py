@@ -204,9 +204,7 @@ def COMTRADE_API(
     ):
     
     
-    _request = "https://comtrade.un.org/api/get?max=50000&type=C&freq="
-    "A&px="+classification+"&ps="+period+"&r="+reporter+"&p="
-    ""+partner+"&cc="+HSCode+"&rg="+TradeFlow+"&fmt=json"
+    _request = "https://comtrade.un.org/api/get?max=50000&type=C&freq=A&px="+classification+"&ps="+period+"&r="+reporter+"&p="+partner+"&cc="+HSCode+"&rg="+TradeFlow+"&fmt=json"
     
     """
     Section 1.1 connects to the COMTRADE API using the requests method of urlopen library.
@@ -216,7 +214,7 @@ def COMTRADE_API(
     ----> Remember Method 7 requires Method 6 to be called as a prerequisite.
     """
     #1.1 Section to connect to the COMTRADE API
-    #logging.debug(_request) Uncomment to debug the error
+    logging.debug(_request) #Uncomment to debug the error
     try:
         request = Request(_request)
         response = urlopen(request)
@@ -251,6 +249,9 @@ def COMTRADE_API(
 @definitonrequired
 def InputTrade( sheetname = None):
     trade_path = variables[2]
+    if trade_path == None:
+        raise InputError("Did not define path for individual trade.")
+        return None
     try:
         data = pd.read_excel(trade_path, sheet_name=sheetname)
         data = data[list(data.keys())[0]]
@@ -415,6 +416,17 @@ def productionQTY(Resource, EconomicUnit):
     
     productionQTY.called = True
     return [HHI, Prod_Qty, Prod_Year]
+
+def GeoPolRisk(ProductionData, WTAData, Year, AVGPrice):
+    Index = ProductionData[2].index(Year)
+    HHI = ProductionData[0][Index]
+    PQT = ProductionData[0][0]
+    WTA = (WTAData[0]/ (WTAData[1]+PQT))
+    
+    GeoPolRisk = HHI * WTA
+    GeoPolCF = GeoPolRisk * AVGPrice
+    
+    return [HHI, WTA, GeoPolRisk, GeoPolCF]
     
 """
 End of script logging and exporting database to specified format. End log 
