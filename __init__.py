@@ -18,7 +18,7 @@
 import sqlite3, pandas as pd, getpass, logging, os, shutil
 from datetime import datetime
 from pathlib import Path
-
+from warnings import InputError
 
 logging = logging
 __all__ = ["main", "gprs", "plots"]
@@ -117,74 +117,54 @@ if LOGFAIL != True:
     except:
         logging.debug('Import database not found')
         DBIMPORTFAIL = True
-    
-    
-    #Call all the data from import db
-    if DBIMPORTFAIL != True:
-        logging.debug("Import database accessed")
-        #Get commodity data
-        sqlstatement = "SELECT * FROM commodity_hs"
-        cursor.execute(sqlstatement)
-        row = cursor.fetchall()
-        _commodity = pd.DataFrame(row, columns = ["HSCODE", "Parent", "Text"])
-        
-        #Get resource data
-        sqlstatement = "SELECT * FROM pricedata"
-        cursor.execute(sqlstatement)
-        row = cursor.fetchall()
-        _price = pd.DataFrame(row, columns = ["id", "hs", "2000", "2001", 
-                                                 "2002", "2003", "2004",
-                                                 "2005", "2006", "2007",
-                                                 "2008", "2009", "2010",
-                                                 "2011", "2012", "2013",
-                                                 "2014", "2015", "2016",
-                                                 "2017", "2018", "2019",
-                                                 "2020", "2021", "2022",
-                                                 "2023", "2024"])
-        
-        
-        #Get resource data
-        sqlstatement = "SELECT * FROM reporter_iso"
-        cursor.execute(sqlstatement)
-        row = cursor.fetchall()
-        _reporter = pd.DataFrame(row, columns = ["ISO", "Country"])
-        
-        #close db
-        connect.commit()
-        connect.close()
-        
-        
-    else:
-        _commodity, _price, _reporter = None, None, None 
+
+_commodity = pd.DataFrame(row, columns = ["HSCODE", "Parent", "Text"])
+
+_price = pd.read_csv(row, columns = ["id", "hs", "2000", "2001", 
+                                         "2002", "2003", "2004",
+                                         "2005", "2006", "2007",
+                                         "2008", "2009", "2010",
+                                         "2011", "2012", "2013",
+                                         "2014", "2015", "2016",
+                                         "2017", "2018", "2019",
+                                         "2020", "2021", "2022",
+                                         "2023", "2024"])
+
+_reporter = pd.DataFrame(row, columns = ["ISO", "Country"])
+
+
+_commodity, _price, _reporter = None, None, None 
         
 
 _columns = ["Year", "Resource", "Country","Recycling Rate","Recycling Scenario", "Risk","GeoPolRisk Characterization Factor", "HHI", "Weighted Trade AVerage"]
 outputDF = pd.DataFrame(columns = _columns)
 
 
-
-
-
-
 """
-The class is an error class that shall be raised in order to break
-an operation or close an operation. The users are free to modify this class.
-BREAK THE CODE IF EXCEPT AN APIERROR
-""" 
-class APIError(Exception): 
-    pass
+SQL select method. This program is used
+only to pull records (ONLY SELECT STATEMENT)
+"""
+#Defining select/execute functions
+def SQL(database, sqlstatement, SQL = 'select' ):
+    
+    try:
+        connect = sqlite3.connect(database)
+        cursor = connect.cursor()  
+        if SQL == 'select':
+            cursor.execute(sqlstatement)
+            output = cursor.fetchall()
+        elif SQL == 'execute': 
+            cursor.execute(sqlstatement)
+            output = None
+        else:
+            print("Unknown SQL operation requested")
+            logging.debug(sqlstatement)
+            raise InputError
+    except:
+        connect.commit()
+        connect.close()
+        logging.debug('Datarecords database not found')
+        return output
 
-class PRODError(Exception):
-    pass
-        
-# class FUNCError(Exception):
-#     def __init__( e = None):
-#         error = ["OutputFile", "SQLFile", "PLTError" ]
-#         self.error = e if e in error else ": Refer log file"
-#         print("Error in the functionality", self.error)
-        
-class IncompleteProcessFlow(Exception):
-    pass
 
-class InputError(Exception):
-    pass
+

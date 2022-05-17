@@ -19,106 +19,49 @@ import pandas as pd, sqlite3, json
 from urllib.request import Request, urlopen
 from functools import wraps
 from __init__ import (
-    IncompleteProcessFlow,
-    InputError,
-    APIError,
-    _commodity,
+    SQL,
     _reporter,
     _outputfile,
     _libfile,
     outputDF,
     logging)
-
+from warnings import (
+    IncompleteProcessFlow,
+    InputError,
+    APIError)
 #Define Paths
 
 variables = [_libfile+'/datarecords.db',
+             _libfile+'/production.xlsx',
+             _libfile+'/wgidataset.xlsx'
              ]
 regionslist = {}
-
-
-"""The program is equipped with a predefined database for production of a 
-raw materia. Change the path of the respective databases to customize the 
-calculation.
-""" 
-
-"""
-SQL select method. This program is used
-only to pull records (ONLY SELECT STATEMENT)
-"""
-#Defining select/execute functions
-def SQL(sqlstatement, SQL = 'select' ):
+try:
+    pd.read_excel(variables[1], sheet_name = 'INVNOR')
+except Exception as e:
+    logging.debug(e)
+#Create table if not available. The database file should be present.
+try:
+    sqlstatement = """CREATE TABLE IF NOT EXISTS "recordData" (
+    	"id"	INTEGER,
+    	"country"	TEXT,
+    	"resource"	TEXT,
+    	"year"	INTEGER,
+    	"recycling_rate"	REAL,
+    	"scenario"	REAL,
+    	"geopolrisk"	REAL,
+    	"hhi"	REAL,
+    	"wta"	REAL,
+    	"geopol_cf"	REAL,
+    	"resource_hscode"	REAL,
+    	"iso"	TEXT,
+    	PRIMARY KEY("id")
+    );""" 
+    SQL(variables[0],sqlstatement,SQL='execute')
+except Exception as e:
+    logging.debug(e)
     
-    if SQL == 'select':
-        try:
-            connect = sqlite3.connect(variables[0])
-            cursor = connect.cursor()
-            cursor.execute(sqlstatement)
-            row = cursor.fetchall()
-            connect.commit()
-            connect.close()
-            return row
-        except:
-            logging.debug('Datarecords database not found')
-            connect.commit()
-            connect.close()
-            return None
-    elif SQL == 'execute':
-        try:
-            connect = sqlite3.connect(variables[0])
-            cursor = connect.cursor()
-            cursor.execute(sqlstatement)
-            #logging.debug(sqlstatement)
-            return True
-        except:
-            logging.debug('Datarecords database not found')
-            return None
- 
-#Method define library path
-def path(
-     prod_path = _libfile+'/production.xlsx',
-     trade_path = None,
-     wgi_path = _libfile+'/wgidataset.xlsx',
-     ):
     
-    #Create table if not available. The database file should be present.
-    try:
-        sqlstatement = """CREATE TABLE IF NOT EXISTS "recordData" (
-        	"id"	INTEGER,
-        	"country"	TEXT,
-        	"resource"	TEXT,
-        	"year"	INTEGER,
-        	"recycling_rate"	REAL,
-        	"scenario"	REAL,
-        	"geopolrisk"	REAL,
-        	"hhi"	REAL,
-        	"wta"	REAL,
-        	"geopol_cf"	REAL,
-        	"resource_hscode"	REAL,
-        	"iso"	TEXT,
-        	PRIMARY KEY("id")
-        );""" 
-        try:
-            connect = sqlite3.connect(variables[0])
-            cursor = connect.cursor()
-        except:
-            logging.debug('Database not found')
-        cursor.execute(sqlstatement)
-        connect.commit()
-        connect.close()
-    except Exception as e:
-        logging.debug(e)
-        return None
-        
-    #Pull WGI data
-    try:
-        WGI = pd.read_excel(wgi_path, sheet_name = 'INVNOR')
-    except Exception as e:
-        logging.debug(e)
-        return None
-    
-    variables.extend([prod_path, trade_path, wgi_path, WGI])
-    
-    #Confirmation of loading this function
     
 
 """User can modify this section along with another section in the calculation

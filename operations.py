@@ -13,7 +13,7 @@ from __init__ import (
     outputDF,
     logging)
 
-from methods import (
+from core import (
     SQL,
     path,
     regions,
@@ -92,7 +92,7 @@ def regional_totcal(resourcelist, countrylist, yearlist, recyclingrate, scenario
         for i in newregion:
             newregionlist.append(countrylist[i])
             del countrylist[i]
-        if len(countrylist) is not 0:
+        if len(countrylist) != 0:
             for i in resourcelist:
                 _ignore, countrylist = convertCodes([], countrylist, 1) #Comment if country list are in iso codes
                 for j in countrylist:
