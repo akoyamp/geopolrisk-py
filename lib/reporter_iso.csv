@@ -1,257 +1,257 @@
-ISO,Country
-4,Afghanistan
-8,Albania
-12,Algeria
-20,Andorra
-24,Angola
-660,Anguilla
-28,Antigua and Barbuda
-32,Argentina
-51,Armenia
-533,Aruba
-36,Australia
-40,Austria
-31,Azerbaijan
-44,Bahamas
-48,Bahrain
-50,Bangladesh
-52,Barbados
-112,Belarus
-56,Belgium
-58,Belgium-Luxembourg
-84,Belize
-204,Benin
-60,Bermuda
-64,Bhutan
-68,Bolivia (Plurinational State of)
-535,Bonaire
-70,Bosnia Herzegovina
-72,Botswana
-92,Br. Virgin Isds
-76,Brazil
-96,Brunei Darussalam
-100,Bulgaria
-854,Burkina Faso
-108,Burundi
-132,Cabo Verde
-116,Cambodia
-120,Cameroon
-124,Canada
-136,Cayman Isds
-140,Central African Rep.
-148,Chad
-152,Chile
-156,China
-344,"China, Hong Kong SAR"
-446,"China, Macao SAR"
-170,Colombia
-174,Comoros
-178,Congo
-184,Cook Isds
-188,Costa Rica
-384,Côte d'Ivoire
-191,Croatia
-192,Cuba
-531,Curaçao
-196,Cyprus
-203,Czechia
-200,Czechoslovakia
-408,Dem. People's Rep. of Korea
-180,Dem. Rep. of the Congo
-208,Denmark
-262,Djibouti
-212,Dominica
-214,Dominican Rep.
-588,East and West Pakistan
-218,Ecuador
-818,Egypt
-222,El Salvador
-226,Equatorial Guinea
-232,Eritrea
-233,Estonia
-231,Ethiopia
-97,European Union
-234,Faeroe Isds
-238,Falkland Isds (Malvinas)
-242,Fiji
-246,Finland
-886,Fmr Arab Rep. of Yemen
-278,Fmr Dem. Rep. of Germany
-866,Fmr Dem. Rep. of Vietnam
-720,Fmr Dem. Yemen
-230,Fmr Ethiopia
-280,Fmr Fed. Rep. of Germany
-582,Fmr Pacific Isds
-590,"Fmr Panama, excl.Canal Zone"
-592,Fmr Panama-Canal-Zone
-868,Fmr Rep. of Vietnam
-717,Fmr Rhodesia Nyas
-736,Fmr Sudan
-835,Fmr Tanganyika
-810,Fmr USSR
-890,Fmr Yugoslavia
-836,Fmr Zanzibar and Pemba Isd
-251,France
-254,French Guiana
-258,French Polynesia
-583,FS Micronesia
-266,Gabon
-270,Gambia
-268,Georgia
-276,Germany
-288,Ghana
-292,Gibraltar
-300,Greece
-304,Greenland
-308,Grenada
-312,Guadeloupe
-320,Guatemala
-324,Guinea
-624,Guinea-Bissau
-328,Guyana
-332,Haiti
-336,Holy See (Vatican City State)
-340,Honduras
-348,Hungary
-352,Iceland
-699,India
-356,"India, excl. Sikkim"
-360,Indonesia
-364,Iran
-368,Iraq
-372,Ireland
-376,Israel
-381,Italy
-388,Jamaica
-392,Japan
-400,Jordan
-398,Kazakhstan
-404,Kenya
-296,Kiribati
-414,Kuwait
-417,Kyrgyzstan
-418,Lao People's Dem. Rep.
-428,Latvia
-422,Lebanon
-426,Lesotho
-430,Liberia
-434,Libya
-440,Lithuania
-442,Luxembourg
-450,Madagascar
-454,Malawi
-458,Malaysia
-462,Maldives
-466,Mali
-470,Malta
-584,Marshall Isds
-474,Martinique
-478,Mauritania
-480,Mauritius
-175,Mayotte
-484,Mexico
-496,Mongolia
-499,Montenegro
-500,Montserrat
-504,Morocco
-508,Mozambique
-104,Myanmar
-580,N. Mariana Isds
-516,Namibia
-524,Nepal
-530,Neth. Antilles
-532,Neth. Antilles and Aruba
-528,Netherlands
-540,New Caledonia
-554,New Zealand
-558,Nicaragua
-562,Niger
-566,Nigeria
-579,Norway
-512,Oman
-490,"Other Asia, nes"
-586,Pakistan
-585,Palau
-591,Panama
-598,Papua New Guinea
-600,Paraguay
-459,Peninsula Malaysia
-604,Peru
-608,Philippines
-616,Poland
-620,Portugal
-634,Qatar
-410,Rep. of Korea
-498,Rep. of Moldova
-638,Réunion
-642,Romania
-643,Russian Federation
-646,Rwanda
-647,Ryukyu Isd
-461,Sabah
-652,Saint Barthelemy
-654,Saint Helena
-659,Saint Kitts and Nevis
-658,"Saint Kitts, Nevis and Anguilla"
-662,Saint Lucia
-534,Saint Maarten
-666,Saint Pierre and Miquelon
-670,Saint Vincent and the Grenadines
-882,Samoa
-674,San Marino
-678,Sao Tome and Principe
-457,Sarawak
-682,Saudi Arabia
-686,Senegal
-688,Serbia
-891,Serbia and Montenegro
-690,Seychelles
-694,Sierra Leone
-702,Singapore
-703,Slovakia
-705,Slovenia
-711,So. African Customs Union
-90,Solomon Isds
-706,Somalia
-710,South Africa
-728,South Sudan
-724,Spain
-144,Sri Lanka
-275,State of Palestine
-729,Sudan
-740,Suriname
-748,Eswatini
-752,Sweden
-757,Switzerland
-760,Syria
-762,Tajikistan
-807,North Macedonia
-764,Thailand
-626,Timor-Leste
-768,Togo
-772,Tokelau
-776,Tonga
-780,Trinidad and Tobago
-788,Tunisia
-792,Turkey
-795,Turkmenistan
-796,Turks and Caicos Isds
-798,Tuvalu
-800,Uganda
-804,Ukraine
-784,United Arab Emirates
-826,United Kingdom
-834,United Rep. of Tanzania
-858,Uruguay
-850,US Virgin Isds
-842,USA
-841,USA (before 1981)
-860,Uzbekistan
-548,Vanuatu
-862,Venezuela
-704,Viet Nam
-876,Wallis and Futuna Isds
-887,Yemen
-894,Zambia
-716,Zimbabwe
-975,ASEAN
+Index,ISO,Country
+1,4,Afghanistan
+2,8,Albania
+3,12,Algeria
+4,20,Andorra
+5,24,Angola
+6,660,Anguilla
+7,28,Antigua and Barbuda
+8,32,Argentina
+9,51,Armenia
+10,533,Aruba
+11,36,Australia
+12,40,Austria
+13,31,Azerbaijan
+14,44,Bahamas
+15,48,Bahrain
+16,50,Bangladesh
+17,52,Barbados
+18,112,Belarus
+19,56,Belgium
+20,58,Belgium-Luxembourg
+21,84,Belize
+22,204,Benin
+23,60,Bermuda
+24,64,Bhutan
+25,68,Bolivia (Plurinational State of)
+26,535,Bonaire
+27,70,Bosnia Herzegovina
+28,72,Botswana
+29,92,Br. Virgin Isds
+30,76,Brazil
+31,96,Brunei Darussalam
+32,100,Bulgaria
+33,854,Burkina Faso
+34,108,Burundi
+35,132,Cabo Verde
+36,116,Cambodia
+37,120,Cameroon
+38,124,Canada
+39,136,Cayman Isds
+40,140,Central African Rep.
+41,148,Chad
+42,152,Chile
+43,156,China
+44,344,"China, Hong Kong SAR"
+45,446,"China, Macao SAR"
+46,170,Colombia
+47,174,Comoros
+48,178,Congo
+49,184,Cook Isds
+50,188,Costa Rica
+51,384,C��te d'Iv
+52,191,Croatia
+53,192,Cuba
+54,531,Cura��
+55,196,Cyprus
+56,203,Czechia
+57,200,Czechoslovakia
+58,408,Dem. People's Rep. of Korea
+59,180,Dem. Rep. of the Congo
+60,208,Denmark
+61,262,Djibouti
+62,212,Dominica
+63,214,Dominican Rep.
+64,588,East and West Pakistan
+65,218,Ecuador
+66,818,Egypt
+67,222,El Salvador
+68,226,Equatorial Guinea
+69,232,Eritrea
+70,233,Estonia
+71,231,Ethiopia
+72,97,European Union
+73,234,Faeroe Isds
+74,238,Falkland Isds (Malvinas)
+75,242,Fiji
+76,246,Finland
+77,886,Fmr Arab Rep. of Yemen
+78,278,Fmr Dem. Rep. of Germany
+79,866,Fmr Dem. Rep. of Vietnam
+80,720,Fmr Dem. Yemen
+81,230,Fmr Ethiopia
+82,280,Fmr Fed. Rep. of Germany
+83,582,Fmr Pacific Isds
+84,590,"Fmr Panama, excl.Canal Zone"
+85,592,Fmr Panama-Canal-Zone
+86,868,Fmr Rep. of Vietnam
+87,717,Fmr Rhodesia Nyas
+88,736,Fmr Sudan
+89,835,Fmr Tanganyika
+90,810,Fmr USSR
+91,890,Fmr Yugoslavia
+92,836,Fmr Zanzibar and Pemba Isd
+93,251,France
+94,254,French Guiana
+95,258,French Polynesia
+96,583,FS Micronesia
+97,266,Gabon
+98,270,Gambia
+99,268,Georgia
+100,276,Germany
+101,288,Ghana
+102,292,Gibraltar
+103,300,Greece
+104,304,Greenland
+105,308,Grenada
+106,312,Guadeloupe
+107,320,Guatemala
+108,324,Guinea
+109,624,Guinea-Bissau
+110,328,Guyana
+111,332,Haiti
+112,336,Holy See (Vatican City State)
+113,340,Honduras
+114,348,Hungary
+115,352,Iceland
+116,699,India
+117,356,"India, excl. Sikkim"
+118,360,Indonesia
+119,364,Iran
+120,368,Iraq
+121,372,Ireland
+122,376,Israel
+123,381,Italy
+124,388,Jamaica
+125,392,Japan
+126,400,Jordan
+127,398,Kazakhstan
+128,404,Kenya
+129,296,Kiribati
+130,414,Kuwait
+131,417,Kyrgyzstan
+132,418,Lao People's Dem. Rep.
+133,428,Latvia
+134,422,Lebanon
+135,426,Lesotho
+136,430,Liberia
+137,434,Libya
+138,440,Lithuania
+139,442,Luxembourg
+140,450,Madagascar
+141,454,Malawi
+142,458,Malaysia
+143,462,Maldives
+144,466,Mali
+145,470,Malta
+146,584,Marshall Isds
+147,474,Martinique
+148,478,Mauritania
+149,480,Mauritius
+150,175,Mayotte
+151,484,Mexico
+152,496,Mongolia
+153,499,Montenegro
+154,500,Montserrat
+155,504,Morocco
+156,508,Mozambique
+157,104,Myanmar
+158,580,N. Mariana Isds
+159,516,Namibia
+160,524,Nepal
+161,530,Neth. Antilles
+162,532,Neth. Antilles and Aruba
+163,528,Netherlands
+164,540,New Caledonia
+165,554,New Zealand
+166,558,Nicaragua
+167,562,Niger
+168,566,Nigeria
+169,579,Norway
+170,512,Oman
+171,490,"Other Asia, nes"
+172,586,Pakistan
+173,585,Palau
+174,591,Panama
+175,598,Papua New Guinea
+176,600,Paraguay
+177,459,Peninsula Malaysia
+178,604,Peru
+179,608,Philippines
+180,616,Poland
+181,620,Portugal
+182,634,Qatar
+183,410,Rep. of Korea
+184,498,Rep. of Moldova
+185,638,R��u
+186,642,Romania
+187,643,Russian Federation
+188,646,Rwanda
+189,647,Ryukyu Isd
+190,461,Sabah
+191,652,Saint Barthelemy
+192,654,Saint Helena
+193,659,Saint Kitts and Nevis
+194,658,"Saint Kitts, Nevis and Anguilla"
+195,662,Saint Lucia
+196,534,Saint Maarten
+197,666,Saint Pierre and Miquelon
+198,670,Saint Vincent and the Grenadines
+199,882,Samoa
+200,674,San Marino
+201,678,Sao Tome and Principe
+202,457,Sarawak
+203,682,Saudi Arabia
+204,686,Senegal
+205,688,Serbia
+206,891,Serbia and Montenegro
+207,690,Seychelles
+208,694,Sierra Leone
+209,702,Singapore
+210,703,Slovakia
+211,705,Slovenia
+212,711,So. African Customs Union
+213,90,Solomon Isds
+214,706,Somalia
+215,710,South Africa
+216,728,South Sudan
+217,724,Spain
+218,144,Sri Lanka
+219,275,State of Palestine
+220,729,Sudan
+221,740,Suriname
+222,748,Eswatini
+223,752,Sweden
+224,757,Switzerland
+225,760,Syria
+226,762,Tajikistan
+227,807,North Macedonia
+228,764,Thailand
+229,626,Timor-Leste
+230,768,Togo
+231,772,Tokelau
+232,776,Tonga
+233,780,Trinidad and Tobago
+234,788,Tunisia
+235,792,Turkey
+236,795,Turkmenistan
+237,796,Turks and Caicos Isds
+238,798,Tuvalu
+239,800,Uganda
+240,804,Ukraine
+241,784,United Arab Emirates
+242,826,United Kingdom
+243,834,United Rep. of Tanzania
+244,858,Uruguay
+245,850,US Virgin Isds
+246,842,USA
+247,841,USA (before 1981)
+248,860,Uzbekistan
+249,548,Vanuatu
+250,862,Venezuela
+251,704,Viet Nam
+252,876,Wallis and Futuna Isds
+253,887,Yemen
+254,894,Zambia
+255,716,Zimbabwe
+256,975,ASEAN

@@ -15,19 +15,19 @@
 # OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 
-import sqlite3, pandas as pd, getpass, logging, os, shutil
+import sqlite3, pandas as pd, getpass, logging, os, shutil, json
 from datetime import datetime
 from pathlib import Path
-from warnings import InputError
+from warningsgprs import InputError
 
 logging = logging
-__all__ = ["main", "gprs", "plots"]
+__all__ = ["core", "operations", "gcalc", "plots"]
 __author__ = "Anish Koyamparambath <CyVi- University of Bordeaux>"
-__status__ = "testing"
-__version__ = "0.95"
+__status__ = "remodel"
+__version__ = "1.5"
 __data__ = "30 March 2022"
 
-hard_dependencies = ("pandas", "logging", "urllib")
+hard_dependencies = ("pandas", "logging", "urllib", "functools")
 missing_dependencies = []
 
 for dependency in hard_dependencies:
@@ -44,8 +44,12 @@ del hard_dependencies, dependency, missing_dependencies
 
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
-FILES = {"/inputs.db":dir_path+"/lib/inputs.db","/Production.xlsx":dir_path+"/lib/Production.xlsx",
-         "/datarecords.db":dir_path+"/lib/datarecords.db","/wgidataset.xlsx":dir_path+"/lib/wgidataset.xlsx"}
+
+
+
+
+FILES = {"commodity":dir_path+"/lib/commodityHS.json","production":dir_path+"/lib/Production.xlsx",
+          "reporter":dir_path+"/lib/reporterISO.json","wgi":dir_path+"/lib/wgi.json", "yearly":dir_path+"/lib/yearlyAVGprice.json"}
 
 
 #Test fail variables
@@ -65,16 +69,16 @@ _outputfile = os.path.join(Path.home(), 'Documents/geopolrisk/output')
 if not os.path.exists(_outputfile):
     os.makedirs(_outputfile)
 
-_libfile = os.path.join(Path.home(), 'Documents/geopolrisk/lib')    
-if not os.path.exists(_libfile):
-    os.makedirs(_libfile)
+# _libfile = os.path.join(Path.home(), 'Documents/geopolrisk/lib')    
+# if not os.path.exists(_libfile):
+#     os.makedirs(_libfile)
 
-#Copy library files
-try:    
-    for i in FILES.keys():
-        shutil.copyfile(FILES[i],_libfile+i)
-except:
-    print("CRITICAL ERROR: Copy failed!")
+# #Copy library files
+# try:    
+#     for i in FILES.keys():
+#         shutil.copyfile(FILES[i],_libfile+i)
+# except:
+#     print("CRITICAL ERROR: Copy failed!")
 
 #Create a log file for init function
 """
@@ -97,6 +101,7 @@ except:
     #it is imperative that the log file work before running the main code.
     LOGFAIL = True
     print("Cannot create log file!")
+    raise Exception
 
 
 
@@ -110,17 +115,10 @@ which is imported as three dataframes
 """
 #Shall not execute if cannot create log files
 if LOGFAIL != True:
-    logging.debug('Username: {}'.format(getpass.getuser()))
-    try:
-        connect = sqlite3.connect(_libfile+'/inputs.db')
-        cursor = connect.cursor()
-    except:
-        logging.debug('Import database not found')
-        DBIMPORTFAIL = True
-
-_commodity = pd.DataFrame(row, columns = ["HSCODE", "Parent", "Text"])
-
-_price = pd.read_csv(row, columns = ["id", "hs", "2000", "2001", 
+    files = ["commodity", "reporter", "yearly", "wgi"]
+    dataframes = {"commodity":[], "reporter":[], "yearly":[], "wgi":[]}
+    columns = {"commodity":["HSCODE", "Parent", "Text"], 
+               "yearly":["2000", "2001", 
                                          "2002", "2003", "2004",
                                          "2005", "2006", "2007",
                                          "2008", "2009", "2010",
@@ -128,13 +126,28 @@ _price = pd.read_csv(row, columns = ["id", "hs", "2000", "2001",
                                          "2014", "2015", "2016",
                                          "2017", "2018", "2019",
                                          "2020", "2021", "2022",
-                                         "2023", "2024"])
-
-_reporter = pd.DataFrame(row, columns = ["ISO", "Country"])
-
-
-_commodity, _price, _reporter = None, None, None 
+                                         "2023", "2024", "id", "hs"],
+               "reporter":["ISO", "Country"],
+               }
+    try:    
+        for file in files:
+            with open(FILES[file]) as openfile:
+                data = json.load(openfile)
+            temp = pd.DataFrame.from_dict(data, orient="index")
+            if file != "wgi":   
+                temp.columns = columns[file]
+            dataframes[file] = temp
+        _commodity = dataframes["commodity"]
+        _price = dataframes["yearly"]
+        _reporter = dataframes["reporter"]
+        _wgi = dataframes["wgi"]
+    except Exception as e:
+        print("Failed to load library files: "+file,e)
+        logging.debug(e)
+        raise Exception(e)
+        _commodity, _price, _reporter, _wgi = None, None, None, None 
         
+
 
 _columns = ["Year", "Resource", "Country","Recycling Rate","Recycling Scenario", "Risk","GeoPolRisk Characterization Factor", "HHI", "Weighted Trade AVerage"]
 outputDF = pd.DataFrame(columns = _columns)
@@ -145,10 +158,10 @@ SQL select method. This program is used
 only to pull records (ONLY SELECT STATEMENT)
 """
 #Defining select/execute functions
-def SQL(database, sqlstatement, SQL = 'select' ):
+def SQL(sqlstatement, SQL = 'select' ):
     
     try:
-        connect = sqlite3.connect(database)
+        connect = sqlite3.connect(_outputfile+"/datarecords.db")
         cursor = connect.cursor()  
         if SQL == 'select':
             cursor.execute(sqlstatement)
@@ -166,5 +179,24 @@ def SQL(database, sqlstatement, SQL = 'select' ):
         logging.debug('Datarecords database not found')
         return output
 
+regionslist = {}
 
-
+try:
+    sqlstatement = """CREATE TABLE IF NOT EXISTS "recordData" (
+    	"id"	INTEGER,
+    	"country"	TEXT,
+    	"resource"	TEXT,
+    	"year"	INTEGER,
+    	"recycling_rate"	REAL,
+    	"scenario"	REAL,
+    	"geopolrisk"	REAL,
+    	"hhi"	REAL,
+    	"wta"	REAL,
+    	"geopol_cf"	REAL,
+    	"resource_hscode"	REAL,
+    	"iso"	TEXT,
+    	PRIMARY KEY("id")
+    );""" 
+    SQL(sqlstatement,SQL='execute')
+except Exception as e:
+    logging.debug(e)

@@ -17,12 +17,14 @@
 #Imports
 import pandas as pd, sqlite3, json
 from urllib.request import Request, urlopen
-from functools import wraps
 from __init__ import (
+    dir_path,
     SQL,
+    _wgi,
+    _yearly,
     _reporter,
     _outputfile,
-    _libfile,
+    regionslist,
     outputDF,
     logging)
 from warnings import (
@@ -30,39 +32,9 @@ from warnings import (
     InputError,
     APIError)
 #Define Paths
+tradepath = ""
 
-variables = [_libfile+'/datarecords.db',
-             _libfile+'/production.xlsx',
-             _libfile+'/wgidataset.xlsx'
-             ]
-regionslist = {}
-try:
-    pd.read_excel(variables[1], sheet_name = 'INVNOR')
-except Exception as e:
-    logging.debug(e)
-#Create table if not available. The database file should be present.
-try:
-    sqlstatement = """CREATE TABLE IF NOT EXISTS "recordData" (
-    	"id"	INTEGER,
-    	"country"	TEXT,
-    	"resource"	TEXT,
-    	"year"	INTEGER,
-    	"recycling_rate"	REAL,
-    	"scenario"	REAL,
-    	"geopolrisk"	REAL,
-    	"hhi"	REAL,
-    	"wta"	REAL,
-    	"geopol_cf"	REAL,
-    	"resource_hscode"	REAL,
-    	"iso"	TEXT,
-    	PRIMARY KEY("id")
-    );""" 
-    SQL(variables[0],sqlstatement,SQL='execute')
-except Exception as e:
-    logging.debug(e)
-    
-    
-    
+
 
 """User can modify this section along with another section in the calculation
 if more trade blocs, regions or group of countries is necessary for the study
@@ -73,11 +45,18 @@ trade blocs or regions are unavailable and has to be called separately tallied
 and accounted. In version 1, such feature is not available in the code. If users
 modify the regions, ensure the countries and # section is modified accordingly. 
 """
-    
+def settradepath(path):
+    tradepath = dir_path+path
+    try:
+        with open(tradepath) as openfile:
+            pd.read_excel(openfile)
+    except Exception as e:
+        logging.debug(e)
+        tradepath = None
+        raise InputError
+  
 #Method 3
 def regions(*args):
-    if len(variables) < 5:
-        raise IncompleteProcessFlow("Path of the files must be defined before regions.")
     regionslist['EU'] = ['Austria', 'Belgium', 'Belgium-Luxembourg', 'Bulgaria',
            'Croatia', 'Czechia', 'Czechoslovakia', 'Denmark', 
            'Estonia','Finland', 'France', 'Fmr Dem. Rep. of Germany',
@@ -112,20 +91,6 @@ def regions(*args):
         regionslist[i] = [i]
 
 
-
-#Decorator for path and regions required
-def definitionrequired(func):
-    @wraps(func)
-    def verify(*args, **kwargs):
-        if len(variables) < 5 or len(regionslist) < 257:
-            raise IncompleteProcessFlow("The path and regions must be defined before execution :"
-                                )
-            
-        else: 
-            return func(*args, **kwargs)
-    return verify
-
-
    
 """
 The following method connects to the COMTRADE API using request from urlopen module.
@@ -134,7 +99,6 @@ modify the values of these optional arguments before calling the calculation fun
 
 """
 #Method 1
-@definitionrequired
 def COMTRADE_API(
     classification = "HS",
     period = "2010",
@@ -146,8 +110,9 @@ def COMTRADE_API(
     scenario = 0
     ):
     
-    
-    _request = "https://comtrade.un.org/api/get?max=50000&type=C&freq=A&px="+classification+"&ps="+str(period)+"&r="+str(reporter)+"&p="+str(partner)+"&cc="+str(HSCode)+"&rg="+TradeFlow+"&fmt=json"
+    _request = "https://comtrade.un.org/api/get?max=50000&type=C&freq=A&px="\
+        ""+classification+"&ps="+str(period)+"&r="+str(reporter)+"&p="\
+        ""+str(partner)+"&cc="+str(HSCode)+"&rg="+TradeFlow+"&fmt=json"
     
     """
     Section 1.1 connects to the COMTRADE API using the requests method of urlopen library.
@@ -188,12 +153,13 @@ def COMTRADE_API(
     
     COMTRADE_API.called = True
     return TradeData
-     
-@definitionrequired
+
+
 def InputTrade( sheetname = None):
-    trade_path = variables[2]
+    trade_path = tradepath
     if trade_path == None:
         raise InputError("Did not define path for individual trade.")
+        raise IncompleteProcessFlow
         return None
     try:
         data = pd.read_excel(trade_path, sheet_name=sheetname)
@@ -219,10 +185,10 @@ def InputTrade( sheetname = None):
         raise APIError
         return None
    
-@definitionrequired   
+  
 def WTA_calculation(period, TradeData = None, PIData = None,
                     scenario = 0, recyclingrate = 0.00):
-    PIData = variables[4]
+    PIData = _wgi
     if TradeData == None:
         return None
     else:
