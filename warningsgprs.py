@@ -16,13 +16,7 @@ class APIError(Exception):
 
 class PRODError(Exception):
     pass
-        
-# class FUNCError(Exception):
-#     def __init__( e = None):
-#         error = ["OutputFile", "SQLFile", "PLTError" ]
-#         self.error = e if e in error else ": Refer log file"
-#         print("Error in the functionality", self.error)
-        
+                
 class IncompleteProcessFlow(Exception):
     pass
 

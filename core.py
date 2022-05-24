@@ -15,36 +15,41 @@
 
 
 #Imports
-import pandas as pd, sqlite3, json
+import pandas as pd, json
 from urllib.request import Request, urlopen
+from pathlib import Path
 from __init__ import (
     dir_path,
-    SQL,
-    _wgi,
-    _yearly,
+    _production,
     _reporter,
-    _outputfile,
     regionslist,
-    outputDF,
     logging)
-from warnings import (
+from warningsgprs import (
     IncompleteProcessFlow,
     InputError,
     APIError)
 #Define Paths
-tradepath = ""
+tradepath = None
+
+# This module contains methods (python functions) that provides access to different components and
+# variables of the GeoPolRisk method. This is a functional module where methods 
+# are designed for micromanaging the GeoPolRisk method. Refer to the scientific publication 
+# available online for technical details.
 
 
+# The GeoPolRisk method is designed to assess the geopolitical related supply risk
+# of importing a resource from a macro economic perspective (country, regions, 
+# trade blocs or group of countries) during a period. However, the method could be 
+# adapted to analyse the supply risk at an organizational level. This requires 
+# specific trade information in contrast to the macro economic perspective that uses 
+# country trade data available that is accessed using the COMTRADE api.
 
-"""User can modify this section along with another section in the calculation
-if more trade blocs, regions or group of countries is necessary for the study
-"""
-"""It is important to note that the region EU is existing in the countries
-database which shall be used to call the COMTRADE API. Unfortunately, other 
-trade blocs or regions are unavailable and has to be called separately tallied
-and accounted. In version 1, such feature is not available in the code. If users
-modify the regions, ensure the countries and # section is modified accordingly. 
-"""
+# The specific trade data of the organization can be provided using a predefined
+# excel or csv format. The location of the file is provided as an agrument to the
+# 'settradepath' method below.
+
+
+#Method 1
 def settradepath(path):
     tradepath = dir_path+path
     try:
@@ -55,7 +60,16 @@ def settradepath(path):
         tradepath = None
         raise InputError
   
-#Method 3
+
+# In line with the earlier explanation of the scope of GeoPolRisk method, the 
+# following methods creates a user defined scope (regions). By default, European
+# Union (27 countries) is provided in the dictionary. A dictionary is provided
+# as an argument with the name of the region/bloc is the key and the ISO names 
+# of the countries as the values. The ISO names of the countries are available in
+# the the reporters json file.
+
+
+#Method 2
 def regions(*args):
     regionslist['EU'] = ['Austria', 'Belgium', 'Belgium-Luxembourg', 'Bulgaria',
            'Croatia', 'Czechia', 'Czechoslovakia', 'Denmark', 
@@ -63,7 +77,7 @@ def regions(*args):
            'Fmr Fed. Rep. of Germany', 'Germany', 'Greece', 'Hungary',
            'Ireland', 'Italy', 'Latvia', 'Lithuania', 'Luxembourg', 
            'Malta', 'Netherlands', 'Poland', 'Portugal', 'Romania', 
-           'Slovakia', 'Slovenia', 'Spain', 'Sweden'],
+           'Slovakia', 'Slovenia', 'Spain', 'Sweden']
     
 
     for key, value in args[0].items():
@@ -91,14 +105,11 @@ def regions(*args):
         regionslist[i] = [i]
 
 
-   
-"""
-The following method connects to the COMTRADE API using request from urlopen module.
-Several inputs required to connect are provided as optional arguments. The user must
-modify the values of these optional arguments before calling the calculation function. 
+# The following method connects to the COMTRADE API using request from urlopen module.
+# Several inputs required to connect are provided as optional arguments. The user must
+# modify the values of these optional arguments before calling the calculation function. 
 
-"""
-#Method 1
+#Method 3
 def COMTRADE_API(
     classification = "HS",
     period = "2010",
@@ -114,15 +125,19 @@ def COMTRADE_API(
         ""+classification+"&ps="+str(period)+"&r="+str(reporter)+"&p="\
         ""+str(partner)+"&cc="+str(HSCode)+"&rg="+TradeFlow+"&fmt=json"
     
-    """
-    Section 1.1 connects to the COMTRADE API using the requests method of urlopen library.
-    Variable counter and totcounter counts the number of requests made to the COMTRADE API,
-    as the number of connection per hour is limited to 100 as a public user. The connections 
-    are logged in the end of script. User must call Method 7 of GeoPolRisk module in order to be logged.
-    ----> Remember Method 7 requires Method 6 to be called as a prerequisite.
-    """
-    #1.1 Section to connect to the COMTRADE API
-    logging.debug(_request) #Uncomment to debug the error
+    
+    # # Section 3.1 connects to the COMTRADE API using the requests method of urlopen library.
+    # The user must provide inputs to all of the non-default arguments for most
+    # accurate and intended results. A request statement is prepared using the 
+    # inputs that is opened in the following line. Any error in the provided 
+    # arguments leads to broken request and finally raising an APIError.
+    
+    # APIError is a defined Exception class available in the warningsgprs.
+    
+    
+    #3.1 Section to connect to the COMTRADE API
+    
+    #logging.debug(_request) #Uncomment to debug the error
     try:
         request = Request(_request)
         response = urlopen(request)
@@ -131,6 +146,7 @@ def COMTRADE_API(
         raise APIError("Unable to access COMTRADE api. Refer to geopolrisk.logs")
         return None
     
+    #3.2 Section to read the request result
     try:
         elevations = response.read()
     except Exception as e:
@@ -139,6 +155,8 @@ def COMTRADE_API(
     
     data = json.loads(elevations)
     data = pd.json_normalize(data['dataset'])
+    
+    #3.3 Section to extract the results to variables 
     
     if data.shape[0] !=0:
         Worldindex = data.ptCode.to_list().index(0)
@@ -151,53 +169,104 @@ def COMTRADE_API(
     else:
         TradeData = [None, None, None]
     
-    COMTRADE_API.called = True
     return TradeData
 
 
-def InputTrade( sheetname = None):
+"""
+The defined trade path in the first method 
+"""
+
+#Method 4
+def InputTrade(sheetname = None):
     trade_path = tradepath
+    
+    
+    # This function reads the trade file specific to an organization/company.
+    # It is possible to read excel or csv file. Section 1 validates if the 
+    # path to the file is set using method 1 and reads the file into a dataframe.
+    
+    
+    #4.1 Section to validate the path to trade file
     if trade_path == None:
-        raise InputError("Did not define path for individual trade.")
+        raise InputError
         raise IncompleteProcessFlow
         return None
-    try:
-        data = pd.read_excel(trade_path, sheet_name=sheetname)
-        data = data[list(data.keys())[0]]
-        if data.shape[0] !=0:
+    else:
+        
+        # The file must be either in excel or csv file, failing which raises an 
+        # InputError from the warningsgprs module
+        
+        if Path(trade_path).suffix == ".xlsx" or Path(trade_path).suffix == ".xls":
             try:
-                Worldindex = data.ptCode.to_list().index(0)
-                data = data.drop(data.index[[Worldindex]])
+                data = pd.read_excel(trade_path, sheet_name=sheetname)
             except Exception as e:
                 logging.debug(e)
-            code = data.ptCode.to_list()
-            countries = data.ptTitle.to_list()
-            quantity = data.TradeQuantity.to_list()
-            
-            TradeData = [code, countries, quantity]
+                raise IncompleteProcessFlow
+        elif Path(trade_path).suffix == ".csv":
+            try:
+                data = pd.read_csv(trade_path)
+            except Exception as e:
+                logging.debug(e)
+                raise IncompleteProcessFlow
         else:
-            TradeData = [None, None, None]
-        InputTrade.called = True
-        return TradeData
-    
-    except Exception as e:
-        logging.debug(e)
-        raise APIError
-        return None
+            logging.debug(Path(trade_path).suffix)
+            raise InputError
+            return None
+        
+        
+        # The comtrade API results are categorized by imports to a region/country 
+        # per country and it includes the total imports to the region/country. The
+        # code removes such imports to avoid erronous calculation.
+        
+        
+        try:
+            data = data[list(data.keys())[0]]
+            if data.shape[0] !=0:
+                try:
+                    if 0 in data.ptCode.to_list():
+                        Worldindex = data.ptCode.to_list().index(0)
+                        data = data.drop(data.index[[Worldindex]])
+                    else:
+                        logging.debug("No worldindex found")
+                except Exception as e:
+                    logging.debug(e)
+                code = data.ptCode.to_list()
+                countries = data.ptTitle.to_list()
+                quantity = data.TradeQuantity.to_list()
+                
+                
+                #The extrated data is returned as a list
+                
+                
+                TradeData = [code, countries, quantity]
+            else:
+                TradeData = [None, None, None]
+            return TradeData
+        
+        except Exception as e:
+            logging.debug(e)
+            raise APIError
+            return None
    
-  
+
+# The GeoPolRisk method is built with three components, HHI (production concentration),
+# weighted trade average (WTA), yearly average price of the resource. With the 
+# extracted trade information either using COMTRADE or individual trade is weighted
+# using a governance indicator and then averaged using the total imports and domestic
+# production of the resource.
+
+# The method 'WTA_calculation' requires the year, trade data, governance indicator, 
+# recycling rate and recycling scenario as inputs.
+
+    
+ 
 def WTA_calculation(period, TradeData = None, PIData = None,
                     scenario = 0, recyclingrate = 0.00):
-    PIData = _wgi
-    if TradeData == None:
+    if TradeData is None or PIData is None:
+        raise IncompleteProcessFlow
         return None
     else:
-        """
-        Section 1.2 is dedicated to calculation of a part of second factor of GeoPolRisk method also
-        known as Weighted Trade Average (WTA). The trade information is weighted with the WGI values
-        pulled from the csv file in the library. 
-        """
-        code, countries, quantity = TradeData[0], TradeData[1], TradeData[2]
+        code, quantity = TradeData[0], TradeData[2]
 
         reducedmass, totalreduce = 0, 0
 
@@ -219,16 +288,16 @@ def WTA_calculation(period, TradeData = None, PIData = None,
             raise APIError
             return None
                 
-        """
-        Version 0.2: Domestic recycling mitigates the supply risk of a raw material. However domestic recycling
-        can be attributed to decrease of imports from a country with low WGI score or high WGI score.
-        In other words, there can be two scenarios where imports are reduced from 
-        a riskier country (best case scenario) or imports are reduced from 
-        much stable country (worst case scenario). Both the cases are determined by the 
-        WGI score, a higher WGI score is for a riskier country while lower for a stable
-        country. The following code intends to manipulate the trade data to incorporate
-        the domestic recycling.
-        """
+        
+        # Version 0.2: Domestic recycling mitigates the supply risk of a raw material. However domestic recycling
+        # can be attributed to decrease of imports from a country with low WGI score or high WGI score.
+        # In other words, there can be two scenarios where imports are reduced from 
+        # a riskier country (best case scenario) or imports are reduced from 
+        # much stable country (worst case scenario). Both the cases are determined by the 
+        # WGI score, a higher WGI score is for a riskier country while lower for a stable
+        # country. The following code intends to manipulate the trade data to incorporate
+        # the domestic recycling.
+        
         #Recyclability factor of GeoPolRisk
         _maxscore = max(PI_score)
         _minscore = min(PI_score)
@@ -251,10 +320,10 @@ def WTA_calculation(period, TradeData = None, PIData = None,
             raise APIError
             return None
         
-        """
-        After manipulation of the trade data it is multiplied with the WGI
-        score forming the numerator of the second factor of GeoPolRisk (WTA)
-        """
+    
+        # After manipulation of the trade data it is multiplied with the WGI
+        # score forming the numerator of the second factor of GeoPolRisk (WTA)
+        
         
         try:
             zipped_list = zip(quantity, PI_score)
@@ -272,30 +341,23 @@ def WTA_calculation(period, TradeData = None, PIData = None,
         WTA_calculation.called = True
         return numerator, tradetotal
         
-"""
-The first factor of the GeoPolRisk method involved calculating the herfindahl-hirschmann
-index (hhi) and total domestic production required for calculating the second factor (WTA).
-Regions, economic units or trade blocs such as the EU can also be a part of the calculation.
-However, COMTRADE by default has the aggregated data for the EU, for others such as OECD etc 
-the code has to be manipulated inorder to aggregate the trade data. The regions has to be first
-defind in the 'regions' method in GeoPolRisk module. The production information is available in 
-excel file in library.
-"""
 
-@definitionrequired
+# The first component of the GeoPolRisk method involved calculating the herfindahl-hirschmann
+# index (HHI) and total domestic production required for calculating the second factor (WTA).
+
+
+
 def productionQTY(Resource, EconomicUnit):
     EconomicUnit = regionslist[EconomicUnit]
     
     try:
-        if Resource in ['Cerium', 'Lanthanum']:
-            Resource = 'Rare Earth'
-        x = pd.read_excel(variables[1], sheet_name = Resource)
+        x = pd.read_excel(_production, sheet_name = Resource)
         prod = pd.DataFrame(x)
         Col = prod.columns.tolist()
     except Exception as e:
         logging.debug(e)
         logging.warning("There was an error while acessing the file Metals_Raw.xlsx with an exception as ", exc_info = True)
-        raise APIError
+        raise InputError
         return None
 
     #P2. Fetching the production quantity from 'prod' dataframe.
@@ -305,7 +367,7 @@ def productionQTY(Resource, EconomicUnit):
         if i in Col:
             Prod_Qty = prod[i].values.tolist()
             for k in range(len(Prod_Qty)):
-                if str(Prod_Qty[k]) == 'nan':
+                if str(Prod_Qty[k]) == 'nan' or Prod_Qty[k] is None:
                     Prod_Qty[k] = 0
             Prod_Qty = [sum(j) for j in zip(temp, Prod_Qty)]
             temp = Prod_Qty
@@ -336,51 +398,3 @@ def GeoPolRisk(ProductionData, WTAData, Year, AVGPrice):
     
     return [HHI, WTA, GeoPolRisk, GeoPolCF]
     
-"""
-End of script logging and exporting database to specified format. End log 
-method requires extractdata method to be precalled to work. 
-"""
-
-@definitionrequired
-def endlog( counter=0, totcounter=0, emptycounter=0, outputDFType='csv'):
-    logging.debug("Number of successfull COMTRADE API attempts {}".format(counter))
-    logging.debug("Number of total attempts {}".format(totcounter))
-    logging.debug("Number of empty dataframes {}".format(emptycounter))
-    if outputDFType == 'json':
-        outputDF.to_json(_outputfile+'/export.json', orient='columns')
-    elif outputDFType =='excel':
-        outputDF.to_excel(_outputfile+'/export.xlsx')
-    else:
-        outputDF.to_csv(_outputfile+'/export.csv')
-
-    
-"""Convert entire database to required format
-**CHARACTERIZATION FACTORS
-Refer to python json documentation for more information on types of
-orientation required for the output.
-"""
-
-@definitionrequired
-def generateCF(exportType='csv', orient=""):
-    exportF = ['csv', 'excel', 'json']
-    if exportType in exportF:
-        logging.debug("Exporting database in the format {}".format(exportType))
-        CFType=exportType
-    else:
-        logging.debug("Exporting format not supported {}. "
-                      "Using default format [csv]".format(exportType))
-        CFType="csv"
-    try:
-        conn = sqlite3.connect(variables[0], isolation_level=None,
-                   detect_types=sqlite3.PARSE_COLNAMES)
-        db_df = pd.read_sql_query("SELECT * FROM recorddata", conn)
-        if CFType == "csv":
-            db_df.to_csv(_outputfile+'/database.csv', index=False)
-        elif CFType == "excel":
-            db_df.to_excel(_outputfile+'/database.xlsx', index=False)
-        elif CFType == "json":
-             db_df.to_json(_outputfile+'/database.json', orient = orient, index=False)
-    except Exception as e:
-        logging.debug(e)
-    
-

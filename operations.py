@@ -5,29 +5,24 @@ Created on Tue Apr  5 15:29:23 2022
 @author: akoyamparamb
 """
 from __init__ import (
-    APIError,
-    _commodity,
     _reporter,
+    SQL,
     _price,
     _outputfile,
     outputDF,
+    regionslist,
     logging)
 
 from core import (
-    SQL,
-    path,
     regions,
     COMTRADE_API,
     InputTrade,
     WTA_calculation,
     productionQTY,
-    endlog,
     GeoPolRisk,
-    variables,
-    regionslist,
-    definitionrequired,
+    
     )
-
+import itertools
 def convertCodes(resource, country, direction):
     if direction == 1:
         ISO, HS = [], []
@@ -53,112 +48,124 @@ def sqlverify(*args):
         return True
 
 
-def Nonregion_totcal(resourcelist, countrylist, yearlist, recyclingrate, scenario):
-    #Call Path and Regions
-    path()
+def gprs_comtrade(resourcelist, countrylist, yearlist, recyclingrate, scenario):
     regions()
-    for i in resourcelist:
-        for j in countrylist:
-            for k in yearlist:
-                resource, country = convertCodes(i, j, 2)
-                verify = sqlverify(resource, country, k, recyclingrate, scenario)
+    for I in itertools.product(resourcelist, countrylist, yearlist):
+        resource, country = convertCodes(I[0], I[1], 2)
+        verify = sqlverify(resource, country, I[2], recyclingrate, scenario)
+        if verify is not None:
+            TradeData = COMTRADE_API(classification = "HS",
+            period = I[2],
+            partner = "all",
+            reporter = I[1],
+            HSCode = I[0],
+            TradeFlow = "1",
+            recyclingrate = recyclingrate,
+            scenario = scenario)
+            AVGPrice = _price[str(I[2])].tolist()[_price.hs.to_list().index(I[0])]
+            X = productionQTY(resource, country)
+            Y = WTA_calculation(str(I[2]), TradeData = TradeData)
+            
+            HHI, WTA, Risk, CF = GeoPolRisk(X, Y, str(I[2]), AVGPrice)
+            outputDF.loc[len(outputDF)] = [str(I[2]), resource, country ,recyclingrate, scenario, Risk, CF, HHI, WTA]
+        else:
+            logging.debug("No transaction has been made. "
+                          "Preexisting data has been inserted in output file.")
+            
+def gprs_regional(resourcelist, countrylist, yearlist, recyclingrate, scenario):
+    newregionlist = []
+    newregion = [i for i , x  in enumerate(countrylist) if str(x) not
+                   in _reporter.Country.to_list() and str(x) not 
+                   in _reporter["ISO"].astype(str).tolist()]
+    for i in newregion:
+        newregionlist.append(countrylist[i])
+        del countrylist[i]
+    for l in newregionlist:
+        countrylist = regionslist[l]
+        _ignore, countrylist = convertCodes([], countrylist, 1)
+        for I in itertools.product(resourcelist, yearlist):
+            newcodelist, newcountrylist, newquantitylist = [], [], []
+            newtradelist = [newcodelist, newcountrylist, newquantitylist]
+            TotalDomesticProduction = 0
+            for k in countrylist:
+                resource, country = convertCodes(I[0], k, 2)
+                verify = sqlverify(resource, country, I[1], recyclingrate, scenario)
                 if verify is not None:
                     TradeData = COMTRADE_API(classification = "HS",
-                    period = k,
+                    period = I[1],
                     partner = "all",
-                    reporter = j,
-                    HSCode = i,
+                    reporter = k,
+                    HSCode = I[0],
                     TradeFlow = "1",
                     recyclingrate = recyclingrate,
                     scenario = scenario)
-                    AVGPrice = _price[str(k)].tolist()[_price.hs.to_list().index(i)]
-                    X = productionQTY(resource, country)
-                    Y = WTA_calculation(str(k), TradeData = TradeData)
                     
-                    HHI, WTA, Risk, CF = GeoPolRisk(X, Y, str(k), AVGPrice)
-                    outputDF.loc[len(outputDF)] = [str(k), resource, country ,recyclingrate, scenario, Risk, CF, HHI, WTA]
+                    for ind, n in enumerate(TradeData[0]):
+                        if n not in newcodelist:
+                            newcodelist.append(n)
+                            newquantitylist.append(TradeData[2][ind])
+                            newcountrylist.append(TradeData[1][ind])
+                        else:
+                            index = newcodelist.index(n)
+                            newquantitylist[index] = newquantitylist[index] + TradeData[2][ind]
+                            
+                        X = productionQTY(resource, country)
+                        index = X[2].index(I[1])
+                        TotalDomesticProduction += X[1][index]
                 else:
                     logging.debug("No transaction has been made. "
-                                  "Preexisting data has been inserted in output file.")
+                          "Preexisting data has been inserted in output file.")
+            AVGPrice = _price[str(I[1])].tolist()[_price.hs.to_list().index(i)]
+            Y = WTA_calculation(str(I[1]), TradeData = newtradelist)
+            HHI, WTA, Risk, CF = GeoPolRisk([X[0], TotalDomesticProduction, X[2]], Y, str(I[1]), AVGPrice)
+            outputDF.loc[len(outputDF)] = [str(I[1]), resource, l ,recyclingrate, scenario, Risk, CF, HHI, WTA]
 
 
-@definitionrequired
-def regional_totcal(resourcelist, countrylist, yearlist, recyclingrate, scenario):
-    newregionlist = []
-    if variables[2] is None:
-        newregion = [i for i , x  in enumerate(countrylist) if str(x) not
-                       in _reporter.Country.to_list() and str(x) not 
-                       in _reporter["ISO"].astype(str).tolist()]
-        for i in newregion:
-            newregionlist.append(countrylist[i])
-            del countrylist[i]
-        if len(countrylist) != 0:
-            for i in resourcelist:
-                _ignore, countrylist = convertCodes([], countrylist, 1) #Comment if country list are in iso codes
-                for j in countrylist:
-                    for k in yearlist:
-                        resource, country = convertCodes(i, j, 2)
-                        verify = sqlverify(resource, country, k, recyclingrate, scenario)
-                        if verify is not None:
-                            TradeData = COMTRADE_API(classification = "HS",
-                            period = k,
-                            partner = "all",
-                            reporter = j,
-                            HSCode = i,
-                            TradeFlow = "1",
-                            recyclingrate = recyclingrate,
-                            scenario = scenario)
-                            AVGPrice = _price[str(k)].tolist()[_price.hs.to_list().index(i)]
-                            X = productionQTY(resource, country)
-                            Y = WTA_calculation(str(k), TradeData = TradeData)
-                            
-                            HHI, WTA, Risk, CF = GeoPolRisk(X, Y, str(k), AVGPrice)
-                            
-                            outputDF.loc[len(outputDF)] = [str(j), resource, country ,recyclingrate, scenario, Risk, CF, HHI, WTA]
-                            logging.debug("No transaction has been made. "
-                                          "Preexisting data has been inserted in output file.")
-        else:
-            for l in newregionlist:
-                countrylist = regionslist[l]
-                _ignore, countrylist = convertCodes([], countrylist, 1)
-                for i in resourcelist:
-                    for j in yearlist:
-                        newcodelist, newcountrylist, newquantitylist = [], [], []
-                        TotalDomesticProduction = 0
-                        for k in countrylist:
-                            resource, country = convertCodes(i, k, 2)
-                            verify = sqlverify(resource, country, j, recyclingrate, scenario)
-                            if verify is not None:
-                                TradeData = COMTRADE_API(classification = "HS",
-                                period = j,
-                                partner = "all",
-                                reporter = k,
-                                HSCode = i,
-                                TradeFlow = "1",
-                                recyclingrate = recyclingrate,
-                                scenario = scenario)
-                                
-                                for ind, n in enumerate(TradeData[0]):
-                                    if n not in newcodelist:
-                                        newcodelist.append(n)
-                                        newquantitylist.append(TradeData[2][ind])
-                                        newcountrylist.append(TradeData[1][ind])
-                                    else:
-                                        index = newcodelist.index(n)
-                                        newquantitylist[index] = newquantitylist[index] + TradeData[2][ind]
-                                        
-                                    X = productionQTY(resource, country)
-                                    index = X[2].index(j)
-                                    TotalDomesticProduction += X[1][index]
-                            else:
-                                logging.debug("No transaction has been made. "
-                                      "Preexisting data has been inserted in output file.")
-                        AVGPrice = _price[str(j)].tolist()[_price.hs.to_list().index(i)]
-                        Y = WTA_calculation(str(j), TradeData = TradeData)
-                        HHI, WTA, Risk, CF = GeoPolRisk([X[0], TotalDomesticProduction, X[2]], Y, str(j), AVGPrice)
-                        outputDF.loc[len(outputDF)] = [str(j), resource, l ,recyclingrate, scenario, Risk, CF, HHI, WTA]
-                    
+"""
+End of script logging and exporting database to specified format. End log 
+method requires extractdata method to be precalled to work. 
+"""
 
 
+def endlog( counter=0, totcounter=0, emptycounter=0, outputDFType='csv'):
+    logging.debug("Number of successfull COMTRADE API attempts {}".format(counter))
+    logging.debug("Number of total attempts {}".format(totcounter))
+    logging.debug("Number of empty dataframes {}".format(emptycounter))
+    if outputDFType == 'json':
+        outputDF.to_json(_outputfile+'/export.json', orient='columns')
+    elif outputDFType =='excel':
+        outputDF.to_excel(_outputfile+'/export.xlsx')
+    else:
+        outputDF.to_csv(_outputfile+'/export.csv')
 
-   
+    
+"""Convert entire database to required format
+**CHARACTERIZATION FACTORS
+Refer to python json documentation for more information on types of
+orientation required for the output.
+"""
+
+
+def generateCF(exportType='csv', orient=""):
+    exportF = ['csv', 'excel', 'json']
+    if exportType in exportF:
+        logging.debug("Exporting database in the format {}".format(exportType))
+        CFType=exportType
+    else:
+        logging.debug("Exporting format not supported {}. "
+                      "Using default format [csv]".format(exportType))
+        CFType="csv"
+    try:
+        conn = sqlite3.connect(variables[0], isolation_level=None,
+                   detect_types=sqlite3.PARSE_COLNAMES)
+        db_df = pd.read_sql_query("SELECT * FROM recorddata", conn)
+        if CFType == "csv":
+            db_df.to_csv(_outputfile+'/database.csv', index=False)
+        elif CFType == "excel":
+            db_df.to_excel(_outputfile+'/database.xlsx', index=False)
+        elif CFType == "json":
+             db_df.to_json(_outputfile+'/database.json', orient = orient, index=False)
+    except Exception as e:
+        logging.debug(e)
+    
+

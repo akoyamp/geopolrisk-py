@@ -15,7 +15,7 @@
 # OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 
-import sqlite3, pandas as pd, getpass, logging, os, shutil, json
+import sqlite3, pandas as pd, getpass, logging, os, json #,shutil
 from datetime import datetime
 from pathlib import Path
 from warningsgprs import InputError
@@ -151,7 +151,7 @@ if LOGFAIL != True:
 
 _columns = ["Year", "Resource", "Country","Recycling Rate","Recycling Scenario", "Risk","GeoPolRisk Characterization Factor", "HHI", "Weighted Trade AVerage"]
 outputDF = pd.DataFrame(columns = _columns)
-
+_production = FILES["production"]
 
 """
 SQL select method. This program is used
