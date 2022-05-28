@@ -22,7 +22,10 @@ from core import (
     GeoPolRisk,
     
     )
-import itertools
+import itertools, sqlite3, pandas as pd
+
+
+
 def convertCodes(resource, country, direction):
     if direction == 1:
         ISO, HS = [], []
@@ -48,12 +51,20 @@ def sqlverify(*args):
         return True
 
 
+
+
+
 def gprs_comtrade(resourcelist, countrylist, yearlist, recyclingrate, scenario):
     regions()
+    counter, totalcounter, emptycounter = 0, 0, 0
     for I in itertools.product(resourcelist, countrylist, yearlist):
         resource, country = convertCodes(I[0], I[1], 2)
         verify = sqlverify(resource, country, I[2], recyclingrate, scenario)
         if verify is not None:
+            
+            counter  += 1
+            totalcounter += 1
+            
             TradeData = COMTRADE_API(classification = "HS",
             period = I[2],
             partner = "all",
@@ -62,6 +73,8 @@ def gprs_comtrade(resourcelist, countrylist, yearlist, recyclingrate, scenario):
             TradeFlow = "1",
             recyclingrate = recyclingrate,
             scenario = scenario)
+            if TradeData[0] is None:
+                emptycounter += 1
             AVGPrice = _price[str(I[2])].tolist()[_price.hs.to_list().index(I[0])]
             X = productionQTY(resource, country)
             Y = WTA_calculation(str(I[2]), TradeData = TradeData)
@@ -71,9 +84,16 @@ def gprs_comtrade(resourcelist, countrylist, yearlist, recyclingrate, scenario):
         else:
             logging.debug("No transaction has been made. "
                           "Preexisting data has been inserted in output file.")
+            counter -= 1
             
+    endlog(counter, totalcounter, emptycounter)
+
+
+
+
 def gprs_regional(resourcelist, countrylist, yearlist, recyclingrate, scenario):
     newregionlist = []
+    counter, totalcounter, emptycounter = 0, 0, 0
     newregion = [i for i , x  in enumerate(countrylist) if str(x) not
                    in _reporter.Country.to_list() and str(x) not 
                    in _reporter["ISO"].astype(str).tolist()]
@@ -84,6 +104,10 @@ def gprs_regional(resourcelist, countrylist, yearlist, recyclingrate, scenario):
         countrylist = regionslist[l]
         _ignore, countrylist = convertCodes([], countrylist, 1)
         for I in itertools.product(resourcelist, yearlist):
+            
+            counter  += 1
+            totalcounter += 1
+            
             newcodelist, newcountrylist, newquantitylist = [], [], []
             newtradelist = [newcodelist, newcountrylist, newquantitylist]
             TotalDomesticProduction = 0
@@ -100,6 +124,8 @@ def gprs_regional(resourcelist, countrylist, yearlist, recyclingrate, scenario):
                     recyclingrate = recyclingrate,
                     scenario = scenario)
                     
+                    if TradeData [0] is None:
+                        emptycounter += 1
                     for ind, n in enumerate(TradeData[0]):
                         if n not in newcodelist:
                             newcodelist.append(n)
@@ -109,17 +135,49 @@ def gprs_regional(resourcelist, countrylist, yearlist, recyclingrate, scenario):
                             index = newcodelist.index(n)
                             newquantitylist[index] = newquantitylist[index] + TradeData[2][ind]
                             
-                        X = productionQTY(resource, country)
-                        index = X[2].index(I[1])
-                        TotalDomesticProduction += X[1][index]
+                    X = productionQTY(resource, country)
+                    index = X[2].index(I[1])
+                    TotalDomesticProduction += X[1][index]
                 else:
                     logging.debug("No transaction has been made. "
                           "Preexisting data has been inserted in output file.")
+                    counter -= 1
             AVGPrice = _price[str(I[1])].tolist()[_price.hs.to_list().index(i)]
             Y = WTA_calculation(str(I[1]), TradeData = newtradelist)
             HHI, WTA, Risk, CF = GeoPolRisk([X[0], TotalDomesticProduction, X[2]], Y, str(I[1]), AVGPrice)
             outputDF.loc[len(outputDF)] = [str(I[1]), resource, l ,recyclingrate, scenario, Risk, CF, HHI, WTA]
+    
+    endlog(counter, totalcounter, emptycounter)
+    
 
+
+
+def gprs_organization(resourcelist, countrylist, yearlist, recyclingrate, scenario, sheetname):
+    newregionlist = []
+    newregion = [i for i , x  in enumerate(countrylist) if str(x) not
+                   in _reporter.Country.to_list() and str(x) not 
+                   in _reporter["ISO"].astype(str).tolist()]
+    for i in newregion:
+        newregionlist.append(countrylist[i])
+        del countrylist[i]
+    for l in newregionlist:
+        countrylist = regionslist[l]
+        _ignore, countrylist = convertCodes([], countrylist, 1)
+        for I in itertools.product(resourcelist, yearlist):
+            TotalDomesticProduction = 0
+            TradeData = InputTrade(sheetname)
+            for k in countrylist:
+                resource, country = convertCodes(I[0], k, 2)
+                try:                            
+                    X = productionQTY(resource, country)
+                    index = X[2].index(I[1])
+                    TotalDomesticProduction += X[1][index]
+                except Exception as e:
+                    logging.debug(e)
+            AVGPrice = _price[str(I[1])].tolist()[_price.hs.to_list().index(i)]
+            Y = WTA_calculation(str(I[1]), TradeData = TradeData)
+            HHI, WTA, Risk, CF = GeoPolRisk([X[0], TotalDomesticProduction, X[2]], Y, str(I[1]), AVGPrice)
+            outputDF.loc[len(outputDF)] = [str(I[1]), resource, l ,recyclingrate, scenario, Risk, CF, HHI, WTA]
 
 """
 End of script logging and exporting database to specified format. End log 
@@ -127,16 +185,11 @@ method requires extractdata method to be precalled to work.
 """
 
 
-def endlog( counter=0, totcounter=0, emptycounter=0, outputDFType='csv'):
+def endlog( counter=0, totalcounter=0, emptycounter=0):
     logging.debug("Number of successfull COMTRADE API attempts {}".format(counter))
-    logging.debug("Number of total attempts {}".format(totcounter))
+    logging.debug("Number of total attempts {}".format(totalcounter))
     logging.debug("Number of empty dataframes {}".format(emptycounter))
-    if outputDFType == 'json':
-        outputDF.to_json(_outputfile+'/export.json', orient='columns')
-    elif outputDFType =='excel':
-        outputDF.to_excel(_outputfile+'/export.xlsx')
-    else:
-        outputDF.to_csv(_outputfile+'/export.csv')
+    outputDF.to_csv(_outputfile+'/export.csv')
 
     
 """Convert entire database to required format
@@ -156,7 +209,7 @@ def generateCF(exportType='csv', orient=""):
                       "Using default format [csv]".format(exportType))
         CFType="csv"
     try:
-        conn = sqlite3.connect(variables[0], isolation_level=None,
+        conn = sqlite3.connect(_outputfile+"/datarecords.db", isolation_level=None,
                    detect_types=sqlite3.PARSE_COLNAMES)
         db_df = pd.read_sql_query("SELECT * FROM recorddata", conn)
         if CFType == "csv":

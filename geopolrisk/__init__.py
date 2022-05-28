@@ -48,8 +48,10 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 
 
-FILES = {"commodity":dir_path+"/lib/commodityHS.json","production":dir_path+"/lib/Production.xlsx",
-          "reporter":dir_path+"/lib/reporterISO.json","wgi":dir_path+"/lib/wgi.json", "yearly":dir_path+"/lib/yearlyAVGprice.json"}
+FILES = {"commodity":dir_path+"./lib/commodityHS.json","production":dir_path+"./lib/Production.xlsx",
+          "reporter":dir_path+"./lib/reporterISO.json","wgi":dir_path+"./lib/wgi.json", "yearly":dir_path+"./lib/yearlyAVGprice.json"}
+
+
 
 
 #Test fail variables

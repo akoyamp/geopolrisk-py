@@ -265,7 +265,7 @@ def WTA_calculation(period, TradeData = None, PIData = None,
     if TradeData is None or PIData is None:
         raise IncompleteProcessFlow
         return None
-    else:
+    elif TradeData[0] is not None:
         code, quantity = TradeData[0], TradeData[2]
 
         reducedmass, totalreduce = 0, 0
@@ -340,7 +340,8 @@ def WTA_calculation(period, TradeData = None, PIData = None,
             raise APIError
         WTA_calculation.called = True
         return numerator, tradetotal
-        
+    else:
+        return 0, 0
 
 # The first component of the GeoPolRisk method involved calculating the herfindahl-hirschmann
 # index (HHI) and total domestic production required for calculating the second factor (WTA).
