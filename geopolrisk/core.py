@@ -18,13 +18,12 @@
 import pandas as pd, json
 from urllib.request import Request, urlopen
 from pathlib import Path
-from __init__ import (
-    dir_path,
+from .__init__ import (
     _production,
     _reporter,
     regionslist,
     logging)
-from warningsgprs import (
+from .Exceptions.warningsgprs import (
     IncompleteProcessFlow,
     InputError,
     APIError)
@@ -51,7 +50,7 @@ tradepath = None
 
 #Method 1
 def settradepath(path):
-    tradepath = dir_path+path
+    tradepath = path
     try:
         with open(tradepath) as openfile:
             pd.read_excel(openfile)
@@ -79,25 +78,25 @@ def regions(*args):
            'Malta', 'Netherlands', 'Poland', 'Portugal', 'Romania', 
            'Slovakia', 'Slovenia', 'Spain', 'Sweden']
     
-
-    for key, value in args[0].items():
-        if type(key) is not str and type(value) is not list:
-            raise InputError("Inputs does not match the required format")
-            return None
-        Print_Error = [x for x in value if str(x) not
-                       in _reporter.Country.to_list() and str(x) not 
-                       in _reporter["ISO"].astype(str).tolist()]
-        if len(Print_Error) != 0:
-            logging.debug("Error in creating a region! "
-                          "Following list of countries not"
-                          " found in the ISO list {}. "
-                          "Please conform with the ISO list or use"
-                          " 3 digit ISO country codes.".format(Print_Error))
-            raise InputError("Countries in the list does not match ISO naming standards: "
-                             "Please refer to documentation.")
-            return None
-        else:
-            regionslist[key] = value
+    if len(args) != 0:
+        for key, value in args[0].items():
+            if type(key) is not str and type(value) is not list:
+                raise InputError("Inputs does not match the required format")
+                return None
+            Print_Error = [x for x in value if str(x) not
+                           in _reporter.Country.to_list() and str(x) not 
+                           in _reporter["ISO"].astype(str).tolist()]
+            if len(Print_Error) != 0:
+                logging.debug("Error in creating a region! "
+                              "Following list of countries not"
+                              " found in the ISO list {}. "
+                              "Please conform with the ISO list or use"
+                              " 3 digit ISO country codes.".format(Print_Error))
+                raise InputError("Countries in the list does not match ISO naming standards: "
+                                 "Please refer to documentation.")
+                return None
+            else:
+                regionslist[key] = value
     for i in _reporter.Country.to_list():
         if i in regionslist.keys():
             raise InputError("Country or region already exists cannot overwrite.")
@@ -142,6 +141,7 @@ def COMTRADE_API(
         request = Request(_request)
         response = urlopen(request)
     except Exception as e:
+        logging.debug(_request)
         logging.debug(e)
         raise APIError("Unable to access COMTRADE api. Refer to geopolrisk.logs")
         return None
@@ -153,8 +153,12 @@ def COMTRADE_API(
         logging.debug(e)
         raise APIError("Unable to read API data. Refer to geopolrisk.logs")
     
-    data = json.loads(elevations)
-    data = pd.json_normalize(data['dataset'])
+    try:
+        data = json.loads(elevations)
+        data = pd.json_normalize(data['dataset'])
+    except Exception as e:
+        logging.debug(e)
+        raise APIError("Error reading the API results")
     
     #3.3 Section to extract the results to variables 
     
@@ -167,6 +171,8 @@ def COMTRADE_API(
         
         TradeData = [code, countries, quantity]
     else:
+        logging.debug("API returned empty dataframe")
+        logging.debug(_request)
         TradeData = [None, None, None]
     
     return TradeData
@@ -267,6 +273,10 @@ def WTA_calculation(period, TradeData = None, PIData = None,
         return None
     elif TradeData[0] is not None:
         code, quantity = TradeData[0], TradeData[2]
+        for i,n in enumerate(quantity):
+            if n == None:
+                quantity[i] = 0
+                
 
         reducedmass, totalreduce = 0, 0
 
@@ -357,33 +367,41 @@ def productionQTY(Resource, EconomicUnit):
         Col = prod.columns.tolist()
     except Exception as e:
         logging.debug(e)
-        logging.warning("There was an error while acessing the file Metals_Raw.xlsx with an exception as ", exc_info = True)
+        logging.warning("There was an error while acessing the production data file with an exception as ", exc_info = True)
         raise InputError
         return None
 
-    #P2. Fetching the production quantity from 'prod' dataframe.
-    Prod_Year = prod.Year.to_list()
-    temp = [0]*len(Prod_Year)
-    for i in EconomicUnit:
-        if i in Col:
-            Prod_Qty = prod[i].values.tolist()
-            for k in range(len(Prod_Qty)):
-                if str(Prod_Qty[k]) == 'nan' or Prod_Qty[k] is None:
-                    Prod_Qty[k] = 0
-            Prod_Qty = [sum(j) for j in zip(temp, Prod_Qty)]
-            temp = Prod_Qty
-        else:
-            Prod_Qty = temp
+    #P2. Fetching the production quantity from 'prod' dataframe. 
+    try:
+        Prod_Year = prod.Year.to_list()
+        temp = [0]*len(Prod_Year)
+        for i in EconomicUnit:
+            if i in Col:
+                Prod_Qty = prod[i].values.tolist()
+                for k in range(len(Prod_Qty)):
+                    if str(Prod_Qty[k]) == 'nan' or Prod_Qty[k] is None:
+                        Prod_Qty[k] = 0
+                Prod_Qty = [sum(j) for j in zip(temp, Prod_Qty)]
+                temp = Prod_Qty
+            else:
+                Prod_Qty = temp
+    except Exception as e:
+        logging.debug(e)
+        return None
     #logging.debug("The following will be the list of data", "This is the country "+str(i), "Next should be the list ",str(self.Prod_Qty))
    
     #P3. Calculating the HHI.
     Nom = pd.Series()
-    for i in range(1,prod.shape[1]):
-        temp = prod.iloc[:,i]*prod.iloc[:,i]
-        Nom = Nom.add(temp, fill_value=0)
-    DeNom = prod.sum(axis = 1)
-    hhi = (Nom /(DeNom*DeNom)).tolist() 
-    HHI = [round(i,3) for i in hhi]
+    try:
+        for i in range(1,prod.shape[1]):
+            temp = prod.iloc[:,i]*prod.iloc[:,i]
+            Nom = Nom.add(temp, fill_value=0)
+        DeNom = prod.sum(axis = 1)
+        hhi = (Nom /(DeNom*DeNom)).tolist() 
+        HHI = [round(i,3) for i in hhi]
+    except Exception as e:
+        logging.debug(e)
+        return None
     
     productionQTY.called = True
     return [HHI, Prod_Qty, Prod_Year]
@@ -392,10 +410,24 @@ def GeoPolRisk(ProductionData, WTAData, Year, AVGPrice):
     Index = ProductionData[2].index(int(Year))
     HHI = ProductionData[0][Index]
     PQT = ProductionData[0][0]
-    WTA = (WTAData[0]/ (WTAData[1]+PQT))
+    try:
+        if isinstance(AVGPrice, (int, float)):
+            WTA = (WTAData[0]/ (WTAData[1]+PQT))
+            GeoPolRisk = HHI * WTA
+            GeoPolCF = GeoPolRisk * AVGPrice
+        else:
+            WTA = (WTAData[0]/ (WTAData[1]+PQT))
+            GeoPolRisk = HHI * WTA
+            GeoPolCF = "NA"
+            raise InputError("Price not found")
+    except Exception as e:
+        logging.debug(e)
+        logging.debug("The Weighted Trade average value is {}".format(WTA))
+        logging.debug("The HHI value is {}".format(HHI))
+        logging.debug("The GeoPolRisk is {}".format(GeoPolRisk))
+        logging.debug("The AVGPrice is {}".format(AVGPrice))
+        
     
-    GeoPolRisk = HHI * WTA
-    GeoPolCF = GeoPolRisk * AVGPrice
     
     return [HHI, WTA, GeoPolRisk, GeoPolCF]
     

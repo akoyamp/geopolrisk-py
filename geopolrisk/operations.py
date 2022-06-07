@@ -4,16 +4,17 @@ Created on Tue Apr  5 15:29:23 2022
 
 @author: akoyamparamb
 """
-from __init__ import (
+from .__init__ import (
     _reporter,
     SQL,
     _price,
     _outputfile,
+    _wgi,
     outputDF,
     regionslist,
     logging)
 
-from core import (
+from .core import (
     regions,
     COMTRADE_API,
     InputTrade,
@@ -22,7 +23,7 @@ from core import (
     GeoPolRisk,
     
     )
-import itertools, sqlite3, pandas as pd
+import itertools, sqlite3, pandas as pd, time
 
 
 
@@ -30,13 +31,12 @@ def convertCodes(resource, country, direction):
     if direction == 1:
         ISO, HS = [], []
         for i in resource:
-            HS.append(_price.iloc[_price.id.to_list().index(resource),1])
+            HS.append(_price.iloc[_price.id.to_list().index(resource),26])
         for i in country:
-            ISO.append(_reporter.ISO.to_list()[_reporter.Country.to_list().index(i)])
-            
+            ISO.append(_reporter.ISO.to_list()[_reporter.Country.to_list().index(i)])            
         return HS,ISO
     if direction == 2:
-        HS = _price.iloc[_price.hs.to_list().index(resource),0]
+        HS = _price.iloc[_price.hs.to_list().index(resource),25]
         ISO = _reporter.Country.to_list()[_reporter.ISO.to_list().index(country)]
         return HS,ISO
 
@@ -44,6 +44,7 @@ def sqlverify(*args):
     resource, country, year, recyclingrate, scenario = args[0], args[1], args[2], args[3], args[4] 
     sqlstatement = "SELECT geopolrisk, hhi, wta, geopol_cf FROM recordData WHERE country = '"+country+"' AND resource= '"+resource+"' AND year = '"+str(year)+"' AND recycling_rate = '"+str(recyclingrate)+"' AND scenario = '"+str(scenario)+"';"
     row = SQL(sqlstatement, SQL = 'select')
+    logging.debug(sqlstatement)
     if not row:
         return None
     else: 
@@ -51,6 +52,19 @@ def sqlverify(*args):
         return True
 
 
+def recorddata(*args):
+    resource, country, year, recyclingrate, scenario, GPRS, CF, HHI, WTA, HSCODE, ISO = args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7],args[8], args[9], args[10] 
+    sqlstatement = "INSERT INTO recordData (country, resource, year, recycling_rate, scenario, geopolrisk, hhi, wta, geopol_cf, resource_hscode, iso) VALUES ('"\
+                 ""+country+"','"+resource+"','"+str(year)+""\
+                 "','"+str(recyclingrate)+"','"+str(scenario)+"','"\
+                 ""+str(GPRS)+"','"+str(HHI)+"','"+str(WTA)+""\
+                 "','"+str(CF)+"','"+str(HSCODE)+"','"+str(ISO)+""\
+                 "');"
+    try:
+        row = SQL(sqlstatement, SQL = 'execute')
+        return True
+    except Exception as e:
+        logging.debug(e)
 
 
 
@@ -60,8 +74,9 @@ def gprs_comtrade(resourcelist, countrylist, yearlist, recyclingrate, scenario):
     for I in itertools.product(resourcelist, countrylist, yearlist):
         resource, country = convertCodes(I[0], I[1], 2)
         verify = sqlverify(resource, country, I[2], recyclingrate, scenario)
-        if verify is not None:
-            
+        logging.debug(verify)
+        if verify is None:
+            time.sleep(5)
             counter  += 1
             totalcounter += 1
             
@@ -75,12 +90,19 @@ def gprs_comtrade(resourcelist, countrylist, yearlist, recyclingrate, scenario):
             scenario = scenario)
             if TradeData[0] is None:
                 emptycounter += 1
-            AVGPrice = _price[str(I[2])].tolist()[_price.hs.to_list().index(I[0])]
-            X = productionQTY(resource, country)
-            Y = WTA_calculation(str(I[2]), TradeData = TradeData)
-            
-            HHI, WTA, Risk, CF = GeoPolRisk(X, Y, str(I[2]), AVGPrice)
+            try:
+                AVGPrice = _price[str(I[2])].tolist()[_price.hs.to_list().index(I[0])]
+                X = productionQTY(resource, country)
+                Y = WTA_calculation(str(I[2]), TradeData = TradeData, PIData = _wgi, scenario = scenario, recyclingrate = recyclingrate)
+                
+                HHI, WTA, Risk, CF = GeoPolRisk(X, Y, str(I[2]), AVGPrice)
+            except Exception as e:
+                logging.debug(e)
+                logging.debug("The resource is {}".format(resource))
+                logging.debug("The country and year are {} {}".format(country, I[2]))
+                raise ValueError
             outputDF.loc[len(outputDF)] = [str(I[2]), resource, country ,recyclingrate, scenario, Risk, CF, HHI, WTA]
+            recorddata(resource, country, I[2], recyclingrate, scenario, Risk, CF, WTA, HHI, I[0], I[1])
         else:
             logging.debug("No transaction has been made. "
                           "Preexisting data has been inserted in output file.")
@@ -114,7 +136,7 @@ def gprs_regional(resourcelist, countrylist, yearlist, recyclingrate, scenario):
             for k in countrylist:
                 resource, country = convertCodes(I[0], k, 2)
                 verify = sqlverify(resource, country, I[1], recyclingrate, scenario)
-                if verify is not None:
+                if verify is None:
                     TradeData = COMTRADE_API(classification = "HS",
                     period = I[1],
                     partner = "all",
@@ -175,6 +197,7 @@ def gprs_organization(resourcelist, countrylist, yearlist, recyclingrate, scenar
                 except Exception as e:
                     logging.debug(e)
             AVGPrice = _price[str(I[1])].tolist()[_price.hs.to_list().index(i)]
+            
             Y = WTA_calculation(str(I[1]), TradeData = TradeData)
             HHI, WTA, Risk, CF = GeoPolRisk([X[0], TotalDomesticProduction, X[2]], Y, str(I[1]), AVGPrice)
             outputDF.loc[len(outputDF)] = [str(I[1]), resource, l ,recyclingrate, scenario, Risk, CF, HHI, WTA]

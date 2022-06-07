@@ -18,7 +18,7 @@
 import sqlite3, pandas as pd, getpass, logging, os, json #,shutil
 from datetime import datetime
 from pathlib import Path
-from warningsgprs import InputError
+from .Exceptions.warningsgprs import InputError
 
 logging = logging
 __all__ = ["core", "operations", "gcalc", "plots"]
@@ -29,6 +29,38 @@ __data__ = "30 March 2022"
 
 hard_dependencies = ("pandas", "logging", "urllib", "functools")
 missing_dependencies = []
+
+#Defining select/execute functions
+def SQL(sqlstatement, SQL = 'select' ):
+    output = None
+    file = _outputfile+'/datarecords.db'
+    #logging.debug(file)
+    #logging.debug(_outputfile)
+    try:
+        connect = sqlite3.connect(file)
+        cursor = connect.cursor()  
+        if SQL == 'select':
+            cursor.execute(sqlstatement)
+            output = cursor.fetchall()
+            connect.commit()
+            connect.close()
+            return output
+        elif SQL == 'execute': 
+            cursor.execute(sqlstatement)
+            output = None
+            connect.commit()
+            connect.close()
+            return output
+        else:
+            print("Unknown SQL operation requested")
+            logging.debug(sqlstatement)
+            raise InputError
+    except Exception as e:
+        logging.debug(e)
+        connect.commit()
+        connect.close()
+        logging.debug('Datarecords database not found')
+        return output
 
 for dependency in hard_dependencies:
     try:
@@ -46,12 +78,8 @@ del hard_dependencies, dependency, missing_dependencies
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 
-
-
-FILES = {"commodity":dir_path+"./lib/commodityHS.json","production":dir_path+"./lib/Production.xlsx",
-          "reporter":dir_path+"./lib/reporterISO.json","wgi":dir_path+"./lib/wgi.json", "yearly":dir_path+"./lib/yearlyAVGprice.json"}
-
-
+FILES = {"commodity":os.path.join(dir_path,'../lib/commodityHS.json'),"production": os.path.join(dir_path, r'../lib/Production.xlsx'),
+          "reporter":os.path.join(dir_path,'../lib/reporterISO.json'),"wgi": os.path.join(dir_path,'../lib/wgi.json'), "yearly":os.path.join(dir_path,'../lib/yearlyAVGprice.json')}
 
 
 #Test fail variables
@@ -159,27 +187,7 @@ _production = FILES["production"]
 SQL select method. This program is used
 only to pull records (ONLY SELECT STATEMENT)
 """
-#Defining select/execute functions
-def SQL(sqlstatement, SQL = 'select' ):
-    
-    try:
-        connect = sqlite3.connect(_outputfile+"/datarecords.db")
-        cursor = connect.cursor()  
-        if SQL == 'select':
-            cursor.execute(sqlstatement)
-            output = cursor.fetchall()
-        elif SQL == 'execute': 
-            cursor.execute(sqlstatement)
-            output = None
-        else:
-            print("Unknown SQL operation requested")
-            logging.debug(sqlstatement)
-            raise InputError
-    except:
-        connect.commit()
-        connect.close()
-        logging.debug('Datarecords database not found')
-        return output
+
 
 regionslist = {}
 
@@ -202,3 +210,5 @@ try:
     SQL(sqlstatement,SQL='execute')
 except Exception as e:
     logging.debug(e)
+
+
