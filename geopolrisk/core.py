@@ -23,10 +23,7 @@ from .__init__ import (
     _reporter,
     regionslist,
     logging)
-from .Exceptions.warningsgprs import (
-    IncompleteProcessFlow,
-    InputError,
-    APIError)
+from .Exceptions.warningsgprs import *
 #Define Paths
 tradepath = None
 
@@ -54,6 +51,9 @@ def settradepath(path):
     try:
         with open(tradepath) as openfile:
             pd.read_excel(openfile)
+    except FileNotFoundError:
+        tradepath = None
+        raise FileNotFoundError
     except Exception as e:
         logging.debug(e)
         tradepath = None
@@ -81,7 +81,8 @@ def regions(*args):
     if len(args) != 0:
         for key, value in args[0].items():
             if type(key) is not str and type(value) is not list:
-                raise InputError("Inputs does not match the required format")
+                logging.debug("Dictionary input to regions does not match required type.")
+                raise InputError
                 return None
             Print_Error = [x for x in value if str(x) not
                            in _reporter.Country.to_list() and str(x) not 
@@ -92,14 +93,14 @@ def regions(*args):
                               " found in the ISO list {}. "
                               "Please conform with the ISO list or use"
                               " 3 digit ISO country codes.".format(Print_Error))
-                raise InputError("Countries in the list does not match ISO naming standards: "
-                                 "Please refer to documentation.")
+                raise InputError
                 return None
             else:
                 regionslist[key] = value
     for i in _reporter.Country.to_list():
         if i in regionslist.keys():
-            raise InputError("Country or region already exists cannot overwrite.")
+            logging.debug("Country or region already exists cannot overwrite.")
+            raise InputError
             return None
         regionslist[i] = [i]
 
@@ -120,10 +121,13 @@ def COMTRADE_API(
     scenario = 0
     ):
     
-    _request = "https://comtrade.un.org/api/get?max=50000&type=C&freq=A&px="\
+    try:
+        _request = "https://comtrade.un.org/api/get?max=50000&type=C&freq=A&px="\
         ""+classification+"&ps="+str(period)+"&r="+str(reporter)+"&p="\
         ""+str(partner)+"&cc="+str(HSCode)+"&rg="+TradeFlow+"&fmt=json"
-    
+    except Exception as e:
+        logging.debug(e)
+        raise InputError
     
     # # Section 3.1 connects to the COMTRADE API using the requests method of urlopen library.
     # The user must provide inputs to all of the non-default arguments for most
@@ -143,7 +147,7 @@ def COMTRADE_API(
     except Exception as e:
         logging.debug(_request)
         logging.debug(e)
-        raise APIError("Unable to access COMTRADE api. Refer to geopolrisk.logs")
+        raise APIError
         return None
     
     #3.2 Section to read the request result
@@ -151,14 +155,16 @@ def COMTRADE_API(
         elevations = response.read()
     except Exception as e:
         logging.debug(e)
-        raise APIError("Unable to read API data. Refer to geopolrisk.logs")
+        raise APIError
+        return None
     
     try:
         data = json.loads(elevations)
         data = pd.json_normalize(data['dataset'])
     except Exception as e:
         logging.debug(e)
-        raise APIError("Error reading the API results")
+        raise APIError
+        return None
     
     #3.3 Section to extract the results to variables 
     
@@ -171,8 +177,9 @@ def COMTRADE_API(
         
         TradeData = [code, countries, quantity]
     else:
-        logging.debug("API returned empty dataframe")
         logging.debug(_request)
+        logging.debug("API returned empty dataframe")
+        
         TradeData = [None, None, None]
     
     return TradeData
@@ -194,7 +201,6 @@ def InputTrade(sheetname = None):
     
     #4.1 Section to validate the path to trade file
     if trade_path == None:
-        raise InputError
         raise IncompleteProcessFlow
         return None
     else:
@@ -207,16 +213,18 @@ def InputTrade(sheetname = None):
                 data = pd.read_excel(trade_path, sheet_name=sheetname)
             except Exception as e:
                 logging.debug(e)
-                raise IncompleteProcessFlow
+                raise FileNotFoundError
+                return None
         elif Path(trade_path).suffix == ".csv":
             try:
                 data = pd.read_csv(trade_path)
             except Exception as e:
                 logging.debug(e)
-                raise IncompleteProcessFlow
+                raise FileNotFoundError
+                return None
         else:
             logging.debug(Path(trade_path).suffix)
-            raise InputError
+            raise FileNotFoundError
             return None
         
         
@@ -239,11 +247,6 @@ def InputTrade(sheetname = None):
                 code = data.ptCode.to_list()
                 countries = data.ptTitle.to_list()
                 quantity = data.TradeQuantity.to_list()
-                
-                
-                #The extrated data is returned as a list
-                
-                
                 TradeData = [code, countries, quantity]
             else:
                 TradeData = [None, None, None]
@@ -276,8 +279,6 @@ def WTA_calculation(period, TradeData = None, PIData = None,
         for i,n in enumerate(quantity):
             if n == None:
                 quantity[i] = 0
-                
-
         reducedmass, totalreduce = 0, 0
 
         #1.2 Section to calculate the numerator and trade total
@@ -286,6 +287,7 @@ def WTA_calculation(period, TradeData = None, PIData = None,
             PI_year = [str(i) for i in PIData.Year.to_list()]
         except Exception as e:
             logging.debug(e)
+            raise Exception
             return None
         try:    
             index = PI_year.index(period)
@@ -295,7 +297,7 @@ def WTA_calculation(period, TradeData = None, PIData = None,
                     PI_score.append(PIData[str(i)].tolist()[index])
         except Exception as e:
             logging.debug(e)
-            raise APIError
+            raise CalculationError
             return None
                 
         
@@ -318,7 +320,7 @@ def WTA_calculation(period, TradeData = None, PIData = None,
                 _reduce = [i for i, x in enumerate(PI_score) if x == _minscore]
         except Exception as e:
             logging.debug(e)
-            raise APIError
+            raise CalculationError
             return None
         try:
             for i in _reduce:
@@ -327,7 +329,7 @@ def WTA_calculation(period, TradeData = None, PIData = None,
                 totalreduce += reducedmass
         except Exception as e:
             logging.debug(e)
-            raise APIError
+            raise CalculationError
             return None
         
     
@@ -341,14 +343,13 @@ def WTA_calculation(period, TradeData = None, PIData = None,
         except TypeError as e:
             logging.debug(e)
             logging.debug("The Comtrade API is broken")
-            raise APIError
+            raise CalculationError
         try:
             numerator = sum(wgiavg)
             tradetotal = sum(quantity)
         except Exception as e:
             logging.debug(e)
-            raise APIError
-        WTA_calculation.called = True
+            raise CalculationError
         return numerator, tradetotal
     else:
         return 0, 0
@@ -368,7 +369,7 @@ def productionQTY(Resource, EconomicUnit):
     except Exception as e:
         logging.debug(e)
         logging.warning("There was an error while acessing the production data file with an exception as ", exc_info = True)
-        raise InputError
+        raise FileNotFoundError
         return None
 
     #P2. Fetching the production quantity from 'prod' dataframe. 
@@ -387,6 +388,7 @@ def productionQTY(Resource, EconomicUnit):
                 Prod_Qty = temp
     except Exception as e:
         logging.debug(e)
+        raise CalculationError
         return None
     #logging.debug("The following will be the list of data", "This is the country "+str(i), "Next should be the list ",str(self.Prod_Qty))
    
@@ -401,9 +403,8 @@ def productionQTY(Resource, EconomicUnit):
         HHI = [round(i,3) for i in hhi]
     except Exception as e:
         logging.debug(e)
+        raise CalculationError
         return None
-    
-    productionQTY.called = True
     return [HHI, Prod_Qty, Prod_Year]
 
 def GeoPolRisk(ProductionData, WTAData, Year, AVGPrice):
@@ -411,23 +412,26 @@ def GeoPolRisk(ProductionData, WTAData, Year, AVGPrice):
     HHI = ProductionData[0][Index]
     PQT = ProductionData[0][0]
     try:
-        if isinstance(AVGPrice, (int, float)):
+        if isinstance(AVGPrice, (int, float)) and WTAData[1] != 0:
             WTA = (WTAData[0]/ (WTAData[1]+PQT))
             GeoPolRisk = HHI * WTA
             GeoPolCF = GeoPolRisk * AVGPrice
-        else:
+        elif WTAData[1] != 0:
             WTA = (WTAData[0]/ (WTAData[1]+PQT))
             GeoPolRisk = HHI * WTA
             GeoPolCF = "NA"
-            raise InputError("Price not found")
+        else:
+            WTA = 0
+            GeoPolRisk = 0
+            GeoPolCF = 0
+            logging.debug("WTA has returned 0")
     except Exception as e:
         logging.debug(e)
         logging.debug("The Weighted Trade average value is {}".format(WTA))
         logging.debug("The HHI value is {}".format(HHI))
         logging.debug("The GeoPolRisk is {}".format(GeoPolRisk))
         logging.debug("The AVGPrice is {}".format(AVGPrice))
-        
-    
-    
+        raise CalculationError
+        return None
     return [HHI, WTA, GeoPolRisk, GeoPolCF]
     

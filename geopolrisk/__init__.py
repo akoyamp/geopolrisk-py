@@ -18,14 +18,14 @@
 import sqlite3, pandas as pd, getpass, logging, os, json #,shutil
 from datetime import datetime
 from pathlib import Path
-from .Exceptions.warningsgprs import InputError
+from .Exceptions.warningsgprs import *
 
 logging = logging
 __all__ = ["core", "operations", "gcalc", "plots"]
 __author__ = "Anish Koyamparambath <CyVi- University of Bordeaux>"
-__status__ = "remodel"
-__version__ = "1.5"
-__data__ = "30 March 2022"
+__status__ = "beta"
+__version__ = "2.0"
+__data__ = "10 June 2022"
 
 hard_dependencies = ("pandas", "logging", "urllib", "functools")
 missing_dependencies = []
@@ -60,6 +60,7 @@ def SQL(sqlstatement, SQL = 'select' ):
         connect.commit()
         connect.close()
         logging.debug('Datarecords database not found')
+        raise FileNotFoundError
         return output
 
 for dependency in hard_dependencies:
@@ -119,12 +120,14 @@ as declared below.
 Do not modify the path for the logs folder unless you specifically need
 it elsewhere. Modify the alert level depending on requirements for debugging. 
 """
-Filename = _logfile+'//import({:%Y-%m-%d(%H-%M-%S)}).log'.format(datetime.now())
+
+Filename = 'Log_File_{:%Y-%m-%d(%H-%M-%S)}.log'.format(datetime.now())
+
 try:
     logging.basicConfig(
     level = logging.DEBUG,
     format = '%(asctime)s | %(levelname)s | %(threadName)-10s | %(filename)s:%(lineno)s - %(funcName)20s() | %(message)s',
-    filename = Filename,
+    filename = _logfile+'/'+Filename,
     filemode = 'w'
     )
 except:
@@ -205,6 +208,7 @@ try:
     	"geopol_cf"	REAL,
     	"resource_hscode"	REAL,
     	"iso"	TEXT,
+        "log_ref" TEXT,
     	PRIMARY KEY("id")
     );""" 
     SQL(sqlstatement,SQL='execute')

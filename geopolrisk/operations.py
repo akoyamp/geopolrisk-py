@@ -12,7 +12,8 @@ from .__init__ import (
     _wgi,
     outputDF,
     regionslist,
-    logging)
+    logging,
+    Filename)
 
 from .core import (
     regions,
@@ -21,8 +22,8 @@ from .core import (
     WTA_calculation,
     productionQTY,
     GeoPolRisk,
-    
     )
+from .Exceptions.warningsgprs import *
 import itertools, sqlite3, pandas as pd, time
 
 
@@ -30,21 +31,36 @@ import itertools, sqlite3, pandas as pd, time
 def convertCodes(resource, country, direction):
     if direction == 1:
         ISO, HS = [], []
-        for i in resource:
-            HS.append(_price.iloc[_price.id.to_list().index(resource),26])
-        for i in country:
-            ISO.append(_reporter.ISO.to_list()[_reporter.Country.to_list().index(i)])            
+        try:
+            for i in resource:
+                HS.append(_price.iloc[_price.id.to_list().index(resource),26])
+            for i in country:
+                ISO.append(_reporter.ISO.to_list()[_reporter.Country.to_list().index(i)]) 
+        except Exception as e:
+            logging.debug(e)
+            raise CalculationError
+            return None
         return HS,ISO
     if direction == 2:
-        HS = _price.iloc[_price.hs.to_list().index(resource),25]
-        ISO = _reporter.Country.to_list()[_reporter.ISO.to_list().index(country)]
+        try:
+            HS = _price.iloc[_price.hs.to_list().index(resource),25]
+            ISO = _reporter.Country.to_list()[_reporter.ISO.to_list().index(country)]
+        except Exception as e:
+            logging.debug(e)
+            raise CalculationError
+            return None
         return HS,ISO
+
+
+
 
 def sqlverify(*args):
     resource, country, year, recyclingrate, scenario = args[0], args[1], args[2], args[3], args[4] 
     sqlstatement = "SELECT geopolrisk, hhi, wta, geopol_cf FROM recordData WHERE country = '"+country+"' AND resource= '"+resource+"' AND year = '"+str(year)+"' AND recycling_rate = '"+str(recyclingrate)+"' AND scenario = '"+str(scenario)+"';"
-    row = SQL(sqlstatement, SQL = 'select')
-    logging.debug(sqlstatement)
+    try:
+        row = SQL(sqlstatement, SQL = 'select')
+    except InputError:
+        logging.debug(sqlstatement)
     if not row:
         return None
     else: 
@@ -53,13 +69,13 @@ def sqlverify(*args):
 
 
 def recorddata(*args):
-    resource, country, year, recyclingrate, scenario, GPRS, CF, HHI, WTA, HSCODE, ISO = args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7],args[8], args[9], args[10] 
-    sqlstatement = "INSERT INTO recordData (country, resource, year, recycling_rate, scenario, geopolrisk, hhi, wta, geopol_cf, resource_hscode, iso) VALUES ('"\
+    resource, country, year, recyclingrate, scenario, GPRS, CF, HHI, WTA, HSCODE, ISO, Log= args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7],args[8], args[9], args[10], args[11] 
+    sqlstatement = "INSERT INTO recordData (country, resource, year, recycling_rate, scenario, geopolrisk, hhi, wta, geopol_cf, resource_hscode, iso, log_ref) VALUES ('"\
                  ""+country+"','"+resource+"','"+str(year)+""\
                  "','"+str(recyclingrate)+"','"+str(scenario)+"','"\
                  ""+str(GPRS)+"','"+str(HHI)+"','"+str(WTA)+""\
-                 "','"+str(CF)+"','"+str(HSCODE)+"','"+str(ISO)+""\
-                 "');"
+                 "','"+str(CF)+"','"+str(HSCODE)+"','"+str(ISO)+"',"\
+                 "'"+str(Log)+"');"
     try:
         row = SQL(sqlstatement, SQL = 'execute')
         return True
@@ -70,43 +86,62 @@ def recorddata(*args):
 
 def gprs_comtrade(resourcelist, countrylist, yearlist, recyclingrate, scenario):
     regions()
+    
+    #Counter to calculate the number of requests sent to API. 
+    #Easier to debug the problem
     counter, totalcounter, emptycounter = 0, 0, 0
+    
+    #Iterate for each value in each list
     for I in itertools.product(resourcelist, countrylist, yearlist):
-        resource, country = convertCodes(I[0], I[1], 2)
-        verify = sqlverify(resource, country, I[2], recyclingrate, scenario)
-        logging.debug(verify)
-        if verify is None:
-            time.sleep(5)
-            counter  += 1
-            totalcounter += 1
+        totalcounter += 1
+        #Need to verify if the data preexists to avoid limited API calls
+        try:
+            resource, country = convertCodes(I[0], I[1], 2)
+            verify = sqlverify(resource, country, I[2], recyclingrate, scenario)
+        except Exception as e:
+            logging.debug(e)    
+            logging.debug(verify)
             
-            TradeData = COMTRADE_API(classification = "HS",
-            period = I[2],
-            partner = "all",
-            reporter = I[1],
-            HSCode = I[0],
-            TradeFlow = "1",
-            recyclingrate = recyclingrate,
-            scenario = scenario)
-            if TradeData[0] is None:
-                emptycounter += 1
+            
+        if verify is None:
+            #The program has to sleep inorder to avoid conflict in multiple API requests
+            time.sleep(5)
+            try:
+                counter  += 1
+                TradeData = COMTRADE_API(classification = "HS",
+                period = I[2],
+                partner = "all",
+                reporter = I[1],
+                HSCode = I[0],
+                TradeFlow = "1",
+                recyclingrate = recyclingrate,
+                scenario = scenario)
+            except APIError as e:
+                logging.debug(e)
+                counter -= 1
+                break
+            
+            #From the core methods, TradeData is None only when the dataframe is empty
+            emptycounter += 1 if TradeData[0] is None else emptycounter
+            
             try:
                 AVGPrice = _price[str(I[2])].tolist()[_price.hs.to_list().index(I[0])]
                 X = productionQTY(resource, country)
                 Y = WTA_calculation(str(I[2]), TradeData = TradeData, PIData = _wgi, scenario = scenario, recyclingrate = recyclingrate)
-                
                 HHI, WTA, Risk, CF = GeoPolRisk(X, Y, str(I[2]), AVGPrice)
+            
             except Exception as e:
                 logging.debug(e)
                 logging.debug("The resource is {}".format(resource))
                 logging.debug("The country and year are {} {}".format(country, I[2]))
-                raise ValueError
+                continue
+                
             outputDF.loc[len(outputDF)] = [str(I[2]), resource, country ,recyclingrate, scenario, Risk, CF, HHI, WTA]
-            recorddata(resource, country, I[2], recyclingrate, scenario, Risk, CF, WTA, HHI, I[0], I[1])
+            recorddata(resource, country, I[2], recyclingrate, scenario, Risk, CF, WTA, HHI, I[0], I[1], Filename)
         else:
             logging.debug("No transaction has been made. "
                           "Preexisting data has been inserted in output file.")
-            counter -= 1
+            
             
     endlog(counter, totalcounter, emptycounter)
 

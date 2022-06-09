@@ -22,3 +22,8 @@ class IncompleteProcessFlow(Exception):
 
 class InputError(Exception):
     pass
+
+class CalculationError(Exception):
+    pass
+class HTTPError(Exception):
+    pass
