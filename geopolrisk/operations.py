@@ -85,7 +85,10 @@ def recorddata(*args):
 
 
 def gprs_comtrade(resourcelist, countrylist, yearlist, recyclingrate, scenario):
-    regions()
+    if len(regionslist) > 0:
+        pass
+    else:
+        regions()
     
     #Counter to calculate the number of requests sent to API. 
     #Easier to debug the problem
