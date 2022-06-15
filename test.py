@@ -5,7 +5,7 @@ Created on Sat May 28 03:00:24 2022
 @author: anish
 """
 
-from geopolrisk.operations import gprs_comtrade
+from geopolrisk.operations import update_cf
 import time
 
 ListofMetals = [2602, 2601, 2603, 2511, 8106, 7108, 2613, 2604, 2608, 8107,
@@ -16,12 +16,13 @@ ListofCountries = [36, 124, 97, 251, 276, 392, 826, 842,] #
 Year = [2002, 2003,  2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017]#,
 
 
-for i in range(100):
-    try:
-        gprs_comtrade(ListofMetals, ListofCountries, Year, 0, 0)
-    except Exception as e:
-        print(e)
-        continue
-    time.sleep(3600)
+# for i in range(100):
+#     try:
+#         gprs_comtrade(ListofMetals, ListofCountries, Year, 0, 0)
+#     except Exception as e:
+#         print(e)
+#         continue
+#     time.sleep(3600)
 
 
+update_cf()

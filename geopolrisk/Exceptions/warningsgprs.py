@@ -27,3 +27,6 @@ class CalculationError(Exception):
     pass
 class HTTPError(Exception):
     pass
+
+class DataRecordError(Exception):
+    pass

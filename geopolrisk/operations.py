@@ -82,9 +82,32 @@ def recorddata(*args):
     except Exception as e:
         logging.debug(e)
 
+def updatedata(*args):
+    #Verify
+    resource, country, year, recyclingrate, scenario = args[0], args[1], args[2], args[3], args[4]
+    GPRS, CF, HHI, WTA, Log = args[5], args[6], args[7], args[8], args[9]
+    sqlstatement = "SELECT geopolrisk, hhi, wta, geopol_cf from "\
+                    "recordData WHERE country = '"+country+"' AND resource= '"+resource+"' AND year = '"+str(year)+"' AND recycling_rate = '"+str(recyclingrate)+"' AND scenario = '"+str(scenario)+"';"
+    row = SQL(sqlstatement)
+    dataframe = pd.DataFrame(row, columns = ["geopolrisk", "hhi", "wta", "geopol_cf"])
+    if dataframe.shape[0]>2:
+        logging.debug("Multiple data records found!")
+        raise DataRecordError
+        return None
+    elif dataframe.shape[0]>2:
+        logging.debug("No data records found!")
+        raise DataRecordError
+        return None
+    else:
+        if int(dataframe.iloc[0]['wta']) == int(WTA):
+            logging.debug("NO change in trade data detected! No SQL executed.")
+            return None
+        else:
+            sqlstatement = "UPDATE recordData SET hhi= '"+str(HHI)+"', wta ='"+str(WTA)+"', geopolrisk='"+str(GPRS)+"', geopol_cf= '"+str(CF)+"', log_ref='"+str(Log)+"' WHERE country = '"+country+"' AND resource= '"+resource+"' AND year = '"+str(year)+"' AND recycling_rate = '"+str(recyclingrate)+"' AND scenario = '"+str(scenario)+"';"
+            norow = SQL(sqlstatement, SQL='execute')
+            logging.debug("Database update sucessfully!")
 
-
-def gprs_comtrade(resourcelist, countrylist, yearlist, recyclingrate, scenario):
+def gprs_comtrade(resourcelist, countrylist, yearlist, recyclingrate, scenario, database="record"):
     if len(regionslist) > 0:
         pass
     else:
@@ -106,7 +129,7 @@ def gprs_comtrade(resourcelist, countrylist, yearlist, recyclingrate, scenario):
             logging.debug(verify)
             
             
-        if verify is None:
+        if verify is None or database == "update":
             #The program has to sleep inorder to avoid conflict in multiple API requests
             time.sleep(5)
             try:
@@ -140,7 +163,11 @@ def gprs_comtrade(resourcelist, countrylist, yearlist, recyclingrate, scenario):
                 continue
                 
             outputDF.loc[len(outputDF)] = [str(I[2]), resource, country ,recyclingrate, scenario, Risk, CF, HHI, WTA]
-            recorddata(resource, country, I[2], recyclingrate, scenario, Risk, CF, WTA, HHI, I[0], I[1], Filename)
+            if database == "record":
+                recorddata(resource, country, I[2], recyclingrate, scenario, Risk, CF, HHI, WTA, I[0], I[1], Filename)
+            elif database == "update":
+                updatedata(resource, country, I[2], recyclingrate, scenario, Risk, CF, HHI, WTA, Filename)
+                pass
         else:
             logging.debug("No transaction has been made. "
                           "Preexisting data has been inserted in output file.")
@@ -164,14 +191,14 @@ def gprs_regional(resourcelist, countrylist, yearlist, recyclingrate, scenario):
         countrylist = regionslist[l]
         _ignore, countrylist = convertCodes([], countrylist, 1)
         for I in itertools.product(resourcelist, yearlist):
-            
-            counter  += 1
-            totalcounter += 1
-            
             newcodelist, newcountrylist, newquantitylist = [], [], []
             newtradelist = [newcodelist, newcountrylist, newquantitylist]
             TotalDomesticProduction = 0
             for k in countrylist:
+                counter  += 1
+                totalcounter += 1
+                
+                
                 resource, country = convertCodes(I[0], k, 2)
                 verify = sqlverify(resource, country, I[1], recyclingrate, scenario)
                 if verify is None:
@@ -239,6 +266,31 @@ def gprs_organization(resourcelist, countrylist, yearlist, recyclingrate, scenar
             Y = WTA_calculation(str(I[1]), TradeData = TradeData)
             HHI, WTA, Risk, CF = GeoPolRisk([X[0], TotalDomesticProduction, X[2]], Y, str(I[1]), AVGPrice)
             outputDF.loc[len(outputDF)] = [str(I[1]), resource, l ,recyclingrate, scenario, Risk, CF, HHI, WTA]
+
+
+
+
+def update_cf():
+    #Fetch Missing Data
+    sqlstatement = "SELECT resource_hscode, year, iso, geopol_cf FROM recordData WHERE "\
+                    " wta = '0';"
+    row = SQL(sqlstatement)
+    df = pd.DataFrame(row, columns = ['HS Code', 'Year', 'Country Alpha', 'Characterziation Factors'])
+    logging.debug("Update of database! The shape of df is "+str(df.shape[0]))
+    if df.shape[0] > 0:
+        Year = [int(i) for i in df.Year.to_list()]
+        ISO = [int(i) for i in df['Country Alpha'].tolist()]
+        HS = [int(i) for i in df['HS Code'].tolist()]
+    else:
+        logging.debug("No updates required!")
+        return None
+    try:
+        gprs_comtrade(HS,ISO,Year,0,0, database="update")
+    except Exception as e:
+        logging.debug(e)
+        
+    
+
 
 """
 End of script logging and exporting database to specified format. End log 
