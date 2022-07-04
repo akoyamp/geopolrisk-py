@@ -313,14 +313,14 @@ def updateprice():
     else:
         logging.debug("No updates required!")
         return None
-    for I in itertools.product(HS, ISO, Year):
-        AVGPrice = _price[str(I[2])].tolist()[_price.hs.to_list().index(I[0])]             
+    for i, n in enumerate(HS):
+        AVGPrice = _price[str(Year[i])].tolist()[_price.hs.to_list().index(n)]             
         if isinstance(AVGPrice, (int, float)):
-            index = ISO.index(I[1])
+            index = ISO.index(ISO[i])
             CF = float(GPRS[index])*AVGPrice
-            sqlstatement = "UPDATE recordData SET geopol_cf= '"+str(CF)+"', log_ref='"+str(Filename)+"' WHERE iso = '"+str(I[1])+"' AND resource_hscode= '"+str(I[0])+"' AND year = '"+str(I[2])+"' AND recycling_rate = '0' AND scenario = '0';"
+            sqlstatement = "UPDATE recordData SET geopol_cf= '"+str(CF)+"', log_ref='"+str(Filename)+"' WHERE iso = '"+str(ISO[i])+"' AND resource_hscode= '"+str(n)+"' AND year = '"+str(Year[i])+"' AND recycling_rate = '0' AND scenario = '0';"
             norow = SQL(sqlstatement, SQL='execute')
-            logging.debug("Database update sucessfully!")
+            logging.debug(f"Database update sucessfully! for {n} for {Year[i]}")
 
 """
 End of script logging and exporting database to specified format. End log 
