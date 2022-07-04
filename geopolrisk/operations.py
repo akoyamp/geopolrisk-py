@@ -153,13 +153,11 @@ def gprs_comtrade(resourcelist, countrylist, yearlist, recyclingrate, scenario, 
             
             #From the core methods, TradeData is None only when the dataframe is empty
             emptycounter += 1 if TradeData[0] is None else emptycounter
-            
             try:
                 AVGPrice = _price[str(I[2])].tolist()[_price.hs.to_list().index(I[0])]
                 X = productionQTY(resource, country)
                 Y = WTA_calculation(str(I[2]), TradeData = TradeData, PIData = _wgi, scenario = scenario, recyclingrate = recyclingrate)
                 HHI, WTA, Risk, CF = GeoPolRisk(X, Y, str(I[2]), AVGPrice)
-            
             except Exception as e:
                 logging.debug(e)
                 logging.debug("The resource is {}".format(resource))

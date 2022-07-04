@@ -310,15 +310,34 @@ def WTA_calculation(period, TradeData = None, PIData = None,
         # country. The following code intends to manipulate the trade data to incorporate
         # the domestic recycling.
         
+    
         #Recyclability factor of GeoPolRisk
-        _maxscore = max(PI_score)
-        _minscore = min(PI_score)
+        
+        if recyclingrate >1 and recyclingrate < 100:
+            recyclingrate = recyclingrate/100
         if scenario == 0:
             recyclingrate = 0
             scenario = 1
+        
+        
+        totQ = sum(quantity)
+        CombinedQ = zip(PI_score, quantity)
+        
+        def redistribution():
+            pass
         try:
             if scenario == 1:
-                _reduce = [i for i, x in enumerate(PI_score) if x == _maxscore]
+                CombinedQ.sort(reverse = True)
+                temp, index = 0, 0
+                for i , (X, Y) in enumerate(CombinedQ):
+                    temp += X
+                    if temp > totQ:
+                        index = i
+                        break
+                tempQ = [y for x, y in CombinedQ]
+                for j in range(i):
+                    
+                    
             elif scenario == 2:
                 _reduce = [i for i, x in enumerate(PI_score) if x == _minscore]
         except Exception as e:
@@ -363,8 +382,8 @@ def WTA_calculation(period, TradeData = None, PIData = None,
 
 
 def productionQTY(Resource, EconomicUnit):
+    EconomicUnit = "EU" if EconomicUnit == "European Union" else EconomicUnit
     EconomicUnit = regionslist[EconomicUnit]
-    
     try:
         x = pd.read_excel(_production, sheet_name = Resource)
         prod = pd.DataFrame(x)
@@ -413,7 +432,7 @@ def productionQTY(Resource, EconomicUnit):
 def GeoPolRisk(ProductionData, WTAData, Year, AVGPrice):
     Index = ProductionData[2].index(int(Year))
     HHI = ProductionData[0][Index]
-    PQT = ProductionData[0][0]
+    PQT = ProductionData[0][0]*1000
     try:
         if isinstance(AVGPrice, (int, float)) and WTAData[1] != 0:
             WTA = (WTAData[0]/ (WTAData[1]+PQT))
