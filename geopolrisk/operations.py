@@ -10,7 +10,6 @@ from .__init__ import (
     _price,
     _outputfile,
     _wgi,
-    outputDF,
     regionslist,
     logging,
     Filename)
@@ -26,6 +25,11 @@ from .core import (
 from .Exceptions.warningsgprs import *
 import itertools, sqlite3, pandas as pd, time
 
+_columns = ["Year", "Resource", "Country","Recycling Rate",
+            "Recycling Scenario", "Risk","GeoPolRisk Characterization Factor",
+            "HHI", "Weighted Trade AVerage"]
+outputList = []
+
 
 
 def convertCodes(resource, country, direction):
@@ -33,7 +37,7 @@ def convertCodes(resource, country, direction):
         ISO, HS = [], []
         try:
             for i in resource:
-                HS.append(_price.iloc[_price.id.to_list().index(resource),26])
+                HS.append(_price.iloc[_price.id.to_list().index(i),26])
             for i in country:
                 ISO.append(_reporter.ISO.to_list()[_reporter.Country.to_list().index(i)]) 
         except Exception as e:
@@ -63,8 +67,8 @@ def sqlverify(*args):
         logging.debug(sqlstatement)
     if not row:
         return None
-    else: 
-        outputDF.append([str(year), resource , country ,recyclingrate, scenario, row[0][0],row[0][3],row[0][1],row[0][2]])
+    else:
+        outputList.append([str(year), resource , country ,recyclingrate, scenario, row[0][0],row[0][3],row[0][1],row[0][2]])
         return True
 
 
@@ -162,7 +166,7 @@ def gprs_comtrade(resourcelist, countrylist, yearlist, recyclingrate, scenario, 
                 logging.debug("The country and year are {} {}".format(country, I[2]))
                 continue
                 
-            outputDF.loc[len(outputDF)] = [str(I[2]), resource, country ,recyclingrate, scenario, Risk, CF, HHI, WTA]
+            outputList.append([str(I[2]), resource, country ,recyclingrate, scenario, Risk, CF, HHI, WTA])
             if database == "record":
                 recorddata(resource, country, I[2], recyclingrate, scenario, Risk, CF, HHI, WTA, I[0], I[1], Filename)
             elif database == "update":
@@ -171,8 +175,9 @@ def gprs_comtrade(resourcelist, countrylist, yearlist, recyclingrate, scenario, 
         else:
             logging.debug("No transaction has been made. "
                           "Preexisting data has been inserted in output file.")
-            
-            
+    
+    outputDF = pd.DataFrame(outputList, columns=_columns)
+    outputDF.to_csv(_outputfile+'/export.csv')        
     endlog(counter, totalcounter, emptycounter)
 
 
@@ -232,8 +237,10 @@ def gprs_regional(resourcelist, countrylist, yearlist, recyclingrate, scenario):
             AVGPrice = _price[str(I[1])].tolist()[_price.hs.to_list().index(i)]
             Y = WTA_calculation(str(I[1]), TradeData = newtradelist)
             HHI, WTA, Risk, CF = GeoPolRisk([X[0], TotalDomesticProduction, X[2]], Y, str(I[1]), AVGPrice)
-            outputDF.loc[len(outputDF)] = [str(I[1]), resource, l ,recyclingrate, scenario, Risk, CF, HHI, WTA]
+            outputList.append([str(I[1]), resource, l ,recyclingrate, scenario, Risk, CF, HHI, WTA])
     
+    outputDF = pd.DataFrame(outputList, columns=_columns)
+    outputDF.to_csv(_outputfile+'/export.csv')
     endlog(counter, totalcounter, emptycounter)
     
 
@@ -265,9 +272,11 @@ def gprs_organization(resourcelist, countrylist, yearlist, recyclingrate, scenar
             
             Y = WTA_calculation(str(I[1]), TradeData = TradeData)
             HHI, WTA, Risk, CF = GeoPolRisk([X[0], TotalDomesticProduction, X[2]], Y, str(I[1]), AVGPrice)
-            outputDF.loc[len(outputDF)] = [str(I[1]), resource, l ,recyclingrate, scenario, Risk, CF, HHI, WTA]
-
-
+            outputList.append([str(I[1]), resource, l ,recyclingrate, scenario, Risk, CF, HHI, WTA])
+    
+    outputDF = pd.DataFrame(outputList, columns=_columns)
+    outputDF.to_csv(_outputfile+'/export.csv')
+    outputDF.to_csv(_outputfile+'/export.csv')
 
 
 def update_cf():
@@ -289,8 +298,29 @@ def update_cf():
     except Exception as e:
         logging.debug(e)
         
-    
-
+def updateprice():
+    logging.info("Updating the characterization prices | price")
+    sqlstatement = "SELECT resource_hscode, year, iso, geopolrisk FROM recordData WHERE "\
+                    " geopol_cf = 'NA' AND recycling_rate ='0' AND scenario ='0';"
+    row = SQL(sqlstatement)
+    df = pd.DataFrame(row, columns = ['HS Code', 'Year', 'Country Alpha', 'GeoPolRisk'])
+    logging.debug("Update of database! The shape of df is "+str(df.shape[0]))
+    if df.shape[0] > 0:
+        Year = [int(i) for i in df.Year.to_list()]
+        ISO = [int(i) for i in df['Country Alpha'].tolist()]
+        HS = [int(i) for i in df['HS Code'].tolist()]
+        GPRS = [float(i) for i in df['GeoPolRisk'].tolist()]
+    else:
+        logging.debug("No updates required!")
+        return None
+    for I in itertools.product(HS, ISO, Year):
+        AVGPrice = _price[str(I[2])].tolist()[_price.hs.to_list().index(I[0])]             
+        if isinstance(AVGPrice, (int, float)):
+            index = ISO.index(I[1])
+            CF = float(GPRS[index])*AVGPrice
+            sqlstatement = "UPDATE recordData SET geopol_cf= '"+str(CF)+"', log_ref='"+str(Filename)+"' WHERE iso = '"+str(I[1])+"' AND resource_hscode= '"+str(I[0])+"' AND year = '"+str(I[2])+"' AND recycling_rate = '0' AND scenario = '0';"
+            norow = SQL(sqlstatement, SQL='execute')
+            logging.debug("Database update sucessfully!")
 
 """
 End of script logging and exporting database to specified format. End log 
@@ -302,7 +332,7 @@ def endlog( counter=0, totalcounter=0, emptycounter=0):
     logging.debug("Number of successfull COMTRADE API attempts {}".format(counter))
     logging.debug("Number of total attempts {}".format(totalcounter))
     logging.debug("Number of empty dataframes {}".format(emptycounter))
-    outputDF.to_csv(_outputfile+'/export.csv')
+    
 
     
 """Convert entire database to required format

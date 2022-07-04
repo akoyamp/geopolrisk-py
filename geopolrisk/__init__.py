@@ -123,9 +123,10 @@ it elsewhere. Modify the alert level depending on requirements for debugging.
 
 Filename = 'Log_File_{:%Y-%m-%d(%H-%M-%S)}.log'.format(datetime.now())
 
+log_level = logging.DEBUG
 try:
     logging.basicConfig(
-    level = logging.DEBUG,
+    level = log_level,
     format = '%(asctime)s | %(levelname)s | %(threadName)-10s | %(filename)s:%(lineno)s - %(funcName)20s() | %(message)s',
     filename = _logfile+'/'+Filename,
     filemode = 'w'
@@ -182,8 +183,7 @@ if LOGFAIL != True:
         
 
 
-_columns = ["Year", "Resource", "Country","Recycling Rate","Recycling Scenario", "Risk","GeoPolRisk Characterization Factor", "HHI", "Weighted Trade AVerage"]
-outputDF = pd.DataFrame(columns = _columns)
+
 _production = FILES["production"]
 
 """

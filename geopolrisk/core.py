@@ -313,10 +313,13 @@ def WTA_calculation(period, TradeData = None, PIData = None,
         #Recyclability factor of GeoPolRisk
         _maxscore = max(PI_score)
         _minscore = min(PI_score)
+        if scenario == 0:
+            recyclingrate = 0
+            scenario = 1
         try:
-            if scenario == 0:
+            if scenario == 1:
                 _reduce = [i for i, x in enumerate(PI_score) if x == _maxscore]
-            else:
+            elif scenario == 2:
                 _reduce = [i for i, x in enumerate(PI_score) if x == _minscore]
         except Exception as e:
             logging.debug(e)
