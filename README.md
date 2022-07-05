@@ -1,188 +1,141 @@
-# The GeoPolRisk Module Documentation
+# The geopolrisk-py library documentation
+
 
 # Getting started
 ## Installing the GeoPolRisk Module
-The GeoPolRisk module is a python package that contains methods to calculate the GeoPolitical Related Supply Risk Potential of a resource for a specific macroeconomic unit during a period. To download this package, the user can use the command prompt or if they have downloaded Python using anaconda, then use anaconda prompt. Type the following to download the GeoPolRisk Module.
+The geopolrisk-py is a python library that allows the assessment of a geopolitical related supply risk of a resource from the perspective of a country/region/trade bloc/company.
+An assessment would result in two main values; GPRS - the share of commodity imports at risk (0 - 1) usefull for comparative risk assessment,
+characterization Factors for GSRP (Geopolitical supply risk potential indicator (Midpoint))
+The library is available to download using pip package manager.
 ~~~
-pip install -i https://test.pypi.org/simple/ Geopolrisk==0.8.1
+pip install -i https://test.pypi.org/simple/ Geopolrisk==1.3
 ~~~
 
 # Modules and Methods
-   ## Main module
-A module is a file containing Python definitions and statements. The file name is the module name with the suffix .py appended. A module can be imported in any python script to use the variables and methods declared within. 
+The library has following four modules preceded by an init that performs some actions required to smoothly perform a calculation.
+##__init__ module:
+    Reads static databases : resource price data, normalized governance indicator data, commodity hs codes, country iso codes
+    Creates a directory in documents folder (only for windows users): Output folder for database to record calculations and exporting results as csv, Log folder for storing logs
+    Loads several functions such as logging, sql and some global variables
+    
+## core module
+Contains functions that calculate the components of the geopolrisk method
+1. settradepath(path): To declare the path of the company trade data as an excel file. Must provide path an abosolute trade path. ex. c:/Users/UBx/Documents/tradepath.xlsx
 
-To import the methods and variables to calculate the user must import the module using the following code.
+### Format for company trade data
+Follow the format listed below:
+
+| Reporter    | ptCode      | ptTitle     | TradeQuantity    |
+| ----------- | ----------- | ----------- | ---------------- |
+| Germany     | 76          | Brazil      | 53399700         |
+| Germany     | 156         | China       | 73139615         |
+
+ptCode, ptTitle and TradeQuantity are mandatory data that needs to be in the excel file.
+ptCode: ISO 3 digit code of the country from where a resource is imported
+ptTitle: The name of the country from where a resource is imported.
+TradeQuantity: Quantity of resource imported in kilograms.
+
+2. regions(*args): Define additional regions of assessment. By default all the countries and EU is included in the database. 
+To define a new region, a dictionary must be provided with key as the name of the region and values is a list of countries in the region.
+All the values must be in string and must be exactly as in the ISO.
 ~~~
-from geopolrisk import main
-
-newclassinstance = main.operations()
-
-~~~
-geopolrisk is the name of the package that contains several modules within. One of the modules, which contain all the necessary methods, is main. Within the main module, a class named operations is instantiated in the script. 
-
-The class contains several individual methods that inherit each other. The newclassinstance can access all the methods and variables declared in the class operations to use.
-
-Note: The name newclassinstance is user-defined.
-## simplerun:
-The simplerun method is an easy guided user console input-based method. The user enters all the necessary input data in a console guided by step-by-step text.
-~~~
-from geopolrisk import main
-
-newclassinstance = main.operations()
-
-newclassinstance.simplerun()
-
+{"West Europe": ["France", "Germany", "Italy", "Spain", "Portugal", "Belgium"]}
 ~~~
 
-
-
-## totalcalculation:
-Similar to simplerun, totalcalculation is a one-stop method to calculate the GeoPolRisk value. However, the inputs for this method are not direct. Unlike simplerun, this method uses ISO codes and HS codes to define the country and resource as arguments [annexe]. For example, using the same as above, the HS code used for cobalt is 810520, and the ISO code for European Union is 97. 
-
+3. COMTRADE_API(classification = "HS", period = "2010", partner = "all", reporter = "276", HSCode = "2602", TradeFlow = "1", recyclingrate = 0, scenario = 0):
+Function to call the UN COMTRADE api for fetching the trade data.
 **Mandatory arguments:**
-
 - **period** : The year of assessment (integer)
 - **reporter**: The area of assessment (integer*: ISO code of the area [annexe])*
 - **HSCode**: The HS code of the commodity under assessment (integer)
 - **recyclingrate**: The recycling input rate of the resource (float)
 - **scenario**: Type of scenario under assessment.
-  - 0: Assessment under the worst-case scenario of recycling redistribution
+  - 0: Assessment without recycling
   - 1: Assessment under the best-case scenario of recycling redistribution.
+  - 2: Assessment under the worst-case scenario of recycling redistribution
 
 Note: The scenario does not affect the assessment if the value for recyclingrate is '0'.
 
-**Other arguments:** 
+4. InputTrade(sheetname = None): Function to calculate the trade data using specific company data.
+Function settradepath must be called to define the path of the company data.
 
-- **frequency:** Data set frequencies:
-  - A: Annual
-  - M: Monthly
-- **partner:** The area receiving the trade. The default value is 'all'. If the user wants a specific trade route, specify the ISO code of the area.
-- **Tradeflow:** The most common values are 
-  - 1: imports 
-  - 2: exports
-- **exportType:** The results of the assessment are downloaded into an output folder created in the user's documents folder. The available file format of the results are 'csv'; 'excel', 'json'.
+5. WTA_calculation(period, TradeData = None, PIData = None, scenario = 0, recyclingrate = 0.00): Function to calculate the second component of the GeoPolRisk method.
+The trade data from either the COMTRADE function or InputTrade function is required as an argument. PIData is the world governance indicator that is stored in a variable by the init module.
+However, the argument is provided in case of use of other governance indicators.
+
+6. productionQTY(Resource, EconomicUnit): Function to calculate the HHI (first component of the GeoPolRisk Method) and local production quantity. 
+Arguments required are the name of the resource (not HS code) and the economic unit (country/existing or defined regions/defined economic blocs)
+
+7. GeoPolRisk(ProductionData, WTAData, Year, AVGPrice): Function to calculate the values of the GeoPolRisk method. The ProductionData is a list of HHi and local production quantity.
+The WTAData is a list of the calculation involving trade. AVGPrice is the yearly average price of the resource. It provides a list of four values.
+[ HHI, WTA, GPRS, CF]
+
+###samplecode on how to use the functions from core module
 ~~~
-from geopolrisk import main
+from geopolrisk.assessment.core import *
+from geopolrisk.assessment.__init__ import _wgi, _price #Optional
 
-newclassinstance = main.operations()
-newclassinstance.TotalCalculation(period = 2010,reporter = 97,HSCode = 810520,recyclingrate = 0,scenario = 0,)
+Resource = "Nickel"
+HS = 2604
+Country = Germany
+ISO = 276
+Year = 2016
+
+TradeData = COMTRADE_API(classification = "HS", period = Year, partner = "all", reporter = ISO, HSCode = HS, TradeFlow = "1", recyclingrate = 0, scenario = 0)
+WTAData = WTA_calculation(period, TradeData = TradeData, PIData = _wgi, scenario = 0, recyclingrate = 0.00)
+ProductionData = productionQTY(Resource, Country)
+
+YearlyAveragePrice = 10203.98
+YearlyAveragePrice =  _price[Year].tolist()[_price.hs.to_list().index(HS)] #Optional - A database already exists that can be used to fetch the price data.
+
+GeoPolRisk(ProductionData, WTAData, Year, YearlyAveragePrice)
 
 ~~~
-This method is a calculation function that uses other methods and provides the risk value and characterization factor as an exporting file. It calls run, productionQTY, traderequest.
-## run:
-### setpath: 
-A function that sets the path of production data, trade data and worldwide governance indicator data. Any user intending to use private data, especially for trade and the indicator, can modify the arguments.
 
+## operations module:
+Contains aggregate functions to simplify assessment.
+Functions converCodes, sqlverify, recorddata, updatedata are helper methods for other aggregate functions.
+
+1. gprs_comtrade(resourcelist, countrylist, yearlist, recyclingrate, scenario, database="record"): An aggregate function for a complete geopolitical related supply risk assessment using COMTRADE database (ie at macro level).
+Instead of using the functions from the core module, a list of all the data is provided to get an output file with the results. This function records all the assessment into a database in the documents directory.
+This is to prevent repeated API calls to the COMTRADE as there is a limit to use the free API.
+This function allows to either record or update the database. Database update might be necessary in some cases where the API requests result in a null response. The function considers it as a successfull API request and stores null in the database.
 **Arguments:**
+**resourcelist**: A list of all the resources for the assessment as HS commodity codes.
+**countrylist**: A list of all the countries under assessment as 3 digit ISO codes.
+**yearlist**: A list of all the years in integers.
+**recyclingrate**: The ratio of domestic recycling of the resource (typically 0 to 1) also can provide from 0 to 100.
+**scenario**: As defined above
+**database**: Two options "record" or "update" 
 
-- **prod\_path:** The path of the production database.
-- **trade\_path:** The path of the trade database.
-- **wgi\_path:** The path of the indicator database. 
+### Example to demonstrate the use of aggregate function.
+~~~
+ListofMetals = [2602, 2601, 2603, 2846, 2614,]
+ListofCountries = [36, 124, 97, 251, 276, 392, 826, 842,] 
+ListofYear = [2017, 2018, 2019, 2020]
 
-Note: The trade\_path is currently under development in version 0.8.1.
-### regions:
-This method sets other user-defined regions required for the study that shall be used in the assessment. 
+from geopolrisk.assessment.operations import gprs_comtrade
 
-Note: This method is not yet fully implemented in version 0.8.1
-### createTable: 
-This method creates a database if the user does not possess the predefined database.
-
-The run method calls setpath, regions and createTable methods if the user has not specifically set the path for private database or has not defined any regions. 
-## traderequest:
-This method calls for the COMTRADE API and calculates the numerator of the GeoPolRisk formula. All the arguments of totalcalculation except for 'exportType' are used in this method. In addition:
-
-- ` `**classification**:  Trade data classification scheme:
-  - *HS:* goods* 
-  - EB02: *services*
-  ## productionQTY:
-productionQTY calculates the Herfindahl Hirschman Index (HHI) and total domestic production of the resource.
-
-**Arguments:**
-
-- **Element:** The resource's name for assessment (ex: 'Cobalt', 'Iron', 'Manganese').
-- **Economic Unit:** The name of the area in assessment [annexe].
-# Other Methods
-   1. ## endlog:
-This module uses error logging using a package called 'logging'. Logging files are created when the class (main) is instantiated. However, the endlog also captures the number of API requests (both successful and failed) and total requested calculation into the log file. Another important method of this method is to export the results into the requested format. The data is generally stored in a data frame 'outputDF' and exported into a specific format requested by the user. If totalcalculation is not used, the user must explicitly assign it to the variable 'outputDFType'; else, the data frame shall be exported as csv.
-
-Note: The data frame 'outputDF' is an empty data frame and does not record calculations if totalcalculation is not used. The users are free to use this variable to append necessary information. 
-## generateCF:
-A straightforward method to generate the characterization factors in a specified format. It generates a file with the entire database that also contain the characterization factors.
-
-**Arguments:**
-
-- **exportType:** Available file export types are 'csv', 'excel', 'json'.
-- **orient:** The orientation type for json. [*(json documentation)*](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_json.html)
-  1. ## Support methods (select and execute)
-The databases are stored as sqlite3 database files within the module. They are copied to the document folder for easy access and the user preference database. Generally, access to the database is by using SQL. To avoid redundancy, these methods come in handy.
-
-Note: These methods shall be depreciated in the following versions.
-# Global Variables
-   1. ## \_\_init\_\_:
-The main module instance newclassinstance creates a logging file and sets the basic configuration of the logging file, resets the API request counters and creates an empty data frame to store the results and the export type. 
-
-The calculation module requires non-variable data such as the hs codes, country names, corresponding iso codes, etc. These data are read to the script when the package is imported.
-## Variables
-Pre requires calling traderequest method
-
-- **numerator:** Product sum of the trade to its corresponding worldwide governance indicator
-- **tradetotal:** The sum of trade values of importing the resource.
-
-Pre requires calling productionQTY method
-
-- **HHI:** The Herfindahl Hirschman index [list of values for the entire available period]
-- **Prod\_Qty:** Total domestic production of the resource.
-
-Pre requires calling totalcalculation method
-
-- **WA:** The weighted trade average (second factor of the GeoPolRisk equation)
-- **GPRS:** The GeoPolRisk score of importing a resource during a period.
-- **GPSRP:** The characterization factor for the GeoPolRisk method.
-
-# Example Code
+gprs_comtrade(ListofMetals, ListofCountries, ListofYear, 0, 0)
 
 ~~~
-from geopolrisk import main
+2. gprs_regional(resourcelist, countrylist, yearlist, recyclingrate, scenario): Similar function to that of the above but for in case of newly defined regions.
 
-newclassinstance = main.operations()
+3. gprs_organization(resourcelist, countrylist, yearlist, recyclingrate, scenario, sheetname): Aggregate function using specific trade data. Additional argument is to provide the sheetname.
+The list of resources and year should match the provided trade data.
 
-newclassinstance.setpath() 
-#newclassinstance.run() Do not run this method if you have predefined data (production, trade)
+4. udpate_cf, updateprice are functions to automatically update null data stored as a result of a failed API request and changes in price data (or updates).
 
-newclassinstance.traderequest(frequency = "A", 
-    classification = "HS",
-    period = "2010",
-    partner = "all",
-    reporter = "97",
-    HSCode = "810520",
-    TradeFlow = "1",
-    recyclingrate = 0,
-    scenario = 0
-    ) #API call for trade data on imports of cobalt to European Union in 2010
+5. endlog(): A counter is mainted to read the number of API requests
+6. generateCF(): A function to extract all the data into csv, excel or json files from the database stored in documents folder.
 
-newclassinstance.productionQTY('Cobalt', 'EU28') #Fetch all productiond data for Cobalt to calculate HHI 
-                                                 #Fetch data of cobalt production in the EU
-                                                 
-"""
-Now necessary methods are called to calculate the geopolitical supply risk of
-importing cobalt to European Union. 
-The variables numerator, tradetotal, HHI, Prod_Qty are required to calculate the 
-value.
-"""
-numerator = newclassinstance.numerator
-totaltrade = newclassinstance.tradetotal
-HHI = newclassinstance.HHI
-productionquantity = newclassinstance.Prod_Qty
-
-WeightedTradeAverage = numerator/(totaltrade + productionquantity[40])
-HHI = HHI[40] #2010 is in the 40th row of the database.
-
-GeoPolRisk = HHI * WeightedTradeAverage
-
-print(GeoPolRisk)
-
-~~~
-
+# Other Modules
+1. The gcalc module has one method guided for a console input based assessment.
+2. The functions in gprsplots module read the output file. An assessment must be done before using this module. There are three ways of plotting the results.
+trendplot for plotting the evolution of supply risk. Must have more than three years assessed.
+indplot for comparing each resource or country for ONE particular year.
+compareplot for stacked graphs for comparison for one year.
+   
 # ANNEXE
  
 

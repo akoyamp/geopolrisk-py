@@ -1,0 +1,1026 @@
+{
+  "1": {
+    "ISO": 4,
+    "Country": "Afghanistan"
+  },
+  "2": {
+    "ISO": 8,
+    "Country": "Albania"
+  },
+  "3": {
+    "ISO": 12,
+    "Country": "Algeria"
+  },
+  "4": {
+    "ISO": 20,
+    "Country": "Andorra"
+  },
+  "5": {
+    "ISO": 24,
+    "Country": "Angola"
+  },
+  "6": {
+    "ISO": 660,
+    "Country": "Anguilla"
+  },
+  "7": {
+    "ISO": 28,
+    "Country": "Antigua and Barbuda"
+  },
+  "8": {
+    "ISO": 32,
+    "Country": "Argentina"
+  },
+  "9": {
+    "ISO": 51,
+    "Country": "Armenia"
+  },
+  "10": {
+    "ISO": 533,
+    "Country": "Aruba"
+  },
+  "11": {
+    "ISO": 36,
+    "Country": "Australia"
+  },
+  "12": {
+    "ISO": 40,
+    "Country": "Austria"
+  },
+  "13": {
+    "ISO": 31,
+    "Country": "Azerbaijan"
+  },
+  "14": {
+    "ISO": 44,
+    "Country": "Bahamas"
+  },
+  "15": {
+    "ISO": 48,
+    "Country": "Bahrain"
+  },
+  "16": {
+    "ISO": 50,
+    "Country": "Bangladesh"
+  },
+  "17": {
+    "ISO": 52,
+    "Country": "Barbados"
+  },
+  "18": {
+    "ISO": 112,
+    "Country": "Belarus"
+  },
+  "19": {
+    "ISO": 56,
+    "Country": "Belgium"
+  },
+  "20": {
+    "ISO": 58,
+    "Country": "Belgium-Luxembourg"
+  },
+  "21": {
+    "ISO": 84,
+    "Country": "Belize"
+  },
+  "22": {
+    "ISO": 204,
+    "Country": "Benin"
+  },
+  "23": {
+    "ISO": 60,
+    "Country": "Bermuda"
+  },
+  "24": {
+    "ISO": 64,
+    "Country": "Bhutan"
+  },
+  "25": {
+    "ISO": 68,
+    "Country": "Bolivia (Plurinational State of)"
+  },
+  "26": {
+    "ISO": 535,
+    "Country": "Bonaire"
+  },
+  "27": {
+    "ISO": 70,
+    "Country": "Bosnia Herzegovina"
+  },
+  "28": {
+    "ISO": 72,
+    "Country": "Botswana"
+  },
+  "29": {
+    "ISO": 92,
+    "Country": "Br. Virgin Isds"
+  },
+  "30": {
+    "ISO": 76,
+    "Country": "Brazil"
+  },
+  "31": {
+    "ISO": 96,
+    "Country": "Brunei Darussalam"
+  },
+  "32": {
+    "ISO": 100,
+    "Country": "Bulgaria"
+  },
+  "33": {
+    "ISO": 854,
+    "Country": "Burkina Faso"
+  },
+  "34": {
+    "ISO": 108,
+    "Country": "Burundi"
+  },
+  "35": {
+    "ISO": 132,
+    "Country": "Cabo Verde"
+  },
+  "36": {
+    "ISO": 116,
+    "Country": "Cambodia"
+  },
+  "37": {
+    "ISO": 120,
+    "Country": "Cameroon"
+  },
+  "38": {
+    "ISO": 124,
+    "Country": "Canada"
+  },
+  "39": {
+    "ISO": 136,
+    "Country": "Cayman Isds"
+  },
+  "40": {
+    "ISO": 140,
+    "Country": "Central African Rep."
+  },
+  "41": {
+    "ISO": 148,
+    "Country": "Chad"
+  },
+  "42": {
+    "ISO": 152,
+    "Country": "Chile"
+  },
+  "43": {
+    "ISO": 156,
+    "Country": "China"
+  },
+  "44": {
+    "ISO": 344,
+    "Country": "China, Hong Kong SAR"
+  },
+  "45": {
+    "ISO": 446,
+    "Country": "China, Macao SAR"
+  },
+  "46": {
+    "ISO": 170,
+    "Country": "Colombia"
+  },
+  "47": {
+    "ISO": 174,
+    "Country": "Comoros"
+  },
+  "48": {
+    "ISO": 178,
+    "Country": "Congo"
+  },
+  "49": {
+    "ISO": 184,
+    "Country": "Cook Isds"
+  },
+  "50": {
+    "ISO": 188,
+    "Country": "Costa Rica"
+  },
+  "51": {
+    "ISO": 384,
+    "Country": "C��te d'Iv"
+  },
+  "52": {
+    "ISO": 191,
+    "Country": "Croatia"
+  },
+  "53": {
+    "ISO": 192,
+    "Country": "Cuba"
+  },
+  "54": {
+    "ISO": 531,
+    "Country": "Cura��"
+  },
+  "55": {
+    "ISO": 196,
+    "Country": "Cyprus"
+  },
+  "56": {
+    "ISO": 203,
+    "Country": "Czechia"
+  },
+  "57": {
+    "ISO": 200,
+    "Country": "Czechoslovakia"
+  },
+  "58": {
+    "ISO": 408,
+    "Country": "Dem. People's Rep. of Korea"
+  },
+  "59": {
+    "ISO": 180,
+    "Country": "Dem. Rep. of the Congo"
+  },
+  "60": {
+    "ISO": 208,
+    "Country": "Denmark"
+  },
+  "61": {
+    "ISO": 262,
+    "Country": "Djibouti"
+  },
+  "62": {
+    "ISO": 212,
+    "Country": "Dominica"
+  },
+  "63": {
+    "ISO": 214,
+    "Country": "Dominican Rep."
+  },
+  "64": {
+    "ISO": 588,
+    "Country": "East and West Pakistan"
+  },
+  "65": {
+    "ISO": 218,
+    "Country": "Ecuador"
+  },
+  "66": {
+    "ISO": 818,
+    "Country": "Egypt"
+  },
+  "67": {
+    "ISO": 222,
+    "Country": "El Salvador"
+  },
+  "68": {
+    "ISO": 226,
+    "Country": "Equatorial Guinea"
+  },
+  "69": {
+    "ISO": 232,
+    "Country": "Eritrea"
+  },
+  "70": {
+    "ISO": 233,
+    "Country": "Estonia"
+  },
+  "71": {
+    "ISO": 231,
+    "Country": "Ethiopia"
+  },
+  "72": {
+    "ISO": 97,
+    "Country": "European Union"
+  },
+  "73": {
+    "ISO": 234,
+    "Country": "Faeroe Isds"
+  },
+  "74": {
+    "ISO": 238,
+    "Country": "Falkland Isds (Malvinas)"
+  },
+  "75": {
+    "ISO": 242,
+    "Country": "Fiji"
+  },
+  "76": {
+    "ISO": 246,
+    "Country": "Finland"
+  },
+  "77": {
+    "ISO": 886,
+    "Country": "Fmr Arab Rep. of Yemen"
+  },
+  "78": {
+    "ISO": 278,
+    "Country": "Fmr Dem. Rep. of Germany"
+  },
+  "79": {
+    "ISO": 866,
+    "Country": "Fmr Dem. Rep. of Vietnam"
+  },
+  "80": {
+    "ISO": 720,
+    "Country": "Fmr Dem. Yemen"
+  },
+  "81": {
+    "ISO": 230,
+    "Country": "Fmr Ethiopia"
+  },
+  "82": {
+    "ISO": 280,
+    "Country": "Fmr Fed. Rep. of Germany"
+  },
+  "83": {
+    "ISO": 582,
+    "Country": "Fmr Pacific Isds"
+  },
+  "84": {
+    "ISO": 590,
+    "Country": "Fmr Panama, excl.Canal Zone"
+  },
+  "85": {
+    "ISO": 592,
+    "Country": "Fmr Panama-Canal-Zone"
+  },
+  "86": {
+    "ISO": 868,
+    "Country": "Fmr Rep. of Vietnam"
+  },
+  "87": {
+    "ISO": 717,
+    "Country": "Fmr Rhodesia Nyas"
+  },
+  "88": {
+    "ISO": 736,
+    "Country": "Fmr Sudan"
+  },
+  "89": {
+    "ISO": 835,
+    "Country": "Fmr Tanganyika"
+  },
+  "90": {
+    "ISO": 810,
+    "Country": "Fmr USSR"
+  },
+  "91": {
+    "ISO": 890,
+    "Country": "Fmr Yugoslavia"
+  },
+  "92": {
+    "ISO": 836,
+    "Country": "Fmr Zanzibar and Pemba Isd"
+  },
+  "93": {
+    "ISO": 251,
+    "Country": "France"
+  },
+  "94": {
+    "ISO": 254,
+    "Country": "French Guiana"
+  },
+  "95": {
+    "ISO": 258,
+    "Country": "French Polynesia"
+  },
+  "96": {
+    "ISO": 583,
+    "Country": "FS Micronesia"
+  },
+  "97": {
+    "ISO": 266,
+    "Country": "Gabon"
+  },
+  "98": {
+    "ISO": 270,
+    "Country": "Gambia"
+  },
+  "99": {
+    "ISO": 268,
+    "Country": "Georgia"
+  },
+  "100": {
+    "ISO": 276,
+    "Country": "Germany"
+  },
+  "101": {
+    "ISO": 288,
+    "Country": "Ghana"
+  },
+  "102": {
+    "ISO": 292,
+    "Country": "Gibraltar"
+  },
+  "103": {
+    "ISO": 300,
+    "Country": "Greece"
+  },
+  "104": {
+    "ISO": 304,
+    "Country": "Greenland"
+  },
+  "105": {
+    "ISO": 308,
+    "Country": "Grenada"
+  },
+  "106": {
+    "ISO": 312,
+    "Country": "Guadeloupe"
+  },
+  "107": {
+    "ISO": 320,
+    "Country": "Guatemala"
+  },
+  "108": {
+    "ISO": 324,
+    "Country": "Guinea"
+  },
+  "109": {
+    "ISO": 624,
+    "Country": "Guinea-Bissau"
+  },
+  "110": {
+    "ISO": 328,
+    "Country": "Guyana"
+  },
+  "111": {
+    "ISO": 332,
+    "Country": "Haiti"
+  },
+  "112": {
+    "ISO": 336,
+    "Country": "Holy See (Vatican City State)"
+  },
+  "113": {
+    "ISO": 340,
+    "Country": "Honduras"
+  },
+  "114": {
+    "ISO": 348,
+    "Country": "Hungary"
+  },
+  "115": {
+    "ISO": 352,
+    "Country": "Iceland"
+  },
+  "116": {
+    "ISO": 699,
+    "Country": "India"
+  },
+  "117": {
+    "ISO": 356,
+    "Country": "India, excl. Sikkim"
+  },
+  "118": {
+    "ISO": 360,
+    "Country": "Indonesia"
+  },
+  "119": {
+    "ISO": 364,
+    "Country": "Iran"
+  },
+  "120": {
+    "ISO": 368,
+    "Country": "Iraq"
+  },
+  "121": {
+    "ISO": 372,
+    "Country": "Ireland"
+  },
+  "122": {
+    "ISO": 376,
+    "Country": "Israel"
+  },
+  "123": {
+    "ISO": 381,
+    "Country": "Italy"
+  },
+  "124": {
+    "ISO": 388,
+    "Country": "Jamaica"
+  },
+  "125": {
+    "ISO": 392,
+    "Country": "Japan"
+  },
+  "126": {
+    "ISO": 400,
+    "Country": "Jordan"
+  },
+  "127": {
+    "ISO": 398,
+    "Country": "Kazakhstan"
+  },
+  "128": {
+    "ISO": 404,
+    "Country": "Kenya"
+  },
+  "129": {
+    "ISO": 296,
+    "Country": "Kiribati"
+  },
+  "130": {
+    "ISO": 414,
+    "Country": "Kuwait"
+  },
+  "131": {
+    "ISO": 417,
+    "Country": "Kyrgyzstan"
+  },
+  "132": {
+    "ISO": 418,
+    "Country": "Lao People's Dem. Rep."
+  },
+  "133": {
+    "ISO": 428,
+    "Country": "Latvia"
+  },
+  "134": {
+    "ISO": 422,
+    "Country": "Lebanon"
+  },
+  "135": {
+    "ISO": 426,
+    "Country": "Lesotho"
+  },
+  "136": {
+    "ISO": 430,
+    "Country": "Liberia"
+  },
+  "137": {
+    "ISO": 434,
+    "Country": "Libya"
+  },
+  "138": {
+    "ISO": 440,
+    "Country": "Lithuania"
+  },
+  "139": {
+    "ISO": 442,
+    "Country": "Luxembourg"
+  },
+  "140": {
+    "ISO": 450,
+    "Country": "Madagascar"
+  },
+  "141": {
+    "ISO": 454,
+    "Country": "Malawi"
+  },
+  "142": {
+    "ISO": 458,
+    "Country": "Malaysia"
+  },
+  "143": {
+    "ISO": 462,
+    "Country": "Maldives"
+  },
+  "144": {
+    "ISO": 466,
+    "Country": "Mali"
+  },
+  "145": {
+    "ISO": 470,
+    "Country": "Malta"
+  },
+  "146": {
+    "ISO": 584,
+    "Country": "Marshall Isds"
+  },
+  "147": {
+    "ISO": 474,
+    "Country": "Martinique"
+  },
+  "148": {
+    "ISO": 478,
+    "Country": "Mauritania"
+  },
+  "149": {
+    "ISO": 480,
+    "Country": "Mauritius"
+  },
+  "150": {
+    "ISO": 175,
+    "Country": "Mayotte"
+  },
+  "151": {
+    "ISO": 484,
+    "Country": "Mexico"
+  },
+  "152": {
+    "ISO": 496,
+    "Country": "Mongolia"
+  },
+  "153": {
+    "ISO": 499,
+    "Country": "Montenegro"
+  },
+  "154": {
+    "ISO": 500,
+    "Country": "Montserrat"
+  },
+  "155": {
+    "ISO": 504,
+    "Country": "Morocco"
+  },
+  "156": {
+    "ISO": 508,
+    "Country": "Mozambique"
+  },
+  "157": {
+    "ISO": 104,
+    "Country": "Myanmar"
+  },
+  "158": {
+    "ISO": 580,
+    "Country": "N. Mariana Isds"
+  },
+  "159": {
+    "ISO": 516,
+    "Country": "Namibia"
+  },
+  "160": {
+    "ISO": 524,
+    "Country": "Nepal"
+  },
+  "161": {
+    "ISO": 530,
+    "Country": "Neth. Antilles"
+  },
+  "162": {
+    "ISO": 532,
+    "Country": "Neth. Antilles and Aruba"
+  },
+  "163": {
+    "ISO": 528,
+    "Country": "Netherlands"
+  },
+  "164": {
+    "ISO": 540,
+    "Country": "New Caledonia"
+  },
+  "165": {
+    "ISO": 554,
+    "Country": "New Zealand"
+  },
+  "166": {
+    "ISO": 558,
+    "Country": "Nicaragua"
+  },
+  "167": {
+    "ISO": 562,
+    "Country": "Niger"
+  },
+  "168": {
+    "ISO": 566,
+    "Country": "Nigeria"
+  },
+  "169": {
+    "ISO": 579,
+    "Country": "Norway"
+  },
+  "170": {
+    "ISO": 512,
+    "Country": "Oman"
+  },
+  "171": {
+    "ISO": 490,
+    "Country": "Other Asia, nes"
+  },
+  "172": {
+    "ISO": 586,
+    "Country": "Pakistan"
+  },
+  "173": {
+    "ISO": 585,
+    "Country": "Palau"
+  },
+  "174": {
+    "ISO": 591,
+    "Country": "Panama"
+  },
+  "175": {
+    "ISO": 598,
+    "Country": "Papua New Guinea"
+  },
+  "176": {
+    "ISO": 600,
+    "Country": "Paraguay"
+  },
+  "177": {
+    "ISO": 459,
+    "Country": "Peninsula Malaysia"
+  },
+  "178": {
+    "ISO": 604,
+    "Country": "Peru"
+  },
+  "179": {
+    "ISO": 608,
+    "Country": "Philippines"
+  },
+  "180": {
+    "ISO": 616,
+    "Country": "Poland"
+  },
+  "181": {
+    "ISO": 620,
+    "Country": "Portugal"
+  },
+  "182": {
+    "ISO": 634,
+    "Country": "Qatar"
+  },
+  "183": {
+    "ISO": 410,
+    "Country": "Rep. of Korea"
+  },
+  "184": {
+    "ISO": 498,
+    "Country": "Rep. of Moldova"
+  },
+  "185": {
+    "ISO": 638,
+    "Country": "R��u"
+  },
+  "186": {
+    "ISO": 642,
+    "Country": "Romania"
+  },
+  "187": {
+    "ISO": 643,
+    "Country": "Russian Federation"
+  },
+  "188": {
+    "ISO": 646,
+    "Country": "Rwanda"
+  },
+  "189": {
+    "ISO": 647,
+    "Country": "Ryukyu Isd"
+  },
+  "190": {
+    "ISO": 461,
+    "Country": "Sabah"
+  },
+  "191": {
+    "ISO": 652,
+    "Country": "Saint Barthelemy"
+  },
+  "192": {
+    "ISO": 654,
+    "Country": "Saint Helena"
+  },
+  "193": {
+    "ISO": 659,
+    "Country": "Saint Kitts and Nevis"
+  },
+  "194": {
+    "ISO": 658,
+    "Country": "Saint Kitts, Nevis and Anguilla"
+  },
+  "195": {
+    "ISO": 662,
+    "Country": "Saint Lucia"
+  },
+  "196": {
+    "ISO": 534,
+    "Country": "Saint Maarten"
+  },
+  "197": {
+    "ISO": 666,
+    "Country": "Saint Pierre and Miquelon"
+  },
+  "198": {
+    "ISO": 670,
+    "Country": "Saint Vincent and the Grenadines"
+  },
+  "199": {
+    "ISO": 882,
+    "Country": "Samoa"
+  },
+  "200": {
+    "ISO": 674,
+    "Country": "San Marino"
+  },
+  "201": {
+    "ISO": 678,
+    "Country": "Sao Tome and Principe"
+  },
+  "202": {
+    "ISO": 457,
+    "Country": "Sarawak"
+  },
+  "203": {
+    "ISO": 682,
+    "Country": "Saudi Arabia"
+  },
+  "204": {
+    "ISO": 686,
+    "Country": "Senegal"
+  },
+  "205": {
+    "ISO": 688,
+    "Country": "Serbia"
+  },
+  "206": {
+    "ISO": 891,
+    "Country": "Serbia and Montenegro"
+  },
+  "207": {
+    "ISO": 690,
+    "Country": "Seychelles"
+  },
+  "208": {
+    "ISO": 694,
+    "Country": "Sierra Leone"
+  },
+  "209": {
+    "ISO": 702,
+    "Country": "Singapore"
+  },
+  "210": {
+    "ISO": 703,
+    "Country": "Slovakia"
+  },
+  "211": {
+    "ISO": 705,
+    "Country": "Slovenia"
+  },
+  "212": {
+    "ISO": 711,
+    "Country": "So. African Customs Union"
+  },
+  "213": {
+    "ISO": 90,
+    "Country": "Solomon Isds"
+  },
+  "214": {
+    "ISO": 706,
+    "Country": "Somalia"
+  },
+  "215": {
+    "ISO": 710,
+    "Country": "South Africa"
+  },
+  "216": {
+    "ISO": 728,
+    "Country": "South Sudan"
+  },
+  "217": {
+    "ISO": 724,
+    "Country": "Spain"
+  },
+  "218": {
+    "ISO": 144,
+    "Country": "Sri Lanka"
+  },
+  "219": {
+    "ISO": 275,
+    "Country": "State of Palestine"
+  },
+  "220": {
+    "ISO": 729,
+    "Country": "Sudan"
+  },
+  "221": {
+    "ISO": 740,
+    "Country": "Suriname"
+  },
+  "222": {
+    "ISO": 748,
+    "Country": "Eswatini"
+  },
+  "223": {
+    "ISO": 752,
+    "Country": "Sweden"
+  },
+  "224": {
+    "ISO": 757,
+    "Country": "Switzerland"
+  },
+  "225": {
+    "ISO": 760,
+    "Country": "Syria"
+  },
+  "226": {
+    "ISO": 762,
+    "Country": "Tajikistan"
+  },
+  "227": {
+    "ISO": 807,
+    "Country": "North Macedonia"
+  },
+  "228": {
+    "ISO": 764,
+    "Country": "Thailand"
+  },
+  "229": {
+    "ISO": 626,
+    "Country": "Timor-Leste"
+  },
+  "230": {
+    "ISO": 768,
+    "Country": "Togo"
+  },
+  "231": {
+    "ISO": 772,
+    "Country": "Tokelau"
+  },
+  "232": {
+    "ISO": 776,
+    "Country": "Tonga"
+  },
+  "233": {
+    "ISO": 780,
+    "Country": "Trinidad and Tobago"
+  },
+  "234": {
+    "ISO": 788,
+    "Country": "Tunisia"
+  },
+  "235": {
+    "ISO": 792,
+    "Country": "Turkey"
+  },
+  "236": {
+    "ISO": 795,
+    "Country": "Turkmenistan"
+  },
+  "237": {
+    "ISO": 796,
+    "Country": "Turks and Caicos Isds"
+  },
+  "238": {
+    "ISO": 798,
+    "Country": "Tuvalu"
+  },
+  "239": {
+    "ISO": 800,
+    "Country": "Uganda"
+  },
+  "240": {
+    "ISO": 804,
+    "Country": "Ukraine"
+  },
+  "241": {
+    "ISO": 784,
+    "Country": "United Arab Emirates"
+  },
+  "242": {
+    "ISO": 826,
+    "Country": "United Kingdom"
+  },
+  "243": {
+    "ISO": 834,
+    "Country": "United Rep. of Tanzania"
+  },
+  "244": {
+    "ISO": 858,
+    "Country": "Uruguay"
+  },
+  "245": {
+    "ISO": 850,
+    "Country": "US Virgin Isds"
+  },
+  "246": {
+    "ISO": 842,
+    "Country": "USA"
+  },
+  "247": {
+    "ISO": 841,
+    "Country": "USA (before 1981)"
+  },
+  "248": {
+    "ISO": 860,
+    "Country": "Uzbekistan"
+  },
+  "249": {
+    "ISO": 548,
+    "Country": "Vanuatu"
+  },
+  "250": {
+    "ISO": 862,
+    "Country": "Venezuela"
+  },
+  "251": {
+    "ISO": 704,
+    "Country": "Viet Nam"
+  },
+  "252": {
+    "ISO": 876,
+    "Country": "Wallis and Futuna Isds"
+  },
+  "253": {
+    "ISO": 887,
+    "Country": "Yemen"
+  },
+  "254": {
+    "ISO": 894,
+    "Country": "Zambia"
+  },
+  "255": {
+    "ISO": 716,
+    "Country": "Zimbabwe"
+  },
+  "256": {
+    "ISO": 975,
+    "Country": "ASEAN"
+  }
+}
