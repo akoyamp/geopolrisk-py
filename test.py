@@ -38,10 +38,10 @@ from geopolrisk.operations import update_cf, gprs_comtrade
 
 
 #Recycling Scenarios
-ShortListofMetals = [810520, 283691, 2602, 2603, 2604,]
+ShortListofMetals = [283691, 2602, 2603, 2604, 810520]#,  283691, 2602, 2603, 2604, 810520
 ShortListofCountries = [97]#
 ShortListofYear = [2016]
 try:
-    gprs_comtrade(ShortListofMetals,ShortListofCountries, ShortListofYear, 0 , 0 )
+    gprs_comtrade(ShortListofMetals,ShortListofCountries, ShortListofYear, 0  , 0 )
 except Exception as e:
     print(e)

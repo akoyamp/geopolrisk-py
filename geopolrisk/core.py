@@ -22,7 +22,8 @@ from .__init__ import (
     _production,
     _reporter,
     regionslist,
-    logging)
+    logging,
+    _outputfile)
 from .Exceptions.warningsgprs import *
 #Define Paths
 tradepath = None
@@ -271,6 +272,7 @@ def InputTrade(sheetname = None):
  
 def WTA_calculation(period, TradeData = None, PIData = None,
                     scenario = 0, recyclingrate = 0.00):
+    
     if TradeData is None or PIData is None:
         raise IncompleteProcessFlow
         return None
@@ -295,6 +297,8 @@ def WTA_calculation(period, TradeData = None, PIData = None,
             for i in code:
                 if str(i) in PIData.columns.to_list():
                     PI_score.append(PIData[str(i)].tolist()[index])
+                else:
+                    PI_score.append(0.5)
         except Exception as e:
             logging.debug(e)
             raise CalculationError
@@ -315,63 +319,67 @@ def WTA_calculation(period, TradeData = None, PIData = None,
         
         if recyclingrate >1 and recyclingrate < 100:
             recyclingrate = recyclingrate/100
-        if scenario == 0:
-            recyclingrate = 0
-            scenario = 1
         
         
+        def redistribution(quantity, indicator, totQ, reverse):
+            totQ = totQ*recyclingrate
+            temp = [(v,i) for i,v in enumerate(indicator)]
+            temp.sort(reverse = reverse)
+            sortedVal, sortedInd = zip(*temp)
+            dump = 0
+            for i ,n in enumerate(sortedInd):
+                dump += quantity[n]
+                if (totQ-dump) < quantity[sortedInd[i+1]]:
+                    quantity[sortedInd[i+1]] = quantity[sortedInd[i+1]] - (totQ-dump)
+                    quantity[n] = 0
+                    break
+                else:
+                    quantity[n] = 0
+            return quantity
+        
+        #newdf = pd.DataFrame(columns = ["trade", "indicator", "tradetotal", "numerator", "production"])
         totQ = sum(quantity)
-        CombinedQ = zip(PI_score, quantity)
-        
-        def redistribution():
-            pass
         try:
             if scenario == 1:
-                CombinedQ.sort(reverse = True)
-                temp, index = 0, 0
-                for i , (X, Y) in enumerate(CombinedQ):
-                    temp += X
-                    if temp > totQ:
-                        index = i
-                        break
-                tempQ = [y for x, y in CombinedQ]
-                for j in range(i):
-                    
-                    
+                newquantity = redistribution(quantity, PI_score, totQ, True)
+                # newdf = pd.DataFrame(columns = ["trade", "indicator"])
+                # newdf["trade"] = newquantity
+                # newdf["indicator"] = PI_score
+                 
+                zipped_list = zip(newquantity, PI_score)
+                wgiavg = [x * y for (x,y) in zipped_list]
             elif scenario == 2:
-                _reduce = [i for i, x in enumerate(PI_score) if x == _minscore]
-        except Exception as e:
-            logging.debug(e)
-            raise CalculationError
-            return None
-        try:
-            for i in _reduce:
-                reducedmass = (quantity[i])*recyclingrate
-                quantity[i] = (quantity[i])-reducedmass
-                totalreduce += reducedmass
+                newquantity = redistribution(quantity, PI_score, totQ, False)
+                zipped_list = zip(newquantity, PI_score)
+                wgiavg = [x * y for (x,y) in zipped_list]
+
+            elif scenario == 0:
+                try:
+                    zipped_list = zip(quantity, PI_score)
+                    wgiavg = [x * y for (x,y) in zipped_list]
+                except TypeError as e:
+                    logging.debug(e)
+                    logging.debug("The Comtrade API is broken")
+                    raise CalculationError
         except Exception as e:
             logging.debug(e)
             raise CalculationError
             return None
         
-    
         # After manipulation of the trade data it is multiplied with the WGI
         # score forming the numerator of the second factor of GeoPolRisk (WTA)
         
         
-        try:
-            zipped_list = zip(quantity, PI_score)
-            wgiavg = [x * y for (x,y) in zipped_list]
-        except TypeError as e:
-            logging.debug(e)
-            logging.debug("The Comtrade API is broken")
-            raise CalculationError
+        
         try:
             numerator = sum(wgiavg)
-            tradetotal = sum(quantity)
+            tradetotal = totQ
+            #newdf["numerator"] = numerator
+            #newdf["tradetotal"] = tradetotal
         except Exception as e:
             logging.debug(e)
             raise CalculationError
+        #newdf.to_csv(_outputfile+'/TRADE.csv')
         return numerator, tradetotal
     else:
         return 0, 0
@@ -382,6 +390,7 @@ def WTA_calculation(period, TradeData = None, PIData = None,
 
 
 def productionQTY(Resource, EconomicUnit):
+    
     EconomicUnit = "EU" if EconomicUnit == "European Union" else EconomicUnit
     EconomicUnit = regionslist[EconomicUnit]
     try:
@@ -430,9 +439,11 @@ def productionQTY(Resource, EconomicUnit):
     return [HHI, Prod_Qty, Prod_Year]
 
 def GeoPolRisk(ProductionData, WTAData, Year, AVGPrice):
+    newdf = pd.DataFrame(columns = ["production"])
     Index = ProductionData[2].index(int(Year))
     HHI = ProductionData[0][Index]
-    PQT = ProductionData[0][0]*1000
+    PQT = ProductionData[1][Index]*1000
+    print(PQT)
     try:
         if isinstance(AVGPrice, (int, float)) and WTAData[1] != 0:
             WTA = (WTAData[0]/ (WTAData[1]+PQT))
@@ -454,6 +465,6 @@ def GeoPolRisk(ProductionData, WTAData, Year, AVGPrice):
         logging.debug("The GeoPolRisk is {}".format(GeoPolRisk))
         logging.debug("The AVGPrice is {}".format(AVGPrice))
         raise CalculationError
-        return None
+        return None 
     return [HHI, WTA, GeoPolRisk, GeoPolCF]
     
