@@ -298,6 +298,8 @@ def WTA_calculation(period, TradeData = None, PIData = None,
                 if str(i) in PIData.columns.to_list():
                     PI_score.append(PIData[str(i)].tolist()[index])
                 else:
+                    #The political instability score from the WGI is not provided for few countries
+                    #We assign them a score of 0.5 as most of these countries fall in this range
                     PI_score.append(0.5)
         except Exception as e:
             logging.debug(e)
@@ -316,11 +318,19 @@ def WTA_calculation(period, TradeData = None, PIData = None,
         
     
         #Recyclability factor of GeoPolRisk
-        
+    
+        #Usually users are supposed to provide an input between 0 and 1
         if recyclingrate >1 and recyclingrate < 100:
             recyclingrate = recyclingrate/100
+        else:
+            logging.debug(f"Recycling Rate out of bounds| Recycling Rate : {recyclingrate}")
         
         
+        #The mitigation due to recycling has a redistribution and reduction effect
+        #The reduction effect is symbolical because the reduced trade is included in the domestic production
+        #Two cases are assumed for the redistribution
+        #The function takes in the trade quantity, political instability indicator and sum of the trade quantity
+        #This function sorts and reduces the trade quantity based on the scenario and returns the reduced quantity
         def redistribution(quantity, indicator, totQ, reverse):
             totQ = totQ*recyclingrate
             temp = [(v,i) for i,v in enumerate(indicator)]
@@ -340,20 +350,18 @@ def WTA_calculation(period, TradeData = None, PIData = None,
         #newdf = pd.DataFrame(columns = ["trade", "indicator", "tradetotal", "numerator", "production"])
         totQ = sum(quantity)
         try:
-            if scenario == 1:
-                newquantity = redistribution(quantity, PI_score, totQ, True)
-                # newdf = pd.DataFrame(columns = ["trade", "indicator"])
-                # newdf["trade"] = newquantity
-                # newdf["indicator"] = PI_score
-                 
+            if scenario == 1: #Best case scenario
+                newquantity = redistribution(quantity, PI_score, totQ, True)  
                 zipped_list = zip(newquantity, PI_score)
                 wgiavg = [x * y for (x,y) in zipped_list]
-            elif scenario == 2:
+                # newdf["trade"] = newquantity
+                # newdf["indicator"] = PI_score
+            elif scenario == 2: #Worst case scenario
                 newquantity = redistribution(quantity, PI_score, totQ, False)
                 zipped_list = zip(newquantity, PI_score)
                 wgiavg = [x * y for (x,y) in zipped_list]
 
-            elif scenario == 0:
+            elif scenario == 0: #No scenario
                 try:
                     zipped_list = zip(quantity, PI_score)
                     wgiavg = [x * y for (x,y) in zipped_list]
@@ -443,7 +451,7 @@ def GeoPolRisk(ProductionData, WTAData, Year, AVGPrice):
     Index = ProductionData[2].index(int(Year))
     HHI = ProductionData[0][Index]
     PQT = ProductionData[1][Index]*1000
-    print(PQT)
+
     try:
         if isinstance(AVGPrice, (int, float)) and WTAData[1] != 0:
             WTA = (WTAData[0]/ (WTAData[1]+PQT))

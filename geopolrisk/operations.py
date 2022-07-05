@@ -1,9 +1,19 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Apr  5 15:29:23 2022
+# Copyright 2020-2021 by Anish Koyamparambath and University of Bordeaux. All Rights Reserved.
+# Permission to use, copy, modify, and distribute this software and its
+# documentation for any purpose and without fee is hereby granted,
+# provided that the above copyright notice appear in all copies and that
+# both that copyright notice and this permission notice appear in
+# supporting documentation, and that the name of Anish Koyamparambath (AK) or 
+# University of Bordeaux (UBx) will not be used in advertising or publicity pertaining 
+# to distribution of the software without specific, written prior permission.
+# BOTH AK AND UBx DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
+# ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL
+# BOTH AK AND UBx BE LIABLE FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR
+# ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
+# IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
+# OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-@author: akoyamparamb
-"""
+
 from .__init__ import (
     _reporter,
     SQL,
@@ -32,6 +42,9 @@ outputList = []
 
 
 
+# The function converts resource names and country names to the HS commodity codes
+# and country ISO codes.
+
 def convertCodes(resource, country, direction):
     if direction == 1:
         ISO, HS = [], []
@@ -56,8 +69,7 @@ def convertCodes(resource, country, direction):
         return HS,ISO
 
 
-
-
+# Verify if the calculation is already stored in the database to avoid recalculation
 def sqlverify(*args):
     resource, country, year, recyclingrate, scenario = args[0], args[1], args[2], args[3], args[4] 
     sqlstatement = "SELECT geopolrisk, hhi, wta, geopol_cf FROM recordData WHERE country = '"+country+"' AND resource= '"+resource+"' AND year = '"+str(year)+"' AND recycling_rate = '"+str(recyclingrate)+"' AND scenario = '"+str(scenario)+"';"
@@ -71,7 +83,9 @@ def sqlverify(*args):
         outputList.append([str(year), resource , country ,recyclingrate, scenario, row[0][0],row[0][3],row[0][1],row[0][2]])
         return True
 
-
+# Store the calculation into a database
+# Please note that database is not included in the library, this is automatically created
+# in the documents directory of the operating system
 def recorddata(*args):
     resource, country, year, recyclingrate, scenario, GPRS, CF, HHI, WTA, HSCODE, ISO, Log= args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7],args[8], args[9], args[10], args[11] 
     sqlstatement = "INSERT INTO recordData (country, resource, year, recycling_rate, scenario, geopolrisk, hhi, wta, geopol_cf, resource_hscode, iso, log_ref) VALUES ('"\
@@ -86,6 +100,9 @@ def recorddata(*args):
     except Exception as e:
         logging.debug(e)
 
+
+# Updates the database using new values.
+# This function doesnt override the calculaiton
 def updatedata(*args):
     #Verify
     resource, country, year, recyclingrate, scenario = args[0], args[1], args[2], args[3], args[4]
@@ -111,6 +128,15 @@ def updatedata(*args):
             norow = SQL(sqlstatement, SQL='execute')
             logging.debug("Database update sucessfully!")
 
+
+
+# Function to calculate the geopolitical supply risk and CFs for the midpoint indicator
+# A single point calculation function. It takes in the list of resources (HS code commodities),
+# list of countries (ISO 3 digit code) and list of years. The recycling rate and scenario are provided as
+# float and integers. 
+# The argument 'record' for database overrides the capacity to update the database. That means if 
+# a calculation exists, a repeated calculation is not done. 'update' as an argument updates the database
+# instead of recording.
 def gprs_comtrade(resourcelist, countrylist, yearlist, recyclingrate, scenario, database="record"):
     if len(regionslist) > 0:
         pass
