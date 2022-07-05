@@ -13,7 +13,7 @@
 # IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
 # OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-# from geopolrisk.operations import update_cf, gprs_comtrade
+# from assessment.operations import update_cf, gprs_comtrade
 # import time
 
 # ListofMetals = [2602, 2601, 2603, 2511, 8106, 7108, 2613, 2604, 2608, 8107,
@@ -38,12 +38,12 @@
 
 # update_cf()
 
-# from geopolrisk.gprsplots import compareplot
+# from assessment.gprsplots import compareplot
 
 # dip = compareplot(["Australia", "France", "Canada", "European Union"],[2014], ["Manganese","Iron", "Copper", "Petroleum"], 0)
 # dip.show()
 
-# from geopolrisk.operations import updateprice 
+# from assessment.operations import updateprice 
 # updateprice()
 
 

@@ -1,17 +1,59 @@
-# The GeoPolRisk Module Documentation
+# The geopolrisk-py library documentation
+
 
 # Getting started
 ## Installing the GeoPolRisk Module
-The GeoPolRisk module is a python package that contains methods to calculate the GeoPolitical Related Supply Risk Potential of a resource for a specific macroeconomic unit during a period. To download this package, the user can use the command prompt or if they have downloaded Python using anaconda, then use anaconda prompt. Type the following to download the GeoPolRisk Module.
+The geopolrisk-py is a python library that allows the assessment of a geopolitical related supply risk of a resource from the perspective of a country/region/trade bloc/company.
+An assessment would result in two main values; GPRS - the share of commodity imports at risk (0 - 1) usefull for comparative risk assessment,
+characterization Factors for GSRP (Geopolitical supply risk potential indicator (Midpoint))
+The library is available to download using pip package manager.
 ~~~
 pip install -i https://test.pypi.org/simple/ Geopolrisk==1.3
 ~~~
 
 # Modules and Methods
-   ## Main module
-A module is a file containing Python definitions and statements. The file name is the module name with the suffix .py appended. A module can be imported in any python script to use the variables and methods declared within. 
+The library has following four modules preceded by an init that performs some actions required to smoothly perform a calculation.
+#__init__ Module:
+    Reads static databases : resource price data, normalized governance indicator data, commodity hs codes, country iso codes
+    Creates a directory in documents folder (only for windows users): Output folder for database to record calculations and exporting results as csv, Log folder for storing logs
+    Loads several functions such as logging, sql and some global variables
+    
+## core module
+Contains functions that calculate the components of the geopolrisk method
+1. settradepath(path): To declare the path of the company trade data as an excel file. Must provide path an abosolute trade path. ex. c:/Users/UBx/Documents/tradepath.xlsx
 
-To import the methods and variables to calculate the user must import the module using the following code.
+### Format for company trade data
+Follow the format listed below:
+
+| Reporter    | ptCode      | ptTitle     | TradeQuantity    |
+| ----------- | ----------- | ----------- | ---------------- |
+| Germany     | 76          | Brazil      | 53399700         |
+| Germany     | 156         | China       | 73139615         |
+
+ptCode, ptTitle and TradeQuantity are mandatory data that needs to be in the excel file.
+ptCode: ISO 3 digit code of the country from where a resource is imported
+ptTitle: The name of the country from where a resource is imported.
+TradeQuantity: Quantity of resource imported in kilograms.
+
+2. regions(*args): Declare additional regions of assessment. By default all the countries and EU is included in the database. 
+To define a new region, a dictionary must be provided with key as the name of the region and values is a list of countries in the region.
+All the values must be in string and must be exactly as in the ISO.
+~~~
+{"West Europe": ["France", "Germany", "Italy", "Spain", "Portugal", "Belgium"]}
+~~~
+3. COMTRADE_API(classification = "HS", period = "2010", partner = "all", reporter = "276", HSCode = "2602", TradeFlow = "1", recyclingrate = 0, scenario = 0):
+Function to call the UN COMTRADE api for fetching the trade data.
+**Mandatory arguments:**
+- **period** : The year of assessment (integer)
+- **reporter**: The area of assessment (integer*: ISO code of the area [annexe])*
+- **HSCode**: The HS code of the commodity under assessment (integer)
+- **recyclingrate**: The recycling input rate of the resource (float)
+- **scenario**: Type of scenario under assessment.
+  - 0: Assessment without recycling
+  - 1: Assessment under the best-case scenario of recycling redistribution.
+  - 2: Assessment under the worst-case scenario of recycling redistribution
+
+Note: The scenario does not affect the assessment if the value for recyclingrate is '0'.
 ~~~
 from geopolrisk import main
 
@@ -39,17 +81,7 @@ newclassinstance.simplerun()
 ## totalcalculation:
 Similar to simplerun, totalcalculation is a one-stop method to calculate the GeoPolRisk value. However, the inputs for this method are not direct. Unlike simplerun, this method uses ISO codes and HS codes to define the country and resource as arguments [annexe]. For example, using the same as above, the HS code used for cobalt is 810520, and the ISO code for European Union is 97. 
 
-**Mandatory arguments:**
 
-- **period** : The year of assessment (integer)
-- **reporter**: The area of assessment (integer*: ISO code of the area [annexe])*
-- **HSCode**: The HS code of the commodity under assessment (integer)
-- **recyclingrate**: The recycling input rate of the resource (float)
-- **scenario**: Type of scenario under assessment.
-  - 0: Assessment under the worst-case scenario of recycling redistribution
-  - 1: Assessment under the best-case scenario of recycling redistribution.
-
-Note: The scenario does not affect the assessment if the value for recyclingrate is '0'.
 
 **Other arguments:** 
 
