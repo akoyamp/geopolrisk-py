@@ -13,27 +13,27 @@
 # IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
 # OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-from geopolrisk.operations import update_cf, gprs_comtrade
-import time
+# from geopolrisk.operations import update_cf, gprs_comtrade
+# import time
 
-ListofMetals = [2602, 2601, 2603, 2511, 8106, 7108, 2613, 2604, 2608, 8107,
-                  261610, 251910, 261510, 261710, 2524, 2610, 2504, 271111, 2709,
-                2701, 2609, 2611, 261210, 251910, 810520, 280540, 2606, 2607, 283691, 2709, 2846, 2614]#  
+# ListofMetals = [2602, 2601, 2603, 2511, 8106, 7108, 2613, 2604, 2608, 8107,
+#                   261610, 251910, 261510, 261710, 2524, 2610, 2504, 271111, 2709,
+#                 2701, 2609, 2611, 261210, 251910, 810520, 280540, 2606, 2607, 283691, 2709, 2846, 2614]#  
 
 
-ShortListofMetals = [2602, 2601, 2603, 2846, 2614,]
-ListofCountries = [36, 124, 97, 251, 276, 392, 826, 842,] 
-ShortListofCountries = [36, 124, 97, 251]#
-Year = [2002, 2003,  2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020]#,
-ShortListofYear = [2017, 2018, 2019, 2020]
+# ShortListofMetals = [2602, 2601, 2603, 2846, 2614,]
+# ListofCountries = [36, 124, 97, 251, 276, 392, 826, 842,] 
+# ShortListofCountries = [36, 124, 97, 251]#
+# Year = [2002, 2003,  2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020]#,
+# ShortListofYear = [2017, 2018, 2019, 2020]
 
-for i in range(100):
-    try:
-        gprs_comtrade(ListofMetals, ListofCountries, Year, 0, 0)
-    except Exception as e:
-        print(e)
-        continue
-    time.sleep(3600)
+# for i in range(100):
+#     try:
+#         gprs_comtrade(ListofMetals, ListofCountries, Year, 0, 0)
+#     except Exception as e:
+#         print(e)
+#         continue
+#     time.sleep(3600)
 
 
 # update_cf()
@@ -55,3 +55,5 @@ for i in range(100):
 #     gprs_comtrade(ShortListofMetals,ShortListofCountries, ShortListofYear, 0  , 0 )
 # except Exception as e:
 #     print(e)
+
+from tests import test

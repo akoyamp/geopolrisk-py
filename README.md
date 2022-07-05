@@ -4,7 +4,7 @@
 ## Installing the GeoPolRisk Module
 The GeoPolRisk module is a python package that contains methods to calculate the GeoPolitical Related Supply Risk Potential of a resource for a specific macroeconomic unit during a period. To download this package, the user can use the command prompt or if they have downloaded Python using anaconda, then use anaconda prompt. Type the following to download the GeoPolRisk Module.
 ~~~
-pip install -i https://test.pypi.org/simple/ Geopolrisk==0.8.1
+pip install -i https://test.pypi.org/simple/ Geopolrisk==1.3
 ~~~
 
 # Modules and Methods

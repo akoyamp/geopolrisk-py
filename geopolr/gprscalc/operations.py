@@ -205,6 +205,9 @@ def gprs_comtrade(resourcelist, countrylist, yearlist, recyclingrate, scenario, 
     endlog(counter, totalcounter, emptycounter)
 
 
+# Function for regional level assesment. Must define the regions in a dictionary 
+# using a function from the core module.
+# The assessment is similar to that of gprs_comtrade
 
 
 def gprs_regional(resourcelist, countrylist, yearlist, recyclingrate, scenario):
@@ -268,8 +271,8 @@ def gprs_regional(resourcelist, countrylist, yearlist, recyclingrate, scenario):
     endlog(counter, totalcounter, emptycounter)
     
 
-
-
+# Organizational level assessment require declaring the regions if necessary and a
+# path to the trade document as specified.
 def gprs_organization(resourcelist, countrylist, yearlist, recyclingrate, scenario, sheetname):
     newregionlist = []
     newregion = [i for i , x  in enumerate(countrylist) if str(x) not
@@ -303,6 +306,10 @@ def gprs_organization(resourcelist, countrylist, yearlist, recyclingrate, scenar
     outputDF.to_csv(_outputfile+'/export.csv')
 
 
+# Function to update the characterization factors. Run this function if there are missing
+# values for some select resources. The COMTRADE API is broken, and it sometimes results in 
+# a null return which is stored in the database as 0. This function retries fetching the values.
+
 def update_cf():
     #Fetch Missing Data
     sqlstatement = "SELECT resource_hscode, year, iso, geopol_cf FROM recordData WHERE "\
@@ -322,6 +329,7 @@ def update_cf():
     except Exception as e:
         logging.debug(e)
         
+# Run this function if there is an update in the missing price data in the average yearly price json.
 def updateprice():
     logging.info("Updating the characterization prices | price")
     sqlstatement = "SELECT resource_hscode, year, iso, geopolrisk FROM recordData WHERE "\
@@ -352,6 +360,7 @@ method requires extractdata method to be precalled to work.
 """
 
 
+# Tracking the comtrade attempts for debugging.
 def endlog( counter=0, totalcounter=0, emptycounter=0):
     logging.debug("Number of successfull COMTRADE API attempts {}".format(counter))
     logging.debug("Number of total attempts {}".format(totalcounter))
@@ -365,7 +374,7 @@ Refer to python json documentation for more information on types of
 orientation required for the output.
 """
 
-
+# Extract CFs 
 def generateCF(exportType='csv', orient=""):
     exportF = ['csv', 'excel', 'json']
     if exportType in exportF:
