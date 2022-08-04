@@ -79,8 +79,8 @@ del hard_dependencies, dependency, missing_dependencies
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 
-FILES = {"commodity":os.path.join(dir_path,'./lib/commodityHS.json'),"production": os.path.join(dir_path, r'./lib/Production.xlsx'),
-          "reporter":os.path.join(dir_path,'./lib/reporterISO.json'),"wgi": os.path.join(dir_path,'./lib/wgi.json'), "yearly":os.path.join(dir_path,'./lib/yearlyAVGprice.json')}
+FILES = {"commodity":os.path.join(r'./lib/commodityHS.json'),"production": os.path.join(r'./lib/Production.xlsx'),
+          "reporter":os.path.join(r'./lib/reporterISO.json'),"wgi": os.path.join(r'./lib/wgi.json'), "yearly":os.path.join('./lib/yearlyAVGprice.json')}
 
 
 #Test fail variables
