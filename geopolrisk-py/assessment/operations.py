@@ -178,7 +178,11 @@ def gprs_comtrade(resourcelist, countrylist, yearlist, recyclingrate, scenario, 
                 break
             
             #From the core methods, TradeData is None only when the dataframe is empty
-            emptycounter += 1 if TradeData[0] is None else emptycounter
+            if TradeData[0] == None or TradeData[0] == 0:
+                emptycounter += 1
+            else:
+                pass
+                
             try:
                 AVGPrice = _price[str(I[2])].tolist()[_price.hs.to_list().index(I[0])]
                 X = productionQTY(resource, country)

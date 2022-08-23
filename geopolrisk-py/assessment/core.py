@@ -320,10 +320,11 @@ def WTA_calculation(period, TradeData = None, PIData = None,
         #Recyclability factor of GeoPolRisk
     
         #Usually users are supposed to provide an input between 0 and 1
-        if recyclingrate >1 and recyclingrate < 100:
+        if recyclingrate >=0 and recyclingrate < 100:
             recyclingrate = recyclingrate/100
         else:
             logging.debug(f"Recycling Rate out of bounds| Recycling Rate : {recyclingrate}")
+            recyclingrate = 0
         
         
         #The mitigation due to recycling has a redistribution and reduction effect
