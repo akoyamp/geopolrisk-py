@@ -46,27 +46,48 @@ outputList = []
 # and country ISO codes.
 
 def convertCodes(resource, country, direction):
-    if direction == 1:
-        ISO, HS = [], []
-        try:
-            for i in resource:
-                HS.append(_price.iloc[_price.id.to_list().index(i),26])
-            for i in country:
-                ISO.append(_reporter.ISO.to_list()[_reporter.Country.to_list().index(i)]) 
-        except Exception as e:
-            logging.debug(e)
-            raise CalculationError
-            return None
-        return HS,ISO
-    if direction == 2:
-        try:
-            HS = _price.iloc[_price.hs.to_list().index(resource),25]
-            ISO = _reporter.Country.to_list()[_reporter.ISO.to_list().index(country)]
-        except Exception as e:
-            logging.debug(e)
-            raise CalculationError
-            return None
-        return HS,ISO
+    resourceCX, countryCX = None, None 
+    
+    if isinstance(resource,  list):
+        listofresource = []
+        for i in resource:
+            if isinstance(i, str) and direction == 1:
+                listofresource.append(_price.iloc[_price.id.to_list().index(i),26])
+            elif isinstance(i, int) and direction == 2:
+                listofresource.append(_price.iloc[_price.hs.to_list().index(i),25])
+        resourceCX = listofresource
+    elif isinstance(resource, int) and direction == 2:
+        resourceCX = _price.iloc[_price.hs.to_list().index(resource),25]
+    elif isinstance(resource, str) and direction == 1:
+        resourceCX = _price.iloc[_price.id.to_list().index(resource),26]
+    else:
+        logging.debug(f"Unknown input type or direction. Input resource = {resource}; direction = {direction}.")
+        raise InputError
+    
+    
+    if isinstance(country,  list):
+        listofcountries = []
+        for i in country:
+            if isinstance(i, str) and direction == 1:
+                listofcountries.append(_reporter.ISO.to_list()[_reporter.Country.to_list().index(i)])
+            elif isinstance(i, int) and direction == 2:
+                listofcountries.append(_reporter.Country.to_list()[_reporter.ISO.astype(str).to_list().index(str(i))])
+        countryCX = listofcountries
+    elif isinstance(resource, int) and direction == 2:
+        countryCX = _reporter.Country.to_list()[_reporter.ISO.astype(str).to_list().index(str(country))]
+    elif isinstance(resource, str) and direction == 1:
+        countryCX = _reporter.ISO.to_list()[_reporter.Country.to_list().index(country)]
+    else:
+        logging.debug(f"Unknown input type or direction. Input country = {country}; direction = {direction}.")
+        raise InputError
+    
+    if resourceCX is None or countryCX is None:
+        logging.debug("Something went wrong in the convertcodes function!")
+        raise IncompleteProcessFlow
+    else:
+        return resourceCX, countryCX
+    
+
 
 
 # Verify if the calculation is already stored in the database to avoid recalculation
@@ -156,7 +177,7 @@ def gprs_comtrade(resourcelist, countrylist, yearlist, recyclingrate, scenario, 
             verify = sqlverify(resource, country, I[2], recyclingrate, scenario)
         except Exception as e:
             logging.debug(e)    
-            logging.debug(verify)
+            raise IncompleteProcessFlow
             
             
         if verify is None or database == "update":
@@ -199,7 +220,6 @@ def gprs_comtrade(resourcelist, countrylist, yearlist, recyclingrate, scenario, 
                 recorddata(resource, country, I[2], recyclingrate, scenario, Risk, CF, HHI, WTA, I[0], I[1], Filename)
             elif database == "update":
                 updatedata(resource, country, I[2], recyclingrate, scenario, Risk, CF, HHI, WTA, Filename)
-                pass
         else:
             logging.debug("No transaction has been made. "
                           "Preexisting data has been inserted in output file.")
@@ -214,65 +234,114 @@ def gprs_comtrade(resourcelist, countrylist, yearlist, recyclingrate, scenario, 
 # The assessment is similar to that of gprs_comtrade
 
 
-def gprs_regional(resourcelist, countrylist, yearlist, recyclingrate, scenario):
+def gprs_regional(resourcelist, countrylist, yearlist, recyclingrate, scenario, database="record"):
+    # Function to calculate the GeoPolitical related supply risk potential using the GeoPolRisk method for 
+    # a list of countries including group of countries or newly defined regions.
+    # Correct functioning of this function is dependent on the function 'regions' from core module.
+    # regions function allows to declare a new region or group of countries as a dictionary.
+    
+    
+    
     newregionlist = []
+    # Instantiate counters for logging
     counter, totalcounter, emptycounter = 0, 0, 0
+    # Compare if the region already exists withing the library.
     newregion = [i for i , x  in enumerate(countrylist) if str(x) not
                    in _reporter.Country.to_list() and str(x) not 
                    in _reporter["ISO"].astype(str).tolist()]
+    # Extract new regions from the provided countrylist parameter (argument).
     for i in newregion:
         newregionlist.append(countrylist[i])
         del countrylist[i]
+    
+    # Calculate the values for the new region(s)
     for l in newregionlist:
-        countrylist = regionslist[l]
-        _ignore, countrylist = convertCodes([], countrylist, 1)
+        # New regions can be defined as ISO nomenclature or ISO numeric. The values must be converted to numeric.
+        Xcountrylist = regionslist[l]
+        _ignore, Xcountrylist = convertCodes("Cobalt", Xcountrylist, 1) if str(Xcountrylist[0]) not in _reporter["ISO"].astype(str).tolist() else None,Xcountrylist
+        
+        # Iterate the resources, year for COMTRADE query
         for I in itertools.product(resourcelist, yearlist):
-            newcodelist, newcountrylist, newquantitylist = [], [], []
-            newtradelist = [newcodelist, newcountrylist, newquantitylist]
-            TotalDomesticProduction = 0
-            for k in countrylist:
-                counter  += 1
-                totalcounter += 1
-                
-                
-                resource, country = convertCodes(I[0], k, 2)
-                verify = sqlverify(resource, country, I[1], recyclingrate, scenario)
-                if verify is None:
-                    TradeData = COMTRADE_API(classification = "HS",
-                    period = I[1],
-                    partner = "all",
-                    reporter = k,
-                    HSCode = I[0],
-                    TradeFlow = "1",
-                    recyclingrate = recyclingrate,
-                    scenario = scenario)
+            # LOGIC
+            """
+            A group of countries such as G7, G8 or region such as middle east, ASEAN are declared in the regions function.
+            The name of the group or region is provided as the key and the values as a list of countries in the group or region.
+            ex: The G7 group can be presented as {"G7" : ["Canada", "France", "Germany", "Italy", "Japan", "United Kingdom", "USA"]} or 
+            ISO numeric can provided instead of the names.
+            
+            The logic behind the code is to iterate the list of countries in the group/region and fetch its individual trade data.
+            The trade data is aggregated (summed) which is then processed for further calculation.
+            """
+            
+            # New variables to aggregate trade data from COMTRADE API
+            newcodelist, newcountrylist, newquantitylist = [], [], [] # TradeData (from core module) fetchs the ISO country code, country names and trade quantity in KG from COMTRADE
+            newtradelist = [newcodelist, newcountrylist, newquantitylist] # The newtradelist appends the list and aggregates them
+            TotalDomesticProduction, TDP = 0, [] # Variable to fetch production data
+            try:
+                resource, _ignore = convertCodes(I[0], 124, 2)
+                verify = sqlverify(resource, l, I[1], recyclingrate, scenario)
+            except Exception as e:
+                    logging.debug(e)    
+                    logging.debug("SQL Verification failed!")
+                    raise IncompleteProcessFlow
+            if verify is None or database == "update":
+                for k in Xcountrylist:
+                    #Counters
+                    counter  += 1
+                    totalcounter += 1
+                    try:
+                        #Code to fetch from COMTRADE API
+                        resource, country = convertCodes(I[0], k, 2)
+                        TradeData = COMTRADE_API(classification = "HS",
+                        period = I[1],
+                        partner = "all",
+                        reporter = k,
+                        HSCode = I[0],
+                        TradeFlow = "1",
+                        recyclingrate = recyclingrate,
+                        scenario = scenario)
+                    except Exception as e:
+                        logging.debug(e)
+                        logging.debug(f"""Failed COMTRADE attempt!: resource - {resource}
+                                      country - {country}, year - {I[1]}""")
                     
-                    if TradeData [0] is None:
+                    #counter
+                    if TradeData[0] is None or len(TradeData[0]) == 0:
                         emptycounter += 1
-                    for ind, n in enumerate(TradeData[0]):
-                        if n not in newcodelist:
-                            newcodelist.append(n)
-                            newquantitylist.append(TradeData[2][ind])
-                            newcountrylist.append(TradeData[1][ind])
-                        else:
-                            index = newcodelist.index(n)
-                            newquantitylist[index] = newquantitylist[index] + TradeData[2][ind]
-                            
+                        logging.debug(f"Trade of {resource} to {country} returned None for {I[1]}")
+                        newtradelist = [[0], [0], [0]]
+                    else:
+                        #code to aggregate the data
+                        for ind, n in enumerate(TradeData[0]):
+                            if n not in newcodelist:
+                                newcodelist.append(n)
+                                newquantitylist.append(TradeData[2][ind])
+                                newcountrylist.append(TradeData[1][ind])
+                            else:
+                                index = newcodelist.index(n)
+                                newquantitylist[index] = newquantitylist[index] + TradeData[2][ind]      
                     X = productionQTY(resource, country)
                     index = X[2].index(I[1])
                     TotalDomesticProduction += X[1][index]
-                else:
-                    logging.debug("No transaction has been made. "
-                          "Preexisting data has been inserted in output file.")
-                    counter -= 1
-            AVGPrice = _price[str(I[1])].tolist()[_price.hs.to_list().index(i)]
-            Y = WTA_calculation(str(I[1]), TradeData = newtradelist)
-            HHI, WTA, Risk, CF = GeoPolRisk([X[0], TotalDomesticProduction, X[2]], Y, str(I[1]), AVGPrice)
-            outputList.append([str(I[1]), resource, l ,recyclingrate, scenario, Risk, CF, HHI, WTA])
+                 
+                # Calculation of the components of the GeoPolRisk method
+                TDP = [0]*len(X[1])
+                TDP[X[2].index(I[1])] = TotalDomesticProduction
+                AVGPrice = _price[str(I[1])].tolist()[_price.hs.to_list().index(I[0])]
+                Y = WTA_calculation(str(I[1]), TradeData = newtradelist, PIData = _wgi, scenario = scenario, recyclingrate = recyclingrate )
+                
+                HHI, WTA, Risk, CF = GeoPolRisk([X[0], TDP, X[2]], Y, str(I[1]), AVGPrice)# Final outputs from the GeoPolRisk calculation
+                outputList.append([str(I[1]), resource, l ,recyclingrate, scenario, Risk, CF, HHI, WTA])
+                
+                #Record or update data
+                if database == "record":
+                    recorddata(resource, l, I[1], recyclingrate, scenario, Risk, CF, HHI, WTA, I[0], l, Filename)
+                elif database == "update":
+                    updatedata(resource, l, I[1], recyclingrate, scenario, Risk, CF, HHI, WTA, Filename)
     
-    outputDF = pd.DataFrame(outputList, columns=_columns)
-    outputDF.to_csv(_outputfile+'/export.csv')
-    endlog(counter, totalcounter, emptycounter)
+    #The remaining countries in the provided parameter that does not require aggregation is calculated using comtrade aggregat
+    gprs_comtrade(resourcelist, countrylist, yearlist, recyclingrate, scenario, database="record")
+    
     
 
 # Organizational level assessment require declaring the regions if necessary and a

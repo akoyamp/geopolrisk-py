@@ -274,6 +274,7 @@ def WTA_calculation(period, TradeData = None, PIData = None,
                     scenario = 0, recyclingrate = 0.00):
     
     if TradeData is None or PIData is None:
+        logging.debug("Trade data returned empty!")
         raise IncompleteProcessFlow
         return None
     elif TradeData[0] is not None:
@@ -322,7 +323,7 @@ def WTA_calculation(period, TradeData = None, PIData = None,
         #Usually users are supposed to provide an input between 0 and 1
         if recyclingrate >=0 and recyclingrate < 100:
             recyclingrate = recyclingrate/100
-        else:
+        elif recyclingrate != 0:
             logging.debug(f"Recycling Rate out of bounds| Recycling Rate : {recyclingrate}")
             recyclingrate = 0
         
