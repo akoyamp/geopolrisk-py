@@ -136,12 +136,12 @@ def updatedata(*args):
         logging.debug("Multiple data records found!")
         raise DataRecordError
         return None
-    elif dataframe.shape[0]>2:
+    elif dataframe.shape[0]==0:
         logging.debug("No data records found!")
         raise DataRecordError
         return None
     else:
-        if int(dataframe.iloc[0]['wta']) == int(WTA):
+        if float(dataframe.iloc[0]['wta']) == float(WTA):
             logging.debug("NO change in trade data detected! No SQL executed.")
             return None
         else:

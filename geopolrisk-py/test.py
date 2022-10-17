@@ -36,21 +36,22 @@ import time
 #         continue
 #     time.sleep(3600)
 
-for i in range (10):
-    try:
-        update_cf()
-    except Exception as e:
-        print(e)
-        continue
-    time.sleep(3600)
+# for i in range (10):
+#     try:
+#         update_cf()
+#     except Exception as e:
+#         print(e)
+#         continue
+#     time.sleep(3600)
 # from assessment.gprsplots import compareplot
 
 # dip = compareplot(["Australia", "France", "Canada", "European Union"],[2014], ["Manganese","Iron", "Copper", "Petroleum"], 0)
 # dip.show()
 
-# from assessment.operations import updateprice 
-# updateprice()
+from assessment.operations import updateprice 
+updateprice()
 
+#gprs_comtrade([7108,2504], [97], [2020], 0, 0, database="update")
 
 # #Recycling Scenarios
 # ShortListofMetals = [283691, 2602, 2603, 2604, 810520]#,  283691, 2602, 2603, 2604, 810520
@@ -61,4 +62,4 @@ for i in range (10):
 # except Exception as e:
 #     print(e)
 
-from tests import test
+# from tests import test

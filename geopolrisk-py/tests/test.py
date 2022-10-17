@@ -21,20 +21,20 @@ ListofMetals = [2606, 261710, 2524, 2511, 8106, 8107, 2610, 2701, 810520, 2603, 
                  2601, 2607, 283691, 251910, 2602, 280540, 2613, 271111, 2604, 2709, 2846, 261610, 
                  2609, 2611, 2608, 261510 ]
 
-#ShortListofMetals = [2602, 2601, 2603, 2846, 2614,]
-ListofCountries = [36, 124, 97, 251, 276, 392, 826, 842,] 
-#ShortListofCountries = [36, 124, 97, 251]#
-Year = [2002, 2003,  2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013,
-        2014, 2015, 2016, 2017, 2018, 2019, 2020]#,
-#ShortListofYear = [2017, 2018, 2019, 2020]
+# #ShortListofMetals = [2602, 2601, 2603, 2846, 2614,]
+# ListofCountries = [36, 124, 97, 251, 276, 392, 826, 842,] 
+# #ShortListofCountries = [36, 124, 97, 251]#
+# Year = [2002, 2003,  2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+#         2014, 2015, 2016, 2017, 2018, 2019, 2020]#,
+# #ShortListofYear = [2017, 2018, 2019, 2020]
 
-for i in range(100):
-    try:
-        gprs_comtrade(ListofMetals, ListofCountries, Year, 0, 0)
-    except Exception as e:
-        print(e)
-        continue
-    time.sleep(3600)
+# for i in range(100):
+#     try:
+#         gprs_comtrade(ListofMetals, ListofCountries, Year, 0, 0)
+#     except Exception as e:
+#         print(e)
+#         continue
+#     time.sleep(3600)
 
 
 # update_cf()
