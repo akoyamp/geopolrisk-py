@@ -16,11 +16,29 @@
 from assessment.operations import update_cf, gprs_comtrade
 import time
 
+ListofMetals = [8106]
 
-# ListofMetals = [2606, 261710, 2524, 2511, 8106, 8107, 2610, 2701, 810520, 2603, 7108, 2504, 
-#                  2601, 2607, 283691, 251910, 2602, 280540, 2613, 271111, 2604, 2709, 2846, 261610, 
-#                  2609, 2611, 2608, 261510 ]
-
+# ListofMetals = [2504,2511,2524,2601,2602,2603,2604,2606,2607,2608,2609,
+#                 2610,2611,2613,2614,2701,2709,2846,7108,8107,251910,
+#                 261210,261510,261610,261710,271111,283691, 810520]
+# incompletelist = [2504,
+#         2511,
+#         2601,
+#         2611,
+#         2614,
+#         2701,
+#         2709,
+#         2846,
+#         7108,
+#         261510,
+#         271111,
+#         283691,
+#         810520]
+ShortListofYear = [2021, 2020]
+try:
+    gprs_comtrade(ListofMetals, [97], ShortListofYear, 0, 0, database="record")
+except Exception as e:
+    print(e)
 # #ShortListofMetals = [2602, 2601, 2603, 2846, 2614,]
 # ListofCountries = [36, 124, 97, 251, 276, 392, 826, 842,] 
 # #ShortListofCountries = [36, 124, 97, 251]#
@@ -48,8 +66,8 @@ import time
 # dip = compareplot(["Australia", "France", "Canada", "European Union"],[2014], ["Manganese","Iron", "Copper", "Petroleum"], 0)
 # dip.show()
 
-from assessment.operations import updateprice 
-updateprice()
+# from assessment.operations import updateprice 
+# updateprice()
 
 #gprs_comtrade([7108,2504], [97], [2020], 0, 0, database="update")
 
