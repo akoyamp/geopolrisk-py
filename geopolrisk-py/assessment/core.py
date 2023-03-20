@@ -1,46 +1,218 @@
-# Copyright 2020-2021 by Anish Koyamparambath and University of Bordeaux. All Rights Reserved.
-# Permission to use, copy, modify, and distribute this software and its
-# documentation for any purpose and without fee is hereby granted,
-# provided that the above copyright notice appear in all copies and that
-# both that copyright notice and this permission notice appear in
-# supporting documentation, and that the name of Anish Koyamparambath (AK) or
-# University of Bordeaux (UBx) will not be used in advertising or publicity pertaining
-# to distribution of the software without specific, written prior permission.
-# BOTH AK AND UBx DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
-# ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL
-# BOTH AK AND UBx BE LIABLE FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR
-# ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
-# IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
-# OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-
-
-# Imports
 import pandas as pd, json
 from urllib.request import Request, urlopen
 from pathlib import Path
-from .__init__ import _production, _reporter, regionslist, logging, exportfile
+from .__init__ import instance, logging, execute_query
 from .Exceptions.warningsgprs import *
-_outputfile = exportfile
+
+
+
 # Define Paths
 tradepath = None
+_production, _reporter = instance.production, instance.reporter
+regionslist, _outputfile = instance.regionslist, instance.exportfile
+_price = instance.price
+db = _outputfile + '/' + instance.Output
+# Extract list of all data
+HS = _price.HS.to_list()
+Resource = _price.Resource.to_list()
+Country = _reporter.Country.to_list()
+ISO = _reporter.ISO.to_list()
 
-# This module contains methods (python functions) that provides access to different components and
-# variables of the GeoPolRisk method. This is a functional module where methods
-# are designed for micromanaging the GeoPolRisk method. Refer to the scientific publication
-# available online for technical details.
+def convertCodes(resource, country, *args, **kwargs):
+    # Verify direction
+    def check_variables(A, B):
+        if (isinstance(A, list) and 
+            isinstance(B, list) and 
+            all(isinstance(element, str) 
+                for element in A) and 
+                all(isinstance(element, str) for element in B)):
+            return "Numeric"
+        elif (isinstance(A, int) and isinstance(B, int) or 
+              (isinstance(A, list) and isinstance(B, list) and 
+               all(isinstance(element, int) for element in A) and 
+               all(isinstance(element, int) for element in B))):
+            return "Text"
+        else:
+            return None
+    
+    def return_variables(X, A, B):
+        if isinstance(X, list):
+            X_transform = []
+            for i, n in enumerate(X):
+                try:
+                    idx = A.index(n)
+                    X_transform.append(B[idx])
+                except Exception as e:
+                    logging.debug("Failed to transform")
+                    logging.debug(e)
+                    logging.debug("Transformation failed for " + str(n))
+            return X_transform
+        else:
+            try:
+                idx = A.index(X)
+                X_transform = B[idx]
+            except Exception as e:
+                    logging.debug("Failed to transform")
+                    logging.debug(e)
+                    logging.debug("Transformation failed for " + str(X))
+            return X_transform
+
+    direction = check_variables(resource, country)    
+    if direction == "Numeric":
+        ResourceCX = return_variables(resource, Resource, HS)
+        CountryCX = return_variables(country, Country, ISO)
+    elif direction == "Text":
+        ResourceCX = return_variables(resource, HS, Resource)
+        CountryCX = return_variables(country, ISO, Country)
+    else:
+        logging.debug("Failed to verify direction")
+        logging.debug(direction)
+        ResourceCX, CountryCX = None, None
+    return ResourceCX, CountryCX
+
+# Verify if the calculation is already stored in the database to avoid recalculation
+def sqlverify(*args):
+    resource, country, year, recyclingrate, scenario = (
+        args[0],
+        args[1],
+        args[2],
+        args[3],
+        args[4],
+    )
+    sqlstatement = (
+        "SELECT geopolrisk, hhi, wta, geopol_cf FROM recordData WHERE country = '"
+        + country
+        + "' AND resource= '"
+        + resource
+        + "' AND year = '"
+        + str(year)
+        + "' AND recycling_rate = '"
+        + str(recyclingrate)
+        + "' AND scenario = '"
+        + str(scenario)
+        + "';"
+    )
+    try:
+        row = execute_query(sqlstatement, db_path=db)
+    except InputError:
+        logging.debug(sqlstatement)
+    if not row:
+        return None
+    else:
+        outputList.append(
+            [
+                str(year),
+                resource,
+                country,
+                recyclingrate,
+                scenario,
+                row[0][0],
+                row[0][3],
+                row[0][1],
+                row[0][2],
+            ]
+        )
+        return True
 
 
-# The GeoPolRisk method is designed to assess the geopolitical related supply risk
-# of importing a resource from a macro economic perspective (country, regions,
-# trade blocs or group of countries) during a period. However, the method could be
-# adapted to analyse the supply risk at an organizational level. This requires
-# specific trade information in contrast to the macro economic perspective that uses
-# country trade data available that is accessed using the COMTRADE api.
 
-# The specific trade data of the organization can be provided using a predefined
-# excel or csv format. The location of the file is provided as an agrument to the
-# 'settradepath' method below.
-
+# Updates the database using new values.
+# This function doesnt override the calculaiton
+def recordData(*args):
+    # Verify
+    (resource, country, year, recyclingrate, scenario)= (
+        args[0],
+        args[1],
+        args[2],
+        args[3],
+        args[4],
+    )
+    (   GPRS,
+        CF,
+        HHI,
+        WTA,
+        HSCODE,
+        ISO,
+        Log
+    ) = (
+        args[5],
+        args[6],
+        args[7],
+        args[8],
+        args[9],
+        args[10],
+        args[11]
+    )
+    sqlstatement = (
+        "SELECT geopolrisk, hhi, wta, geopol_cf from "
+        "recordData WHERE country = '"
+        + country
+        + "' AND resource= '"
+        + resource
+        + "' AND year = '"
+        + str(year)
+        + "' AND recycling_rate = '"
+        + str(recyclingrate)
+        + "' AND scenario = '"
+        + str(scenario)
+        + "';"
+    )
+    row = execute_query(sqlstatement, db_path=db)
+    dataframe = pd.DataFrame(row, columns=["geopolrisk", "hhi", "wta",
+                                           "geopol_cf"])
+    if dataframe.shape[0] > 2:
+        logging.debug("Multiple data records found!")
+        raise DataRecordError
+        return None
+    elif dataframe.shape[0] == 0:
+        sqlstatement = (
+        "INSERT INTO recordData (country, resource, year, recycling_rate,"
+        " scenario, geopolrisk, hhi, wta, geopol_cf, resource_hscode, iso, log_ref) VALUES ('"
+        "" + country + "','" + resource + "','" + str(year) + ""
+        "','" + str(recyclingrate) + "','" + str(scenario) + "','"
+        "" + str(GPRS) + "','" + str(HHI) + "','" + str(WTA) + ""
+        "','" + str(CF) + "','" + str(HSCODE) + "','" + str(ISO) + "',"
+        "'" + str(Log) + "');"
+        )
+        try:
+            row = execute_query(sqlstatement, db_path=db)
+            logging.debug("Database recorded sucessfully!")
+            return True
+        except Exception as e:
+            logging.debug(e)
+            raise DataRecordError
+            return None
+    else:
+        if float(dataframe.iloc[0]["wta"]) == float(WTA):
+            logging.debug("NO change in trade data detected! No SQL executed.")
+            return None
+        else:
+            sqlstatement = (
+                "UPDATE recordData SET hhi= '"
+                + str(HHI)
+                + "', wta ='"
+                + str(WTA)
+                + "', geopolrisk='"
+                + str(GPRS)
+                + "', geopol_cf= '"
+                + str(CF)
+                + "', log_ref='"
+                + str(Log)
+                + "' WHERE country = '"
+                + country
+                + "' AND resource= '"
+                + resource
+                + "' AND year = '"
+                + str(year)
+                + "' AND recycling_rate = '"
+                + str(recyclingrate)
+                + "' AND scenario = '"
+                + str(scenario)
+                + "';"
+            )
+            norow = execute_query(sqlstatement, db_path=db)
+            logging.debug("Database update sucessfully!")
+            return True
 
 # Method 1
 def settradepath(path):
@@ -56,50 +228,8 @@ def settradepath(path):
         tradepath = None
         raise InputError
 
-
-# In line with the earlier explanation of the scope of GeoPolRisk method, the
-# following methods creates a user defined scope (regions). By default, European
-# Union (27 countries) is provided in the dictionary. A dictionary is provided
-# as an argument with the name of the region/bloc is the key and the ISO names
-# of the countries as the values. The ISO names of the countries are available in
-# the the reporters json file.
-
-
 # Method 2
 def regions(*args):
-    regionslist["EU"] = [
-        "Austria",
-        "Belgium",
-        "Belgium-Luxembourg",
-        "Bulgaria",
-        "Croatia",
-        "Czechia",
-        "Czechoslovakia",
-        "Denmark",
-        "Estonia",
-        "Finland",
-        "France",
-        "Fmr Dem. Rep. of Germany",
-        "Fmr Fed. Rep. of Germany",
-        "Germany",
-        "Greece",
-        "Hungary",
-        "Ireland",
-        "Italy",
-        "Latvia",
-        "Lithuania",
-        "Luxembourg",
-        "Malta",
-        "Netherlands",
-        "Poland",
-        "Portugal",
-        "Romania",
-        "Slovakia",
-        "Slovenia",
-        "Spain",
-        "Sweden",
-    ]
-
     if len(args) != 0:
         for key, value in args[0].items():
             if type(key) is not str and type(value) is not list:
@@ -112,7 +242,7 @@ def regions(*args):
                 x
                 for x in value
                 if str(x) not in _reporter.Country.to_list()
-                and str(x) not in _reporter["ISO"].astype(str).tolist()
+                or str(x) not in _reporter["ISO"].astype(str).tolist()
             ]
             if len(Print_Error) != 0:
                 logging.debug(
@@ -206,10 +336,6 @@ def COMTRADE_API(
         TradeData = [None, None, None]
     return TradeData
 
-
-"""
-The defined trade path in the first method 
-"""
 
 # Method 4
 def InputTrade(sheetname=None):
@@ -421,7 +547,6 @@ def productionQTY(Resource, EconomicUnit):
     try:
         prod = _production[Resource]
         Countries = prod.Country.to_list()
-        print(Countries)
     except Exception as e:
         logging.debug(e)
         logging.warning(
