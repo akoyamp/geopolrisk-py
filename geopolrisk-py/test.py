@@ -13,10 +13,14 @@
 # IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
 # OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-from assessment.operations import update_cf, gprs_comtrade
-import time
+#from assessment.operations import update_cf, gprs_comtrade
 
+
+
+import time
+from assessment.operations import gprs_comtrade
 ListofMetals = [8106]
+
 
 # ListofMetals = [2504,2511,2524,2601,2602,2603,2604,2606,2607,2608,2609,
 #                 2610,2611,2613,2614,2701,2709,2846,7108,8107,251910,
@@ -34,9 +38,9 @@ ListofMetals = [8106]
 #         271111,
 #         283691,
 #         810520]
-ShortListofYear = [2021, 2020]
+ShortListofYear = [2019, 2020]
 try:
-    gprs_comtrade(ListofMetals, [97], ShortListofYear, 0, 0, database="record")
+    gprs_comtrade(ListofMetals, [97], ShortListofYear, 0, 0)
 except Exception as e:
     print(e)
 # #ShortListofMetals = [2602, 2601, 2603, 2846, 2614,]

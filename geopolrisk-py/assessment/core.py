@@ -3,7 +3,7 @@ from urllib.request import Request, urlopen
 from pathlib import Path
 from .__init__ import instance, logging, execute_query
 from .Exceptions.warningsgprs import *
-
+from .utils import *
 
 
 # Define Paths
@@ -12,207 +12,6 @@ _production, _reporter = instance.production, instance.reporter
 regionslist, _outputfile = instance.regionslist, instance.exportfile
 _price = instance.price
 db = _outputfile + '/' + instance.Output
-# Extract list of all data
-HS = _price.HS.to_list()
-Resource = _price.Resource.to_list()
-Country = _reporter.Country.to_list()
-ISO = _reporter.ISO.to_list()
-
-def convertCodes(resource, country, *args, **kwargs):
-    # Verify direction
-    def check_variables(A, B):
-        if (isinstance(A, list) and 
-            isinstance(B, list) and 
-            all(isinstance(element, str) 
-                for element in A) and 
-                all(isinstance(element, str) for element in B)):
-            return "Numeric"
-        elif (isinstance(A, int) and isinstance(B, int) or 
-              (isinstance(A, list) and isinstance(B, list) and 
-               all(isinstance(element, int) for element in A) and 
-               all(isinstance(element, int) for element in B))):
-            return "Text"
-        else:
-            return None
-    
-    def return_variables(X, A, B):
-        if isinstance(X, list):
-            X_transform = []
-            for i, n in enumerate(X):
-                try:
-                    idx = A.index(n)
-                    X_transform.append(B[idx])
-                except Exception as e:
-                    logging.debug("Failed to transform")
-                    logging.debug(e)
-                    logging.debug("Transformation failed for " + str(n))
-            return X_transform
-        else:
-            try:
-                idx = A.index(X)
-                X_transform = B[idx]
-            except Exception as e:
-                    logging.debug("Failed to transform")
-                    logging.debug(e)
-                    logging.debug("Transformation failed for " + str(X))
-            return X_transform
-
-    direction = check_variables(resource, country)    
-    if direction == "Numeric":
-        ResourceCX = return_variables(resource, Resource, HS)
-        CountryCX = return_variables(country, Country, ISO)
-    elif direction == "Text":
-        ResourceCX = return_variables(resource, HS, Resource)
-        CountryCX = return_variables(country, ISO, Country)
-    else:
-        logging.debug("Failed to verify direction")
-        logging.debug(direction)
-        ResourceCX, CountryCX = None, None
-    return ResourceCX, CountryCX
-
-# Verify if the calculation is already stored in the database to avoid recalculation
-def sqlverify(*args):
-    resource, country, year, recyclingrate, scenario = (
-        args[0],
-        args[1],
-        args[2],
-        args[3],
-        args[4],
-    )
-    sqlstatement = (
-        "SELECT geopolrisk, hhi, wta, geopol_cf FROM recordData WHERE country = '"
-        + country
-        + "' AND resource= '"
-        + resource
-        + "' AND year = '"
-        + str(year)
-        + "' AND recycling_rate = '"
-        + str(recyclingrate)
-        + "' AND scenario = '"
-        + str(scenario)
-        + "';"
-    )
-    try:
-        row = execute_query(sqlstatement, db_path=db)
-    except InputError:
-        logging.debug(sqlstatement)
-    if not row:
-        return None
-    else:
-        outputList.append(
-            [
-                str(year),
-                resource,
-                country,
-                recyclingrate,
-                scenario,
-                row[0][0],
-                row[0][3],
-                row[0][1],
-                row[0][2],
-            ]
-        )
-        return True
-
-
-
-# Updates the database using new values.
-# This function doesnt override the calculaiton
-def recordData(*args):
-    # Verify
-    (resource, country, year, recyclingrate, scenario)= (
-        args[0],
-        args[1],
-        args[2],
-        args[3],
-        args[4],
-    )
-    (   GPRS,
-        CF,
-        HHI,
-        WTA,
-        HSCODE,
-        ISO,
-        Log
-    ) = (
-        args[5],
-        args[6],
-        args[7],
-        args[8],
-        args[9],
-        args[10],
-        args[11]
-    )
-    sqlstatement = (
-        "SELECT geopolrisk, hhi, wta, geopol_cf from "
-        "recordData WHERE country = '"
-        + country
-        + "' AND resource= '"
-        + resource
-        + "' AND year = '"
-        + str(year)
-        + "' AND recycling_rate = '"
-        + str(recyclingrate)
-        + "' AND scenario = '"
-        + str(scenario)
-        + "';"
-    )
-    row = execute_query(sqlstatement, db_path=db)
-    dataframe = pd.DataFrame(row, columns=["geopolrisk", "hhi", "wta",
-                                           "geopol_cf"])
-    if dataframe.shape[0] > 2:
-        logging.debug("Multiple data records found!")
-        raise DataRecordError
-        return None
-    elif dataframe.shape[0] == 0:
-        sqlstatement = (
-        "INSERT INTO recordData (country, resource, year, recycling_rate,"
-        " scenario, geopolrisk, hhi, wta, geopol_cf, resource_hscode, iso, log_ref) VALUES ('"
-        "" + country + "','" + resource + "','" + str(year) + ""
-        "','" + str(recyclingrate) + "','" + str(scenario) + "','"
-        "" + str(GPRS) + "','" + str(HHI) + "','" + str(WTA) + ""
-        "','" + str(CF) + "','" + str(HSCODE) + "','" + str(ISO) + "',"
-        "'" + str(Log) + "');"
-        )
-        try:
-            row = execute_query(sqlstatement, db_path=db)
-            logging.debug("Database recorded sucessfully!")
-            return True
-        except Exception as e:
-            logging.debug(e)
-            raise DataRecordError
-            return None
-    else:
-        if float(dataframe.iloc[0]["wta"]) == float(WTA):
-            logging.debug("NO change in trade data detected! No SQL executed.")
-            return None
-        else:
-            sqlstatement = (
-                "UPDATE recordData SET hhi= '"
-                + str(HHI)
-                + "', wta ='"
-                + str(WTA)
-                + "', geopolrisk='"
-                + str(GPRS)
-                + "', geopol_cf= '"
-                + str(CF)
-                + "', log_ref='"
-                + str(Log)
-                + "' WHERE country = '"
-                + country
-                + "' AND resource= '"
-                + resource
-                + "' AND year = '"
-                + str(year)
-                + "' AND recycling_rate = '"
-                + str(recyclingrate)
-                + "' AND scenario = '"
-                + str(scenario)
-                + "';"
-            )
-            norow = execute_query(sqlstatement, db_path=db)
-            logging.debug("Database update sucessfully!")
-            return True
 
 # Method 1
 def settradepath(path):
@@ -263,13 +62,8 @@ def regions(*args):
             return None
         regionslist[i] = [i]
 
-
-# The following method connects to the COMTRADE API using request from urlopen module.
-# Several inputs required to connect are provided as optional arguments. The user must
-# modify the values of these optional arguments before calling the calculation function.
-
 # Method 3
-def COMTRADE_API(
+def worldtrade(
     year="2010",
     country="276",
     commodity="2602",
@@ -338,7 +132,7 @@ def COMTRADE_API(
 
 
 # Method 4
-def InputTrade(sheetname=None):
+def specifictrade(sheetname=None):
     trade_path = tradepath
 
     # This function reads the trade file specific to an organization/company.
@@ -401,18 +195,66 @@ def InputTrade(sheetname=None):
             raise APIError
             return None
 
+def productiondata(Resource, EconomicUnit):
 
-# The GeoPolRisk method is built with three components, HHI (production concentration),
-# weighted trade average (WTA), yearly average price of the resource. With the
-# extracted trade information either using COMTRADE or individual trade is weighted
-# using a governance indicator and then averaged using the total imports and domestic
-# production of the resource.
+    EconomicUnit = "EU" if EconomicUnit == "European Union" else EconomicUnit
+    EconomicUnit = regionslist[EconomicUnit]
+    try:
+        prod = _production[Resource].fillna(0)
+        Countries = prod.Country.to_list()
+    except Exception as e:
+        logging.debug(e)
+        logging.warning(
+            "There was an error while acessing the production data file with an exception as ",
+            exc_info=True,
+        )
+        raise FileNotFoundError
+        return None
 
-# The method 'WTA_calculation' requires the year, trade data, governance indicator,
-# recycling rate and recycling scenario as inputs.
+    # P2. Fetching the production quantity from 'prod' dataframe.
+    try:
+        Prod_Year = prod.columns.to_list()[1:-1]
+        Prod_Year = [int(i) for i in Prod_Year]
+        temp = [0] * len(Prod_Year)
+        for i in EconomicUnit:
+            if i in Countries:
+                Prod_Qty = prod.loc[prod['Country'] == i].reset_index().loc[0, :].values.flatten().tolist()[2:-1]
+                Prod_Qty = replace_values(Prod_Qty, "^", 0) 
+                Prod_Qty = [float(i) for i in Prod_Qty]
+                Prod_Qty = [sum(j) for j in zip(temp, Prod_Qty)]
+                temp = Prod_Qty
+            else:
+                Prod_Qty = temp
+    except Exception as e:
+        logging.debug(e)
+        raise CalculationError
+        return None
+    # logging.debug("The following will be the list of data", "This is the country "+str(i), "Next should be the list ",str(self.Prod_Qty))
 
+    # P3. Calculating the HHI.
+    HHI = []
+    try:
+        for i in Prod_Year:
+            temp = prod[str(i)].values.tolist()
+            temp = replace_values(temp, "^", 0) 
+            temp = [float(i) for i in temp]
+            DeNom = sum(temp)
+            Nom = sum([j[0]*j[1] for j in zip(temp, temp)])
+            try:
+                HHI.append(round(Nom/(DeNom*DeNom), 3))
+            except Exception as e:
+                HHI.append(0)
+    except Exception as e:
+        logging.debug(e)
+        raise CalculationError
+        return None
+    length = len(Prod_Year)
+    if all(len(lst) == length for lst in [Prod_Qty, HHI]):
+        return [HHI, Prod_Qty, Prod_Year]
+    else:
+        return None
 
-def WTA_calculation(
+def weightedtrade(
     year, TradeData=None, PIData=None, scenario=0, recyclingrate=0.00
 ):
     if TradeData is None or PIData is None:
@@ -497,19 +339,16 @@ def WTA_calculation(
                 newquantity = redistribution(quantity, PI_score, totQ, True)
                 zipped_list = zip(newquantity, PI_score)
                 wgiavg = [x * y for (x, y) in zipped_list]
-                print(wgiavg)
                 # newdf["trade"] = newquantity
                 # newdf["indicator"] = PI_score
             elif scenario == 2:  # Worst case scenario
                 newquantity = redistribution(quantity, PI_score, totQ, False)
                 zipped_list = zip(newquantity, PI_score)
                 wgiavg = [x * y for (x, y) in zipped_list]
-                print(wgiavg)
             elif scenario == 0:  # No scenario
                 try:
                     zipped_list = zip(quantity, PI_score)
                     wgiavg = [x * y for (x, y) in zipped_list]
-                    print(wgiavg)
                 except TypeError as e:
                     logging.debug(e)
                     logging.debug("The Comtrade API is broken")
@@ -538,59 +377,6 @@ def WTA_calculation(
 
 # The first component of the GeoPolRisk method involved calculating the herfindahl-hirschmann
 # index (HHI) and total domestic production required for calculating the second factor (WTA).
-
-
-def productionQTY(Resource, EconomicUnit):
-
-    EconomicUnit = "EU" if EconomicUnit == "European Union" else EconomicUnit
-    EconomicUnit = regionslist[EconomicUnit]
-    try:
-        prod = _production[Resource]
-        Countries = prod.Country.to_list()
-    except Exception as e:
-        logging.debug(e)
-        logging.warning(
-            "There was an error while acessing the production data file with an exception as ",
-            exc_info=True,
-        )
-        raise FileNotFoundError
-        return None
-
-    # P2. Fetching the production quantity from 'prod' dataframe.
-    try:
-        Prod_Year = prod.columns.to_list()[1:]
-        temp = [0] * len(Prod_Year)
-        for i in EconomicUnit:
-            if i in Countries:
-                Prod_Qty = prod[i].values.tolist()
-                for k in range(len(Prod_Qty)):
-                    if str(Prod_Qty[k]) == "nan" or Prod_Qty[k] is None:
-                        Prod_Qty[k] = 0
-                Prod_Qty = [sum(j) for j in zip(temp, Prod_Qty)]
-                temp = Prod_Qty
-            else:
-                Prod_Qty = temp
-    except Exception as e:
-        logging.debug(e)
-        raise CalculationError
-        return None
-    # logging.debug("The following will be the list of data", "This is the country "+str(i), "Next should be the list ",str(self.Prod_Qty))
-
-    # P3. Calculating the HHI.
-    Nom = pd.Series()
-    try:
-        for i in range(1, prod.shape[1]):
-            temp = prod.iloc[:, i] * prod.iloc[:, i]
-            Nom = Nom.add(temp, fill_value=0)
-        DeNom = prod.sum(axis=1)
-        hhi = (Nom / (DeNom * DeNom)).tolist()
-        HHI = [round(i, 3) for i in hhi]
-    except Exception as e:
-        logging.debug(e)
-        raise CalculationError
-        return None
-    return [HHI, Prod_Qty, Prod_Year]
-
 
 def GeoPolRisk(ProductionData, WTAData, Year, AVGPrice):
     newdf = pd.DataFrame(columns=["production"])

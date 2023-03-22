@@ -4,7 +4,7 @@ from pathlib import Path
 #from .Exceptions.warningsgprs import *
 
 logging = logging
-__all__ = ["core", "operations", "gcalc", "gprsplots"]
+__all__ = ["core", "operations", "gcalc", "gprsplots", "utils"]
 __author__ = "Anish Koyamparambath <CyVi- University of Bordeaux>"
 __status__ = "beta"
 __version__ = "2.5"
@@ -114,7 +114,7 @@ class database:
         "Mercury",
         "Molybdenum",
         "Nickel",
-        "Petroleum",
+        "Crude_Oil",
         "REE",
         "Silver",
         "Tin",

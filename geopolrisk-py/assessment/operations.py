@@ -1,20 +1,19 @@
-
-
 from .__init__ import (
-    _reporter,
+    instance,
     execute_query,
-    _price,
-    exportfile,
-    _wgi,
-    regionslist,
     logging,
     Filename,
 )
-
-_outputfile = exportfile
 from .core import *
 from .Exceptions.warningsgprs import *
 import itertools, sqlite3, pandas as pd, time
+from .utils import recordData, sqlverify
+
+_production, _reporter = instance.production, instance.reporter
+regionslist, _outputfile = instance.regionslist, instance.exportfile
+_price = instance.price
+_wgi = instance.wgi
+db = _outputfile + '/' + instance.Output
 
 _columns = [
     "Year",
@@ -32,7 +31,7 @@ outputList = []
 def gprs_comtrade(
     resourcelist, countrylist, 
     yearlist, recyclingrate, 
-    scenario, database="record"
+    scenario
 ):
     if len(regionslist) > 0:
         pass
@@ -49,18 +48,18 @@ def gprs_comtrade(
         # Need to verify if the data preexists to avoid limited API calls
         try:
             resource, country = convertCodes(I[0], I[1], 2)
-            verify = sqlverify(resource, country, I[2], recyclingrate, scenario)
+            verify = sqlverify(resource, country, I[2], recyclingrate, scenario, outputList)
         except Exception as e:
             logging.debug(e)
             raise IncompleteProcessFlow
 
-        if verify is None or database == "update":
+        if verify is None:
             # The program has to sleep inorder to avoid conflict in multiple API requests
             time.sleep(5)
 
             try:
                 counter += 1
-                TradeData = COMTRADE_API(
+                TradeData = worldtrade(
                     year=I[2],
                     country=I[1],
                     commodity=I[0],
@@ -77,8 +76,9 @@ def gprs_comtrade(
 
             try:
                 AVGPrice = _price[str(I[2])].tolist()[_price.HS.to_list().index(I[0])]
-                X = productionQTY(resource, country)
-                Y = WTA_calculation(
+                print(AVGPrice)
+                X = productiondata(resource, country)
+                Y = weightedtrade(
                     str(I[2]),
                     TradeData=TradeData,
                     PIData=_wgi,
@@ -105,8 +105,7 @@ def gprs_comtrade(
                     WTA,
                 ]
             )
-            if database == "record":
-                recorddata(
+            recordData(
                     resource,
                     country,
                     I[2],
@@ -118,19 +117,6 @@ def gprs_comtrade(
                     WTA,
                     I[0],
                     I[1],
-                    Filename,
-                )
-            elif database == "update":
-                updatedata(
-                    resource,
-                    country,
-                    I[2],
-                    recyclingrate,
-                    scenario,
-                    Risk,
-                    CF,
-                    HHI,
-                    WTA,
                     Filename,
                 )
         else:
@@ -150,7 +136,7 @@ def gprs_comtrade(
 
 
 def gprs_regional(
-    resourcelist, countrylist, yearlist, recyclingrate, scenario, database="record"
+    resourcelist, countrylist, yearlist, recyclingrate, scenario
 ):
     # Function to calculate the GeoPolitical related supply risk potential using the GeoPolRisk method for
     # a list of countries including group of countries or newly defined regions.
@@ -210,7 +196,7 @@ def gprs_regional(
             TotalDomesticProduction, TDP = 0, []  # Variable to fetch production data
             try:
                 resource, _ignore = convertCodes(I[0], 124)
-                verify = sqlverify(resource, l, I[1], recyclingrate, scenario)
+                verify = sqlverify(resource, l, I[1], recyclingrate, scenario, outputList)
             except Exception as e:
                 logging.debug(e)
                 logging.debug("SQL Verification failed!")
@@ -223,7 +209,7 @@ def gprs_regional(
                     try:
                         # Code to fetch from COMTRADE API
                         resource, country = convertCodes(I[0], k)
-                        TradeData = COMTRADE_API(
+                        TradeData = worldtrade(
                             classification="HS",
                             period=I[1],
                             partner="all",
@@ -259,7 +245,7 @@ def gprs_regional(
                                 newquantitylist[index] = (
                                     newquantitylist[index] + TradeData[2][ind]
                                 )
-                    X = productionQTY(resource, country)
+                    X = productiondata(resource, country)
                     index = X[2].index(I[1])
                     TotalDomesticProduction += X[1][index]
 
@@ -267,7 +253,7 @@ def gprs_regional(
                 TDP = [0] * len(X[1])
                 TDP[X[2].index(I[1])] = TotalDomesticProduction
                 AVGPrice = _price[str(I[1])].tolist()[_price.HS.to_list().index(I[0])]
-                Y = WTA_calculation(
+                Y = weightedtrade(
                     str(I[1]),
                     TradeData=newtradelist,
                     PIData=_wgi,
@@ -293,8 +279,7 @@ def gprs_regional(
                 )
 
                 # Record or update data
-                if database == "record":
-                    recorddata(
+                recordData(
                         resource,
                         l,
                         I[1],
@@ -308,19 +293,7 @@ def gprs_regional(
                         l,
                         Filename,
                     )
-                elif database == "update":
-                    updatedata(
-                        resource,
-                        l,
-                        I[1],
-                        recyclingrate,
-                        scenario,
-                        Risk,
-                        CF,
-                        HHI,
-                        WTA,
-                        Filename,
-                    )
+
 
     # The remaining countries in the provided parameter that does not require aggregation is calculated using comtrade aggregat
     gprs_comtrade(
@@ -348,18 +321,18 @@ def gprs_organization(
         _ignore, countrylist = convertCodes([], countrylist, 1)
         for I in itertools.product(resourcelist, yearlist):
             TotalDomesticProduction = 0
-            TradeData = InputTrade(sheetname)
+            TradeData = specifictrade(sheetname)
             for k in countrylist:
                 resource, country = convertCodes(I[0], k, 2)
                 try:
-                    X = productionQTY(resource, country)
+                    X = productiondata(resource, country)
                     index = X[2].index(I[1])
                     TotalDomesticProduction += X[1][index]
                 except Exception as e:
                     logging.debug(e)
             AVGPrice = _price[str(I[1])].tolist()[_price.HS.to_list().index(i)]
 
-            Y = WTA_calculation(str(I[1]), TradeData=TradeData)
+            Y = weightedtrade(str(I[1]), TradeData=TradeData)
             HHI, WTA, Risk, CF = GeoPolRisk(
                 [X[0], TotalDomesticProduction, X[2]], Y, str(I[1]), AVGPrice
             )
