@@ -68,59 +68,14 @@ def worldtrade(
     country="276",
     commodity="2602",
 ):
-    try:
-        _request = (
-            "https://comtrade.un.org/api/get?max=50000&type=C&freq=A&px="
-            "HS&ps=" + str(year) + "&r=" + str(country) + "&p="
-            "all&cc=" + str(commodity) + "&rg=1&fmt=json"
-        )
-    except Exception as e:
-        logging.debug(e)
-        raise InputError
-
-    # # Section 3.1 connects to the COMTRADE API using the requests method of urlopen library.
-    # The user must provide inputs to all of the non-default arguments for most
-    # accurate and intended results. A request statement is prepared using the
-    # inputs that is opened in the following line. Any error in the provided
-    # arguments leads to broken request and finally raising an APIError.
-
-    # APIError is a defined Exception class available in the warningsgprs.
-
-    # 3.1 Section to connect to the COMTRADE API
-
-    # logging.debug(_request) #Uncomment to debug the error
-    try:
-        request = Request(_request)
-        response = urlopen(request)
-    except Exception as e:
-        logging.debug(e)
-        raise APIError
-        return None
-
-    # 3.2 Section to read the request result
-    try:
-        elevations = response.read()
-    except Exception as e:
-        logging.debug(e)
-        raise APIError
-        return None
-
-    try:
-        data = json.loads(elevations)
-        data = pd.json_normalize(data["dataset"]).fillna(0)
-    except Exception as e:
-        logging.debug(e)
-        raise APIError
-        return None
-
-    # 3.3 Section to extract the results to variables
+    data = callapirequest(year, country, commodity)
 
     if data.shape[0] != 0:
-        err = data.ptCode.to_list().index(0)
+        err = data.partnerCode.to_list().index(0)
         data = data.drop(data.index[[err]])
-        code = data.ptCode.to_list()
-        countries = data.ptTitle.to_list()
-        quantity = data.TradeQuantity.to_list()
+        code = data.partnerCode.to_list()
+        countries = data.partnerDesc.to_list()
+        quantity = data.qty.to_list()
 
         TradeData = [code, countries, quantity]
     else:

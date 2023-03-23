@@ -76,7 +76,6 @@ def gprs_comtrade(
 
             try:
                 AVGPrice = _price[str(I[2])].tolist()[_price.HS.to_list().index(I[0])]
-                print(AVGPrice)
                 X = productiondata(resource, country)
                 Y = weightedtrade(
                     str(I[2]),
@@ -201,7 +200,7 @@ def gprs_regional(
                 logging.debug(e)
                 logging.debug("SQL Verification failed!")
                 raise IncompleteProcessFlow
-            if verify is None or database == "update":
+            if verify is None:
                 for k in Xcountrylist:
                     # Counters
                     counter += 1

@@ -8,7 +8,7 @@ __all__ = ["core", "operations", "gcalc", "gprsplots", "utils", "tests"]
 __author__ = "Anish Koyamparambath <CyVi- University of Bordeaux>"
 __status__ = "beta"
 __version__ = "2.5"
-__data__ = "10 June 2022"
+__data__ = "10 March 2023"
 
 hard_dependencies = ("pandas", "logging", "urllib", "functools")
 missing_dependencies = []
