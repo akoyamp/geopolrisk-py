@@ -5,7 +5,6 @@ from pathlib import Path
 from .__init__ import instance, logging, execute_query
 from .Exceptions.warningsgprs import *
 
-
 # Define Paths
 tradepath = None
 _production, _reporter = instance.production, instance.reporter
@@ -18,9 +17,10 @@ HS = [int(float(x)) for x in HS]
 Resource = _price.Resource.to_list()
 Country = _reporter.Country.to_list()
 ISO = _reporter.ISO.to_list()
+ISO = [int(x) for x in ISO]
 
 
-def convertCodes(resource, country, output="Numeric"):
+def convertCodes(resource, country, output="numeric"):
     # Verify direction
     def check_variables(A, B):
         if (
@@ -29,7 +29,7 @@ def convertCodes(resource, country, output="Numeric"):
             and all(isinstance(element, str) for element in A)
             and all(isinstance(element, str) for element in B)
         ):
-            return "Numeric"
+            return "numeric"
         elif (
             isinstance(A, int)
             and isinstance(B, int)
@@ -40,7 +40,7 @@ def convertCodes(resource, country, output="Numeric"):
                 and all(isinstance(element, int) for element in B)
             )
         ):
-            return "Text"
+            return "text"
         else:
             return None
 
@@ -266,5 +266,34 @@ def callapirequest(period, country, commoditycode):
         )
     except Exception as e:
         logging.debug(e)
+    try:
+        get["Qty"] = get.groupby(["partnerCode"])['qty'].transform(sum)
+        get["CifValue"] = get.groupby(["partnerCode"])['cifvalue'].transform(sum)
+        get = get.drop_duplicates(subset="partnerCode", keep="first")
+        try:
+            cifvalueToT = sum(get["CifValue"].to_list())
+            totalQ = sum(get["Qty"].to_list())
+            if totalQ == 0:
+                pricecif = 0
+            else:
+                pricecif = cifvalueToT / totalQ
+        except Exception as e:
+            logging.debug(e)
+    except Exception as e:
+        logging.debug(e)
     get.to_excel(f"error.xlsx")
-    return get
+    return get, pricecif
+
+_columns = [
+    "Year",
+    "Resource",
+    "Country",
+    "Recycling Rate",
+    "Recycling Scenario",
+    "Risk",
+    "GeoPolRisk Characterization Factor",
+    "HHI",
+    "Weighted Trade AVerage",
+]
+outputList = []
+

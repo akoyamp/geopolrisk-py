@@ -1,6 +1,6 @@
 
 import __init__
-from assessment.operations import gprs_comtrade
+from assessment.main import main
 import time
 from .defaults import *
 
@@ -23,7 +23,7 @@ def test_1():
     RecyclingScenario = 0
 
     try:
-        gprs_comtrade(Resources, Countries, Year, Recycling, RecyclingScenario)
+        main(Resources, Countries, Year, Recycling, RecyclingScenario)
     except Exception as e:
         print(e)
         assert False

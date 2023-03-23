@@ -7,26 +7,16 @@ from .__init__ import (
 from .core import *
 from .Exceptions.warningsgprs import *
 import itertools, sqlite3, pandas as pd, time
-from .utils import recordData, sqlverify
+from .utils import recordData, sqlverify, outputList, _columns
 
-_production, _reporter = instance.production, instance.reporter
-regionslist, _outputfile = instance.regionslist, instance.exportfile
-_price = instance.price
-_wgi = instance.wgi
-db = _outputfile + '/' + instance.Output
-
-_columns = [
-    "Year",
-    "Resource",
-    "Country",
-    "Recycling Rate",
-    "Recycling Scenario",
-    "Risk",
-    "GeoPolRisk Characterization Factor",
-    "HHI",
-    "Weighted Trade AVerage",
-]
-outputList = []
+try:
+    _reporter = instance.reporter
+    regionslist, _outputfile = instance.regionslist, instance.exportfile
+    _price = instance.price
+    _wgi = instance.wgi
+    db = _outputfile + '/' + instance.Output
+except Exception as e:
+    logging.debug(f"Error with database files or init file {e}")
 
 def gprs_comtrade(
     resourcelist, countrylist, 
@@ -47,7 +37,7 @@ def gprs_comtrade(
         totalcounter += 1
         # Need to verify if the data preexists to avoid limited API calls
         try:
-            resource, country = convertCodes(I[0], I[1], 2)
+            resource, country = convertCodes(I[0], I[1], "text")
             verify = sqlverify(resource, country, I[2], recyclingrate, scenario, outputList)
         except Exception as e:
             logging.debug(e)
