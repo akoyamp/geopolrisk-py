@@ -178,7 +178,8 @@ class database:
     # verify if output database exists else create it
     try:
         sqlstatement = """CREATE TABLE IF NOT EXISTS "recordData" (
-        	"id"	INTEGER,
+        	"index"	INTEGER,
+            "id" TEXT NOT NULL,
         	"country"	TEXT,
         	"resource"	TEXT,
         	"year"	INTEGER,
@@ -191,7 +192,7 @@ class database:
         	"resource_hscode"	REAL,
         	"iso"	TEXT,
             "log_ref" TEXT,
-        	PRIMARY KEY("id")
+        	PRIMARY KEY("index")
         );"""
         execute_query(sqlstatement, db_path=exportfile+'/'+Output)
     except Exception as e:
@@ -244,6 +245,21 @@ class database:
     ]
     
 instance = database()
+
+class outputDF:
+    columns = [
+        "Year",
+        "Resource",
+        "Country",
+        "Recycling Rate",
+        "Recycling Scenario",
+        "Risk",
+        "GeoPolRisk Characterization Factor",
+        "HHI",
+        "Weighted Trade AVerage",
+    ]
+    outputList = []
+outputdf = outputDF()
 # Test fail variables
 LOGFAIL, DBIMPORTFAIL = False, False
 

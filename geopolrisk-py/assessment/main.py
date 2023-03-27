@@ -2,11 +2,12 @@ from .__init__ import (
     instance,
     logging,
     Filename,
+    outputdf,
+    execute_query,
 )
 from .core import *
-import itertools, sqlite3, pandas as pd, time
+import itertools, pandas as pd, time
 from .utils import *
-import argparse
 
 
 try:
@@ -17,80 +18,97 @@ try:
 except Exception as e:
     logging.debug(f"Error with database files or init file {e}")
 
-def main():
+def tradeagg(resource, year, listofcountries, sheetname):
     """
-    The main function to calculate the GeoPolRisk method.
+    This function is used to aggregate the trade data from COMTRADE API.
+    The trade data is aggregated (summed) which is then 
+    processed for further calculation.
     """
-    # Read the parameters from the command line
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-r",
-        "--resourcelist",
-        type=list,
-        default=[],
-        help="The list of mineral resources.",
-    )
-    parser.add_argument(
-        "-y",
-        "--yearlist",
-        type=list,
-        default=[],
-        help="The list of years.",
-    )
-    parser.add_argument(
-        "-c",
-        "--countrylist",
-        type=list,
-        default=[],
-        help="The list of countries.",
-    )
-    parser.add_argument(
-        "-rr",
-        "--recyclingrate",
-        type=float,
-        default=0.0,
-        help="The list of countries.",
-    )
-    parser.add_argument(
-        "-s",
-        "--scenario",
-        type=int,
-        default=0,
-        help="The list of countries.",
-    )
-    parser.add_argument(
-        "-h",
-        "--sheetname",
-        type=str,
-        default=None,
-        help="The name of the output file.",
-    )
-    parser.add_argument(
-        "-w",
-        "--PIindicator",
-        type=object,
-        default=_wgi,
-        help="The list of countries.",
-    )
+    #resources is hs code of the commodity
+    # New variables to aggregate trade data from COMTRADE API
+    newcodelist = []
+    newcountrylist = []
+    newquantitylist = []
+    # TradeData (from core module) fetchs the ISO country code, 
+    # country names and trade quantity in KG from COMTRADE
+    newtradelist = [
+        newcodelist,
+        newcountrylist,
+        newquantitylist,
+    ]
+    # Variable to fetch production data
+    TotalDomesticProduction, TDP = 0, []
+    if sheetname is not None:  
+        for k in listofcountries:
+            try:
+                TradeData = worldtrade(
+                    year=year,
+                    country=k,
+                    commodity=resource,
+                )
+            except Exception as e:
+                logging.debug(
+                    f"""Failed COMTRADE attempt!: resource - {resource}
+                            country - {k}, year - {year}, : {e}"""
+                )
 
-    args = parser.parse_args()
-    resourcelist = args.resourcelist
-    yearlist = args.yearlist
-    countrylist = args.countrylist
-    recyclingrate = args.recyclingrate
-    scenario = args.scenario
-    sheetname = args.sheetname
-    PIindicator = args.PIindicator
+            # counter balance
+            if TradeData is None:
+                logging.debug(
+                    f"Trade of {resource} to {k} returned None for {year}"
+                )
+                newtradelist = [[0], [0], [0]]
+            else:
+                # code to aggregate the data
+                for ind, n in enumerate(TradeData[0]):
+                    if n not in newcodelist:
+                        newcodelist.append(n)
+                        newquantitylist.append(TradeData[2][ind])
+                        newcountrylist.append(TradeData[1][ind])
+                    else:
+                        index = newcodelist.index(n)
+                        newquantitylist[index] = (
+                            newquantitylist[index] + TradeData[2][ind]
+                        )
+            xresource, country, _ignore, _ignore2 = convertCodes(resource, k)
+            X = productiondata(xresource, country)
+            index = X[2].index(year)
+            TotalDomesticProduction += X[1][index]
+    else:
+        TradeData =  specifictrade(sheetname)
+        for k in listofcountries:
+            xresource, country, _ignore, _ignore2 = convertCodes(resource, k)
+            X = productiondata(xresource, country)
+            index = X[2].index(year)
+            TotalDomesticProduction += X[1][index]
+
+    # Calculation of the components of the GeoPolRisk method
+    TDP = [0] * len(X[1])
+    TDP[X[2].index(year)] = TotalDomesticProduction
+    productiondata = [X[0], TDP, X[2]]
+
+    return newtradelist, productiondata
+
+def main(
+    resourcelist,
+    yearlist,
+    countrylist,
+    recyclingrate = 0.0,
+    scenario = 0,
+    sheetname = None,
+    PIindicator = None
+
+):  
+    OutputList = outputdf.outputList
     
     
     if PIindicator is None:
         PIindicator = _wgi
-
+    # Instantiate counters for logging
+    counter, totalcounter, emptycounter = 0, 0, 0
     logging.info("Running")
-    if len(regionslist) > 0:
+    if len(regionslist) > 1:
         newregionlist = []
-        # Instantiate counters for logging
-        counter, totalcounter, emptycounter = 0, 0, 0
         # Compare if the region already exists withing the library.
         newregion = [
             i
@@ -98,7 +116,7 @@ def main():
             if str(x) not in Country
             or str(x) not in [str(i) for i in ISO]
         ]
-
+        
         # Extract new regions from the provided countrylist parameter (argument).
         if len(newregion) > 0:
             for i in newregion:
@@ -109,34 +127,19 @@ def main():
         for l in newregionlist:
             # New regions can be defined as ISO nomenclature or ISO numeric. The values must be converted to numeric.newcountrylist
             ncountrylist = regionslist[l]
-            _ignore, Xcountrylist = convertCodes("Cobalt", ncountrylist, output = "numeric")
+            _ignore1, _ignore2, _ignore3, Xcountrylist = convertCodes("Cobalt", ncountrylist)
                 
             # Iterate the resources, year for COMTRADE query
             for I in itertools.product(resourcelist, yearlist):
                 # LOGIC
-                """
-                A group of countries such as G7, G8 or region such as middle east,
-                ASEAN are declared in the regions function.
-                The name of the group or region is provided as 
-                the key and the values as a list of countries in the group or region.
-                ex: The G7 group can be presented as 
-                {"G7" : ["Canada", "France", "Germany", "Italy", "Japan", "United Kingdom", "USA"]} or
-                ISO numeric can provided instead of the names.
-
-                The logic behind the code is to iterate the list of countries 
-                in the group/region and fetch its individual trade data.
-                The trade data is aggregated (summed) which is then 
-                processed for further calculation.
-                """
-
+                DBID = create_id(I[0], l, I[1])
                 try:
-                    resource, _ignore = convertCodes(I[0], 124, output = "text")
-                    verify = sqlverify(resource, l, I[1], recyclingrate, scenario, outputList)
+                    verify = sqlverify(DBID, recyclingrate, scenario)
                 except Exception as e:
                     logging.debug(f"SQL Verification failed! {e}")
 
-                if verify is None:
-                    time.sleep(5)
+                if verify is False:
+                    time.sleep(2)
                     TradeData , productiondata = tradeagg(I[0], I[1], Xcountrylist)
                     AVGPrice = _price[str(I[1])].tolist()[_price.HS.to_list().index(I[0])]
                     Y = weightedtrade(
@@ -152,24 +155,10 @@ def main():
                     logging.info(f"""
                     GeoPolRisk calculation completed successfully! The following
                     values are calculated: {HHI}, {WTA}, {Risk}, {CF} for resource {I[0]}
-                    , year{I[1]} to region {l} with recyclingrate {recyclingrate} and 
+                    , year {I[1]} to region {l} with recyclingrate {recyclingrate} and 
                     scenario {scenario}
                     """)
-                    
-                    outputList.append(
-                        [
-                            str(I[1]),
-                            resource,
-                            l,
-                            recyclingrate,
-                            scenario,
-                            Risk,
-                            CF,
-                            HHI,
-                            WTA,
-                        ]
-                    )
-
+                    resource, _ignore1, _ignore2, _ignore3 = convertCodes(I[0], 174)
                     # Record or update data
                     recordData(
                             resource,
@@ -181,11 +170,20 @@ def main():
                             CF,
                             HHI,
                             WTA,
-                            I[0],
-                            l,
                             Filename,
+                            OutputList
                         )
                 else:
+                    try:
+                        sqlstatement = f""" SELECT  geopolrisk, hhi, wta, geopol_cf FROM
+                        recordData WHERE id = '{DBID}'
+                        """
+                        row = execute_query(sqlstatement, db_path=db)
+                        OutputList.append(str(I[1]), str(resource), str(l),
+                                str(recyclingrate), str(scenario),
+                                str(row[0][0]), str(row[0][3]), str(row[0][1]), str(row[0][2]))
+                    except Exception as e:
+                        logging.debug(f"Cannot append into list of records {e}")
                     logging.debug(
                     "No transaction has been made. "
                     "Preexisting data has been inserted in output file."
@@ -195,16 +193,16 @@ def main():
         for I in itertools.product(resourcelist, countrylist, yearlist):
             totalcounter += 1
             # Need to verify if the data preexists to avoid limited API calls
+            resource, country, _ignore, _ignore1 = convertCodes(I[0], I[1])
+            DBID = create_id(I[0], I[1], I[2])
             try:
-                resource, country = convertCodes(I[0], I[1], "text")
-                verify = sqlverify(resource, country, I[2], recyclingrate, scenario, outputList)
+                verify = sqlverify(DBID, recyclingrate, scenario)
             except Exception as e:
-                logging.debug(e)
-
-            if verify is None:
+                logging.debug(f"Error with sqlverify or DBID {e}")
+            if verify is False:
                 # The program has to sleep inorder to avoid conflict in multiple API requests
-                time.sleep(5)
-                if sheetname is not None:
+                time.sleep(2)
+                if sheetname is None:
                     try:
                         counter += 1
                         TradeData = worldtrade(
@@ -213,7 +211,7 @@ def main():
                             commodity=I[0],
                         )
                     except Exception as e:
-                        logging.debug(e)
+                        logging.debug(f"Error accessing world trade data {e}")
                         counter -= 1
                         break
                 else:
@@ -225,7 +223,7 @@ def main():
                             commodity=I[0],
                         )
                     except Exception as e:
-                        logging.debug(e)
+                        logging.debug(f"Error accessing specific trade data {e}")
                         counter -= 1
                         break
                 # From the core methods, TradeData is None only when the dataframe is empty
@@ -249,108 +247,35 @@ def main():
                     logging.debug(e)
                     continue
 
-                outputList.append(
-                    [
-                        str(I[2]),
-                        resource,
-                        country,
-                        recyclingrate,
-                        scenario,
-                        Risk,
-                        CF,
-                        HHI,
-                        WTA,
-                    ]
-                )
                 recordData(
-                        resource,
-                        country,
-                        I[2],
-                        recyclingrate,
-                        scenario,
-                        Risk,
-                        CF,
-                        HHI,
-                        WTA,
-                        I[0],
-                        I[1],
-                        Filename,
-                    )
-            else:
-                logging.debug(
-                    "No transaction has been made. "
-                    "Preexisting data has been inserted in output file."
-                )
-
-
-def tradeagg(resource, year, listofcountries, sheetname):
-    """
-    This function is used to aggregate the trade data from COMTRADE API.
-    The trade data is aggregated (summed) which is then 
-    processed for further calculation.
-    """
-    #resources is hs code of the commodity
-    # New variables to aggregate trade data from COMTRADE API
-    newcodelist = []
-    newcountrylist = []
-    newquantitylist = []
-    # TradeData (from core module) fetchs the ISO country code, 
-    # country names and trade quantity in KG from COMTRADE
-    newtradelist = [
-        newcodelist,
-        newcountrylist,
-        newquantitylist,
-    ]
-    #counters
-    counter, totalcounter, emptycounter = 0, 0, 0
-    # Variable to fetch production data
-    TotalDomesticProduction, TDP = 0, []
-    if sheetname is not None:  
-        for k in listofcountries:
-            try:
-                TradeData = worldtrade(
-                    year=year,
-                    country=k,
-                    commodity=resource,
-                )
-                counter += 1
-                totalcounter += 1
-            except Exception as e:
-                logging.debug(
-                    f"""Failed COMTRADE attempt!: resource - {resource}
-                            country - {k}, year - {year}, : {e}"""
-                )
-
-            # counter balance
-            if TradeData is None:
-                emptycounter += 1
-                logging.debug(
-                    f"Trade of {resource} to {k} returned None for {year}"
-                )
-                newtradelist = [[0], [0], [0]]
-            else:
-                # code to aggregate the data
-                for ind, n in enumerate(TradeData[0]):
-                    if n not in newcodelist:
-                        newcodelist.append(n)
-                        newquantitylist.append(TradeData[2][ind])
-                        newcountrylist.append(TradeData[1][ind])
-                    else:
-                        index = newcodelist.index(n)
-                        newquantitylist[index] = (
-                            newquantitylist[index] + TradeData[2][ind]
+                            resource,
+                            country,
+                            I[1],
+                            recyclingrate,
+                            scenario,
+                            Risk,
+                            CF,
+                            HHI,
+                            WTA,
+                            Filename,
+                            OutputList
                         )
-    else:
-        TradeData =  specifictrade(sheetname)
-        xresource, country = convertCodes(resource, k, "text")
-        
-        X = productiondata(xresource, country)
-        index = X[2].index(year)
-        TotalDomesticProduction += X[1][index]
+            else:
+                try:
+                    sqlstatement = f""" SELECT  geopolrisk, hhi, wta, geopol_cf FROM
+                    recordData WHERE id = '{DBID}'
+                    """
+                    row = execute_query(sqlstatement, db_path=db)
+                    OutputList.append(str(I[1]), str(resource), str(country),
+                            str(recyclingrate), str(scenario),
+                            str(row[0][0]), str(row[0][3]), str(row[0][1]), str(row[0][2]))
+                except Exception as e:
+                    logging.debug(f"Cannot append into list of records {e}")
+                logging.debug(
+                "No transaction has been made. "
+                "Preexisting data has been inserted in output file."
+            )        
 
-    # Calculation of the components of the GeoPolRisk method
-    TDP = [0] * len(X[1])
-    TDP[X[2].index(year)] = TotalDomesticProduction
-    productiondata = [X[0], TDP, X[2]]
+    outputDF = pd.DataFrame(OutputList, columns=outputdf.columns)
+    outputDF.to_csv(_outputfile+'/export.csv')  
 
-    return newtradelist, productiondata
