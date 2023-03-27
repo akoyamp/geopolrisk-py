@@ -20,13 +20,14 @@ except Exception as e:
 def settradepath(path):
     tradepath = path
     try:
-        with open(tradepath) as openfile:
-            pd.read_excel(openfile)
+        df = pd.read_excel(tradepath)
     except FileNotFoundError:
+        logging.debug(f"File {tradepath} not found")
         tradepath = None
     except Exception as e:
         logging.debug(e)
         tradepath = None
+    return tradepath
 
 # Method 2
 def regions(*args):
@@ -41,7 +42,7 @@ def regions(*args):
                 x
                 for x in value
                 if str(x) not in _reporter.Country.to_list()
-                or str(x) not in _reporter["ISO"].astype(str).tolist()
+                and str(x) not in _reporter["ISO"].astype(str).tolist()
             ]
             if len(Print_Error) != 0:
                 logging.debug(
@@ -57,8 +58,8 @@ def regions(*args):
     for i in _reporter.Country.to_list():
         if i in regionslist.keys():
             logging.debug("Country or region already exists cannot overwrite.")
-            return None
         regionslist[i] = [i]
+    return regionslist
 
 # Method 3
 def worldtrade(
@@ -70,28 +71,45 @@ def worldtrade(
         #pricecif is the cif price of traded commodity
         #it is included in case of change of methodology or 
         #unavailability of price data from USGS or LME
-        data, pricecif = callapirequest(year, country, commodity)
+        data  = oldapirequest(year, country, commodity)
     except Exception as e:
         logging.debug(f"Error with the comtrade API request: {e}")
 
-    if data.shape[0] != 0:
-        if 0 in data.partnerCode.astype(int).to_list():
-            err = data.partnerCode.to_list().index(0)
-            data = data.drop(data.index[[err]])
-            logging.info(
-                "Partner code 0 is found in the trade file. "
-                "Please check the trade file."
-            )
-        try:    
-            code = data.partnerCode.to_list()
-            countries = data.partnerDesc.to_list()
-            quantity = data.Qty.to_list()
+    if data is None or data.shape[0] == 0:
+        data, pricecif = callapirequest(year, country, commodity)
+        if data is None or data.shape[0] == 0:
+            logging.debug("API returned empty dataframe")
+            TradeData = [None, None, None]
+        else:
+            if 0 in data.partnerCode.astype(int).to_list():
+                err = data.partnerCode.to_list().index(0)
+                data = data.drop(data.index[[err]])
+                logging.info(
+                    "Partner code 0 is found in the trade file. "
+                    "Please check the trade file."
+                )
+            try:    
+                code = data.partnerCode.to_list()
+                countries = data.partnerDesc.to_list()
+                quantity = data.Qty.to_list()
+                TradeData = [code, countries, quantity]
+            except Exception as e:
+                logging.debug(f"The fetched dataframe from "
+                            "the API does not have the required columns. {e}")
+                TradeData = [None, None, None]
+    elif data is not None and data.shape[0] != 0 :
+        if data is not None and data.shape[0] !=0:
+            Worldindex = data.ptCode.to_list().index(0)
+            data = data.drop(data.index[[Worldindex]])
+            code = data.ptCode.to_list()
+            countries = data.ptTitle.to_list()
+            quantity = data.TradeQuantity.to_list()
             TradeData = [code, countries, quantity]
-        except Exception as e:
-            logging.debug(f"The fetched dataframe from "
-                          "the API does not have the required columns. {e}")
+        else:
+            logging.debug("API returned empty dataframe")
             TradeData = [None, None, None]
     else:
+        
         logging.info("API returned empty dataframe")
         TradeData = [None, None, None]
     return TradeData
@@ -130,6 +148,7 @@ def specifictrade(sheetname=None):
             logging.debug(Path(trade_path).suffix)
             return None
 
+        
         # The comtrade API results are categorized by imports to a region/country
         # per country and it includes the total imports to the region/country. The
         # code removes such imports to avoid erronous calculation.
@@ -163,7 +182,7 @@ def specifictrade(sheetname=None):
 
 
 
-def productiondata(Resource, EconomicUnit):
+def ProductionData(Resource, EconomicUnit):
 
     EconomicUnit = "EU" if EconomicUnit == "European Union" else EconomicUnit
     EconomicUnit = regionslist[EconomicUnit]
@@ -261,6 +280,8 @@ def weightedtrade(
         # Usually users are supposed to provide an input between 0 and 1
         if recyclingrate >= 1.00001 and recyclingrate < 100:
             recyclingrate = recyclingrate / 100
+        elif recyclingrate >=0 and recyclingrate < 1.00001:
+            recyclingrate = recyclingrate
         else:
             logging.debug(
                 f"Recycling Rate out of bounds| Recycling Rate : {recyclingrate}"
@@ -370,4 +391,5 @@ def GeoPolRisk(ProductionData, WTAData, Year, AVGPrice):
         GeoPolCF = 0
         logging.info("WTA has returned 0")
         return None
-    return [HHI, WTA, GeoPolRisk, GeoPolCF]
+    results = [HHI, WTA, GeoPolRisk, GeoPolCF]
+    return results

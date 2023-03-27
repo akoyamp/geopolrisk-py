@@ -26,8 +26,10 @@ from .__init__ import (
 
 
 
-from .operations import convertCodes, gprs_comtrade 
+from .main import  main 
+from .utils import convertCodes
 
+gprs_comtrade = main()
 #from .Exceptions.warningsgprs import *
 import itertools, sqlite3, pandas as pd, sys
 from difflib import get_close_matches
@@ -178,8 +180,8 @@ def guided():
                 if scenario.lower() == 'exit':
                     sys.exit()
                 break
-        resource, country = convertCodes(resource, country, 1)
-        gprs_comtrade(resource, country, [period], recyclingrate, scenario)
+        _ignore, _ignore2, resource, country = convertCodes(resource, country)
+        gprs_comtrade(resource, [period], country, recyclingrate, scenario)
         
         print("Assessment completed! The results are downloaded to the output folder")
         print("In case of error in the output file, refer to logs.")

@@ -8,11 +8,11 @@ An assessment would result in two main values; GPRS - the share of commodity imp
 characterization Factors for GSRP (Geopolitical supply risk potential indicator (Midpoint))
 The library is available to download using pip package manager.
 ~~~
-pip install -i https://test.pypi.org/simple/ Geopolrisk==1.3
+pip install -i https://test.pypi.org/simple/ Geopolrisk==2.5
 ~~~
 
 # Modules and Methods
-The library has following four modules preceded by an init that performs some actions required to smoothly perform a calculation.
+The library has following five modules preceded by an init that performs some actions required to smoothly perform a calculation.
 ##__init__ module:
     Reads static databases : resource price data, normalized governance indicator data, commodity hs codes, country iso codes
     Creates a directory in documents folder (only for windows users): Output folder for database to record calculations and exporting results as csv, Log folder for storing logs
@@ -42,33 +42,28 @@ All the values must be in string and must be exactly as in the ISO.
 {"West Europe": ["France", "Germany", "Italy", "Spain", "Portugal", "Belgium"]}
 ~~~
 
-3. COMTRADE_API(classification = "HS", period = "2010", partner = "all", reporter = "276", HSCode = "2602", TradeFlow = "1", recyclingrate = 0, scenario = 0):
+3. worldtrade(year = "2010", country = "276", commodity = "2602"):
 Function to call the UN COMTRADE api for fetching the trade data.
 **Mandatory arguments:**
-- **period** : The year of assessment (integer)
-- **reporter**: The area of assessment (integer*: ISO code of the area [annexe])*
-- **HSCode**: The HS code of the commodity under assessment (integer)
-- **recyclingrate**: The recycling input rate of the resource (float)
-- **scenario**: Type of scenario under assessment.
-  - 0: Assessment without recycling
-  - 1: Assessment under the best-case scenario of recycling redistribution.
-  - 2: Assessment under the worst-case scenario of recycling redistribution
+- **year** : The year of assessment (integer)
+- **country**: The area of assessment (integer*: ISO code of the area [annexe])*
+- **commodity**: The HS code of the commodity under assessment (integer)
 
 Note: The scenario does not affect the assessment if the value for recyclingrate is '0'.
 
-4. InputTrade(sheetname = None): Function to calculate the trade data using specific company data.
+4. specifictrade(sheetname = None): Function to calculate the trade data using specific company data.
 Function settradepath must be called to define the path of the company data.
 
-5. WTA_calculation(period, TradeData = None, PIData = None, scenario = 0, recyclingrate = 0.00): Function to calculate the second component of the GeoPolRisk method.
+5. weightedtrade(period, TradeData = None, PIData = None, scenario = 0, recyclingrate = 0.00): Function to calculate the second component of the GeoPolRisk method.
 The trade data from either the COMTRADE function or InputTrade function is required as an argument. PIData is the world governance indicator that is stored in a variable by the init module.
 However, the argument is provided in case of use of other governance indicators.
 
-6. productionQTY(Resource, EconomicUnit): Function to calculate the HHI (first component of the GeoPolRisk Method) and local production quantity. 
+6. ProductionData(Resource, EconomicUnit): Function to calculate the HHI (first component of the GeoPolRisk Method) and local production quantity. 
 Arguments required are the name of the resource (not HS code) and the economic unit (country/existing or defined regions/defined economic blocs)
 
 7. GeoPolRisk(ProductionData, WTAData, Year, AVGPrice): Function to calculate the values of the GeoPolRisk method. The ProductionData is a list of HHi and local production quantity.
 The WTAData is a list of the calculation involving trade. AVGPrice is the yearly average price of the resource. It provides a list of four values.
-[ HHI, WTA, GPRS, CF]
+[HHI, WTA, GPRS, CF]
 
 ###samplecode on how to use the functions from core module
 ~~~
@@ -81,9 +76,10 @@ Country = Germany
 ISO = 276
 Year = 2016
 
-TradeData = COMTRADE_API(classification = "HS", period = Year, partner = "all", reporter = ISO, HSCode = HS, TradeFlow = "1", recyclingrate = 0, scenario = 0)
-WTAData = WTA_calculation(period, TradeData = TradeData, PIData = _wgi, scenario = 0, recyclingrate = 0.00)
-ProductionData = productionQTY(Resource, Country)
+TradeData = worldtrade(year = "2016", country = "276", commodity = "2604")
+ProductionData = ProductionData(Resource, Country)
+WTAData = weightedtrade(Year, TradeData = TradeData, PIData = _wgi, scenario = 0, recyclingrate = 0.00)
+
 
 YearlyAveragePrice = 10203.98
 YearlyAveragePrice =  _price[Year].tolist()[_price.hs.to_list().index(HS)] #Optional - A database already exists that can be used to fetch the price data.
@@ -114,9 +110,9 @@ ListofMetals = [2602, 2601, 2603, 2846, 2614,]
 ListofCountries = [36, 124, 97, 251, 276, 392, 826, 842,] 
 ListofYear = [2017, 2018, 2019, 2020]
 
-from geopolrisk.assessment.operations import gprs_comtrade
+from geopolrisk.assessment.main import main
 
-gprs_comtrade(ListofMetals, ListofCountries, ListofYear, 0, 0)
+main(ListofMetals, ListofYear, ListofCountries, 0, 0)
 
 ~~~
 2. gprs_regional(resourcelist, countrylist, yearlist, recyclingrate, scenario): Similar function to that of the above but for in case of newly defined regions.

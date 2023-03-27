@@ -81,8 +81,7 @@ class database:
         if not os.path.exists(exportfile):
             os.makedirs(exportfile)
     except Exception as e:
-        print(e)
-        print("Unable to create directories")
+        print(f"Unable to create directories {e}")
         raise FileNotFoundError
 
     # Verify that the file exists else input the correct file path
@@ -134,8 +133,7 @@ class database:
         result = execute_query("SELECT name FROM sqlite_master WHERE type='table';", db_path=db)
         table_names = [row[0] for row in result]
     except Exception as e:
-        print(e)
-        print("Unable to verify if the database contains the required tables")
+        print(f"Unable to verify if the database contains the required tables {e}")
         raise FileNotFoundError
 
     # check if all the tables in the list are present in the database
@@ -150,7 +148,7 @@ class database:
     if len(missingTables) > 0:
         print(f"The following tables are missing from the database: {missingTables}")
     else:
-        print("Database found!")
+        pass
 
    
     # Function to extract the tables into a dictionary
@@ -189,21 +187,21 @@ class database:
         	"hhi"	REAL,
         	"wta"	REAL,
         	"geopol_cf"	REAL,
-        	"resource_hscode"	REAL,
-        	"iso"	TEXT,
+        	"resource_hscode"	INTEGER,
+        	"iso"	INTEGER,
             "log_ref" TEXT,
         	PRIMARY KEY("index")
         );"""
         execute_query(sqlstatement, db_path=exportfile+'/'+Output)
     except Exception as e:
-        print(e)
+        print(f"Could not create the output database {e}")
 
     # Extract the tables into a dictionary
     try:
         tables = extract_tables_to_df(db, Tables)
     except Exception as e:
-        print(e)
-        raise Exception
+        print(f"Could not extract the tables {e}")
+
 
     production = tables
     reporter = tables["Country_ISO"]
@@ -281,4 +279,3 @@ except:
     # it is imperative that the log file work before running the main code.
     LOGFAIL = True
     print("Cannot create log file!")
-    raise Exception

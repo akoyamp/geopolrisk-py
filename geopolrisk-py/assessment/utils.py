@@ -1,9 +1,7 @@
-import pandas as pd, json
+import pandas as pd, json, sqlite3
 import comtradeapicall as ctac
 from urllib.request import Request, urlopen
-from pathlib import Path
 from .__init__ import instance, logging, execute_query, outputDF
-from .Exceptions.warningsgprs import *
 
 # Define Paths
 tradepath = None
@@ -23,32 +21,23 @@ ISO = [int(x) for x in ISO]
 def convertCodes(resource, country):
     # Verify direction
     def check_variables(A, B):
-        if (isinstance(A, list)
-            and isinstance(B, list)):
-            if (
-            all(isinstance(element, str) for element in A)
-            and all(isinstance(element, str) for element in B)
+        if isinstance(A, list) and isinstance(B, list):
+            if all(isinstance(element, str) for element in A) and all(
+                isinstance(element, str) for element in B
             ):
                 return "numeric"
-            elif (
-                all(isinstance(element, int) for element in A)
-                and all(isinstance(element, int) for element in B)
+            elif all(isinstance(element, int) for element in A) and all(
+                isinstance(element, int) for element in B
             ):
                 return "text"
             else:
                 return None
-        elif (
-            isinstance(A, str)
-            and isinstance(B, str)
-            ):
+        elif isinstance(A, str) and isinstance(B, str):
             return "numeric"
-        elif (
-            isinstance(A, int)
-            and isinstance(B, int)):
+        elif isinstance(A, int) and isinstance(B, int):
             return "text"
         else:
             return None
-
 
     def return_variables(X, A, B):
         if isinstance(X, list):
@@ -66,13 +55,13 @@ def convertCodes(resource, country):
                 idx = A.index(X)
                 X_transform = B[idx]
             except Exception as e:
-                    logging.debug(f"Failed to transform! {e}")
-                    logging.debug(f"Transformation failed for {X}")
-                    X_transform = None
+                logging.debug(f"Failed to transform! {e}")
+                logging.debug(f"Transformation failed for {X}")
+                X_transform = None
             return X_transform
 
     direction = check_variables(resource, country)
-    
+
     commodity, countryname, HSCode, ISOCode = None, None, None, None
     if direction.lower() == "numeric":
         ResourceCX = return_variables(resource, Resource, HS)
@@ -94,27 +83,11 @@ def convertCodes(resource, country):
         ResourceCX, CountryCX = resource, country
     return commodity, countryname, HSCode, ISOCode
 
+
 def callapirequest(period, country, commoditycode):
-    try:
-        if any( isinstance(period, int) 
-            and  isinstance(country, int)
-                and isinstance(commoditycode, int)):
-            period=str(period)
-            country=str(country)
-            commoditycode=str(commoditycode)
-        elif all( isinstance(period, str) 
-                and  isinstance(country, str)
-                and isinstance(commoditycode, str)):
-            if country.isdigit() and commoditycode.isdigit():
-                period=period
-                country=country
-                commoditycode=commoditycode
-            else:
-                period=period
-                _ignore, _ignore2, commoditycode, country = convertCodes(commoditycode, country)
-        logging.debug(f"Parsed values: Period: {period}, Country: {country}, Commodity: {commoditycode}")
-    except Exception as e:
-        logging.debug(e)
+    period = str(period)
+    country = str(country)
+    commoditycode = str(commoditycode)
     try:
         get = ctac.previewTarifflineData(
             typeCode="C",
@@ -134,24 +107,58 @@ def callapirequest(period, country, commoditycode):
             includeDesc=True,
         )
     except Exception as e:
-        logging.debug(e)
+        logging.debug(f"Error while calling API! {e}")
+        return None, None
     try:
-        get["Qty"] = get.groupby(["partnerCode"])['qty'].transform(sum)
-        get["CifValue"] = get.groupby(["partnerCode"])['cifvalue'].transform(sum)
-        get = get.drop_duplicates(subset="partnerCode", keep="first")
-        try:
-            cifvalueToT = sum(get["CifValue"].to_list())
-            totalQ = sum(get["Qty"].to_list())
-            if totalQ == 0:
-                pricecif = 0
-            else:
-                pricecif = cifvalueToT / totalQ
-        except Exception as e:
-            logging.debug(e)
+        if get is not None or not isinstance(get, None) or len(get) == 0:
+            get["Qty"] = get.groupby(["partnerCode"])["qty"].transform(sum)
+            get["CifValue"] = get.groupby(["partnerCode"])["cifvalue"].transform(sum)
+            get = get.drop_duplicates(subset="partnerCode", keep="first")
+            try:
+                cifvalueToT = sum(get["CifValue"].to_list())
+                totalQ = sum(get["Qty"].to_list())
+                if totalQ == 0:
+                    pricecif = 0
+                else:
+                    pricecif = cifvalueToT / totalQ
+            except Exception as e:
+                logging.debug(f"Error while extracting cifvalue! {e}")
+                get, pricecif = None, None
+        else:
+            logging.debug(f"Problem with the new API call! {get}")
+            get, pricecif = None, None
     except Exception as e:
-        logging.debug(e)
-    get.to_excel(f"error.xlsx")
+        logging.debug(f"Error while extracting and combining data! {e}")
+        get, pricecif = None, None
+    if get is not None:
+        get.to_excel(f"error.xlsx")
     return get, pricecif
+
+
+def oldapirequest(period, country, commoditycode):
+    period = str(period)
+    country = str(country)
+    commoditycode = str(commoditycode)
+    url = f"""https://comtrade.un.org/api/get?max=50000&type=C&freq=A&px=HS&ps={period}&r={country}&p=all&cc={commoditycode}&rg=1&fmt=json"""
+    logging.info(url)
+    try:
+        request = Request(url)
+        response = urlopen(request)
+        elevations = response.read()
+    except Exception as e:
+        logging.debug(url)
+        logging.debug(f"Error while calling native API! {e}")
+        return None
+
+    try:
+        data = json.loads(elevations)
+        data = pd.json_normalize(data["dataset"])
+    except Exception as e:
+        logging.debug("Error while parsing JSON!")
+        return None
+
+    return data
+
 
 def replace_values(list_to_replace, item_to_replace, item_to_replace_with):
     return [
@@ -159,38 +166,47 @@ def replace_values(list_to_replace, item_to_replace, item_to_replace_with):
         for item in list_to_replace
     ]
 
+
 def create_id(HS, ISO, Year):
     HS, ISO, Year = str(HS), str(ISO), str(Year)
     if len(HS) == 4:
-        HSID = "xx"+HS
+        HSID = "xx" + HS
     elif len(HS) == 5:
-        HSID = "x"+HS
+        HSID = "x" + HS
     else:
         HSID = HS
     if len(ISO) == 2:
-        ISOID = "x"+ISO
+        ISOID = "x" + ISO
     elif len(ISO) == 1:
-        ISOID = "xx"+ISO
+        ISOID = "xx" + ISO
     else:
         ISOID = ISO
-    DBID = HSID+ISOID+Year
+    DBID = HSID + ISOID + Year
     return DBID
 
+
 # Verify if the calculation is already stored in the database to avoid recalculation
-def sqlverify(DBID, RR, Scenario):
+def sqlverify(DBID):
     try:
-        row = execute_query(f"SELECT 'recycling_rate' ,'scenario' FROM recordData WHERE id = '{DBID}';", db_path=db)
+        sql=f"SELECT * FROM recordData WHERE id = '{DBID}';"
+        row = execute_query(
+            f"SELECT * FROM recordData WHERE id = '{DBID}';",
+            db_path=db,
+        )
+        
     except Exception as e:
-        logging.debug(f"Database error in sqlverify - {e.message}")
+        logging.debug(f"Database error in sqlverify - {e}, {sql}")
         row = None
     if not row:
         return False
     else:
         return True
 
+
 # This function doesnt override the calculaiton
-def recordData(Resource, Country, Year, RR, Scenario,
-               GPRS, CF, HHI, WTA, LogFile, OuputList):
+def recordData(
+    Resource, Country, Year, RR, Scenario, GPRS, CF, HHI, WTA, LogFile, OuputList
+):
     resource, country, HSCODE, ISO = convertCodes(Resource, Country)
     DBID = create_id(HSCODE, ISO, Year)
     if sqlverify(DBID) is True:
@@ -200,7 +216,7 @@ def recordData(Resource, Country, Year, RR, Scenario,
         try:
             row = execute_query(sqlstatement, db_path=db)
         except Exception as e:
-                    logging.debug(f"Failed to execute statement {e} with {sqlstatement}")
+            logging.debug(f"Failed to execute statement {e} with {sqlstatement}")
         if str(row[0][0]) == str(RR) and str(row[0][1]) == str(Scenario):
             if str(row[0][2]) != str(GPRS):
                 sqlstatement = f"""UPDATE recordData SET hhi =
@@ -210,10 +226,20 @@ def recordData(Resource, Country, Year, RR, Scenario,
                 try:
                     row = execute_query(sqlstatement, db_path=db)
                 except Exception as e:
-                    logging.debug(f"Failed to execute statement {e} with {sqlstatement}")
-                OuputList.append(str(Year), str(resource), str(country),
-                            str(RR), str(Scenario),
-                            str(GPRS), str(CF), str(HHI), str(WTA))
+                    logging.debug(
+                        f"Failed to execute statement {e} with {sqlstatement}"
+                    )
+                OuputList.append(
+                    str(Year),
+                    str(resource),
+                    str(country),
+                    str(RR),
+                    str(Scenario),
+                    str(GPRS),
+                    str(CF),
+                    str(HHI),
+                    str(WTA),
+                )
             else:
                 logging.info("The database already exists with the data")
         else:
@@ -224,12 +250,22 @@ def recordData(Resource, Country, Year, RR, Scenario,
             '{ISO}', '{LogFile}');
             """
             try:
-                    row = execute_query(sqlstatement, db_path=db)
+                row = execute_query(sqlstatement, db_path=db)
             except Exception as e:
                 logging.debug(f"Failed to execute statement {e} with {sqlstatement}")
-            OuputList.append(str(Year), str(resource), str(country),
-                            str(RR), str(Scenario),
-                            str(GPRS), str(CF), str(HHI), str(WTA))
+            OuputList.append(
+                [
+                    str(Year),
+                    str(resource),
+                    str(country),
+                    str(RR),
+                    str(Scenario),
+                    str(GPRS),
+                    str(CF),
+                    str(HHI),
+                    str(WTA),
+                ]
+            )
     else:
         sqlstatement = f""" INSERT INTO recordData (id, country, resource, year,
             recycling_rate, scenario, geopolrisk, hhi, wta, geopol_cf, resource_hscode, 
@@ -238,15 +274,67 @@ def recordData(Resource, Country, Year, RR, Scenario,
             '{ISO}', '{LogFile}');
             """
         try:
-                row = execute_query(sqlstatement, db_path=db)
+            row = execute_query(sqlstatement, db_path=db)
         except Exception as e:
             logging.debug(f"Failed to execute statement {e} with {sqlstatement}")
-        OuputList.append(str(Year), str(resource), str(country),
-                            str(RR), str(Scenario),
-                            str(GPRS), str(CF), str(HHI), str(WTA))
+        OuputList.append(
+            [
+                str(Year),
+                str(resource),
+                str(country),
+                str(RR),
+                str(Scenario),
+                str(GPRS),
+                str(CF),
+                str(HHI),
+                str(WTA),
+            ]
+        )
 
 
+"""
+End of script logging and exporting database to specified format. End log 
+method requires extractdata method to be precalled to work. 
+"""
 
 
+# Tracking the comtrade attempts for debugging.
+def endlog(counter=0, totalcounter=0, emptycounter=0):
+    logging.debug("Number of successfull COMTRADE API attempts {}".format(counter))
+    logging.debug("Number of total attempts {}".format(totalcounter))
+    logging.debug("Number of empty dataframes {}".format(emptycounter))
 
 
+"""Convert entire database to required format
+**CHARACTERIZATION FACTORS
+Refer to python json documentation for more information on types of
+orientation required for the output.
+"""
+
+# Extract CFs
+def generateCF(exportType="csv", orient=""):
+    exportF = ["csv", "excel", "json"]
+    if exportType in exportF:
+        logging.debug("Exporting database in the format {}".format(exportType))
+        CFType = exportType
+    else:
+        logging.debug(
+            "Exporting format not supported {}. "
+            "Using default format [csv]".format(exportType)
+        )
+        CFType = "csv"
+    try:
+        conn = sqlite3.connect(
+            db,
+            isolation_level=None,
+            detect_types=sqlite3.PARSE_COLNAMES,
+        )
+        db_df = pd.read_sql_query("SELECT * FROM recorddata", conn)
+        if CFType == "csv":
+            db_df.to_csv(_outputfile + "/database.csv", index=False)
+        elif CFType == "excel":
+            db_df.to_excel(_outputfile + "/database.xlsx", index=False)
+        elif CFType == "json":
+            db_df.to_json(_outputfile + "/database.json", orient=orient, index=False)
+    except Exception as e:
+        logging.debug(f"Error while exporting database! {e}")
