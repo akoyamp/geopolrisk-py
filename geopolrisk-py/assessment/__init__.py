@@ -4,7 +4,7 @@ from pathlib import Path
 #from .Exceptions.warningsgprs import *
 
 logging = logging
-__all__ = ["core", "operations", "gcalc", "gprsplots", "utils", "tests", "main"] 
+__all__ = ["core", "operations", "console", "gprsplots", "utils", "tests", "main"] 
 __author__ = "Anish Koyamparambath <CyVi- University of Bordeaux>"
 __status__ = "beta"
 __version__ = "2.5"
@@ -56,7 +56,7 @@ def execute_query(query, db_path=""):
 
 class database:
     # Global Variables
-    Output = "Eu Geo Bi.db"
+    Output = "Datarecords.db"
     Database = "library.db"
     OutputFolder = "Documents/geopolrisk"
     LogFolder = OutputFolder + "/logs"

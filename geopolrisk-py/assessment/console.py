@@ -1,35 +1,29 @@
-# Copyright 2020-2021 by Anish Koyamparambath and University of Bordeaux. All Rights Reserved.
-# Permission to use, copy, modify, and distribute this software and its
-# documentation for any purpose and without fee is hereby granted,
-# provided that the above copyright notice appear in all copies and that
-# both that copyright notice and this permission notice appear in
-# supporting documentation, and that the name of Anish Koyamparambath (AK) or 
-# University of Bordeaux (UBx) will not be used in advertising or publicity pertaining 
-# to distribution of the software without specific, written prior permission.
-# BOTH AK AND UBx DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
-# ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL
-# BOTH AK AND UBx BE LIABLE FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR
-# ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
-# IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
-# OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-
-from .__init__ import (
-    _reporter,
-    SQL,
-    _price,
-    _outputfile,
-    _wgi,
-    outputDF,
-    regionslist,
-    logging,
-    Filename)
-
-
-
-from .main import  main 
+import pandas as pd, json, sqlite3
+import comtradeapicall as ctac
+from urllib.request import Request, urlopen
+from .__init__ import instance, logging, execute_query
+from .main import  main as gprs_comtrade
 from .utils import convertCodes
 
-gprs_comtrade = main()
+
+# Define Paths
+tradepath = None
+_production, _reporter = instance.production, instance.reporter
+regionslist, _outputfile = instance.regionslist, instance.exportfile
+_price = instance.price
+db = _outputfile + "/" + instance.Output
+# Extract list of all data
+HS = _price.HS.to_list()
+HS = [int(float(x)) for x in HS]
+Resource = _price.Resource.to_list()
+Country = _reporter.Country.to_list()
+ISO = _reporter.ISO.to_list()
+ISO = [int(x) for x in ISO]
+
+
+
+
+
 #from .Exceptions.warningsgprs import *
 import itertools, sqlite3, pandas as pd, sys
 from difflib import get_close_matches
@@ -116,12 +110,10 @@ def guided():
     print(intro)
     logging.info("Assessment type: Guided")
     while start:
-        Resource = _price.id.to_list()
         A = "Enter the name of the resource : "
         B = "The entered resource is not found! Please try again."
         resource = [getthequestions(Resource, A, B),]
         logging.debug("Guided Assessment| Input Resource: {}".format(resource))
-        Country = _reporter.Country.to_list()
         A = "Enter the name of the country of asssessment : "
         B = "The entered country is not found! Please try again."
         country = [getthequestions(Country, A, B),]

@@ -1,7 +1,7 @@
 import pandas as pd, json, sqlite3
 import comtradeapicall as ctac
 from urllib.request import Request, urlopen
-from .__init__ import instance, logging, execute_query, outputDF
+from .__init__ import instance, logging, execute_query
 
 # Define Paths
 tradepath = None
@@ -47,17 +47,26 @@ def convertCodes(resource, country):
                     idx = A.index(n)
                     X_transform.append(B[idx])
                 except Exception as e:
-                    logging.debug(f"Failed to transform! {e}")
-                    logging.debug(f"Transformation failed for {n}")
+                    if n in regionslist.keys():
+                        logging.debug(f"Region transformation cannot be applied!")
+                        X_transform.append(n)
+                    else:
+                        logging.debug(f"Failed to transform! {e}")
+                        logging.debug(f"Transformation failed for {n}")
+                        X_transform = None
             return X_transform
         else:
             try:
                 idx = A.index(X)
                 X_transform = B[idx]
             except Exception as e:
-                logging.debug(f"Failed to transform! {e}")
-                logging.debug(f"Transformation failed for {X}")
-                X_transform = None
+                if X in regionslist.keys():
+                    logging.debug(f"Region transformation cannot be applied!")
+                    X_transform = X
+                else:
+                    logging.debug(f"Failed to transform! {e}")
+                    logging.debug(f"Transformation failed for {X}")
+                    X_transform = None
             return X_transform
 
     direction = check_variables(resource, country)
@@ -110,7 +119,7 @@ def callapirequest(period, country, commoditycode):
         logging.debug(f"Error while calling API! {e}")
         return None, None
     try:
-        if get is not None or not isinstance(get, None) or len(get) == 0:
+        if get is not None or not isinstance(get, type(None)) or len(get) == 0:
             get["Qty"] = get.groupby(["partnerCode"])["qty"].transform(sum)
             get["CifValue"] = get.groupby(["partnerCode"])["cifvalue"].transform(sum)
             get = get.drop_duplicates(subset="partnerCode", keep="first")
@@ -130,8 +139,6 @@ def callapirequest(period, country, commoditycode):
     except Exception as e:
         logging.debug(f"Error while extracting and combining data! {e}")
         get, pricecif = None, None
-    if get is not None:
-        get.to_excel(f"error.xlsx")
     return get, pricecif
 
 
@@ -291,20 +298,6 @@ def recordData(
             ]
         )
 
-
-"""
-End of script logging and exporting database to specified format. End log 
-method requires extractdata method to be precalled to work. 
-"""
-
-
-# Tracking the comtrade attempts for debugging.
-def endlog(counter=0, totalcounter=0, emptycounter=0):
-    logging.debug("Number of successfull COMTRADE API attempts {}".format(counter))
-    logging.debug("Number of total attempts {}".format(totalcounter))
-    logging.debug("Number of empty dataframes {}".format(emptycounter))
-
-
 """Convert entire database to required format
 **CHARACTERIZATION FACTORS
 Refer to python json documentation for more information on types of
@@ -331,9 +324,9 @@ def generateCF(exportType="csv", orient=""):
         )
         db_df = pd.read_sql_query("SELECT * FROM recorddata", conn)
         if CFType == "csv":
-            db_df.to_csv(_outputfile + "/database.csv", index=False)
+            db_df.to_csv(_outputfile + "/database.csv", index=False, encoding = "utf-8")
         elif CFType == "excel":
-            db_df.to_excel(_outputfile + "/database.xlsx", index=False)
+            db_df.to_excel(_outputfile + "/database.xlsx", index=False, encoding = "utf-8")
         elif CFType == "json":
             db_df.to_json(_outputfile + "/database.json", orient=orient, index=False)
     except Exception as e:

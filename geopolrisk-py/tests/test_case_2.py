@@ -1,4 +1,4 @@
-import unittest
+import unittest, os
 from .defaults import *
 from assessment.utils import *
 from assessment.core import *
@@ -39,7 +39,7 @@ class TestCoreFunctions(unittest.TestCase):
         self.assertIsNotNone(result, msg="Error in region creation!")
 
     def test_tradepathinsertion(self):
-        result = settradepath("tests/comtrade.xlsx")
+        result = settradepath("geopolrisk-py/tests/sample trade data.xlsx")
         self.assertIsNotNone(result, msg="Error in tradepath creation!")
 
     def test_worldtrade(self):
@@ -51,7 +51,7 @@ class TestCoreFunctions(unittest.TestCase):
         self.assertIsNotNone(result, msg="Error in worldtrade calculation!")
 
     def test_specifictrade(self):
-        xxx = settradepath("tests/comtrade.xlsx")
+        xxx = settradepath("geopolrisk-py/tests/sample trade data.xlsx")
         result = specifictrade(sheetname="test")
         self.assertIsNotNone(result, msg="Error in specific trade calculation!")
 
