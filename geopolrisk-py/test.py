@@ -1,65 +1,34 @@
-# Copyright 2020-2021 by Anish Koyamparambath and University of Bordeaux. All Rights Reserved.
-# Permission to use, copy, modify, and distribute this software and its
-# documentation for any purpose and without fee is hereby granted,
-# provided that the above copyright notice appear in all copies and that
-# both that copyright notice and this permission notice appear in
-# supporting documentation, and that the name of Anish Koyamparambath (AK) or 
-# University of Bordeaux (UBx) will not be used in advertising or publicity pertaining 
-# to distribution of the software without specific, written prior permission.
-# BOTH AK AND UBx DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
-# ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL
-# BOTH AK AND UBx BE LIABLE FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR
-# ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
-# IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
-# OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+# Copyright (C) 2023 University of Bordeaux, CyVi Group & Anish Koyamparambath
+# This file is part of geopolrisk-py library.
+#
+# geopolrisk-py is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# geopolrisk-py is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with geopolrisk-py.  If not, see <https://www.gnu.org/licenses/>.
 
-from assessment.operations import update_cf, gprs_comtrade
-import time
+import unittest, os
+from tests.test_case_1 import Testutilsfunctions
+from tests.test_case_2 import TestCoreFunctions
+from tests.test_case_3 import Testmainfunctions
 
 
-# ListofMetals = [2606, 261710, 2524, 2511, 8106, 8107, 2610, 2701, 810520, 2603, 7108, 2504, 
-#                  2601, 2607, 283691, 251910, 2602, 280540, 2613, 271111, 2604, 2709, 2846, 261610, 
-#                  2609, 2611, 2608, 261510 ]
+if __name__ == "__main__":
 
-# #ShortListofMetals = [2602, 2601, 2603, 2846, 2614,]
-# ListofCountries = [36, 124, 97, 251, 276, 392, 826, 842,] 
-# #ShortListofCountries = [36, 124, 97, 251]#
-# Year = [2002, 2003,  2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013,
-#         2014, 2015, 2016, 2017, 2018, 2019, 2020]#,
-# #ShortListofYear = [2017, 2018, 2019, 2020]
+    # Test Suite
+    suite = unittest.TestSuite()
 
-# for i in range(100):
-#     try:
-#         gprs_comtrade(ListofMetals, ListofCountries, Year, 0, 0)
-#     except Exception as e:
-#         print(e)
-#         continue
-#     time.sleep(3600)
+    # Add all test cases to the test suite
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(Testutilsfunctions))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCoreFunctions))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(Testmainfunctions))
 
-# for i in range (10):
-#     try:
-#         update_cf()
-#     except Exception as e:
-#         print(e)
-#         continue
-#     time.sleep(3600)
-# from assessment.gprsplots import compareplot
-
-# dip = compareplot(["Australia", "France", "Canada", "European Union"],[2014], ["Manganese","Iron", "Copper", "Petroleum"], 0)
-# dip.show()
-
-from assessment.operations import updateprice 
-updateprice()
-
-#gprs_comtrade([7108,2504], [97], [2020], 0, 0, database="update")
-
-# #Recycling Scenarios
-# ShortListofMetals = [283691, 2602, 2603, 2604, 810520]#,  283691, 2602, 2603, 2604, 810520
-# ShortListofCountries = [97]#
-# ShortListofYear = [2016]
-# try:
-#     gprs_comtrade(ShortListofMetals,ShortListofCountries, ShortListofYear, 0  , 0 )
-# except Exception as e:
-#     print(e)
-
-# from tests import test
+    # Run the test suite
+    unittest.TextTestRunner(verbosity=3).run(suite)

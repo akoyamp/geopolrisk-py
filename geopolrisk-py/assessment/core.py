@@ -1,480 +1,440 @@
-# Copyright 2020-2021 by Anish Koyamparambath and University of Bordeaux. All Rights Reserved.
-# Permission to use, copy, modify, and distribute this software and its
-# documentation for any purpose and without fee is hereby granted,
-# provided that the above copyright notice appear in all copies and that
-# both that copyright notice and this permission notice appear in
-# supporting documentation, and that the name of Anish Koyamparambath (AK) or 
-# University of Bordeaux (UBx) will not be used in advertising or publicity pertaining 
-# to distribution of the software without specific, written prior permission.
-# BOTH AK AND UBx DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
-# ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL
-# BOTH AK AND UBx BE LIABLE FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR
-# ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
-# IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
-# OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+# Copyright (C) 2023 University of Bordeaux, CyVi Group & Anish Koyamparambath
+# This file is part of geopolrisk-py library.
+#
+# geopolrisk-py is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# geopolrisk-py is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with geopolrisk-py.  If not, see <https://www.gnu.org/licenses/>.
 
-
-#Imports
 import pandas as pd, json
 from urllib.request import Request, urlopen
 from pathlib import Path
-from .__init__ import (
-    _production,
-    _reporter,
-    regionslist,
-    logging,
-    _outputfile)
-from .Exceptions.warningsgprs import *
-#Define Paths
-tradepath = None
-
-# This module contains methods (python functions) that provides access to different components and
-# variables of the GeoPolRisk method. This is a functional module where methods 
-# are designed for micromanaging the GeoPolRisk method. Refer to the scientific publication 
-# available online for technical details.
+from .__init__ import instance, logging, execute_query
+from .utils import *
 
 
-# The GeoPolRisk method is designed to assess the geopolitical related supply risk
-# of importing a resource from a macro economic perspective (country, regions, 
-# trade blocs or group of countries) during a period. However, the method could be 
-# adapted to analyse the supply risk at an organizational level. This requires 
-# specific trade information in contrast to the macro economic perspective that uses 
-# country trade data available that is accessed using the COMTRADE api.
-
-# The specific trade data of the organization can be provided using a predefined
-# excel or csv format. The location of the file is provided as an agrument to the
-# 'settradepath' method below.
+# Define class for storing the path information for trade data
+class classPath:
+    tradepath = None
 
 
-#Method 1
+classpath = classPath()
+
+# Create instances of data required for calculation of the GeoPolRisk
+try:
+    # All instances are extracted from the library database
+    _production, _reporter = instance.production, instance.reporter
+    regionslist, _outputfile = instance.regionslist, instance.exportfile
+    db = _outputfile + "/" + instance.Output
+except Exception as e:
+    logging.debug(f"Error with database files or init file {e}")
+
+
+# Function to set the path of the trade data file for specific trade data calculation
+# Provide the absolute path of the trade data file or relative to the current working directory
 def settradepath(path):
     tradepath = path
     try:
-        with open(tradepath) as openfile:
-            pd.read_excel(openfile)
+        df = pd.read_excel(tradepath)
+        classpath.tradepath = path
     except FileNotFoundError:
+        logging.debug(f"File {tradepath} not found")
         tradepath = None
-        raise FileNotFoundError
     except Exception as e:
         logging.debug(e)
         tradepath = None
-        raise InputError
-  
-
-# In line with the earlier explanation of the scope of GeoPolRisk method, the 
-# following methods creates a user defined scope (regions). By default, European
-# Union (27 countries) is provided in the dictionary. A dictionary is provided
-# as an argument with the name of the region/bloc is the key and the ISO names 
-# of the countries as the values. The ISO names of the countries are available in
-# the the reporters json file.
+    return tradepath
 
 
-#Method 2
+# Function to define new regions
+# Provide a dictionary of the new regions
+# The key should be the name of the negion
+# The value should be the list of countries in the new region
+# In case of using aggregate function from the main module,
+# use the key as the country
 def regions(*args):
-    regionslist['EU'] = ['Austria', 'Belgium', 'Belgium-Luxembourg', 'Bulgaria',
-           'Croatia', 'Czechia', 'Czechoslovakia', 'Denmark', 
-           'Estonia','Finland', 'France', 'Fmr Dem. Rep. of Germany',
-           'Fmr Fed. Rep. of Germany', 'Germany', 'Greece', 'Hungary',
-           'Ireland', 'Italy', 'Latvia', 'Lithuania', 'Luxembourg', 
-           'Malta', 'Netherlands', 'Poland', 'Portugal', 'Romania', 
-           'Slovakia', 'Slovenia', 'Spain', 'Sweden']
-    
     if len(args) != 0:
         for key, value in args[0].items():
             if type(key) is not str and type(value) is not list:
-                logging.debug("Dictionary input to regions does not match required type.")
-                raise InputError
+                logging.debug(
+                    "Dictionary input to regions does not match required type."
+                )
                 return None
-            Print_Error = [x for x in value if str(x) not
-                           in _reporter.Country.to_list() and str(x) not 
-                           in _reporter["ISO"].astype(str).tolist()]
+            Print_Error = [
+                x
+                for x in value
+                if str(x) not in _reporter.Country.to_list()
+                and str(x) not in _reporter["ISO"].astype(str).tolist()
+            ]
             if len(Print_Error) != 0:
-                logging.debug("Error in creating a region! "
-                              "Following list of countries not"
-                              " found in the ISO list {}. "
-                              "Please conform with the ISO list or use"
-                              " 3 digit ISO country codes.".format(Print_Error))
-                raise InputError
+                logging.debug(
+                    "Error in creating a region! "
+                    "Following list of countries not"
+                    " found in the ISO list {}. "
+                    "Please conform with the ISO list or use"
+                    " 3 digit ISO country codes.".format(Print_Error)
+                )
                 return None
             else:
                 regionslist[key] = value
+    # The function must be called before calling any other functions in the core
+    # module. The following lines populate the region list with all the countries
+    # in the world including EU defined in the init file.
     for i in _reporter.Country.to_list():
         if i in regionslist.keys():
             logging.debug("Country or region already exists cannot overwrite.")
-            raise InputError
-            return None
         regionslist[i] = [i]
+    return regionslist
 
 
-# The following method connects to the COMTRADE API using request from urlopen module.
-# Several inputs required to connect are provided as optional arguments. The user must
-# modify the values of these optional arguments before calling the calculation function. 
+# Extrade the trade data using the COMTRADE API
+def worldtrade(
+    year="2010",
+    country="276",
+    commodity="2602",
+):
+    try:
+        # pricecif is the cif price of traded commodity
+        # it is included in case of change of methodology or
+        # unavailability of price data from USGS or LME
+        data = oldapirequest(year, country, commodity)
+    except Exception as e:
+        logging.debug(f"Error with the comtrade API request: {e}")
 
-#Method 3
-def COMTRADE_API(
-    classification = "HS",
-    period = "2010",
-    partner = "all",
-    reporter = "276",
-    HSCode = "2602",
-    TradeFlow = "1",
-    recyclingrate = 0,
-    scenario = 0
-    ):
-    
-    try:
-        _request = "https://comtrade.un.org/api/get?max=50000&type=C&freq=A&px="\
-        ""+classification+"&ps="+str(period)+"&r="+str(reporter)+"&p="\
-        ""+str(partner)+"&cc="+str(HSCode)+"&rg="+TradeFlow+"&fmt=json"
-    except Exception as e:
-        logging.debug(e)
-        raise InputError
-    
-    # # Section 3.1 connects to the COMTRADE API using the requests method of urlopen library.
-    # The user must provide inputs to all of the non-default arguments for most
-    # accurate and intended results. A request statement is prepared using the 
-    # inputs that is opened in the following line. Any error in the provided 
-    # arguments leads to broken request and finally raising an APIError.
-    
-    # APIError is a defined Exception class available in the warningsgprs.
-    
-    
-    #3.1 Section to connect to the COMTRADE API
-    
-    #logging.debug(_request) #Uncomment to debug the error
-    try:
-        request = Request(_request)
-        response = urlopen(request)
-    except Exception as e:
-        logging.debug(_request)
-        logging.debug(e)
-        raise APIError
-        return None
-    
-    #3.2 Section to read the request result
-    try:
-        elevations = response.read()
-    except Exception as e:
-        logging.debug(e)
-        raise APIError
-        return None
-    
-    try:
-        data = json.loads(elevations)
-        data = pd.json_normalize(data['dataset'])
-    except Exception as e:
-        logging.debug(e)
-        raise APIError
-        return None
-    
-    #3.3 Section to extract the results to variables 
-    
-    if data.shape[0] !=0:
-        Worldindex = data.ptCode.to_list().index(0)
-        data = data.drop(data.index[[Worldindex]])
-        code = data.ptCode.to_list()
-        countries = data.ptTitle.to_list()
-        quantity = data.TradeQuantity.to_list()
-        
-        TradeData = [code, countries, quantity]
+    if data is None or data.shape[0] == 0:
+        data, pricecif = callapirequest(year, country, commodity)
+        if data is None or data.shape[0] == 0:
+            logging.debug("API returned empty dataframe")
+            TradeData = [None, None, None]
+        else:
+            if 0 in data.partnerCode.astype(int).to_list():
+                err = data.partnerCode.to_list().index(0)
+                data = data.drop(data.index[[err]])
+                logging.info(
+                    "Partner code 0 is found in the trade file. "
+                    "Please check the trade file."
+                )
+            try:
+                code = data.partnerCode.to_list()
+                countries = data.partnerDesc.to_list()
+                quantity = data.Qty.to_list()
+                TradeData = [code, countries, quantity]
+            except Exception as e:
+                logging.debug(
+                    f"The fetched dataframe from "
+                    "the API does not have the required columns. {e}"
+                )
+                TradeData = [None, None, None]
+    elif data is not None and data.shape[0] != 0:
+        if data is not None and data.shape[0] != 0:
+            Worldindex = data.ptCode.to_list().index(0)
+            data = data.drop(data.index[[Worldindex]])
+            code = data.ptCode.to_list()
+            countries = data.ptTitle.to_list()
+            quantity = data.TradeQuantity.to_list()
+            TradeData = [code, countries, quantity]
+        else:
+            logging.debug("API returned empty dataframe")
+            TradeData = [None, None, None]
     else:
-        logging.debug(_request)
-        logging.debug("API returned empty dataframe")
-        
+
+        logging.info("API returned empty dataframe")
         TradeData = [None, None, None]
-    
     return TradeData
 
 
-"""
-The defined trade path in the first method 
-"""
+# Extract trade data from the specific trade data file whose path is defined in
+# the method earlier.
+def specifictrade(sheetname=None):
+    trade_path = classpath.tradepath
 
-#Method 4
-def InputTrade(sheetname = None):
-    trade_path = tradepath
-    
-    
     # This function reads the trade file specific to an organization/company.
-    # It is possible to read excel or csv file. Section 1 validates if the 
+    # It is possible to read excel or csv file. Section 1 validates if the
     # path to the file is set using method 1 and reads the file into a dataframe.
-    
-    
-    #4.1 Section to validate the path to trade file
+
+    # 4.1 Section to validate the path to trade file
     if trade_path == None:
-        raise IncompleteProcessFlow
+        logging.debug("Trade file path is not set.")
         return None
     else:
-        
-        # The file must be either in excel or csv file, failing which raises an 
+
+        # The file must be either in excel or csv file, failing which raises an
         # InputError from the warningsgprs module
-        
+
         if Path(trade_path).suffix == ".xlsx" or Path(trade_path).suffix == ".xls":
             try:
                 data = pd.read_excel(trade_path, sheet_name=sheetname)
             except Exception as e:
-                logging.debug(e)
-                raise FileNotFoundError
+                logging.debug(f"Error while accessing the trade file {e}")
                 return None
         elif Path(trade_path).suffix == ".csv":
             try:
                 data = pd.read_csv(trade_path)
             except Exception as e:
-                logging.debug(e)
-                raise FileNotFoundError
+                logging.debug(f"Error while accessing the trade file {e}")
                 return None
         else:
             logging.debug(Path(trade_path).suffix)
-            raise FileNotFoundError
             return None
-        
-        
-        # The comtrade API results are categorized by imports to a region/country 
+
+        # The comtrade API results are categorized by imports to a region/country
         # per country and it includes the total imports to the region/country. The
         # code removes such imports to avoid erronous calculation.
-        
-        
         try:
-            data = data[list(data.keys())[0]]
-            if data.shape[0] !=0:
+            if data.shape[0] != 0:
+                if 0 in data.ptCode.astype(int).to_list():
+                    err = data.ptCode.to_list().index(0)
+                    data = data.drop(data.index[[err]])
+                    logging.info(
+                        "Partner code 0 is found in the trade file. "
+                        "Please check the trade file."
+                    )
                 try:
-                    if 0 in data.ptCode.to_list():
-                        Worldindex = data.ptCode.to_list().index(0)
-                        data = data.drop(data.index[[Worldindex]])
-                    else:
-                        logging.debug("No worldindex found")
+                    code = data.ptCode.to_list()
+                    countries = data.ptTitle.to_list()
+                    quantity = data.TradeQuantity.to_list()
+                    TradeData = [code, countries, quantity]
                 except Exception as e:
-                    logging.debug(e)
-                code = data.ptCode.to_list()
-                countries = data.ptTitle.to_list()
-                quantity = data.TradeQuantity.to_list()
-                TradeData = [code, countries, quantity]
+                    logging.debug(
+                        f"The fetched dataframe from "
+                        f"the API does not have the required columns. {e}"
+                    )
+                    TradeData = None
             else:
-                TradeData = [None, None, None]
+                logging.info("API returned empty dataframe")
+                TradeData = None
             return TradeData
-        
         except Exception as e:
-            logging.debug(e)
-            raise APIError
+            logging.debug(f"Error in the trade file {e}")
             return None
-   
-
-# The GeoPolRisk method is built with three components, HHI (production concentration),
-# weighted trade average (WTA), yearly average price of the resource. With the 
-# extracted trade information either using COMTRADE or individual trade is weighted
-# using a governance indicator and then averaged using the total imports and domestic
-# production of the resource.
-
-# The method 'WTA_calculation' requires the year, trade data, governance indicator, 
-# recycling rate and recycling scenario as inputs.
-
-    
- 
-def WTA_calculation(period, TradeData = None, PIData = None,
-                    scenario = 0, recyclingrate = 0.00):
-    
-    if TradeData is None or PIData is None:
-        logging.debug("Trade data returned empty!")
-        raise IncompleteProcessFlow
-        return None
-    elif TradeData[0] is not None:
-        code, quantity = TradeData[0], TradeData[2]
-        for i,n in enumerate(quantity):
-            if n == None:
-                quantity[i] = 0
-        reducedmass, totalreduce = 0, 0
-
-        #1.2 Section to calculate the numerator and trade total
-        try:
-            PIData.columns = PIData.columns.astype(str)
-            PI_year = [str(i) for i in PIData.Year.to_list()]
-        except Exception as e:
-            logging.debug(e)
-            raise Exception
-            return None
-        try:    
-            index = PI_year.index(period)
-            PI_score = []
-            for i in code:
-                if str(i) in PIData.columns.to_list():
-                    PI_score.append(PIData[str(i)].tolist()[index])
-                else:
-                    #The political instability score from the WGI is not provided for few countries
-                    #We assign them a score of 0.5 as most of these countries fall in this range
-                    PI_score.append(0.5)
-        except Exception as e:
-            logging.debug(e)
-            raise CalculationError
-            return None
-                
-        
-        # Version 0.2: Domestic recycling mitigates the supply risk of a raw material. However domestic recycling
-        # can be attributed to decrease of imports from a country with low WGI score or high WGI score.
-        # In other words, there can be two scenarios where imports are reduced from 
-        # a riskier country (best case scenario) or imports are reduced from 
-        # much stable country (worst case scenario). Both the cases are determined by the 
-        # WGI score, a higher WGI score is for a riskier country while lower for a stable
-        # country. The following code intends to manipulate the trade data to incorporate
-        # the domestic recycling.
-        
-    
-        #Recyclability factor of GeoPolRisk
-    
-        #Usually users are supposed to provide an input between 0 and 1
-        if recyclingrate >=0 and recyclingrate < 100:
-            recyclingrate = recyclingrate/100
-        elif recyclingrate != 0:
-            logging.debug(f"Recycling Rate out of bounds| Recycling Rate : {recyclingrate}")
-            recyclingrate = 0
-        
-        
-        #The mitigation due to recycling has a redistribution and reduction effect
-        #The reduction effect is symbolical because the reduced trade is included in the domestic production
-        #Two cases are assumed for the redistribution
-        #The function takes in the trade quantity, political instability indicator and sum of the trade quantity
-        #This function sorts and reduces the trade quantity based on the scenario and returns the reduced quantity
-        def redistribution(quantity, indicator, totQ, reverse):
-            totQ = totQ*recyclingrate
-            temp = [(v,i) for i,v in enumerate(indicator)]
-            temp.sort(reverse = reverse)
-            sortedVal, sortedInd = zip(*temp)
-            dump = 0
-            for i ,n in enumerate(sortedInd):
-                dump += quantity[n]
-                if (totQ-dump) < quantity[sortedInd[i+1]]:
-                    quantity[sortedInd[i+1]] = quantity[sortedInd[i+1]] - (totQ-dump)
-                    quantity[n] = 0
-                    break
-                else:
-                    quantity[n] = 0
-            return quantity
-        
-        #newdf = pd.DataFrame(columns = ["trade", "indicator", "tradetotal", "numerator", "production"])
-        totQ = sum(quantity)
-        try:
-            if scenario == 1: #Best case scenario
-                newquantity = redistribution(quantity, PI_score, totQ, True)  
-                zipped_list = zip(newquantity, PI_score)
-                wgiavg = [x * y for (x,y) in zipped_list]
-                # newdf["trade"] = newquantity
-                # newdf["indicator"] = PI_score
-            elif scenario == 2: #Worst case scenario
-                newquantity = redistribution(quantity, PI_score, totQ, False)
-                zipped_list = zip(newquantity, PI_score)
-                wgiavg = [x * y for (x,y) in zipped_list]
-
-            elif scenario == 0: #No scenario
-                try:
-                    zipped_list = zip(quantity, PI_score)
-                    wgiavg = [x * y for (x,y) in zipped_list]
-                except TypeError as e:
-                    logging.debug(e)
-                    logging.debug("The Comtrade API is broken")
-                    raise CalculationError
-        except Exception as e:
-            logging.debug(e)
-            raise CalculationError
-            return None
-        
-        # After manipulation of the trade data it is multiplied with the WGI
-        # score forming the numerator of the second factor of GeoPolRisk (WTA)
-        
-        
-        
-        try:
-            numerator = sum(wgiavg)
-            tradetotal = totQ
-            #newdf["numerator"] = numerator
-            #newdf["tradetotal"] = tradetotal
-        except Exception as e:
-            logging.debug(e)
-            raise CalculationError
-        #newdf.to_csv(_outputfile+'/TRADE.csv')
-        return numerator, tradetotal
-    else:
-        return 0, 0
-
-# The first component of the GeoPolRisk method involved calculating the herfindahl-hirschmann
-# index (HHI) and total domestic production required for calculating the second factor (WTA).
 
 
+# Fetch the mineral resource ore production data from the library
+def ProductionData(Resource, EconomicUnit):
 
-def productionQTY(Resource, EconomicUnit):
-    
     EconomicUnit = "EU" if EconomicUnit == "European Union" else EconomicUnit
     EconomicUnit = regionslist[EconomicUnit]
     try:
-        x = pd.read_excel(_production, sheet_name = Resource)
-        prod = pd.DataFrame(x)
-        Col = prod.columns.tolist()
+        prod = _production[Resource].fillna(0)
+        Countries = prod.Country.to_list()
     except Exception as e:
-        logging.debug(e)
-        logging.warning("There was an error while acessing the production data file with an exception as ", exc_info = True)
-        raise FileNotFoundError
+        logging.debug(
+            f"There was an error while acessing"
+            f" the production data file with an exception as {e}"
+        )
         return None
 
-    #P2. Fetching the production quantity from 'prod' dataframe. 
+    # P2. Fetching the production quantity from 'prod' dataframe.
     try:
-        Prod_Year = prod.Year.to_list()
-        temp = [0]*len(Prod_Year)
+        Prod_Year = prod.columns.to_list()[1:-1]
+        Prod_Year = [int(i) for i in Prod_Year]
+        temp = [0] * len(Prod_Year)
         for i in EconomicUnit:
-            if i in Col:
-                Prod_Qty = prod[i].values.tolist()
-                for k in range(len(Prod_Qty)):
-                    if str(Prod_Qty[k]) == 'nan' or Prod_Qty[k] is None:
-                        Prod_Qty[k] = 0
+            if i in Countries:
+                Prod_Qty = (
+                    prod.loc[prod["Country"] == i]
+                    .reset_index()
+                    .loc[0, :]
+                    .values.flatten()
+                    .tolist()[2:-1]
+                )
+                Prod_Qty = replace_values(Prod_Qty, "^", 0)
+                Prod_Qty = [float(i) for i in Prod_Qty]
                 Prod_Qty = [sum(j) for j in zip(temp, Prod_Qty)]
                 temp = Prod_Qty
             else:
                 Prod_Qty = temp
     except Exception as e:
-        logging.debug(e)
-        raise CalculationError
+        logging.debug(f"Error while processing production data {e}")
         return None
-    #logging.debug("The following will be the list of data", "This is the country "+str(i), "Next should be the list ",str(self.Prod_Qty))
-   
-    #P3. Calculating the HHI.
-    Nom = pd.Series()
-    try:
-        for i in range(1,prod.shape[1]):
-            temp = prod.iloc[:,i]*prod.iloc[:,i]
-            Nom = Nom.add(temp, fill_value=0)
-        DeNom = prod.sum(axis = 1)
-        hhi = (Nom /(DeNom*DeNom)).tolist() 
-        HHI = [round(i,3) for i in hhi]
-    except Exception as e:
-        logging.debug(e)
-        raise CalculationError
-        return None
-    return [HHI, Prod_Qty, Prod_Year]
 
+    # P3. Calculating the HHI.
+    HHI = []
+    try:
+        for i in Prod_Year:
+            temp = prod[str(i)].values.tolist()
+            temp = replace_values(temp, "^", 0)
+            temp = [float(i) for i in temp]
+            DeNom = sum(temp)
+            Nom = sum([j[0] * j[1] for j in zip(temp, temp)])
+            try:
+                HHI.append(round(Nom / (DeNom * DeNom), 3))
+            except Exception as e:
+                HHI.append(0)
+    except Exception as e:
+        logging.debug(f"Error while calculating the HHI {e}")
+        return None
+    length = len(Prod_Year)
+    if all(len(lst) == length for lst in [Prod_Qty, HHI]):
+        return [HHI, Prod_Qty, Prod_Year]
+    else:
+        return None
+
+
+# Weight the extracted trade data with the political instability indicator data.
+# WGI is used as the default PI indicator that can be replaced with any other
+# normalized indicator data.
+def weightedtrade(year, TradeData=None, PIData=None, scenario=0, recyclingrate=0.00):
+    if TradeData is None or PIData is None:
+        logging.debug("Trade data or Indicator data returned empty!")
+        return None
+    elif TradeData is not None:
+        code, quantity = TradeData[0], TradeData[2]
+        reducedmass, totalreduce = 0, 0
+
+        # 1.2 Section to calculate the numerator and trade total
+        try:
+            PIData = PIData.fillna(0)
+            PIData.columns = PIData.columns.astype(str)
+            PI_year = [str(i) for i in PIData.Year.to_list()]
+        except Exception as e:
+            logging.debug(f"Error while working with Indicator Data {e}")
+            return None
+        try:
+            index = PI_year.index(year)
+            PI_score = []
+            for i in code:
+                if str(i) in PIData.columns.to_list():
+                    PI_score.append(PIData[str(i)].tolist()[index])
+                else:
+                    # The political instability score from the WGI is not provided for few countries
+                    # We assign them a score of 0.5 as most of these countries fall in this range
+                    PI_score.append(0.5)
+        except Exception as e:
+            logging.debug(f"Error while working with Indicator Data {e}")
+            return None
+
+        # Version 0.2: Domestic recycling mitigates the supply risk of a raw material. However domestic recycling
+        # can be attributed to decrease of imports from a country with low WGI score or high WGI score.
+        # In other words, there can be two scenarios where imports are reduced from
+        # a riskier country (best case scenario) or imports are reduced from
+        # much stable country (worst case scenario). Both the cases are determined by the
+        # WGI score, a higher WGI score is for a riskier country while lower for a stable
+        # country. The following code intends to manipulate the trade data to incorporate
+        # the domestic recycling.
+
+        # Recyclability factor of GeoPolRisk
+
+        # Usually users are supposed to provide an input between 0 and 1
+        if recyclingrate >= 1.00001 and recyclingrate < 100:
+            recyclingrate = recyclingrate / 100
+        elif recyclingrate >= 0 and recyclingrate < 1.00001:
+            recyclingrate = recyclingrate
+        else:
+            logging.debug(
+                f"Recycling Rate out of bounds| Recycling Rate : {recyclingrate}"
+            )
+            recyclingrate = 0
+
+        # The mitigation due to recycling has a redistribution and reduction effect
+        # The reduction effect is symbolical because the reduced trade is included in the domestic production
+        # Two cases are assumed for the redistribution
+        # The function takes in the trade quantity, political instability indicator and sum of the trade quantity
+        # This function sorts and reduces the trade quantity based on the scenario and returns the reduced quantity
+        def redistribution(quantity, indicator, totQ, reverse):
+            try:
+                totQ = totQ * recyclingrate
+                temp = [(v, i) for i, v in enumerate(indicator)]
+                temp.sort(reverse=reverse)
+                sortedVal, sortedInd = zip(*temp)
+                dump = 0
+                for i, n in enumerate(sortedInd):
+                    dump += quantity[n]
+                    if (totQ - dump) < quantity[sortedInd[i + 1]]:
+                        quantity[sortedInd[i + 1]] = quantity[sortedInd[i + 1]] - (
+                            totQ - dump
+                        )
+                        quantity[n] = 0
+                        break
+                    else:
+                        quantity[n] = 0
+            except Exception as e:
+                logging.debug(f"Error while redistributing the trade {e}")
+                quantity = None
+            return quantity
+
+        totQ = sum(quantity)
+        if scenario == 1:  # Best case scenario
+            newquantity = redistribution(quantity, PI_score, totQ, True)
+            if newquantity is not None:
+                try:
+                    zipped_list = zip(newquantity, PI_score)
+                    wgiavg = [x * y for (x, y) in zipped_list]
+                except Exception as e:
+                    logging.debug(f"Error while weighting the trade data {e}")
+                    return None
+            else:
+                logging.debug("Error while redistributing the trade")
+                return None
+        elif scenario == 2:  # Worst case scenario
+            newquantity = redistribution(quantity, PI_score, totQ, False)
+            if newquantity is not None:
+                try:
+                    zipped_list = zip(newquantity, PI_score)
+                    wgiavg = [x * y for (x, y) in zipped_list]
+                except Exception as e:
+                    logging.debug(f"Error while weighting the trade data {e}")
+                    return None
+            else:
+                logging.debug("Error while redistributing the trade")
+                return None
+        elif scenario == 0:  # No scenario
+            try:
+                zipped_list = zip(quantity, PI_score)
+                wgiavg = [x * y for (x, y) in zipped_list]
+            except Exception as e:
+                logging.debug(f"Error while weighting the trade data {e}")
+                return None
+
+        # After manipulation of the trade data it is multiplied with the WGI
+        # score forming the numerator of the second factor of GeoPolRisk (WTA)
+
+        try:
+            numerator = sum(wgiavg)
+            tradetotal = totQ
+        except Exception as e:
+            logging.debug(f"Error while summing the weighted trade data{e}")
+        return numerator, tradetotal
+    else:
+        return 0, 0
+
+
+# The first component of the GeoPolRisk method involved calculating the herfindahl-hirschmann
+# index (HHI) and total domestic production required for calculating the second factor (WTA).
 def GeoPolRisk(ProductionData, WTAData, Year, AVGPrice):
-    newdf = pd.DataFrame(columns = ["production"])
+    newdf = pd.DataFrame(columns=["production"])
     Index = ProductionData[2].index(int(Year))
     HHI = ProductionData[0][Index]
-    PQT = ProductionData[1][Index]*1000
-
-    try:
-        if isinstance(AVGPrice, (int, float)) and WTAData[1] != 0:
-            WTA = (WTAData[0]/ (WTAData[1]+PQT))
+    PQT = ProductionData[1][Index] * 1000  # Converting from Mtonnes to kilograms
+    if isinstance(AVGPrice, (int, float)) and WTAData[1] != 0:
+        try:
+            WTA = WTAData[0] / (WTAData[1] + PQT)
             GeoPolRisk = HHI * WTA
             GeoPolCF = GeoPolRisk * AVGPrice
-        elif WTAData[1] != 0:
-            WTA = (WTAData[0]/ (WTAData[1]+PQT))
+        except Exception as e:
+            logging.debug(f"Error while calculating GeoPolRisk {e}")
+            return None
+    elif WTAData[1] != 0:
+        try:
+            WTA = WTAData[0] / (WTAData[1] + PQT)
             GeoPolRisk = HHI * WTA
             GeoPolCF = "NA"
-        else:
-            WTA = 0
-            GeoPolRisk = 0
-            GeoPolCF = 0
-            logging.debug("WTA has returned 0")
-    except Exception as e:
-        logging.debug(e)
-        logging.debug("The Weighted Trade average value is {}".format(WTA))
-        logging.debug("The HHI value is {}".format(HHI))
-        logging.debug("The GeoPolRisk is {}".format(GeoPolRisk))
-        logging.debug("The AVGPrice is {}".format(AVGPrice))
-        raise CalculationError
-        return None 
-    return [HHI, WTA, GeoPolRisk, GeoPolCF]
-    
+        except Exception as e:
+            logging.debug(f"Error while calculating GeoPolRisk {e}")
+            return None
+    else:
+        WTA = 0
+        GeoPolRisk = 0
+        GeoPolCF = 0
+        logging.info("WTA has returned 0")
+        return None
+    results = [HHI, WTA, GeoPolRisk, GeoPolCF]
+    return results
