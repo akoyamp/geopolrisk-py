@@ -12,7 +12,9 @@ The library is available to download using pip package manager.
 pip install -i https://test.pypi.org/simple/Geopolrisk==2.5
 ~~~
 
-Copy the library database to the directory created in the documents folder to use the library (https://github.com/akoyamp/geopolrisk-py/tree/main/geopolrisk-py/lib/library.db).
+## After installation
+A folder in the Documents directory of the installed user is created named "geopolrisk". Three sub folders are created: *'database'*, *'logs'*, and *'output'*. These are important for the working of the library. The *'database'* folder must contain the library database. Copy the library database to the directory created in the documents folder to use the library (https://github.com/akoyamp/geopolrisk-py/tree/main/geopolrisk-py/lib/library.db).
+The *'logs'* folder stores the logs of the assessment. The *'output'* folder stores a database containing the results of the assessment and also all the exports of the results.
 
 # Modules and Methods
 The library has following five modules preceded by an init that performs some actions required to smoothly perform an assessment.
@@ -22,6 +24,8 @@ The library has following five modules preceded by an init that performs some ac
 --> Creates a directory in documents folder (only for windows users): Output folder for database to record calculations and exporting results as csv, Log folder for storing logs
 
 --> Loads several functions such as logging, sql and some global variables
+
+--> The module has a class called instance. Variables in the instance class can be manipulated or used in specific applications. Important variables such as regionslist, price and wgi are manipulated in specific applications.
     
 ## core module
 Contains functions that calculate the components of the geopolrisk method
@@ -88,13 +92,14 @@ Contains functions that calculate the components of the geopolrisk method
 ### Example to use the core module
 ~~~
 from geopolrisk.assessment.core import *
-from geopolrisk.assessment.__init__ import _wgi, _price #Optional
-
+from geopolrisk.assessment.__init__ import instance #Optional
+_price = instance.price
+_wgi = instance.wgi
 Resource = "Nickel"
 HS = 2604
-Country = Germany
+Country = "Germany"
 ISO = 276
-Year = 2016
+Year = "2016"
 
 regions()
 TradeData = worldtrade(year = "2016", country = "276", commodity = "2604")
@@ -103,7 +108,7 @@ WTAData = weightedtrade(Year, TradeData = TradeData, PIData = _wgi, scenario = 0
 
 
 YearlyAveragePrice = 10203.98
-YearlyAveragePrice =  _price[Year].tolist()[_price.hs.to_list().index(HS)] #Optional - A database already exists that can be used to fetch the price data.
+YearlyAveragePrice =  _price[Year].tolist()[_price.HS.to_list().index(HS)] #Optional - A database already exists that can be used to fetch the price data.
 
 result = GeoPolRisk(ProductionData, WTAData, Year, YearlyAveragePrice)
 
@@ -153,11 +158,10 @@ Contains aggregate functions to simplify assessment.
     ### Example to demonstrate the use of main_complete function using custom region and specific trade data.
     ~~~
     ListofMetals = [2602, 2601, 2603, 2846, 2614,]
-    ListofCountries = [36, 124, 97, 251, 276, 392, 826, 842,] 
     ListofYear = [2017, 2018, 2019, 2020]
-    {"West Europe": ["France", "Germany", "Italy", "Spain", "Portugal", "Belgium"]}
+    CustomRegion = {"West Europe": ["France", "Germany", "Italy", "Spain", "Portugal", "Belgium"]}
     locationtotheexcelfile = "user/documents/folder/tradedata.xlsx" #Avoid if using COMTRADE
-
+    ListofCountries = ["West Europe"] 
 
     from geopolrisk.assessment.main import main_complete
     from geopolrisk.assessment.core import regions
@@ -201,9 +205,6 @@ Contains aggregate functions to simplify assessment.
 1. utils module has some functions that are useful for the working of library. It has functions that record data, convert data and exports data.
    1. *generateCF(exportType="csv", orient=""):*
     Usefull function to export all calculated data from the database to one of three formats: csv, excel, json.
-    ~~~
-    
-    ~~~
 2. The console module has one method guided for a console input based assessment.
 3. The functions in gprsplots module read the output file. An assessment must be done before using this module. There are three ways of plotting the results.
 trendplot for plotting the evolution of supply risk. Must have more than three years assessed.

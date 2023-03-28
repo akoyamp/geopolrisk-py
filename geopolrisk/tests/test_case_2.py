@@ -16,9 +16,9 @@
 
 import unittest, os
 from .defaults import *
-from assessment.utils import *
-from assessment.core import *
-from assessment.__init__ import instance
+from geopolrisk.assessment.utils import *
+from geopolrisk.assessment.core import *
+from geopolrisk.assessment.__init__ import instance
 
 _wgi = instance.wgi
 # testcase to test the gprs_comtrade function
@@ -44,7 +44,7 @@ class TestCoreFunctions(unittest.TestCase):
             ]
         }
         result = regions(NewRegion)
-        from assessment.__init__ import instance
+        from geopolrisk.assessment.__init__ import instance
 
         regionslist = instance.regionslist
         self.assertEqual(
@@ -55,7 +55,7 @@ class TestCoreFunctions(unittest.TestCase):
         self.assertIsNotNone(result, msg="Error in region creation!")
 
     def test_tradepathinsertion(self):
-        result = settradepath("geopolrisk-py/tests/sample trade data.xlsx")
+        result = settradepath("geopolrisk/tests/sample trade data.xlsx")
         self.assertIsNotNone(result, msg="Error in tradepath creation!")
 
     def test_worldtrade(self):
@@ -67,7 +67,7 @@ class TestCoreFunctions(unittest.TestCase):
         self.assertIsNotNone(result, msg="Error in worldtrade calculation!")
 
     def test_specifictrade(self):
-        xxx = settradepath("geopolrisk-py/tests/sample trade data.xlsx")
+        xxx = settradepath("geopolrisk/tests/sample trade data.xlsx")
         result = specifictrade(sheetname="test")
         self.assertIsNotNone(result, msg="Error in specific trade calculation!")
 

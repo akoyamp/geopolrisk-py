@@ -16,9 +16,9 @@
 
 import unittest
 from .defaults import *
-from assessment.core import regions
-from assessment.main import startmain, endmain, main_complete
-from assessment.__init__ import instance
+from geopolrisk.assessment.core import regions
+from geopolrisk.assessment.main import startmain, endmain, main_complete
+from geopolrisk.assessment.__init__ import instance
 
 _wgi = instance.wgi
 # testcase to test the gprs_comtrade function

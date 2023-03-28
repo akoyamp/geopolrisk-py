@@ -16,8 +16,8 @@
 
 import unittest
 from .defaults import *
-from assessment.utils import *
-from assessment.core import *
+from geopolrisk.assessment.utils import *
+from geopolrisk.assessment.core import *
 
 # testcase to test the gprs_comtrade function
 

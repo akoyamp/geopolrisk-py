@@ -24,10 +24,10 @@ logging = logging
 __all__ = ["core", "operations", "console", "gprsplots", "utils", "tests", "main"]
 __author__ = "Anish Koyamparambath <CyVi- University of Bordeaux>"
 __status__ = "beta"
-__version__ = "2.5"
+__version__ = "2"
 __data__ = "10 March 2023"
 
-hard_dependencies = ("pandas", "logging", "urllib", "functools")
+hard_dependencies = ("pandas", "urllib", "functools")
 missing_dependencies = []
 for dependency in hard_dependencies:
     try:

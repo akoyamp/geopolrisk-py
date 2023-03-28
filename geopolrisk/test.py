@@ -15,12 +15,12 @@
 # along with geopolrisk-py.  If not, see <https://www.gnu.org/licenses/>.
 
 import unittest, os
-from tests.test_case_1 import Testutilsfunctions
-from tests.test_case_2 import TestCoreFunctions
-from tests.test_case_3 import Testmainfunctions
+from geopolrisk.tests.test_case_1 import Testutilsfunctions
+from geopolrisk.tests.test_case_2 import TestCoreFunctions
+from geopolrisk.tests.test_case_3 import Testmainfunctions
 
 
-if __name__ == "__main__":
+def main():
 
     # Test Suite
     suite = unittest.TestSuite()
@@ -32,3 +32,7 @@ if __name__ == "__main__":
 
     # Run the test suite
     unittest.TextTestRunner(verbosity=3).run(suite)
+
+
+if __name__ == '__main__':
+    main()
