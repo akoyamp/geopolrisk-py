@@ -1,3 +1,19 @@
+# Copyright (C) 2023 University of Bordeaux, CyVi Group & Anish Koyamparambath
+# This file is part of geopolrisk-py library.
+#
+# geopolrisk-py is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# geopolrisk-py is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with geopolrisk-py.  If not, see <https://www.gnu.org/licenses/>.
+
 import pandas as pd, json, sqlite3
 import comtradeapicall as ctac
 from urllib.request import Request, urlopen
@@ -195,12 +211,12 @@ def create_id(HS, ISO, Year):
 # Verify if the calculation is already stored in the database to avoid recalculation
 def sqlverify(DBID):
     try:
-        sql=f"SELECT * FROM recordData WHERE id = '{DBID}';"
+        sql = f"SELECT * FROM recordData WHERE id = '{DBID}';"
         row = execute_query(
             f"SELECT * FROM recordData WHERE id = '{DBID}';",
             db_path=db,
         )
-        
+
     except Exception as e:
         logging.debug(f"Database error in sqlverify - {e}, {sql}")
         row = None
@@ -298,6 +314,7 @@ def recordData(
             ]
         )
 
+
 """Convert entire database to required format
 **CHARACTERIZATION FACTORS
 Refer to python json documentation for more information on types of
@@ -324,9 +341,11 @@ def generateCF(exportType="csv", orient=""):
         )
         db_df = pd.read_sql_query("SELECT * FROM recorddata", conn)
         if CFType == "csv":
-            db_df.to_csv(_outputfile + "/database.csv", index=False, encoding = "utf-8")
+            db_df.to_csv(_outputfile + "/database.csv", index=False, encoding="utf-8")
         elif CFType == "excel":
-            db_df.to_excel(_outputfile + "/database.xlsx", index=False, encoding = "utf-8")
+            db_df.to_excel(
+                _outputfile + "/database.xlsx", index=False, encoding="utf-8"
+            )
         elif CFType == "json":
             db_df.to_json(_outputfile + "/database.json", orient=orient, index=False)
     except Exception as e:

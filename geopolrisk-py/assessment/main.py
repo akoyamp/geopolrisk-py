@@ -1,3 +1,19 @@
+# Copyright (C) 2023 University of Bordeaux, CyVi Group & Anish Koyamparambath
+# This file is part of geopolrisk-py library.
+#
+# geopolrisk-py is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# geopolrisk-py is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with geopolrisk-py.  If not, see <https://www.gnu.org/licenses/>.
+
 from .__init__ import (
     instance,
     logging,
@@ -22,7 +38,7 @@ automatically detect the type of calculation required.
 
 try:
     regionslist, _outputfile = instance.regionslist, instance.exportfile
-    _reporter =  instance.reporter
+    _reporter = instance.reporter
     Country = _reporter.Country.to_list()
     _price = instance.price
     _wgi = instance.wgi
@@ -50,7 +66,7 @@ def tradeagg(resource, year, listofcountries, sheetname=None):
         newcodelist,
         newcountrylist,
         newquantitylist,
-        ]
+    ]
     # Variable to fetch production data
     TotalDomesticProduction, TDP = 0, []
     # If the aggregation is not from the specific trade data source,
@@ -70,7 +86,11 @@ def tradeagg(resource, year, listofcountries, sheetname=None):
                             country - {k}, year - {year}, : {e}"""
                 )
             # Logging null return of the trade data from the world trade.
-            if isinstance(TradeData[0], type(None)) or len(TradeData) == 0 or any(v is None for v in TradeData[0]):
+            if (
+                isinstance(TradeData[0], type(None))
+                or len(TradeData) == 0
+                or any(v is None for v in TradeData[0])
+            ):
                 logging.debug(f"Trade of {resource} to {k} returned None for {year}")
                 newcodelist.append(0)
                 newcountrylist.append(0)
@@ -91,9 +111,9 @@ def tradeagg(resource, year, listofcountries, sheetname=None):
                         newquantitylist[index] = (
                             newquantitylist[index] + TradeData[2][ind]
                         )
-                    
+
                 logging.debug(f"The aggregated trade quantity {newtradelist}")
-                
+
             # Aggregation of the production of mineral resource data
             xresource, country, _ignore, _ignore2 = convertCodes(resource, k)
             X = ProductionData(xresource, country)
@@ -107,7 +127,7 @@ def tradeagg(resource, year, listofcountries, sheetname=None):
             X = ProductionData(xresource, country)
             index = X[2].index(year)
             TotalDomesticProduction += X[1][index]
-        newtradelist  = TradeData
+        newtradelist = TradeData
 
     # Calculation of the components of the GeoPolRisk method
     TDP = [0] * len(X[1])
@@ -126,7 +146,7 @@ def main_complete(
     sheetname=None,
     PIindicator=None,
 ):
-    
+
     if PIindicator is None:
         PIindicator = _wgi
     # Instantiate counters for logging
@@ -142,18 +162,20 @@ def main_complete(
             if str(x) not in Country or str(x) not in [str(i) for i in ISO]
         ]
         logging.info(f"List of new regions {newregion}")
-        
+
         # Extract new regions from the provided countrylist parameter (argument).
         if len(newregion) > 0:
             for i in newregion:
                 newregionlist.append(countrylist[i])
                 del countrylist[i]
-        if len(newregionlist) > 0:# Calculate the values for the new region(s)
+        if len(newregionlist) > 0:  # Calculate the values for the new region(s)
             for l in newregionlist:
                 # New regions can be defined as ISO nomenclature or ISO numeric.
                 #  The values must be converted to numeric.newcountrylist
                 ncountrylist = regionslist[l]
-                logging.info(f"The new region defined {l} and the countries in it are {ncountrylist}")
+                logging.info(
+                    f"The new region defined {l} and the countries in it are {ncountrylist}"
+                )
                 _ignore1, _ignore2, _ignore3, Xcountrylist = convertCodes(
                     ["Cobalt"], ncountrylist
                 )
@@ -171,7 +193,6 @@ def main_complete(
                         TradeData, productiondata = tradeagg(I[0], I[1], Xcountrylist)
                         AVGPrice = _price[str(I[1])].tolist()[
                             _price.HS.to_list().index(I[0])
-
                         ]
                         Y = weightedtrade(
                             str(I[1]),
@@ -223,16 +244,18 @@ def main_complete(
                             recordData WHERE id = '{DBID}'
                             """
                             row = execute_query(sqlstatement, db_path=db)
-                            OutputList.append([
-                                str(I[1]),
-                                str(resource),
-                                str(l),
-                                str(recyclingrate),
-                                str(scenario),
-                                str(row[0][0]),
-                                str(row[0][3]),
-                                str(row[0][1]),
-                                str(row[0][2]),]
+                            OutputList.append(
+                                [
+                                    str(I[1]),
+                                    str(resource),
+                                    str(l),
+                                    str(recyclingrate),
+                                    str(scenario),
+                                    str(row[0][0]),
+                                    str(row[0][3]),
+                                    str(row[0][1]),
+                                    str(row[0][2]),
+                                ]
                             )
                         except Exception as e:
                             logging.debug(f"Cannot append into list of records {e}")
@@ -241,33 +264,41 @@ def main_complete(
                             "Preexisting data has been inserted in output file."
                         )
         else:
-            startmain(resourcelist,
+            startmain(
+                resourcelist,
                 yearlist,
                 countrylist,
                 recyclingrate=0.0,
                 scenario=0,
                 sheetname=None,
-                PIindicator=None,)
+                PIindicator=None,
+            )
     else:
         regions()
-        startmain(resourcelist,
-                yearlist,
-                countrylist,
-                recyclingrate=0.0,
-                scenario=0,
-                sheetname=None,
-                PIindicator=None,)
+        startmain(
+            resourcelist,
+            yearlist,
+            countrylist,
+            recyclingrate=0.0,
+            scenario=0,
+            sheetname=None,
+            PIindicator=None,
+        )
 
     endmain()
 
-def startmain(resourcelist,
+
+def startmain(
+    resourcelist,
     yearlist,
     countrylist,
     recyclingrate=0.0,
     scenario=0,
     sheetname=None,
-    PIindicator=None,):
-    
+    PIindicator=None,
+):
+    if PIindicator is None:
+        PIindicator = _wgi
     for I in itertools.product(resourcelist, countrylist, yearlist):
         # LOGIC
         # Need to verify if the data preexists to avoid limited API calls
@@ -303,14 +334,12 @@ def startmain(resourcelist,
                     break
 
             try:
-                AVGPrice = _price[str(I[2])].tolist()[
-                    _price.HS.to_list().index(I[0])
-                ]
+                AVGPrice = _price[str(I[2])].tolist()[_price.HS.to_list().index(I[0])]
                 X = ProductionData(resource, country)
                 Y = weightedtrade(
                     str(I[2]),
                     TradeData=TradeData,
-                    PIData=_wgi,
+                    PIData=PIindicator,
                     scenario=scenario,
                     recyclingrate=recyclingrate,
                 )
@@ -372,10 +401,12 @@ def startmain(resourcelist,
                 "Preexisting data has been inserted in output file."
             )
 
+
 def endmain():
     outputDF = pd.DataFrame(OutputList, columns=outputdf.columns)
-    outputDF.to_csv(_outputfile + "/export.csv", index=False, encoding = "utf-8")
+    outputDF.to_csv(_outputfile + "/export.csv", index=False, encoding="utf-8")
     logging.info("GeoPolRisk calculation completed successfully!")
+
 
 def update_cf():
     # Fetch Missing Data
@@ -396,7 +427,8 @@ def update_cf():
         logging.debug("No updates required!")
         return None
     try:
-        main(HS, Year, ISO, 0, 0)
+        startmain(HS, Year, ISO, 0, 0)
+        endmain()
     except Exception as e:
         logging.debug(f"Error while updating CF! {e}")
 

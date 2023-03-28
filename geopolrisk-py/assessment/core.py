@@ -1,3 +1,19 @@
+# Copyright (C) 2023 University of Bordeaux, CyVi Group & Anish Koyamparambath
+# This file is part of geopolrisk-py library.
+#
+# geopolrisk-py is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# geopolrisk-py is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with geopolrisk-py.  If not, see <https://www.gnu.org/licenses/>.
+
 import pandas as pd, json
 from urllib.request import Request, urlopen
 from pathlib import Path
@@ -8,11 +24,13 @@ from .utils import *
 # Define class for storing the path information for trade data
 class classPath:
     tradepath = None
+
+
 classpath = classPath()
 
-#Create instances of data required for calculation of the GeoPolRisk
+# Create instances of data required for calculation of the GeoPolRisk
 try:
-    #All instances are extracted from the library database
+    # All instances are extracted from the library database
     _production, _reporter = instance.production, instance.reporter
     regionslist, _outputfile = instance.regionslist, instance.exportfile
     db = _outputfile + "/" + instance.Output
@@ -133,7 +151,7 @@ def worldtrade(
     return TradeData
 
 
-# Extract trade data from the specific trade data file whose path is defined in 
+# Extract trade data from the specific trade data file whose path is defined in
 # the method earlier.
 def specifictrade(sheetname=None):
     trade_path = classpath.tradepath
@@ -198,6 +216,7 @@ def specifictrade(sheetname=None):
             logging.debug(f"Error in the trade file {e}")
             return None
 
+
 # Fetch the mineral resource ore production data from the library
 def ProductionData(Resource, EconomicUnit):
 
@@ -259,9 +278,10 @@ def ProductionData(Resource, EconomicUnit):
     else:
         return None
 
+
 # Weight the extracted trade data with the political instability indicator data.
 # WGI is used as the default PI indicator that can be replaced with any other
-# normalized indicator data. 
+# normalized indicator data.
 def weightedtrade(year, TradeData=None, PIData=None, scenario=0, recyclingrate=0.00):
     if TradeData is None or PIData is None:
         logging.debug("Trade data or Indicator data returned empty!")

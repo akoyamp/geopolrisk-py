@@ -1,10 +1,27 @@
+# Copyright (C) 2023 University of Bordeaux, CyVi Group & Anish Koyamparambath
+# This file is part of geopolrisk-py library.
+#
+# geopolrisk-py is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# geopolrisk-py is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with geopolrisk-py.  If not, see <https://www.gnu.org/licenses/>.
+
 import sqlite3, pandas as pd, getpass, logging, os
 from datetime import datetime
 from pathlib import Path
-#from .Exceptions.warningsgprs import *
+
+# from .Exceptions.warningsgprs import *
 
 logging = logging
-__all__ = ["core", "operations", "console", "gprsplots", "utils", "tests", "main"] 
+__all__ = ["core", "operations", "console", "gprsplots", "utils", "tests", "main"]
 __author__ = "Anish Koyamparambath <CyVi- University of Bordeaux>"
 __status__ = "beta"
 __version__ = "2.5"
@@ -53,7 +70,6 @@ def execute_query(query, db_path=""):
         return results
 
 
-
 class database:
     # Global Variables
     Output = "Datarecords.db"
@@ -62,7 +78,7 @@ class database:
     LogFolder = OutputFolder + "/logs"
     CFDatabase = OutputFolder + "/output"
     DBFolder = OutputFolder + "/databases"
-    
+
     # Create directories
     try:
         directory = getpass.getuser()
@@ -88,7 +104,7 @@ class database:
     if not os.path.isfile(os.path.join(dbFolder, Database)):
         folder_path = input("The file doesn't exist. Please enter a folder path: ")
 
-    #Verify if the database contains the required tables
+    # Verify if the database contains the required tables
     Tables = [
         "commodityHS",
         "Country_ISO",
@@ -126,11 +142,13 @@ class database:
         "WGI",
         "Price",
     ]
-        
-    db = dbFolder+'/'+Database
+
+    db = dbFolder + "/" + Database
     # Check if the database exists and fetch the required tables
     try:
-        result = execute_query("SELECT name FROM sqlite_master WHERE type='table';", db_path=db)
+        result = execute_query(
+            "SELECT name FROM sqlite_master WHERE type='table';", db_path=db
+        )
         table_names = [row[0] for row in result]
     except Exception as e:
         print(f"Unable to verify if the database contains the required tables {e}")
@@ -150,7 +168,6 @@ class database:
     else:
         pass
 
-   
     # Function to extract the tables into a dictionary
     def extract_tables_to_df(db_path, table_names):
         # Create a dictionary to store the extracted tables
@@ -192,7 +209,7 @@ class database:
             "log_ref" TEXT,
         	PRIMARY KEY("index")
         );"""
-        execute_query(sqlstatement, db_path=exportfile+'/'+Output)
+        execute_query(sqlstatement, db_path=exportfile + "/" + Output)
     except Exception as e:
         print(f"Could not create the output database {e}")
 
@@ -201,7 +218,6 @@ class database:
         tables = extract_tables_to_df(db, Tables)
     except Exception as e:
         print(f"Could not extract the tables {e}")
-
 
     production = tables
     reporter = tables["Country_ISO"]
@@ -241,8 +257,10 @@ class database:
         "Spain",
         "Sweden",
     ]
-    
+
+
 instance = database()
+
 
 class outputDF:
     columns = [
@@ -257,6 +275,8 @@ class outputDF:
         "Weighted Trade AVerage",
     ]
     outputList = []
+
+
 outputdf = outputDF()
 # Test fail variables
 LOGFAIL, DBIMPORTFAIL = False, False
@@ -272,7 +292,7 @@ try:
         format="""%(asctime)s | %(levelname)s | %(threadName)-10s |
           %(filename)s:%(lineno)s - %(funcName)20s() |
             %(message)s""",
-        filename= instance.logfile + "/" + Filename,
+        filename=instance.logfile + "/" + Filename,
         filemode="w",
     )
 except:
