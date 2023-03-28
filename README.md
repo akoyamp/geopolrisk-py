@@ -13,7 +13,7 @@ pip install -i https://test.pypi.org/simple/Geopolrisk==2.5
 ~~~
 
 ## After installation
-A folder in the Documents directory of the installed user is created named "geopolrisk". Three sub folders are created: *'database'*, *'logs'*, and *'output'*. These are important for the working of the library. The *'database'* folder must contain the library database. Copy the library database to the directory created in the documents folder to use the library (https://github.com/akoyamp/geopolrisk-py/tree/main/geopolrisk-py/lib/library.db).
+A folder in the Documents directory of the installed user is created after importing the library for the first time named "geopolrisk". Three sub folders are created: *'database'*, *'logs'*, and *'output'*. These are important for the working of the library. The *'database'* folder must contain the library database. Copy the library database to the directory created in the documents folder to use the library (https://github.com/akoyamp/geopolrisk-py/tree/main/geopolrisk-py/lib/library.db). Or you can provide the location of the database in the prompt asked when importing the library for the first time.
 The *'logs'* folder stores the logs of the assessment. The *'output'* folder stores a database containing the results of the assessment and also all the exports of the results.
 
 # Modules and Methods
