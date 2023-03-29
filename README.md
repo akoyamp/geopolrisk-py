@@ -9,7 +9,7 @@ An assessment would result in two main values;
 2. Characterization Factors for GSRP (Geopolitical supply risk potential indicator (Midpoint))
 The library is available to download using pip package manager.
 ~~~
-pip install -i https://test.pypi.org/simple/Geopolrisk==2.5
+pip install geopolrisk-py
 ~~~
 
 ## After installation
