@@ -18,7 +18,8 @@ import pandas as pd, json, sqlite3
 import comtradeapicall as ctac
 from urllib.request import Request, urlopen
 from .__init__ import instance, logging, execute_query
-from .main import main as gprs_comtrade
+from .main import startmain as gprs_comtrade
+from .main import endmain
 from .utils import convertCodes
 
 
@@ -201,6 +202,7 @@ def guided():
                 break
         _ignore, _ignore2, resource, country = convertCodes(resource, country)
         gprs_comtrade(resource, [period], country, recyclingrate, scenario)
+        endmain()
 
         print("Assessment completed! The results are downloaded to the output folder")
         print("In case of error in the output file, refer to logs.")
