@@ -18,8 +18,7 @@ import pandas as pd, json, sqlite3
 import comtradeapicall as ctac
 from urllib.request import Request, urlopen
 from .__init__ import instance, logging, execute_query
-from .main import startmain as gprs_comtrade
-from .main import endmain
+from .main import main_complete as gprs_comtrade
 from .utils import convertCodes
 
 
@@ -201,6 +200,7 @@ def guided():
                     sys.exit()
                 break
         _ignore, _ignore2, resource, country = convertCodes(resource, country)
+        regions()
         gprs_comtrade(resource, [period], country, recyclingrate, scenario)
         endmain()
 
