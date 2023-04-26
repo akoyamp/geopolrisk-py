@@ -21,6 +21,7 @@ from .__init__ import (
     outputdf,
     execute_query,
 )
+import numpy as np
 from .core import *
 import itertools, pandas as pd, time
 from .utils import *
@@ -67,6 +68,7 @@ def tradeagg(resource, year, listofcountries, sheetname=None):
         newcountrylist,
         newquantitylist,
     ]
+    pricecifAGG = []
     # Variable to fetch production data
     TotalDomesticProduction, TDP = 0, []
     # If the aggregation is not from the specific trade data source,
@@ -75,7 +77,7 @@ def tradeagg(resource, year, listofcountries, sheetname=None):
     if sheetname is None:
         for k in listofcountries:
             try:
-                TradeData = worldtrade(
+                TradeData, pricecif = worldtrade(
                     year=year,
                     country=k,
                     commodity=resource,
@@ -95,6 +97,7 @@ def tradeagg(resource, year, listofcountries, sheetname=None):
                 newcodelist.append(0)
                 newcountrylist.append(0)
                 newquantitylist.append(0)
+                pricecifAGG.append(0)
             else:
                 # code to aggregate the data
                 TradeData[2] = [0 if v is None else v for v in TradeData[2]]
@@ -111,9 +114,10 @@ def tradeagg(resource, year, listofcountries, sheetname=None):
                         newquantitylist[index] = (
                             newquantitylist[index] + TradeData[2][ind]
                         )
-
+                pricecifAGG.append(pricecif)
+                
                 logging.debug(f"The aggregated trade quantity {newtradelist}")
-
+            avgpricecif = sum(pricecif)/len(pricecif)
             # Aggregation of the production of mineral resource data
             xresource, country, _ignore, _ignore2 = convertCodes(resource, k)
             X = ProductionData(xresource, country)
@@ -128,13 +132,13 @@ def tradeagg(resource, year, listofcountries, sheetname=None):
             index = X[2].index(year)
             TotalDomesticProduction += X[1][index]
         newtradelist = TradeData
-
+        pricecif = None
     # Calculation of the components of the GeoPolRisk method
     TDP = [0] * len(X[1])
     TDP[X[2].index(year)] = TotalDomesticProduction
     productiondata = [X[0], TDP, X[2]]
 
-    return newtradelist, productiondata
+    return newtradelist, productiondata, avgpricecif
 
 
 def main_complete(
@@ -190,10 +194,13 @@ def main_complete(
                         logging.debug(f"SQL Verification failed! {e}")
                     if verify is False:
                         time.sleep(2)
-                        TradeData, productiondata = tradeagg(I[0], I[1], Xcountrylist)
-                        AVGPrice = _price[str(I[1])].tolist()[
+                        TradeData, productiondata, avgpricecif = tradeagg(I[0], I[1], Xcountrylist)
+                        if avgpricecif in [np.nan, 0, "nan"]:
+                            AVGPrice = _price[str(I[1])].tolist()[
                             _price.HS.to_list().index(I[0])
                         ]
+                        else:
+                            AVGPrice = avgpricecif
                         Y = weightedtrade(
                             str(I[1]),
                             TradeData=TradeData,
@@ -313,7 +320,7 @@ def startmain(
             time.sleep(2)
             if sheetname is None:
                 try:
-                    TradeData = worldtrade(
+                    TradeData, pricecif = worldtrade(
                         year=I[2],
                         country=I[1],
                         commodity=I[0],
@@ -334,7 +341,10 @@ def startmain(
                     break
 
             try:
-                AVGPrice = _price[str(I[2])].tolist()[_price.HS.to_list().index(I[0])]
+                if pricecif in [np.nan, 0, "nan"]:
+                    AVGPrice = _price[str(I[2])].tolist()[_price.HS.to_list().index(I[0])]
+                else:
+                    AVGPrice = pricecif
                 X = ProductionData(resource, country)
                 Y = weightedtrade(
                     str(I[2]),
