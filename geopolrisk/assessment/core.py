@@ -113,7 +113,7 @@ def worldtrade(
         data, pricecif = callapirequest(year, country, commodity)
         if data is None or data.shape[0] == 0:
             logging.debug("API returned empty dataframe")
-            TradeData = [None, None, None], None
+            TradeData = [None, None, None]
         else:
             if 0 in data.partnerCode.astype(int).to_list():
                 err = data.partnerCode.to_list().index(0)
@@ -134,7 +134,7 @@ def worldtrade(
                     f"The fetched dataframe from "
                     "the API does not have the required columns. {e}"
                 )
-                TradeData = [None, None, None], None
+                TradeData = [None, None, None]
     elif data is not None and data.shape[0] != 0:
         if data is not None and data.shape[0] != 0:
             Worldindex = data.ptCode.to_list().index(0)
@@ -145,11 +145,11 @@ def worldtrade(
             TradeData = [code, countries, quantity]
         else:
             logging.debug("API returned empty dataframe")
-            TradeData = [None, None, None], None
+            TradeData = [None, None, None]
     else:
 
         logging.info("API returned empty dataframe")
-        TradeData = [None, None, None], None
+        TradeData = [None, None, None]
     return TradeData, pricecif
 
 

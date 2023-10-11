@@ -12,6 +12,7 @@ comtradeapicall = "^1.0.20"
 matplotlib = "^3.8.0"
 scipy = "^1.11.3"
 numpy = "^1.26.0"
+requests = "^2.31.0"
 
 
 [tool.poetry.group.dev.dependencies]

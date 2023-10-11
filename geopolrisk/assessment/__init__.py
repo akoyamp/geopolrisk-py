@@ -73,8 +73,8 @@ def execute_query(query, db_path=""):
 class database:
     # Global Variables
     Output = "Datarecords.db"
-    Database = "library.db"
-    OutputFolder = "Documents/geopolrisk"
+    Database = "Library.db"
+    OutputFolder = os.environ["GEOPOLRISK_FOLDER"] # formerly "Documents/geopolrisk"
     LogFolder = OutputFolder + "/logs"
     CFDatabase = OutputFolder + "/output"
     DBFolder = OutputFolder + "/databases"

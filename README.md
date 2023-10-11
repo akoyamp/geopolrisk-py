@@ -2,6 +2,12 @@
 
 
 # Getting started
+
+- Install with `poetry install`.
+- Get a free subscription key on https://comtradedeveloper.un.org/ and set it as `COMTRADE_SUBSCRIPTION_KEY` environment variable
+- Create a folder for your work and set its absolute path in the environment variable `GEOPOLRISK_FOLDER`
+- Copy [the library](https://github.com/akoyamp/geopolrisk-py/tree/main/geopolrisk-py/lib/library.db) under `{GEOPOLRISK_FOLDER}/databases/Library.db`
+
 ## Installing the GeoPolRisk Module
 The geopolrisk-py is a python library that allows the assessment of a geopolitical related supply risk of a resource from the perspective of a country/region/trade bloc/company.
 An assessment would result in two main values; 
@@ -250,3 +256,51 @@ compareplot for stacked graphs for comparison for one year.
 
 ## Country ISO codes
 ISO CODES: https://www.iso.org/standard/63546.html
+
+# New Comtrade API
+
+Correspondance after getting a subscription key
+
+```python
+# os.environ["COMTRADE_SUBSCRIPTION_KEY"] must be set
+
+import requests
+
+period=2016
+country=276
+commoditycode=2604
+a_type="C"
+a_freq="A"
+a_cl="HS"
+a_p="all"
+a_rg=1
+
+url = f"https://comtrade.un.org/api/get?max=50000&type={a_type}&freq={a_freq}&px={a_cl}&ps={period}&r={country}&p={a_p}&cc={commoditycode}&rg={a_rg}&fmt=json"
+url = f"https://comtradeapi.un.org/data/v1/get/{a_type}/{a_freq}/{a_cl}?period={period}&partnerCode={country}&cmdCode={commoditycode}&period={period}&subscription-key={os.environ['COMTRADE_SUBSCRIPTION_KEY']}"
+requests.get(url).json()
+```
+
+returns 
+
+```javascript
+{'elapsedTime': '4.01 secs',
+ 'count': 56,
+ 'data': [{'typeCode': 'C',
+   'freqCode': 'A',
+   'refPeriodId': 20160101,
+   'refYear': 2016,
+   'refMonth': 52,
+   'period': '2016',
+   'reporterCode': 203,
+   'reporterISO': None,
+   'reporterDesc': None,
+   'flowCode': 'X',
+   'flowDesc': None,
+   'partnerCode': 276,
+   'partnerISO': None,
+   'partnerDesc': None,
+   'partner2Code': 0,
+   ...
+ }
+}
+```
