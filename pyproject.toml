@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "geopolrisk-sapiopy"
+version = "0.1.0"
+description = ""
+authors = ["Selim Youssry <selim@sapiologie.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.13"
+pandas = "^2.1.1"
+comtradeapicall = "^1.0.20"
+matplotlib = "^3.8.0"
+scipy = "^1.11.3"
+numpy = "^1.26.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
