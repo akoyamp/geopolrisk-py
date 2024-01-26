@@ -1,14 +1,15 @@
-import sqlite3, pandas as pd, getpass, logging, os
+import logging, os
 from datetime import datetime
 from pathlib import Path
-#from .Exceptions.warningsgprs import *
+import yaml
+
 
 logging = logging
-__all__ = ["core", "operations", "gcalc", "gprsplots", "utils", "tests", "main"] 
+__all__ = ["core", "operations", "gcalc", "gprsplots", "utils", "tests", "main"]
 __author__ = "Anish Koyamparambath <CyVi- University of Bordeaux>"
-__status__ = "beta"
-__version__ = "2.5"
-__data__ = "10 March 2023"
+__status__ = "Beta"
+__version__ = "3.0.1"
+__data__ = "30 September 2023"
 
 hard_dependencies = ("pandas", "logging", "urllib", "functools")
 missing_dependencies = []
@@ -25,257 +26,52 @@ if missing_dependencies:
 del hard_dependencies, dependency, missing_dependencies
 
 
-# Function to use sqlite3
-def execute_query(query, db_path=""):
-    # Connect to the database
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-
-    # Determine if the query is a SELECT or INSERT query
-    is_select_query = query.strip().lower().startswith("select")
-
-    # Execute the query and fetch the results (if it is a SELECT query)
-    if is_select_query:
-        cursor.execute(query)
-        results = cursor.fetchall()
-    else:
-        cursor.execute(query)
-        results = None
-
-    # Commit the query to the database
-    conn.commit()
-
-    # Close the database connection
-    conn.close()
-
-    # Return the results (if it is a SELECT query)
-    if is_select_query:
-        return results
-
-
-
-class database:
-    # Global Variables
-    Output = "Eu Geo Bi.db"
-    Database = "library.db"
-    OutputFolder = "Documents/geopolrisk"
-    LogFolder = OutputFolder + "/logs"
-    CFDatabase = OutputFolder + "/output"
-    DBFolder = OutputFolder + "/databases"
-    
-    # Create directories
-    try:
-        directory = getpass.getuser()
-        if not os.path.exists(os.path.join(Path.home(), OutputFolder)):
-            os.makedirs(os.path.join(Path.home(), OutputFolder))
-
-        logfile = os.path.join(Path.home(), LogFolder)
-        if not os.path.exists(logfile):
-            os.makedirs(logfile)
-
-        dbFolder = os.path.join(Path.home(), DBFolder)
-        if not os.path.exists(dbFolder):
-            os.makedirs(dbFolder)
-
-        exportfile = os.path.join(Path.home(), CFDatabase)
-        if not os.path.exists(exportfile):
-            os.makedirs(exportfile)
-    except Exception as e:
-        print(f"Unable to create directories {e}")
-        raise FileNotFoundError
-
-    # Verify that the file exists else input the correct file path
-    if not os.path.isfile(os.path.join(dbFolder, Database)):
-        folder_path = input("The file doesn't exist. Please enter a folder path: ")
-
-    #Verify if the database contains the required tables
-    Tables = [
-        "commodityHS",
-        "Country_ISO",
-        "Aluminium",
-        "Antimony",
-        "Asbestos",
-        "Barytes",
-        "Bismuth",
-        "Cadmium",
-        "Chromium",
-        "Coal",
-        "Cobalt",
-        "Copper",
-        "Gold",
-        "Graphite",
-        "Iron",
-        "Lead",
-        "Lithium",
-        "Magnesite",
-        "Magnesium",
-        "Manganese",
-        "Mercury",
-        "Molybdenum",
-        "Nickel",
-        "Crude_Oil",
-        "REE",
-        "Silver",
-        "Tin",
-        "Titanium",
-        "Tungsten",
-        "Uranium",
-        "Zinc",
-        "Zirconium",
-        "NG",
-        "WGI",
-        "Price",
-    ]
-        
-    db = dbFolder+'/'+Database
-    # Check if the database exists and fetch the required tables
-    try:
-        result = execute_query("SELECT name FROM sqlite_master WHERE type='table';", db_path=db)
-        table_names = [row[0] for row in result]
-    except Exception as e:
-        print(f"Unable to verify if the database contains the required tables {e}")
-        raise FileNotFoundError
-
-    # check if all the tables in the list are present in the database
-    missingTables = []
-    for table_name in Tables:
-        if table_name not in table_names:
-            missingTables.append(table_name)
-        else:
-            pass
-
-    # If there are missing tables, raise an error
-    if len(missingTables) > 0:
-        print(f"The following tables are missing from the database: {missingTables}")
-    else:
-        pass
-
-   
-    # Function to extract the tables into a dictionary
-    def extract_tables_to_df(db_path, table_names):
-        # Create a dictionary to store the extracted tables
-        tables = {}
-
-        # Connect to the database
-        conn = sqlite3.connect(db_path)
-
-        # Loop through the table names and extract each table as a DataFrame
-        for table_name in table_names:
-            query = f"SELECT * FROM {table_name}"
-            table_df = pd.read_sql_query(query, conn)
-
-            # Add the table DataFrame to the tables dictionary with the table name as the key
-            tables[table_name] = table_df
-
-        # Close the database connection
-        conn.close()
-
-        # Return the tables dictionary
-        return tables
-
-    # verify if output database exists else create it
-    try:
-        sqlstatement = """CREATE TABLE IF NOT EXISTS "recordData" (
-        	"index"	INTEGER,
-            "id" TEXT NOT NULL,
-        	"country"	TEXT,
-        	"resource"	TEXT,
-        	"year"	INTEGER,
-        	"recycling_rate"	REAL,
-        	"scenario"	REAL,
-        	"geopolrisk"	REAL,
-        	"hhi"	REAL,
-        	"wta"	REAL,
-        	"geopol_cf"	REAL,
-        	"resource_hscode"	INTEGER,
-        	"iso"	INTEGER,
-            "log_ref" TEXT,
-        	PRIMARY KEY("index")
-        );"""
-        execute_query(sqlstatement, db_path=exportfile+'/'+Output)
-    except Exception as e:
-        print(f"Could not create the output database {e}")
-
-    # Extract the tables into a dictionary
-    try:
-        tables = extract_tables_to_df(db, Tables)
-    except Exception as e:
-        print(f"Could not extract the tables {e}")
-
-
-    production = tables
-    reporter = tables["Country_ISO"]
-    price = tables["Price"]
-    commodity = tables["commodityHS"]
-    wgi = tables["WGI"]
-    regionslist = {}
-    regionslist["EU"] = [
-        "Austria",
-        "Belgium",
-        "Belgium-Luxembourg",
-        "Bulgaria",
-        "Croatia",
-        "Czechia",
-        "Czechoslovakia",
-        "Denmark",
-        "Estonia",
-        "Finland",
-        "France",
-        "Fmr Dem. Rep. of Germany",
-        "Fmr Fed. Rep. of Germany",
-        "Germany",
-        "Greece",
-        "Hungary",
-        "Ireland",
-        "Italy",
-        "Latvia",
-        "Lithuania",
-        "Luxembourg",
-        "Malta",
-        "Netherlands",
-        "Poland",
-        "Portugal",
-        "Romania",
-        "Slovakia",
-        "Slovenia",
-        "Spain",
-        "Sweden",
-    ]
-    
-instance = database()
-
-class outputDF:
-    columns = [
-        "Year",
-        "Resource",
-        "Country",
-        "Recycling Rate",
-        "Recycling Scenario",
-        "Risk",
-        "GeoPolRisk Characterization Factor",
-        "HHI",
-        "Weighted Trade AVerage",
-    ]
-    outputList = []
-outputdf = outputDF()
-# Test fail variables
-LOGFAIL, DBIMPORTFAIL = False, False
-
-# Create a log file for init function
-
-Filename = "Log_File_{:%Y-%m-%d(%H-%M-%S)}.log".format(datetime.now())
-
-log_level = logging.DEBUG
+"""
+Load meta data from config.yaml file.
+"""
 try:
-    logging.basicConfig(
-        level=log_level,
-        format="""%(asctime)s | %(levelname)s | %(threadName)-10s |
-          %(filename)s:%(lineno)s - %(funcName)20s() |
-            %(message)s""",
-        filename= instance.logfile + "/" + Filename,
-        filemode="w",
-    )
-except:
-    # it is imperative that the log file work before running the main code.
-    LOGFAIL = True
-    print("Cannot create log file!")
+    with open("geopolrisk-py/assessment/config.yaml", "r") as config_file:
+        config_data = yaml.safe_load(config_file)
+        if config_data is not None:
+            pass
+        else:
+            raise ValueError("Config file is empty or contains invalid data.")
+except FileNotFoundError:
+    print("Config file not found.")
+except Exception as e:
+    print(f"An error occurred: {e}")
+
+
+if config_data:
+    Folder = config_data["Main"]["Folder"]
+    LogFile = config_data["Log"]["Filename"].format(datetime.now())
+    LogLEVEL = config_data["Log"]["Level"]
+    LogFormat = config_data["Log"]["Format"]
+    LogMode = config_data["Log"]["Mode"]
+else:
+    print("Error loading the configuration data.")
+    raise Exception("Error loading the configuration data.")
+
+# Create directories
+try:
+    if not os.path.exists(os.path.join(Path.home(), Folder)):
+        os.makedirs(os.path.join(Path.home(), Folder))
+
+    if not os.path.exists(os.path.join(Path.home(), Folder + "/logs")):
+        os.makedirs(os.path.join(Path.home(), Folder + "/logs"))
+
+    if not os.path.exists(os.path.join(Path.home(), Folder + "/databases")):
+        os.makedirs(os.path.join(Path.home(), Folder + "/databases"))
+
+    if not os.path.exists(os.path.join(Path.home(), Folder + "/output")):
+        os.makedirs(os.path.join(Path.home(), Folder + "/output"))
+except Exception as e:
+    print(f"Unable to create directories {e}")
+    raise FileNotFoundError
+
+logging.basicConfig(
+    level=LogLEVEL,
+    format=LogFormat,
+    filename=os.path.join(Path.home(), Folder + "/logs") + "/" + LogFile,
+    filemode=LogMode,
+)

@@ -1,0 +1,8 @@
+Main:
+  Folder: "Documents/geopolrisk"
+
+Log:
+  Level: DEBUG
+  Filename: "Log_File_{:%Y-%m-%d(%H-%M-%S)}.log"
+  Format: "%(asctime)s | %(levelname)s | %(threadName)-10s | %(filename)s:%(lineno)s - %(funcName)20s() | %(message)s"
+  Mode: w
