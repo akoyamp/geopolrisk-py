@@ -6,11 +6,10 @@ from utils import *
 
 
 class Meta:
-    def __init__(self):
-        self.data = self._load_data()
+    def __init__(self, meta_data: str):
+        self.data = self.Load_Yaml(meta_data)
         if self.data is not None:
             self._initialize_attributes()
-            self._create_directories()
         else:
             raise UnboundLocalError
 

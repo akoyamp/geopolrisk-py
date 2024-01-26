@@ -2,13 +2,12 @@ from .__init__ import logging
 import yaml, sqlite3
 
 
-def Load_Yaml():
-    file_path = "meta.yaml"
+def Load_Yaml(file_path):
     try:
         with open(file_path, "r") as meta_file:
             return yaml.safe_load(meta_file)
     except FileNotFoundError:
-        logging.error("Meta file not found.")
+        logging.error("Yaml file not found.")
         return None
 
 
@@ -26,3 +25,7 @@ def execute_query(query, dbpath):
     conn.close()
     if is_select_query:
         return results
+
+
+def validate_country(regionlist: dict, countrylist: dict):
+    pass
