@@ -110,9 +110,12 @@ def worldtrade(
         logging.debug(f"Error with the comtrade API request: {e}")
 
     if data is None or data.shape[0] == 0:
-        data, pricecif = callapirequest(year, country, commodity)
+        # oert - using the baci sqlite-database
+        # data, pricecif = callapirequest(year, country, commodity)
+        data, pricecif = get_baci_data(year, country, commodity)
+        #
         if data is None or data.shape[0] == 0:
-            logging.debug("API returned empty dataframe")
+            logging.debug("API or database returned empty dataframe")
             TradeData = [None, None, None], None
         else:
             if 0 in data.partnerCode.astype(int).to_list():
