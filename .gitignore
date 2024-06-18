@@ -1,0 +1,14 @@
+# Editors
+.vscode/
+.idea/
+.eclipse
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Input / Output-Files
+geopolrisk/oert/input-files/baci/*
+geopolrisk/oert/output-files/backup/*
+geopolrisk/oert/output-files/temp/*
