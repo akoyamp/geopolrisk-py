@@ -41,39 +41,12 @@ if missing_dependencies:
     )
 del hard_dependencies, dependency, missing_dependencies
 
-
-# Function to use sqlite3
-def execute_query(query, db_path=""):
-    # Connect to the database
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-
-    # Determine if the query is a SELECT or INSERT query
-    is_select_query = query.strip().lower().startswith("select")
-
-    # Execute the query and fetch the results (if it is a SELECT query)
-    if is_select_query:
-        cursor.execute(query)
-        results = cursor.fetchall()
-    else:
-        cursor.execute(query)
-        results = None
-
-    # Commit the query to the database
-    conn.commit()
-
-    # Close the database connection
-    conn.close()
-
-    # Return the results (if it is a SELECT query)
-    if is_select_query:
-        return results
-
-
 class database:
     # Global Variables
     Output = "Datarecords.db"
-    Database = "library.db"
+    Database = "world_mining_data.db"
+    Database_wgi = "wgi.db"
+    Database_baci = "baci.db"
     OutputFolder = "Documents/geopolrisk"
     LogFolder = OutputFolder + "/logs"
     CFDatabase = OutputFolder + "/output"
@@ -104,69 +77,152 @@ class database:
     if not os.path.isfile(os.path.join(dbFolder, Database)):
         folder_path = input("The file doesn't exist. Please enter a folder path: ")
 
-    # Verify if the database contains the required tables
-    Tables = [
+    # required tables - world_mining_data
+    Tables_world_mining_data = [
+		"Aluminium",
+		"Antimony",
+		"Arsenic",
+		"Asbestos",
+		"Baryte",
+		"Bauxite",
+		"Bentonite",
+		"Beryllium (conc.)",
+		"Bismuth",
+		"Boron Minerals",
+		"Cadmium",
+		"Chromium (Cr2O3)",
+		"Cobalt",
+		"Coking Coal",
+		"Copper",
+		"Diamonds (Gem)",
+		"Diamonds (Ind)",
+		"Diatomite",
+		"Feldspar",
+		"Fluorspar",
+		"Gallium",
+		"Germanium",
+		"Gold",
+		"Graphite",
+		"Gypsum and Anhydrite",
+		"Indium",
+		"Iron (Fe)",
+		"Kaolin (China-Clay)",
+		"Lead",
+		"Lignite",
+		"Lithium (Li2O)",
+		"logging",
+		"Magnesite",
+		"Manganese",
+		"Mercury",
+		"Molybdenum",
+		"Natural Gas",
+		"Nickel",
+		"Niobium (Nb2O5)",
+		"Oil Sands (part of Petroleum)",
+		"Oil Shales",
+		"Palladium",
+		"Perlite",
+		"Petroleum",
+		"Phosphate Rock (P2O5)",
+		"Platinum",
+		"Potash (K2O)",
+		"Rare Earths (REO)",
+		"Rhenium",
+		"Rhodium",
+		"Salt (rock, brines, marine)",
+		"Selenium",
+		"Silver",
+		"Steam Coal ",
+		"Sulfur (elementar & industrial)",
+		"Talc, Steatite & Pyrophyllite",
+		"Tantalum (Ta2O5)",
+		"Tellurium",
+		"Tin",
+		"Titanium (TiO2)",
+		"Tungsten (W)",
+		"Uranium (U3O8)",
+		"Vanadium (V)",
+		"Vermiculite",
+		"Zinc",
+		"Zircon",
+    ]
+    
+    # required tables - wgi
+    Tables_wgi = [
+        "Normalized",
+    ]
+
+    # required tables - baci      
+    Tables_baci = [
+        "baci_trade",
+    ]
+    
+    # TODO - tabels not in new database - required anymore ???
+    Tables_xxx = [
         "commodityHS",
         "Country_ISO",
-        "Aluminium",
-        "Antimony",
-        "Asbestos",
-        "Barytes",
-        "Bismuth",
-        "Cadmium",
-        "Chromium",
-        "Coal",
-        "Cobalt",
-        "Copper",
-        "Gold",
-        "Graphite",
-        "Iron",
-        "Lead",
-        "Lithium",
-        "Magnesite",
-        "Magnesium",
-        "Manganese",
-        "Mercury",
-        "Molybdenum",
-        "Nickel",
-        "Crude_Oil",
-        "REE",
-        "Silver",
-        "Tin",
-        "Titanium",
-        "Tungsten",
-        "Uranium",
-        "Zinc",
-        "Zirconium",
-        "NG",
-        "WGI",
+        #"WGI",
         "Price",
     ]
 
-    db = dbFolder + "/" + Database
-    # Check if the database exists and fetch the required tables
-    try:
-        result = execute_query(
-            "SELECT name FROM sqlite_master WHERE type='table';", db_path=db
-        )
-        table_names = [row[0] for row in result]
-    except Exception as e:
-        print(f"Unable to verify if the database contains the required tables {e}")
-        raise FileNotFoundError
 
-    # check if all the tables in the list are present in the database
-    missingTables = []
-    for table_name in Tables:
-        if table_name not in table_names:
-            missingTables.append(table_name)
+
+    # Function to check if database exists and fetch the required tables
+    def check_db_tables(db, table_names):
+        try:
+             # Connect to the database
+            conn = sqlite3.connect(db)
+            cursor = conn.cursor()
+            query = "SELECT name FROM sqlite_master WHERE type='table';"
+            cursor.execute(query)
+            result = cursor.fetchall()
+            table_names = [row[0] for row in result]
+        except Exception as e:
+            print(f"Unable to verify if the database contains the required tables {e}")
+            raise FileNotFoundError
+
+        # check if all the tables in the list are present in the database
+        missingTables = []
+        for table_name in table_names:
+            if table_name not in table_names:
+                missingTables.append(table_name)
+            else:
+                pass
+
+        # If there are missing tables, raise an error
+        if len(missingTables) > 0:
+            print(f"The following tables are missing from the database: {missingTables}")
         else:
             pass
 
-    # If there are missing tables, raise an error
-    if len(missingTables) > 0:
-        print(f"The following tables are missing from the database: {missingTables}")
-    else:
-        pass
+    
+    # Function to use sqlite3
+    def execute_query(query, db_path=""):
+        # Connect to the database
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+
+        # Determine if the query is a SELECT or INSERT query
+        is_select_query = query.strip().lower().startswith("select")
+
+        # Execute the query and fetch the results (if it is a SELECT query)
+        if is_select_query:
+            cursor.execute(query)
+            results = cursor.fetchall()
+        else:
+            cursor.execute(query)
+            results = None
+
+        # Commit the query to the database
+        conn.commit()
+
+        # Close the database connection
+        conn.close()
+
+        # Return the results (if it is a SELECT query)
+        if is_select_query:
+            return results
+
 
     # Function to extract the tables into a dictionary
     def extract_tables_to_df(db_path, table_names):
@@ -189,6 +245,8 @@ class database:
 
         # Return the tables dictionary
         return tables
+
+    
 
     # verify if output database exists else create it
     try:
@@ -213,17 +271,42 @@ class database:
     except Exception as e:
         print(f"Could not create the output database {e}")
 
+    # Check if the world_mining_data.db database exists and fetch the required tables
+    Database_path = dbFolder + "/" + Database, Tables_world_mining_data
+    check_db_tables(Database_path)
+
     # Extract the tables into a dictionary
     try:
-        tables = extract_tables_to_df(db, Tables)
+        tables_world_mining_data = extract_tables_to_df(Database_path, Tables_world_mining_data)
     except Exception as e:
         print(f"Could not extract the tables {e}")
 
-    production = tables
-    reporter = tables["Country_ISO"]
-    price = tables["Price"]
-    commodity = tables["commodityHS"]
-    wgi = tables["WGI"]
+    # Check if the world_mining_data.db database exists and fetch the required tables
+    Database_wgi_path = dbFolder + "/" + Database_wgi
+    check_db_tables(Database_wgi_path, Tables_wgi)
+
+    # Extract the tables into a dictionary
+    try:
+        tables_wgi = extract_tables_to_df(Database_wgi_path, Tables_wgi)
+    except Exception as e:
+        print(f"Could not extract the tables {e}")
+
+    # Check if the world_mining_data.db database exists and fetch the required tables
+    Database_baci_path = dbFolder + "/" + Database_baci
+    check_db_tables(Database_baci_path, Tables_baci)
+
+    # Extract the tables into a dictionary
+    try:
+        tables_baci = extract_tables_to_df(Database_baci_path, Tables_baci)
+    except Exception as e:
+        print(f"Could not extract the tables {e}")
+
+    production = tables_world_mining_data
+    baci_trade = tables_baci['baci_trade']
+    reporter = tables_world_mining_data["Country_ISO"]
+    price = tables_world_mining_data["Price"]
+    commodity = tables_world_mining_data["HS Code Map"]
+    wgi = tables_wgi["Normalized"]
     regionslist = {}
     regionslist["EU"] = [
         "Austria",
