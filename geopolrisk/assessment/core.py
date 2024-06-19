@@ -101,18 +101,19 @@ def worldtrade(
     country="276",
     commodity="2602",
 ):
-    try:
-        # pricecif is the cif price of traded commodity
-        # it is included in case of change of methodology or
-        # unavailability of price data from USGS or LME
-        data = oldapirequest(year, country, commodity)
-    except Exception as e:
-        logging.debug(f"Error with the comtrade API request: {e}")
+    # try:
+    #     # pricecif is the cif price of traded commodity
+    #     # it is included in case of change of methodology or
+    #     # unavailability of price data from USGS or LME
+    #     data = oldapirequest(year, country, commodity)
+    # except Exception as e:
+    #     logging.debug(f"Error with the comtrade API request: {e}")
+    data = None
 
     if data is None or data.shape[0] == 0:
-        # oert - using the baci sqlite-database
+        # oert - using the baci data
         # data, pricecif = callapirequest(year, country, commodity)
-        data, pricecif = get_baci_data(year, country, commodity)
+        data = get_baci_data(year, country, commodity)
         #
         if data is None or data.shape[0] == 0:
             logging.debug("API or database returned empty dataframe")
@@ -128,8 +129,10 @@ def worldtrade(
             try:
                 code = data.partnerCode.to_list()
                 countries = data.partnerDesc.to_list()
-                quantity = data.Qty.to_list()
-                cifvalue = data.Cifvalue.to_list()
+                # quantity = data.Qty.astype(float).to_list()
+                quantity = data.qty.astype(float).to_list()
+                # cifvalue = data.CifValue.astype(float).to_list()
+                cifvalue = data.cifvalue.astype(float).to_list()
                 pricecif = sum(cifvalue)/sum(quantity)
                 TradeData = [code, countries, quantity]
             except Exception as e:
@@ -239,8 +242,8 @@ def ProductionData(Resource, EconomicUnit):
 
     # P2. Fetching the production quantity from 'prod' dataframe.
     try:
-        Prod_Year = prod.columns.to_list()[1:-1]
-        Prod_Year = [int(i) for i in Prod_Year]
+        Prod_Year = prod.columns.to_list()[3:-2]
+        Prod_Year = [int(i) if i.isdigit() else None for i in Prod_Year]
         temp = [0] * len(Prod_Year)
         for i in EconomicUnit:
             if i in Countries:
@@ -299,20 +302,18 @@ def weightedtrade(year, TradeData=None, PIData=None, scenario=0, recyclingrate=0
         try:
             PIData = PIData.fillna(0)
             PIData.columns = PIData.columns.astype(str)
-            PI_year = [str(i) for i in PIData.Year.to_list()]
         except Exception as e:
             logging.debug(f"Error while working with Indicator Data {e}")
             return None
         try:
-            index = PI_year.index(year)
+            # index = PI_year.index(year)
             PI_score = []
             for i in code:
-                if str(i) in PIData.columns.to_list():
-                    PI_score.append(PIData[str(i)].tolist()[index])
-                else:
-                    # The political instability score from the WGI is not provided for few countries
-                    # We assign them a score of 0.5 as most of these countries fall in this range
-                    PI_score.append(0.5)
+                PI_value = PIData.query(f"country_code == '{i}'")[year].tolist()[0].astype(float)
+                if PI_value is None:
+                    PI_value = 0.5
+                PI_score.append(PI_value)
+
         except Exception as e:
             logging.debug(f"Error while working with Indicator Data {e}")
             return None

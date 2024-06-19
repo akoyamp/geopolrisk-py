@@ -112,89 +112,26 @@ def convertCodes(resource, country):
 
 def get_baci_data(period, country, commoditycode):
     '''
-    get the baci-trade-data from the sqlite-db "baci.db"
+    get the baci-trade-data from the baca_trade dataframe
     '''
     period = str(period)
     country = str(country)
     commoditycode = str(commoditycode)
     
-    current_dir = os.path.abspath("..")
-    baci_db = f"{current_dir}/oert/output-files/baci/baci.db"
-    # connect to db
-    conn = sqlite3.connect(baci_db)
-    # define query - that returns the same format as the comtradeapi
-    sql_query = f"""select 
-	'' as typeCode,
-	'' as freqCode,
-	'' as refPeriodId,
-	bacitab.t as period,
-	bacitab.i as reporterCode,
-    (SELECT cc.country_name FROM country_codes_V202401b cc WHERE bacitab.i = cc.country_code) AS reporterDesc,
-    (SELECT cc.country_iso3 FROM country_codes_V202401b cc WHERE bacitab.i = cc.country_code) AS reporterISO,
-    '' as flowCode,
-    '' as flowDesc,
-    bacitab.j as partnerCode,
-    (SELECT cc.country_name FROM country_codes_V202401b cc WHERE bacitab.j = cc.country_code) AS partnerDesc,
-    (SELECT cc.country_iso3 FROM country_codes_V202401b cc WHERE bacitab.j = cc.country_code) AS partnerISO,
-	'' as partner2Code,
-	'' as partner2Desc,	
-	'' as partner2ISO,
-	'' as classificationCode,
-	bacitab.k as cmdCode,
-	'' as cmdDesc,
-	'' as customsCode,
-	'' as customsDesc,
-	'' as mosCode,
-	'' as motCode,
-	'' as motDesc,
-	'8' as qtyUnitCode,
-	'kg' as qtyUnitAbbr,
-	-- unit in baci in metric tons --> converation * 1000 to kg - see http://www.cepii.fr/DATA_DOWNLOAD/baci/doc/DescriptionBACI.html
-	bacitab.q * 1000 as qty,
-	'' as altQtyUnitCode,
-	'' as altQtyUnitAbbr,
-	'' as altQty,
-	-- unit in baci in metric tons --> converation * 1000 to kg - see http://www.cepii.fr/DATA_DOWNLOAD/baci/doc/DescriptionBACI.html
-	bacitab.q * 1000 as netWgt,
-	'' as grossWgt,
-	bacitab.v as cifvalue,
-	'' as fobvalue,
-	'' as primaryValue
-	-- '' as Qty,
-	-- '' as CifValue,
-    from baci_trade bacitab
-    where bacitab.t = '{period}'
-    and bacitab.i = '{country}'
-    and bacitab.k like '{commoditycode}'
-    ;
-    """
-    # read data to df
-    get = pd.read_sql_query(sql_query, conn)
-    # close db-connection
-    conn.close()
+    # select with df.query...
+    df_query = f"(period == '{period}') & (reporterCode == '{country}') & (cmdCode == '{commoditycode}')"
+    baci_data = instance.baci_trade.query(df_query)
     
-    try:
-        if get is not None or not isinstance(get, type(None)) or len(get) == 0:
-            get["Qty"] = get.groupby(["partnerCode"])["qty"].transform(sum)
-            get["CifValue"] = get.groupby(["partnerCode"])["cifvalue"].transform(sum)
-            get = get.drop_duplicates(subset="partnerCode", keep="first")
-            try:
-                cifvalueToT = sum(get["CifValue"].to_list())
-                totalQ = sum(get["Qty"].to_list())
-                if totalQ == 0:
-                    pricecif = 0
-                else:
-                    pricecif = cifvalueToT / totalQ
-            except Exception as e:
-                logging.debug(f"Error while extracting cifvalue! {e}")
-                get, pricecif = None, None
-        else:
-            logging.debug(f"Problem with the new API call! {get}")
-            get, pricecif = None, None
-    except Exception as e:
-        logging.debug(f"Error while extracting and combining data! {e}")
-        get, pricecif = None, None
-    return get, pricecif
+    if baci_data is None or isinstance(baci_data, type(None)) or len(baci_data) == 0:
+        logging.debug(f"Problem with get the baci-data! {baci_data}")
+        baci_data = None, None
+    else:
+        # baci_data["Qty"] = baci_data.groupby(["partnerCode"])["qty"].transform(sum)
+        # baci_data["CifValue"] = baci_data.groupby(["partnerCode"])["cifvalue"].transform(sum)
+        # baci_data = baci_data.drop_duplicates(subset="partnerCode", keep="first")
+        pass
+
+    return baci_data
 
 def callapirequest(period, country, commoditycode):
     period = str(period)

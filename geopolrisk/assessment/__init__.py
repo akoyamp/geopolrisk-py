@@ -41,6 +41,35 @@ if missing_dependencies:
     )
 del hard_dependencies, dependency, missing_dependencies
 
+
+# Function to use sqlite3
+def execute_query(query, db_path=""):
+    # Connect to the database
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    # Determine if the query is a SELECT or INSERT query
+    is_select_query = query.strip().lower().startswith("select")
+
+    # Execute the query and fetch the results (if it is a SELECT query)
+    if is_select_query:
+        cursor.execute(query)
+        results = cursor.fetchall()
+    else:
+        cursor.execute(query)
+        results = None
+
+    # Commit the query to the database
+    conn.commit()
+
+    # Close the database connection
+    conn.close()
+
+    # Return the results (if it is a SELECT query)
+    if is_select_query:
+        return results
+
+
 class database:
     # Global Variables
     Output = "Datarecords.db"
@@ -145,6 +174,9 @@ class database:
 		"Vermiculite",
 		"Zinc",
 		"Zircon",
+        "Country_ISO",
+        "Price",
+        "HS Code Map"
     ]
     
     # required tables - wgi
@@ -157,16 +189,6 @@ class database:
         "baci_trade",
     ]
     
-    # TODO - tabels not in new database - required anymore ???
-    Tables_xxx = [
-        "commodityHS",
-        "Country_ISO",
-        #"WGI",
-        "Price",
-    ]
-
-
-
     # Function to check if database exists and fetch the required tables
     def check_db_tables(db, table_names):
         try:
@@ -195,35 +217,6 @@ class database:
         else:
             pass
 
-    
-    # Function to use sqlite3
-    def execute_query(query, db_path=""):
-        # Connect to the database
-        conn = sqlite3.connect(db_path)
-        cursor = conn.cursor()
-
-        # Determine if the query is a SELECT or INSERT query
-        is_select_query = query.strip().lower().startswith("select")
-
-        # Execute the query and fetch the results (if it is a SELECT query)
-        if is_select_query:
-            cursor.execute(query)
-            results = cursor.fetchall()
-        else:
-            cursor.execute(query)
-            results = None
-
-        # Commit the query to the database
-        conn.commit()
-
-        # Close the database connection
-        conn.close()
-
-        # Return the results (if it is a SELECT query)
-        if is_select_query:
-            return results
-
-
     # Function to extract the tables into a dictionary
     def extract_tables_to_df(db_path, table_names):
         # Create a dictionary to store the extracted tables
@@ -234,7 +227,26 @@ class database:
 
         # Loop through the table names and extract each table as a DataFrame
         for table_name in table_names:
-            query = f"SELECT * FROM {table_name}"
+            
+            if table_name == "baci_trade":
+                query = f"""
+                        select 
+                            bacitab.t as period,
+                            bacitab.j as reporterCode,
+                            (SELECT cc.country_name FROM country_codes_V202401b cc WHERE bacitab.j = cc.country_code) AS reporterDesc,
+                            (SELECT cc.country_iso3 FROM country_codes_V202401b cc WHERE bacitab.j = cc.country_code) AS reporterISO,
+                            bacitab.i as partnerCode,
+                            (SELECT cc.country_name FROM country_codes_V202401b cc WHERE bacitab.i = cc.country_code) AS partnerDesc,
+                            (SELECT cc.country_iso3 FROM country_codes_V202401b cc WHERE bacitab.i = cc.country_code) AS partnerISO,
+                            bacitab.k as cmdCode,
+                        	TRIM(bacitab.q) as qty,
+	                        TRIM(bacitab.q) as netWgt,
+                        	TRIM(bacitab.v) as cifvalue
+                        from baci_trade bacitab
+                        """
+            else:
+                query = f"SELECT * FROM '{table_name}'"
+            
             table_df = pd.read_sql_query(query, conn)
 
             # Add the table DataFrame to the tables dictionary with the table name as the key
@@ -272,8 +284,8 @@ class database:
         print(f"Could not create the output database {e}")
 
     # Check if the world_mining_data.db database exists and fetch the required tables
-    Database_path = dbFolder + "/" + Database, Tables_world_mining_data
-    check_db_tables(Database_path)
+    Database_path = dbFolder + "/" + Database
+    check_db_tables(Database_path, Tables_world_mining_data)
 
     # Extract the tables into a dictionary
     try:
@@ -303,10 +315,10 @@ class database:
 
     production = tables_world_mining_data
     baci_trade = tables_baci['baci_trade']
-    reporter = tables_world_mining_data["Country_ISO"]
-    price = tables_world_mining_data["Price"]
-    commodity = tables_world_mining_data["HS Code Map"]
-    wgi = tables_wgi["Normalized"]
+    reporter = tables_world_mining_data['Country_ISO']
+    price = tables_world_mining_data['Price']
+    commodity = tables_world_mining_data['HS Code Map']
+    wgi = tables_wgi['Normalized']
     regionslist = {}
     regionslist["EU"] = [
         "Austria",
