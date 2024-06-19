@@ -309,10 +309,11 @@ def weightedtrade(year, TradeData=None, PIData=None, scenario=0, recyclingrate=0
             # index = PI_year.index(year)
             PI_score = []
             for i in code:
-                PI_value = PIData.query(f"country_code == '{i}'")[year].tolist()[0].astype(float)
+                PI_value = float(PIData.query(f"country_code == '{i}'")[year].tolist()[0])
                 if PI_value is None:
                     PI_value = 0.5
                 PI_score.append(PI_value)
+                break
 
         except Exception as e:
             logging.debug(f"Error while working with Indicator Data {e}")
