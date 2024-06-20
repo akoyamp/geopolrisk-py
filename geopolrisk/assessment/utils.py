@@ -123,7 +123,8 @@ def get_baci_data(period, country, commoditycode):
     baci_data = instance.baci_trade.query(df_query)
     
     if baci_data is None or isinstance(baci_data, type(None)) or len(baci_data) == 0:
-        logging.debug(f"Problem with get the baci-data! {baci_data}")
+        logging.debug(f"Problem with get the baci-data - {baci_data} - period == '{period}') - reporterCode == '{country}' - cmdCode == '{commoditycode}'")
+        print(f"Problem with get the baci-data - {baci_data} - period == '{period}') - reporterCode == '{country}' - cmdCode == '{commoditycode}'")
         baci_data = None, None
     else:
         # baci_data["Qty"] = baci_data.groupby(["partnerCode"])["qty"].transform(sum)

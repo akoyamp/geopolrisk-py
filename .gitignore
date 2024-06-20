@@ -9,6 +9,6 @@ __pycache__/
 *$py.class
 
 # Input / Output-Files
-geopolrisk/oert/input-files/baci/*
+geopolrisk/oert/input-files/baci/BACI_*
 geopolrisk/oert/output-files/backup/*
 geopolrisk/oert/output-files/temp/*

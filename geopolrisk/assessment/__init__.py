@@ -73,7 +73,7 @@ def execute_query(query, db_path=""):
 class database:
     # Global Variables
     Output = "Datarecords.db"
-    Database = "world_mining_data.db"
+    Database_wmd = "world_mining_data.db"
     Database_wgi = "wgi.db"
     Database_baci = "baci.db"
     OutputFolder = "Documents/geopolrisk"
@@ -103,7 +103,7 @@ class database:
         raise FileNotFoundError
 
     # Verify that the file exists else input the correct file path
-    if not os.path.isfile(os.path.join(dbFolder, Database)):
+    if not os.path.isfile(os.path.join(dbFolder, Database_wmd)):
         folder_path = input("The file doesn't exist. Please enter a folder path: ")
 
     # required tables - world_mining_data
@@ -219,42 +219,51 @@ class database:
 
     # Function to extract the tables into a dictionary
     def extract_tables_to_df(db_path, table_names):
-        # Create a dictionary to store the extracted tables
-        tables = {}
+        
+        try:
+        
+            # Create a dictionary to store the extracted tables
+            tables = {}
 
-        # Connect to the database
-        conn = sqlite3.connect(db_path)
+            # Connect to the database
+            conn = sqlite3.connect(db_path)
 
-        # Loop through the table names and extract each table as a DataFrame
-        for table_name in table_names:
+            # Loop through the table names and extract each table as a DataFrame
+            for table_name in table_names:
+                
+                if table_name == "baci_trade":
+                    query = f"""
+                            select 
+                                bacitab.t as period,
+                                bacitab.j as reporterCode,
+                                (SELECT cc.country_name FROM country_codes_V202401b cc WHERE bacitab.j = cc.country_code) AS reporterDesc,
+                                (SELECT cc.country_iso3 FROM country_codes_V202401b cc WHERE bacitab.j = cc.country_code) AS reporterISO,
+                                bacitab.i as partnerCode,
+                                (SELECT cc.country_name FROM country_codes_V202401b cc WHERE bacitab.i = cc.country_code) AS partnerDesc,
+                                (SELECT cc.country_iso3 FROM country_codes_V202401b cc WHERE bacitab.i = cc.country_code) AS partnerISO,
+                                bacitab.k as cmdCode,
+                                TRIM(bacitab.q) as qty,
+                                TRIM(bacitab.q) as netWgt,
+                                TRIM(bacitab.v) as cifvalue
+                            from baci_trade bacitab
+                            """
+                else:
+                    query = f"SELECT * FROM '{table_name}'"
+                
+                table_df = pd.read_sql_query(query, conn)
+                
+                # Add the table DataFrame to the tables dictionary with the table name as the key
+                tables[table_name] = table_df
             
-            if table_name == "baci_trade":
-                query = f"""
-                        select 
-                            bacitab.t as period,
-                            bacitab.j as reporterCode,
-                            (SELECT cc.country_name FROM country_codes_V202401b cc WHERE bacitab.j = cc.country_code) AS reporterDesc,
-                            (SELECT cc.country_iso3 FROM country_codes_V202401b cc WHERE bacitab.j = cc.country_code) AS reporterISO,
-                            bacitab.i as partnerCode,
-                            (SELECT cc.country_name FROM country_codes_V202401b cc WHERE bacitab.i = cc.country_code) AS partnerDesc,
-                            (SELECT cc.country_iso3 FROM country_codes_V202401b cc WHERE bacitab.i = cc.country_code) AS partnerISO,
-                            bacitab.k as cmdCode,
-                        	TRIM(bacitab.q) as qty,
-	                        TRIM(bacitab.q) as netWgt,
-                        	TRIM(bacitab.v) as cifvalue
-                        from baci_trade bacitab
-                        """
-            else:
-                query = f"SELECT * FROM '{table_name}'"
+            # Close the database connection
+            conn.close()
             
-            table_df = pd.read_sql_query(query, conn)
+        except Exception as e:
+            print(f"Error to read tables {table_names} from database {db_path} - {e}")
+            conn.close()
 
-            # Add the table DataFrame to the tables dictionary with the table name as the key
-            tables[table_name] = table_df
-
-        # Close the database connection
-        conn.close()
-
+        print(f"Reading tables {table_names} \nfrom database {db_path} successful.\n")
+        
         # Return the tables dictionary
         return tables
 
@@ -284,34 +293,22 @@ class database:
         print(f"Could not create the output database {e}")
 
     # Check if the world_mining_data.db database exists and fetch the required tables
-    Database_path = dbFolder + "/" + Database
-    check_db_tables(Database_path, Tables_world_mining_data)
-
+    Database_wmd_path = dbFolder + "/" + Database_wmd
+    check_db_tables(Database_wmd_path, Tables_world_mining_data)
     # Extract the tables into a dictionary
-    try:
-        tables_world_mining_data = extract_tables_to_df(Database_path, Tables_world_mining_data)
-    except Exception as e:
-        print(f"Could not extract the tables {e}")
+    tables_world_mining_data = extract_tables_to_df(Database_wmd_path, Tables_world_mining_data)
 
-    # Check if the world_mining_data.db database exists and fetch the required tables
+    # Check if the wgi.db database exists and fetch the required tables
     Database_wgi_path = dbFolder + "/" + Database_wgi
     check_db_tables(Database_wgi_path, Tables_wgi)
-
     # Extract the tables into a dictionary
-    try:
-        tables_wgi = extract_tables_to_df(Database_wgi_path, Tables_wgi)
-    except Exception as e:
-        print(f"Could not extract the tables {e}")
+    tables_wgi = extract_tables_to_df(Database_wgi_path, Tables_wgi)
 
-    # Check if the world_mining_data.db database exists and fetch the required tables
+    # Check if the baci.db exists and fetch the required tables
     Database_baci_path = dbFolder + "/" + Database_baci
     check_db_tables(Database_baci_path, Tables_baci)
-
     # Extract the tables into a dictionary
-    try:
-        tables_baci = extract_tables_to_df(Database_baci_path, Tables_baci)
-    except Exception as e:
-        print(f"Could not extract the tables {e}")
+    tables_baci = extract_tables_to_df(Database_baci_path, Tables_baci)
 
     production = tables_world_mining_data
     baci_trade = tables_baci['baci_trade']

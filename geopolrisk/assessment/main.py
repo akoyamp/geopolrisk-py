@@ -317,7 +317,8 @@ def startmain(
             logging.debug(f"Error with sqlverify or DBID {e}")
         if verify is False:
             # The program has to sleep inorder to avoid conflict in multiple API requests
-            time.sleep(2)
+            # no sleep required anymore - since using baci-database
+            # time.sleep(2)
             if sheetname is None:
                 try:
                     TradeData, pricecif = worldtrade(
