@@ -26,12 +26,15 @@ from .utils import convertCodes
 tradepath = None
 _production, _reporter = instance.production, instance.reporter
 regionslist, _outputfile = instance.regionslist, instance.exportfile
-_price = instance.price
+#_price = instance.price
+_commodity = instance.commodity
 db = _outputfile + "/" + instance.Output
 # Extract list of all data
-HS = _price.HS.to_list()
+# HS = _price.HS.to_list()
+HS = _commodity['HS Code'].to_list()
 HS = [int(float(x)) for x in HS]
-Resource = _price.Resource.to_list()
+# Resource = _price.Resource.to_list()
+Resource = _commodity['ID'].to_list()
 Country = _reporter.Country.to_list()
 ISO = _reporter.ISO.to_list()
 ISO = [int(x) for x in ISO]

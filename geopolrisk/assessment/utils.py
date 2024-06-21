@@ -24,12 +24,16 @@ import os
 tradepath = None
 _production, _reporter = instance.production, instance.reporter
 regionslist, _outputfile = instance.regionslist, instance.exportfile
-_price = instance.price
+#_price = instance.price
+_commodity = instance.commodity
 db = _outputfile + "/" + instance.Output
 # Extract list of all data
-HS = _price.HS.to_list()
+# HS = _price.HS.to_list()
+HS = _commodity['HS Code'].to_list()
+HS = [0 if x == "Not Available" else x for x in HS]
 HS = [int(float(x)) for x in HS]
-Resource = _price.Resource.to_list()
+# Resource = _price.Resource.to_list()
+Resource = _commodity['ID'].to_list()
 Country = _reporter.Country.to_list()
 ISO = _reporter.ISO.to_list()
 ISO = [int(x) for x in ISO]
@@ -375,3 +379,8 @@ def generateCF(exportType="csv", orient=""):
             db_df.to_json(_outputfile + "/database.json", orient=orient, index=False)
     except Exception as e:
         logging.debug(f"Error while exporting database! {e}")
+
+
+def getResourceSheetName(resource):
+    SheetName = _commodity[_commodity['ID'] == resource]['Sheet_name'].to_list()[0]
+    return SheetName

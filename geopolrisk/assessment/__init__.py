@@ -175,7 +175,6 @@ class database:
 		"Zinc",
 		"Zircon",
         "Country_ISO",
-        "Price",
         "HS Code Map"
     ]
     
@@ -243,9 +242,12 @@ class database:
                                 (SELECT cc.country_iso3 FROM country_codes_V202401b cc WHERE bacitab.i = cc.country_code) AS partnerISO,
                                 bacitab.k as cmdCode,
                                 TRIM(bacitab.q) as qty,
-                                TRIM(bacitab.q) as netWgt,
                                 TRIM(bacitab.v) as cifvalue
                             from baci_trade bacitab
+                            WHERE NOT (
+                                        bacitab.q = '0' OR bacitab.q LIKE '%NA' 
+                                        OR bacitab.v = '0' OR bacitab.v LIKE '%NA'
+                                    )
                             """
                 else:
                     query = f"SELECT * FROM '{table_name}'"
@@ -262,7 +264,7 @@ class database:
             print(f"Error to read tables {table_names} from database {db_path} - {e}")
             conn.close()
 
-        print(f"Reading tables {table_names} \nfrom database {db_path} successful.\n")
+        print(f"Reading tables {table_names} \nfrom database {db_path} successfully!.\n")
         
         # Return the tables dictionary
         return tables
@@ -313,7 +315,7 @@ class database:
     production = tables_world_mining_data
     baci_trade = tables_baci['baci_trade']
     reporter = tables_world_mining_data['Country_ISO']
-    price = tables_world_mining_data['Price']
+    # price = tables_world_mining_data['Price']
     commodity = tables_world_mining_data['HS Code Map']
     wgi = tables_wgi['Normalized']
     regionslist = {}

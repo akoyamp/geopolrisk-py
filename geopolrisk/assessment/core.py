@@ -231,7 +231,7 @@ def ProductionData(Resource, EconomicUnit):
     EconomicUnit = "EU" if EconomicUnit == "European Union" else EconomicUnit
     EconomicUnit = regionslist[EconomicUnit]
     try:
-        prod = _production[Resource].fillna(0)
+        prod = _production[getResourceSheetName(Resource)].fillna(0)
         Countries = prod.Country.to_list()
     except Exception as e:
         logging.debug(
@@ -252,7 +252,7 @@ def ProductionData(Resource, EconomicUnit):
                     .reset_index()
                     .loc[0, :]
                     .values.flatten()
-                    .tolist()[2:-1]
+                    .tolist()[4:-2]
                 )
                 Prod_Qty = replace_values(Prod_Qty, "^", 0)
                 Prod_Qty = [float(i) for i in Prod_Qty]
