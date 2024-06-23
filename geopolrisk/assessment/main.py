@@ -41,7 +41,7 @@ try:
     regionslist, _outputfile = instance.regionslist, instance.exportfile
     _reporter = instance.reporter
     Country = _reporter.Country.to_list()
-    _price = instance.price
+    #_price = instance.price
     _wgi = instance.wgi
     db = _outputfile + "/" + instance.Output
     OutputList = outputdf.outputList
@@ -193,14 +193,14 @@ def main_complete(
                     except Exception as e:
                         logging.debug(f"SQL Verification failed! {e}")
                     if verify is False:
-                        time.sleep(2)
+                        #time.sleep(2)
                         TradeData, productiondata, avgpricecif = tradeagg(I[0], I[1], Xcountrylist)
-                        if avgpricecif in [np.nan, 0, "nan"]:
-                            AVGPrice = _price[str(I[1])].tolist()[
-                            _price.HS.to_list().index(I[0])
-                        ]
-                        else:
-                            AVGPrice = avgpricecif
+                        # if avgpricecif in [np.nan, 0, "nan"]:
+                        #     AVGPrice = _price[str(I[1])].tolist()[
+                        #     _price.HS.to_list().index(I[0])
+                        # ]
+                        # else:
+                        AVGPrice = avgpricecif
                         Y = weightedtrade(
                             str(I[1]),
                             TradeData=TradeData,
@@ -317,7 +317,8 @@ def startmain(
             logging.debug(f"Error with sqlverify or DBID {e}")
         if verify is False:
             # The program has to sleep inorder to avoid conflict in multiple API requests
-            time.sleep(2)
+            # no sleep required anymore - since using baci-database
+            # time.sleep(2)
             if sheetname is None:
                 try:
                     TradeData, pricecif = worldtrade(
@@ -327,7 +328,7 @@ def startmain(
                     )
                 except Exception as e:
                     logging.debug(f"Error accessing world trade data {e}")
-                    counter -= 1
+                    #counter -= 1
                     break
             else:
                 try:
@@ -342,7 +343,8 @@ def startmain(
 
             try:
                 if pricecif in [np.nan, 0, "nan"]:
-                    AVGPrice = _price[str(I[2])].tolist()[_price.HS.to_list().index(I[0])]
+                    #AVGPrice = _price[str(I[2])].tolist()[_price.HS.to_list().index(I[0])]
+                    logging.debug(f"Error no price in trade data {e}")
                 else:
                     AVGPrice = pricecif
                 X = ProductionData(resource, country)
@@ -444,40 +446,40 @@ def update_cf():
 
 
 # Run this function if there is an update in the missing price data in the average yearly price json.
-def updateprice():
-    logging.info("Updating the characterization prices | price")
-    sqlstatement = (
-        "SELECT resource_hscode, year, iso, geopolrisk FROM recordData WHERE "
-        " geopol_cf = 'NA' AND recycling_rate ='0' AND scenario ='0';"
-    )
-    row = execute_query(sqlstatement)
-    df = pd.DataFrame(row, columns=["HS Code", "Year", "Country Alpha", "GeoPolRisk"])
-    logging.debug("Update of database! The shape of df is " + str(df.shape[0]))
-    if df.shape[0] > 0:
-        Year = [int(i) for i in df.Year.to_list()]
-        ISO = [int(i) for i in df["Country Alpha"].tolist()]
-        _HS = [int(i) for i in df["HS Code"].tolist()]
-        GPRS = [float(i) for i in df["GeoPolRisk"].tolist()]
-    else:
-        logging.debug("No updates required!")
-        return None
-    for i, n in enumerate(_HS):
-        AVGPrice = _price[str(Year[i])].tolist()[_price.HS.to_list().index(n)]
-        if isinstance(AVGPrice, (int, float)):
-            index = ISO.index(ISO[i])
-            CF = float(GPRS[index]) * AVGPrice
-            sqlstatement = (
-                "UPDATE recordData SET geopol_cf= '"
-                + str(CF)
-                + "', log_ref='"
-                + str(Filename)
-                + "' WHERE iso = '"
-                + str(ISO[i])
-                + "' AND resource_hscode= '"
-                + str(n)
-                + "' AND year = '"
-                + str(Year[i])
-                + "' AND recycling_rate = '0' AND scenario = '0';"
-            )
-            norow = execute_query(sqlstatement, db_path=db)
-            logging.debug(f"Database update sucessfully! for {n} for {Year[i]}")
+# def updateprice():
+#     logging.info("Updating the characterization prices | price")
+#     sqlstatement = (
+#         "SELECT resource_hscode, year, iso, geopolrisk FROM recordData WHERE "
+#         " geopol_cf = 'NA' AND recycling_rate ='0' AND scenario ='0';"
+#     )
+#     row = execute_query(sqlstatement)
+#     df = pd.DataFrame(row, columns=["HS Code", "Year", "Country Alpha", "GeoPolRisk"])
+#     logging.debug("Update of database! The shape of df is " + str(df.shape[0]))
+#     if df.shape[0] > 0:
+#         Year = [int(i) for i in df.Year.to_list()]
+#         ISO = [int(i) for i in df["Country Alpha"].tolist()]
+#         _HS = [int(i) for i in df["HS Code"].tolist()]
+#         GPRS = [float(i) for i in df["GeoPolRisk"].tolist()]
+#     else:
+#         logging.debug("No updates required!")
+#         return None
+#     for i, n in enumerate(_HS):
+#         AVGPrice = _price[str(Year[i])].tolist()[_price.HS.to_list().index(n)]
+#         if isinstance(AVGPrice, (int, float)):
+#             index = ISO.index(ISO[i])
+#             CF = float(GPRS[index]) * AVGPrice
+#             sqlstatement = (
+#                 "UPDATE recordData SET geopol_cf= '"
+#                 + str(CF)
+#                 + "', log_ref='"
+#                 + str(Filename)
+#                 + "' WHERE iso = '"
+#                 + str(ISO[i])
+#                 + "' AND resource_hscode= '"
+#                 + str(n)
+#                 + "' AND year = '"
+#                 + str(Year[i])
+#                 + "' AND recycling_rate = '0' AND scenario = '0';"
+#             )
+#             norow = execute_query(sqlstatement, db_path=db)
+#             logging.debug(f"Database update sucessfully! for {n} for {Year[i]}")

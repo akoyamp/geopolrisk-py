@@ -1,0 +1,50 @@
+﻿Table_Name,HS,ID,Symbol
+Indium,811291,Indium,In
+Tantalum,261590,Tantalum,Ta
+Graphite,250410,Graphite,Graphite
+Asbestos,252400,Asbestos,Asbestos
+Iron,260111,Iron,Fe
+Manganese,260200,Manganese,Mn
+Copper,260300,Copper,Cu
+Nickel,260400,Nickel,Ni
+Aluminium,260600,AluminIum,Al
+Lead,260700,Lead,Pb
+Zinc,260800,Zinc,Zn
+Chromium,261000,Chromium,Cr
+Molybdenum,261310,Molybdenum,Mo
+Titanium,261400,Titanium,Ti
+Niobium,261590,Niobium,Nb
+Coal,270111,Coal,Coal
+Coking_Coal,270112,Coking Coal,Coking Coal
+Lignite,270112,Lignite,Lignite
+Crude_Oil,270900,Crude Oil,Crude Oil
+NG,271111,Natural gas,Natural gas
+Cobalt,282200,Cobalt,Co
+REE,284610,Cerium,Ce
+REE,284690,Rare earth,REE
+Platinum,711011,Platinum,Pt
+Cadmium,810710,Cadmium,Cd
+Gallium,811291,Gallium,Ga
+Barytes,251110,Barytes,Ba
+Magnesite,251910,Magnesium,Mg
+Gypsum_Anhydrite,252010,Gypsum,Gypsum
+Feldspar,252910,Feldspar,Feldspar
+Fluorspar,252922,Fluorspar,Fluorspar
+Tin,260900,Tin,Sn
+Tungsten,261100,Tungsten,W
+Uranium,261210,Uranium,U
+Zircon,261510,Zirconium,Zr
+Vanadium,261590,Vanadium,V
+Silver,261610,Silver,Ag
+Gold,710811,Gold,Au
+Antimony,261710,Antimony,Sb
+Tellurium,280450,Tellurium,Te
+Arsenic,280480,Arsenic,As
+Selenium,280490,Selenium,Se
+Mercury,280540,Mercury,Hg
+Germanium,282560,Germanium,Ge
+Lithium,283691,Lithium,Li
+Palladium,711021,Palladium,Pd
+Rhodium,711031,Rhodium,Rh
+Rhenium,811291,Rhenium,Re
+Boron,280450,Boron,B

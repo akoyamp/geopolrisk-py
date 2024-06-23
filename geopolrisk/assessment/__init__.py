@@ -73,7 +73,9 @@ def execute_query(query, db_path=""):
 class database:
     # Global Variables
     Output = "Datarecords.db"
-    Database = "library.db"
+    Database_wmd = "world_mining_data.db"
+    Database_wgi = "wgi.db"
+    Database_baci = "baci.db"
     OutputFolder = "Documents/geopolrisk"
     LogFolder = OutputFolder + "/logs"
     CFDatabase = OutputFolder + "/output"
@@ -101,94 +103,173 @@ class database:
         raise FileNotFoundError
 
     # Verify that the file exists else input the correct file path
-    if not os.path.isfile(os.path.join(dbFolder, Database)):
+    if not os.path.isfile(os.path.join(dbFolder, Database_wmd)):
         folder_path = input("The file doesn't exist. Please enter a folder path: ")
 
-    # Verify if the database contains the required tables
-    Tables = [
-        "commodityHS",
+    # required tables - world_mining_data
+    Tables_world_mining_data = [
+		"Aluminium",
+		"Antimony",
+		"Arsenic",
+		"Asbestos",
+		"Baryte",
+		"Bauxite",
+		"Bentonite",
+		"Beryllium (conc.)",
+		"Bismuth",
+		"Boron Minerals",
+		"Cadmium",
+		"Chromium (Cr2O3)",
+		"Cobalt",
+		"Coking Coal",
+		"Copper",
+		"Diamonds (Gem)",
+		"Diamonds (Ind)",
+		"Diatomite",
+		"Feldspar",
+		"Fluorspar",
+		"Gallium",
+		"Germanium",
+		"Gold",
+		"Graphite",
+		"Gypsum and Anhydrite",
+		"Indium",
+		"Iron (Fe)",
+		"Kaolin (China-Clay)",
+		"Lead",
+		"Lignite",
+		"Lithium (Li2O)",
+		"logging",
+		"Magnesite",
+		"Manganese",
+		"Mercury",
+		"Molybdenum",
+		"Natural Gas",
+		"Nickel",
+		"Niobium (Nb2O5)",
+		"Oil Sands (part of Petroleum)",
+		"Oil Shales",
+		"Palladium",
+		"Perlite",
+		"Petroleum",
+		"Phosphate Rock (P2O5)",
+		"Platinum",
+		"Potash (K2O)",
+		"Rare Earths (REO)",
+		"Rhenium",
+		"Rhodium",
+		"Salt (rock, brines, marine)",
+		"Selenium",
+		"Silver",
+		"Steam Coal ",
+		"Sulfur (elementar & industrial)",
+		"Talc, Steatite & Pyrophyllite",
+		"Tantalum (Ta2O5)",
+		"Tellurium",
+		"Tin",
+		"Titanium (TiO2)",
+		"Tungsten (W)",
+		"Uranium (U3O8)",
+		"Vanadium (V)",
+		"Vermiculite",
+		"Zinc",
+		"Zircon",
         "Country_ISO",
-        "Aluminium",
-        "Antimony",
-        "Asbestos",
-        "Barytes",
-        "Bismuth",
-        "Cadmium",
-        "Chromium",
-        "Coal",
-        "Cobalt",
-        "Copper",
-        "Gold",
-        "Graphite",
-        "Iron",
-        "Lead",
-        "Lithium",
-        "Magnesite",
-        "Magnesium",
-        "Manganese",
-        "Mercury",
-        "Molybdenum",
-        "Nickel",
-        "Crude_Oil",
-        "REE",
-        "Silver",
-        "Tin",
-        "Titanium",
-        "Tungsten",
-        "Uranium",
-        "Zinc",
-        "Zirconium",
-        "NG",
-        "WGI",
-        "Price",
+        "HS Code Map"
+    ]
+    
+    # required tables - wgi
+    Tables_wgi = [
+        "Normalized",
     ]
 
-    db = dbFolder + "/" + Database
-    # Check if the database exists and fetch the required tables
-    try:
-        result = execute_query(
-            "SELECT name FROM sqlite_master WHERE type='table';", db_path=db
-        )
-        table_names = [row[0] for row in result]
-    except Exception as e:
-        print(f"Unable to verify if the database contains the required tables {e}")
-        raise FileNotFoundError
+    # required tables - baci      
+    Tables_baci = [
+        "baci_trade",
+    ]
+    
+    # Function to check if database exists and fetch the required tables
+    def check_db_tables(db, table_names):
+        try:
+             # Connect to the database
+            conn = sqlite3.connect(db)
+            cursor = conn.cursor()
+            query = "SELECT name FROM sqlite_master WHERE type='table';"
+            cursor.execute(query)
+            result = cursor.fetchall()
+            table_names = [row[0] for row in result]
+        except Exception as e:
+            print(f"Unable to verify if the database contains the required tables {e}")
+            raise FileNotFoundError
 
-    # check if all the tables in the list are present in the database
-    missingTables = []
-    for table_name in Tables:
-        if table_name not in table_names:
-            missingTables.append(table_name)
+        # check if all the tables in the list are present in the database
+        missingTables = []
+        for table_name in table_names:
+            if table_name not in table_names:
+                missingTables.append(table_name)
+            else:
+                pass
+
+        # If there are missing tables, raise an error
+        if len(missingTables) > 0:
+            print(f"The following tables are missing from the database: {missingTables}")
         else:
             pass
 
-    # If there are missing tables, raise an error
-    if len(missingTables) > 0:
-        print(f"The following tables are missing from the database: {missingTables}")
-    else:
-        pass
-
     # Function to extract the tables into a dictionary
     def extract_tables_to_df(db_path, table_names):
-        # Create a dictionary to store the extracted tables
-        tables = {}
+        
+        try:
+        
+            # Create a dictionary to store the extracted tables
+            tables = {}
 
-        # Connect to the database
-        conn = sqlite3.connect(db_path)
+            # Connect to the database
+            conn = sqlite3.connect(db_path)
 
-        # Loop through the table names and extract each table as a DataFrame
-        for table_name in table_names:
-            query = f"SELECT * FROM {table_name}"
-            table_df = pd.read_sql_query(query, conn)
+            # Loop through the table names and extract each table as a DataFrame
+            for table_name in table_names:
+                
+                if table_name == "baci_trade":
+                    query = f"""
+                            select 
+                                bacitab.t as period,
+                                bacitab.j as reporterCode,
+                                (SELECT cc.country_name FROM country_codes_V202401b cc WHERE bacitab.j = cc.country_code) AS reporterDesc,
+                                (SELECT cc.country_iso3 FROM country_codes_V202401b cc WHERE bacitab.j = cc.country_code) AS reporterISO,
+                                bacitab.i as partnerCode,
+                                (SELECT cc.country_name FROM country_codes_V202401b cc WHERE bacitab.i = cc.country_code) AS partnerDesc,
+                                (SELECT cc.country_iso3 FROM country_codes_V202401b cc WHERE bacitab.i = cc.country_code) AS partnerISO,
+                                bacitab.k as cmdCode,
+                                TRIM(bacitab.q) as qty,
+                                TRIM(bacitab.v) as cifvalue
+                            from baci_trade bacitab
+                            WHERE NOT (
+                                        bacitab.q = '0' OR bacitab.q LIKE '%NA' 
+                                        OR bacitab.v = '0' OR bacitab.v LIKE '%NA'
+                                    )
+                            """
+                else:
+                    query = f"SELECT * FROM '{table_name}'"
+                
+                table_df = pd.read_sql_query(query, conn)
+                
+                # Add the table DataFrame to the tables dictionary with the table name as the key
+                tables[table_name] = table_df
+            
+            # Close the database connection
+            conn.close()
+            
+        except Exception as e:
+            print(f"Error to read tables {table_names} from database {db_path} - {e}")
+            conn.close()
 
-            # Add the table DataFrame to the tables dictionary with the table name as the key
-            tables[table_name] = table_df
-
-        # Close the database connection
-        conn.close()
-
+        print(f"Reading tables {table_names} \nfrom database {db_path} successfully!.\n")
+        
         # Return the tables dictionary
         return tables
+
+    
 
     # verify if output database exists else create it
     try:
@@ -213,17 +294,30 @@ class database:
     except Exception as e:
         print(f"Could not create the output database {e}")
 
+    # Check if the world_mining_data.db database exists and fetch the required tables
+    Database_wmd_path = dbFolder + "/" + Database_wmd
+    check_db_tables(Database_wmd_path, Tables_world_mining_data)
     # Extract the tables into a dictionary
-    try:
-        tables = extract_tables_to_df(db, Tables)
-    except Exception as e:
-        print(f"Could not extract the tables {e}")
+    tables_world_mining_data = extract_tables_to_df(Database_wmd_path, Tables_world_mining_data)
 
-    production = tables
-    reporter = tables["Country_ISO"]
-    price = tables["Price"]
-    commodity = tables["commodityHS"]
-    wgi = tables["WGI"]
+    # Check if the wgi.db database exists and fetch the required tables
+    Database_wgi_path = dbFolder + "/" + Database_wgi
+    check_db_tables(Database_wgi_path, Tables_wgi)
+    # Extract the tables into a dictionary
+    tables_wgi = extract_tables_to_df(Database_wgi_path, Tables_wgi)
+
+    # Check if the baci.db exists and fetch the required tables
+    Database_baci_path = dbFolder + "/" + Database_baci
+    check_db_tables(Database_baci_path, Tables_baci)
+    # Extract the tables into a dictionary
+    tables_baci = extract_tables_to_df(Database_baci_path, Tables_baci)
+
+    production = tables_world_mining_data
+    baci_trade = tables_baci['baci_trade']
+    reporter = tables_world_mining_data['Country_ISO']
+    # price = tables_world_mining_data['Price']
+    commodity = tables_world_mining_data['HS Code Map']
+    wgi = tables_wgi['Normalized']
     regionslist = {}
     regionslist["EU"] = [
         "Austria",

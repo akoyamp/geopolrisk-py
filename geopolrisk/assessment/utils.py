@@ -18,17 +18,22 @@ import pandas as pd, json, sqlite3
 import comtradeapicall as ctac
 from urllib.request import Request, urlopen
 from .__init__ import instance, logging, execute_query
+import os
 
 # Define Paths
 tradepath = None
 _production, _reporter = instance.production, instance.reporter
 regionslist, _outputfile = instance.regionslist, instance.exportfile
-_price = instance.price
+#_price = instance.price
+_commodity = instance.commodity
 db = _outputfile + "/" + instance.Output
 # Extract list of all data
-HS = _price.HS.to_list()
+# HS = _price.HS.to_list()
+HS = _commodity['HS Code'].to_list()
+HS = [0 if x == "Not Available" else x for x in HS]
 HS = [int(float(x)) for x in HS]
-Resource = _price.Resource.to_list()
+# Resource = _price.Resource.to_list()
+Resource = _commodity['ID'].to_list()
 Country = _reporter.Country.to_list()
 ISO = _reporter.ISO.to_list()
 ISO = [int(x) for x in ISO]
@@ -108,6 +113,30 @@ def convertCodes(resource, country):
         ResourceCX, CountryCX = resource, country
     return commodity, countryname, HSCode, ISOCode
 
+
+def get_baci_data(period, country, commoditycode):
+    '''
+    get the baci-trade-data from the baca_trade dataframe
+    '''
+    period = str(period)
+    country = str(country)
+    commoditycode = str(commoditycode)
+    
+    # select with df.query...
+    df_query = f"(period == '{period}') & (reporterCode == '{country}') & (cmdCode == '{commoditycode}')"
+    baci_data = instance.baci_trade.query(df_query)
+    
+    if baci_data is None or isinstance(baci_data, type(None)) or len(baci_data) == 0:
+        logging.debug(f"Problem with get the baci-data - {baci_data} - period == '{period}') - reporterCode == '{country}' - cmdCode == '{commoditycode}'")
+        print(f"Problem with get the baci-data - {baci_data} - period == '{period}') - reporterCode == '{country}' - cmdCode == '{commoditycode}'")
+        baci_data = None, None
+    else:
+        # baci_data["Qty"] = baci_data.groupby(["partnerCode"])["qty"].transform(sum)
+        # baci_data["CifValue"] = baci_data.groupby(["partnerCode"])["cifvalue"].transform(sum)
+        # baci_data = baci_data.drop_duplicates(subset="partnerCode", keep="first")
+        pass
+
+    return baci_data
 
 def callapirequest(period, country, commoditycode):
     period = str(period)
@@ -350,3 +379,8 @@ def generateCF(exportType="csv", orient=""):
             db_df.to_json(_outputfile + "/database.json", orient=orient, index=False)
     except Exception as e:
         logging.debug(f"Error while exporting database! {e}")
+
+
+def getResourceSheetName(resource):
+    SheetName = _commodity[_commodity['ID'] == resource]['Sheet_name'].to_list()[0]
+    return SheetName
