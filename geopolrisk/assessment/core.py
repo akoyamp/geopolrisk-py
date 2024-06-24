@@ -242,17 +242,23 @@ def ProductionData(Resource, EconomicUnit):
 
     # P2. Fetching the production quantity from 'prod' dataframe.
     try:
-        Prod_Year = prod.columns.to_list()[3:-2]
+        #Prod_Year = prod.columns.to_list()[3:-2]
+        Prod_Year = prod.columns.to_list()
+        # delete some colums, that are not represent a year
+        exclude_columns = ['Country', 'Country_Code', 'Country_ISO', 'unit', 'data_source']
+        Prod_Year = [x for x in Prod_Year if x not in exclude_columns]
+        #
         Prod_Year = [int(i) if i.isdigit() else None for i in Prod_Year]
         temp = [0] * len(Prod_Year)
         for i in EconomicUnit:
             if i in Countries:
                 Prod_Qty = (
                     prod.loc[prod["Country"] == i]
+                    .drop(columns=exclude_columns)
                     .reset_index()
                     .loc[0, :]
                     .values.flatten()
-                    .tolist()[4:-2]
+                    .tolist()
                 )
                 Prod_Qty = replace_values(Prod_Qty, "^", 0)
                 Prod_Qty = [float(i) for i in Prod_Qty]
