@@ -241,13 +241,10 @@ class database:
                                 (SELECT cc.country_name FROM country_codes_V202401b cc WHERE bacitab.i = cc.country_code) AS partnerDesc,
                                 (SELECT cc.country_iso3 FROM country_codes_V202401b cc WHERE bacitab.i = cc.country_code) AS partnerISO,
                                 bacitab.k as cmdCode,
-                                TRIM(bacitab.q) as qty,
-                                TRIM(bacitab.v) as cifvalue
+                                REPLACE(TRIM(bacitab.q), 'NA', 0) as qty,
+	                            REPLACE(TRIM(bacitab.v),'NA', 0) as cifvalue,
+                                (SELECT vwyc.wgi FROM v_wgi_year_country vwyc WHERE bacitab.t = vwyc.Year and bacitab.i = vwyc.country_code) AS partnerWGI
                             from baci_trade bacitab
-                            WHERE NOT (
-                                        bacitab.q = '0' OR bacitab.q LIKE '%NA' 
-                                        OR bacitab.v = '0' OR bacitab.v LIKE '%NA'
-                                    )
                             """
                 else:
                     query = f"SELECT * FROM '{table_name}'"
