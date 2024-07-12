@@ -1,197 +1,168 @@
-# Copyright (C) 2023 University of Bordeaux, CyVi Group & Anish Koyamparambath
+# Copyright (C) 2024 University of Bordeaux, CyVi Group & University of Bayreuth,
+# Ecological Resource Technology & Anish Koyamparambath, Christoph Helbig, Thomas Schraml
 # This file is part of geopolrisk-py library.
-#
 # geopolrisk-py is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-#
 # geopolrisk-py is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-#
 # You should have received a copy of the GNU General Public License
 # along with geopolrisk-py.  If not, see <https://www.gnu.org/licenses/>.
 
-import sqlite3, pandas as pd, getpass, logging, os
+
+import sqlite3, pandas as pd, logging, os
+from tqdm import tqdm
 from datetime import datetime
 from pathlib import Path
-
-# from .Exceptions.warningsgprs import *
 
 logging = logging
 __all__ = ["core", "operations", "console", "gprsplots", "utils", "tests", "main"]
 __author__ = "Anish Koyamparambath <CyVi- University of Bordeaux>"
 __status__ = "release"
-__version__ = "1"
-__data__ = "10 March 2023"
-
-hard_dependencies = ("pandas", "scipy", "matplotlib")
-missing_dependencies = []
-for dependency in hard_dependencies:
-    try:
-        __import__(dependency)
-    except ImportError as e:
-        missing_dependencies.append(f"{dependency}: {e}")
-
-if missing_dependencies:
-    raise ImportError(
-        "Unable to import required dependencies:\n" + "\n".join(missing_dependencies)
-    )
-del hard_dependencies, dependency, missing_dependencies
+__version__ = "2"
+__data__ = "10 July 2024"
 
 
-# Function to use sqlite3
+# Generic SQL function (multi use)
 def execute_query(query, db_path=""):
-    # Connect to the database
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
-
-    # Determine if the query is a SELECT or INSERT query
     is_select_query = query.strip().lower().startswith("select")
-
-    # Execute the query and fetch the results (if it is a SELECT query)
     if is_select_query:
         cursor.execute(query)
         results = cursor.fetchall()
     else:
         cursor.execute(query)
         results = None
-
-    # Commit the query to the database
     conn.commit()
-
-    # Close the database connection
     conn.close()
-
-    # Return the results (if it is a SELECT query)
     if is_select_query:
         return results
 
 
 class database:
-    # Global Variables
-    Output = "Datarecords.db"
-    Database_wmd = "world_mining_data.db"
-    Database_wgi = "wgi.db"
-    Database_baci = "baci.db"
-    OutputFolder = "Documents/geopolrisk"
-    LogFolder = OutputFolder + "/logs"
-    CFDatabase = OutputFolder + "/output"
-    DBFolder = OutputFolder + "/databases"
-
-    # Create directories
+    Output = "Datarecords.db"  # Database file to store the GeoPolRisk values
+    _dwmd = "world_mining_data.db"  # World Mining Data Database
+    _dwgi = "wgi.db"  # World Governance Indicator Database
+    _dbaci = "baci.db"  # Trade data from BACI HS92
+    """
+    The first iteration runs the init files that creates a folder 
+    "geopolrisk" in the documents folder of the operating system 
+    and all the required subfolders. The user must then copy all 
+    the required database files into the "databases" folder in 
+    the newly created "geopolrisk".
+    """
     try:
-        directory = getpass.getuser()
-        if not os.path.exists(os.path.join(Path.home(), OutputFolder)):
-            os.makedirs(os.path.join(Path.home(), OutputFolder))
+        directory = os.path.join(Path.home(), "Documents/geopolrisk")
+        if not os.path.exists(os.path.join(Path.home(), "Documents/geopolrisk")):
+            os.makedirs(os.path.join(Path.home(), "Documents/geopolrisk"))
 
-        logfile = os.path.join(Path.home(), LogFolder)
-        if not os.path.exists(logfile):
-            os.makedirs(logfile)
+        if not os.path.exists(os.path.join(Path.home(), "Documents/geopolrisk/logs")):
+            os.makedirs(os.path.join(Path.home(), "Documents/geopolrisk/logs"))
 
-        dbFolder = os.path.join(Path.home(), DBFolder)
-        if not os.path.exists(dbFolder):
-            os.makedirs(dbFolder)
+        if not os.path.exists(
+            os.path.join(Path.home(), "Documents/geopolrisk/databases")
+        ):
+            os.makedirs(os.path.join(Path.home(), "Documents/geopolrisk/databases"))
 
-        exportfile = os.path.join(Path.home(), CFDatabase)
-        if not os.path.exists(exportfile):
-            os.makedirs(exportfile)
+        if not os.path.exists(os.path.join(Path.home(), "Documents/geopolrisk/output")):
+            os.makedirs(os.path.join(Path.home(), "Documents/geopolrisk/output"))
     except Exception as e:
         print(f"Unable to create directories {e}")
         raise FileNotFoundError
 
-    # Verify that the file exists else input the correct file path
-    if not os.path.isfile(os.path.join(dbFolder, Database_wmd)):
-        folder_path = input("The file doesn't exist. Please enter a folder path: ")
+    if not os.path.isfile(os.path.join(directory + "/databases/", _dwmd)):
+        print(
+            "Database files not found! Copy the required database files into the folder."
+        )
 
-    # required tables - world_mining_data
+    ##############################################
+    ##   READING TABLES FROM THE DATABASE FILES ##
+    ##############################################
+
     Tables_world_mining_data = [
-		"Aluminium",
-		"Antimony",
-		"Arsenic",
-		"Asbestos",
-		"Baryte",
-		"Bauxite",
-		"Bentonite",
-		"Beryllium (conc.)",
-		"Bismuth",
-		"Boron Minerals",
-		"Cadmium",
-		"Chromium (Cr2O3)",
-		"Cobalt",
-		"Coking Coal",
-		"Copper",
-		"Diamonds (Gem)",
-		"Diamonds (Ind)",
-		"Diatomite",
-		"Feldspar",
-		"Fluorspar",
-		"Gallium",
-		"Germanium",
-		"Gold",
-		"Graphite",
-		"Gypsum and Anhydrite",
-		"Indium",
-		"Iron (Fe)",
-		"Kaolin (China-Clay)",
-		"Lead",
-		"Lignite",
-		"Lithium (Li2O)",
-		"logging",
-		"Magnesite",
-		"Manganese",
-		"Mercury",
-		"Molybdenum",
-		"Natural Gas",
-		"Nickel",
-		"Niobium (Nb2O5)",
-		"Oil Sands (part of Petroleum)",
-		"Oil Shales",
-		"Palladium",
-		"Perlite",
-		"Petroleum",
-		"Phosphate Rock (P2O5)",
-		"Platinum",
-		"Potash (K2O)",
-		"Rare Earths (REO)",
-		"Rhenium",
-		"Rhodium",
-		"Salt (rock, brines, marine)",
-		"Selenium",
-		"Silver",
-		"Steam Coal ",
-		"Sulfur (elementar & industrial)",
-		"Talc, Steatite & Pyrophyllite",
-		"Tantalum (Ta2O5)",
-		"Tellurium",
-		"Tin",
-		"Titanium (TiO2)",
-		"Tungsten (W)",
-		"Uranium (U3O8)",
-		"Vanadium (V)",
-		"Vermiculite",
-		"Zinc",
-		"Zircon",
+        "Aluminium",
+        "Antimony",
+        "Arsenic",
+        "Asbestos",
+        "Baryte",
+        "Bauxite",
+        "Bentonite",
+        "Beryllium (conc.)",
+        "Bismuth",
+        "Boron Minerals",
+        "Cadmium",
+        "Chromium (Cr2O3)",
+        "Cobalt",
+        "Coking Coal",
+        "Copper",
+        "Diamonds (Gem)",
+        "Diamonds (Ind)",
+        "Diatomite",
+        "Feldspar",
+        "Fluorspar",
+        "Gallium",
+        "Germanium",
+        "Gold",
+        "Graphite",
+        "Gypsum and Anhydrite",
+        "Indium",
+        "Iron (Fe)",
+        "Kaolin (China-Clay)",
+        "Lead",
+        "Lignite",
+        "Lithium (Li2O)",
+        "logging",
+        "Magnesite",
+        "Manganese",
+        "Mercury",
+        "Molybdenum",
+        "Natural Gas",
+        "Nickel",
+        "Niobium (Nb2O5)",
+        "Oil Sands (part of Petroleum)",
+        "Oil Shales",
+        "Palladium",
+        "Perlite",
+        "Petroleum",
+        "Phosphate Rock (P2O5)",
+        "Platinum",
+        "Potash (K2O)",
+        "Rare Earths (REO)",
+        "Rhenium",
+        "Rhodium",
+        "Salt (rock, brines, marine)",
+        "Selenium",
+        "Silver",
+        "Steam Coal ",
+        "Sulfur (elementar & industrial)",
+        "Talc, Steatite & Pyrophyllite",
+        "Tantalum (Ta2O5)",
+        "Tellurium",
+        "Tin",
+        "Titanium (TiO2)",
+        "Tungsten (W)",
+        "Uranium (U3O8)",
+        "Vanadium (V)",
+        "Vermiculite",
+        "Zinc",
+        "Zircon",
         "Country_ISO",
-        "HS Code Map"
+        "HS Code Map",
     ]
-    
-    # required tables - wgi
     Tables_wgi = [
         "Normalized",
     ]
-
-    # required tables - baci      
     Tables_baci = [
         "baci_trade",
     ]
-    
+
     # Function to check if database exists and fetch the required tables
     def check_db_tables(db, table_names):
         try:
-             # Connect to the database
             conn = sqlite3.connect(db)
             cursor = conn.cursor()
             query = "SELECT name FROM sqlite_master WHERE type='table';"
@@ -212,24 +183,25 @@ class database:
 
         # If there are missing tables, raise an error
         if len(missingTables) > 0:
-            print(f"The following tables are missing from the database: {missingTables}")
+            print(
+                f"The following tables are missing from the database: {missingTables}"
+            )
+            return False
         else:
-            pass
+            return True
 
-    # Function to extract the tables into a dictionary
+    ###############################################
+    ## Extracting TABLES FROM THE DATABASE FILES ##
+    ###############################################
+
     def extract_tables_to_df(db_path, table_names):
-        
         try:
-        
-            # Create a dictionary to store the extracted tables
             tables = {}
-
-            # Connect to the database
             conn = sqlite3.connect(db_path)
-
-            # Loop through the table names and extract each table as a DataFrame
-            for table_name in table_names:
-                
+            for table_name in tqdm(
+                table_names,
+                desc="Reading tables from the library database.",
+            ):
                 if table_name == "baci_trade":
                     query = f"""
                             select 
@@ -248,27 +220,18 @@ class database:
                             """
                 else:
                     query = f"SELECT * FROM '{table_name}'"
-                
                 table_df = pd.read_sql_query(query, conn)
-                
-                # Add the table DataFrame to the tables dictionary with the table name as the key
                 tables[table_name] = table_df
-            
-            # Close the database connection
             conn.close()
-            
         except Exception as e:
             print(f"Error to read tables {table_names} from database {db_path} - {e}")
             conn.close()
-
-        print(f"Reading tables {table_names} \nfrom database {db_path} successfully!.\n")
-        
-        # Return the tables dictionary
         return tables
 
-    
+    #######################################################
+    ## Creating database file to store GeoPolRisk Values ##
+    #######################################################
 
-    # verify if output database exists else create it
     try:
         sqlstatement = """CREATE TABLE IF NOT EXISTS "recordData" (
         	"index"	INTEGER,
@@ -287,35 +250,46 @@ class database:
             "log_ref" TEXT,
         	PRIMARY KEY("index")
         );"""
-        execute_query(sqlstatement, db_path=exportfile + "/" + Output)
+        execute_query(sqlstatement, db_path=directory + "/output/" + Output)
     except Exception as e:
         print(f"Could not create the output database {e}")
 
     # Check if the world_mining_data.db database exists and fetch the required tables
-    Database_wmd_path = dbFolder + "/" + Database_wmd
-    check_db_tables(Database_wmd_path, Tables_world_mining_data)
-    # Extract the tables into a dictionary
-    tables_world_mining_data = extract_tables_to_df(Database_wmd_path, Tables_world_mining_data)
+    Database_wmd_path = directory + "/databases/" + _dwmd
+    if check_db_tables(Database_wmd_path, Tables_world_mining_data):
+        tables_world_mining_data = extract_tables_to_df(
+            Database_wmd_path, Tables_world_mining_data
+        )
+    else:
+        print("Error while reading the World Mining Data db")
+        raise (FileNotFoundError)
 
     # Check if the wgi.db database exists and fetch the required tables
-    Database_wgi_path = dbFolder + "/" + Database_wgi
-    check_db_tables(Database_wgi_path, Tables_wgi)
-    # Extract the tables into a dictionary
-    tables_wgi = extract_tables_to_df(Database_wgi_path, Tables_wgi)
+    Database_wgi_path = directory + "/databases/" + _dwgi
+    if check_db_tables(Database_wgi_path, Tables_wgi):
+        tables_wgi = extract_tables_to_df(Database_wgi_path, Tables_wgi)
+    else:
+        print("Error while reading the WGI db")
+        raise (FileNotFoundError)
 
     # Check if the baci.db exists and fetch the required tables
-    Database_baci_path = dbFolder + "/" + Database_baci
-    check_db_tables(Database_baci_path, Tables_baci)
-    # Extract the tables into a dictionary
-    tables_baci = extract_tables_to_df(Database_baci_path, Tables_baci)
+    Database_baci_path = directory + "/databases/" + _dbaci
+    if check_db_tables(Database_baci_path, Tables_baci):
+        tables_baci = extract_tables_to_df(Database_baci_path, Tables_baci)
+    else:
+        print("Error while reading the BACI db")
+        raise (FileNotFoundError)
+
+    #############################################################
+    ## Extracting the dataframes into the individual variables ##
+    #############################################################
 
     production = tables_world_mining_data
-    baci_trade = tables_baci['baci_trade']
-    reporter = tables_world_mining_data['Country_ISO']
-    # price = tables_world_mining_data['Price']
-    commodity = tables_world_mining_data['HS Code Map']
-    wgi = tables_wgi['Normalized']
+    baci_trade = tables_baci["baci_trade"]
+    wgi = tables_wgi["Normalized"]
+
     regionslist = {}
+    regional = False
     regionslist["EU"] = [
         "Austria",
         "Belgium",
@@ -350,32 +324,16 @@ class database:
     ]
 
 
-instance = database()
+databases = (
+    database()
+)  # Important object that saves all the variables in the class database to be used in the library
 
+###########################################################
+## Creating a log object and file for logging the errors ##
+###########################################################
 
-class outputDF:
-    columns = [
-        "Year",
-        "Resource",
-        "Country",
-        "Recycling Rate",
-        "Recycling Scenario",
-        "Risk",
-        "GeoPolRisk Characterization Factor",
-        "HHI",
-        "Weighted Trade AVerage",
-    ]
-    outputList = []
-
-
-outputdf = outputDF()
-# Test fail variables
-LOGFAIL, DBIMPORTFAIL = False, False
-
-# Create a log file for init function
 
 Filename = "Log_File_{:%Y-%m-%d(%H-%M-%S)}.log".format(datetime.now())
-
 log_level = logging.DEBUG
 try:
     logging.basicConfig(
@@ -383,10 +341,8 @@ try:
         format="""%(asctime)s | %(levelname)s | %(threadName)-10s |
           %(filename)s:%(lineno)s - %(funcName)20s() |
             %(message)s""",
-        filename=instance.logfile + "/" + Filename,
+        filename=databases.directory + "/logs/" + Filename,
         filemode="w",
     )
 except:
-    # it is imperative that the log file work before running the main code.
-    LOGFAIL = True
     print("Cannot create log file!")

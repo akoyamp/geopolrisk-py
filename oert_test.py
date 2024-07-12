@@ -1,7 +1,3 @@
-from geopolrisk.assessment.core import *
-from geopolrisk.assessment.__init__ import instance #Optional
-
-
 # _price = instance.price
 # _wgi = instance.wgi
 # Resource = "Nickel"
@@ -18,7 +14,7 @@ from geopolrisk.assessment.__init__ import instance #Optional
 
 # YearlyAveragePrice = 10203.98
 # # Optional - A database already exists that can be used to fetch the price data.
-# YearlyAveragePrice =  _price[Year].tolist()[_price.HS.to_list().index(HS_price)] 
+# YearlyAveragePrice =  _price[Year].tolist()[_price.HS.to_list().index(HS_price)]
 # result = GeoPolRisk(ProductionData, WTAData, Year, YearlyAveragePrice)
 
 # print(result)
@@ -28,14 +24,29 @@ from geopolrisk.assessment.__init__ import instance #Optional
 
 # test main_comlete()
 
-# the main_complete()-function gets an error, because the copied price-table from Libray.db 
+# the main_complete()-function gets an error, because the copied price-table from Libray.db
 # has different HS-Codes - see different HS and HS_price definition on the top test example
 
-ListofMetals = [260400, 261000, 260300, 283691, 282200,]
-ListofCountries = [36, 124, 251, 276, 392, 826, 842,] 
+ListofMetals = [
+    260400,
+    261000,
+    260300,
+    283691,
+    282200,
+]
+ListofCountries = [
+    36,
+    124,
+    251,
+    276,
+    392,
+    826,
+    842,
+]
 ListofYear = [2018, 2019, 2020]
-from geopolrisk.assessment.main import main_complete
+from geopolrisk.assessment.utils import get_baci_data
 
-main_complete(ListofMetals, ListofYear, ListofCountries, 0, 0, sheetname= None, PIindicator = None)
+get_baci_data(2019, 276, 260400)
+
 
 # -----------------------------------------------------------------

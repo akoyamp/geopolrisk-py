@@ -17,88 +17,105 @@
 import unittest
 from .defaults import *
 from geopolrisk.assessment.utils import *
-from geopolrisk.assessment.core import *
 
 # testcase to test the gprs_comtrade function
 
-#Extracting samples data from a list of resources, countries and years
+# Extracting samples data from a list of resources, countries and years
 Resources = random_sampler(ListofMetals, 5)
 Countries = random_sampler(ListofCountries, 5)
 Year = random_sampler(ListofYears, 5)
 listofcountryname, listofresourcename = [], []
 for i, n in enumerate(Resources):
     listofcountryname.append(ListofCountryName[ListofCountries.index(Countries[i])])
-    listofresourcename.append(
-        ListofMetalName[ListofMetals.index(n)]
-    )
+    listofresourcename.append(ListofMetalName[ListofMetals.index(n)])
 
 
-#Test class to test the functions in utils module
-#Please note functions such as record data, extract data are excluded
+# Test class to test the functions in utils module
+# Please note functions such as record data, extract data are excluded
 class Testutilsfunctions(unittest.TestCase):
-     
-    #Test to verify the functionality of id creation 
+
+    # Test to verify the functionality of id creation
     def test_verifyidcreation(self):
         Resources = [2606, 261710, 2524]
         Countries = [4, 36, 124]
         Year = [2016]
         result = [
-            "xx2606xx42016",
-            "xx2606x362016",
-            "xx26061242016",
-            "261710xx42016",
-            "261710x362016",
+            "260642016",
+            "2606362016",
+            "26061242016",
+            "26171042016",
+            "261710362016",
             "2617101242016",
-            "xx2524xx42016",
-            "xx2524x362016",
-            "xx25241242016",
+            "252442016",
+            "2524362016",
+            "25241242016",
         ]
         for i, n in enumerate(Resources):
             get = create_id(Resources[i], Countries[i], Year[0])
             self.assertIn(get, result, msg="Id creation failed!")
 
-    #Test to verify the conversion of the codes
-    def test_conversiontonumericcodes(self):
-        __ignore, __ignore, hscode, iso = convertCodes(
-            listofresourcename, listofcountryname
+    # Test to verify the results dataframe creation
+    def test_create_results_df(self):
+        df = createresultsdf()
+        self.assertIsInstance(
+            df, pd.DataFrame, msg="Results dataframe creation failed!"
         )
         self.assertEqual(
-            [hscode, iso],
-            [Resources, Countries],
-            msg="Code conversion failed!",
+            len(df.columns), 9, msg="Results dataframe has incorrect number of columns"
         )
 
-    #Test to verify the reverse conversion of the codes
-    def test_conversiontonames(self):
-        resourcename, countryname, __ignore, __ignore = convertCodes(
-            listofresourcename, listofcountryname
+    # Test to verify the BACI data retrieval
+    def test_get_baci_data(self):
+        sample_data = pd.DataFrame(
+            {
+                "period": ["2016"],
+                "reporterCode": ["4"],
+                "cmdCode": ["2606"],
+                "qty": ["1000"],
+                "cifvalue": ["500"],
+            }
+        )
+        ksample_data = getbacidata(2016, 4, 2606, sample_data)
+        self.assertIsInstance(
+            ksample_data, pd.DataFrame, msg="BACI data retrieval failed!"
         )
         self.assertEqual(
-            [resourcename, countryname],
-            [listofresourcename, listofcountryname],
-            msg="Code conversion failed!",
+            ksample_data["qty"].iloc[0], 1000.0, msg="Quantity conversion failed!"
+        )
+        self.assertEqual(
+            ksample_data["cifvalue"].iloc[0], 500.0, msg="CIF value conversion failed!"
+        )
+        baci_data = getbacidata(2016, 4, 260600)
+        self.assertIsInstance(
+            baci_data, pd.DataFrame, msg="BACI data retrieval failed!"
         )
 
-    #Test to verify the functionality of the new Comtrade API
-    def test_pythoncomtradeapi(self):
-        randomresource = random.choice(Resources)
-        randomcountry = random.choice(Countries)
-        randomyear = random.choice(Year)
-        TradeData, cifprice = callapirequest(randomyear, randomcountry, randomresource)
-        self.assertIsNotNone(TradeData, msg="API call failed!")
-        self.assertIsNotNone(cifprice, msg="API call failed!")
-
-    #Test to verify the functionality of the old Comtrade API
-    def test_oldcomtradeapi(self):
-        randomresource = random.choice(Resources)
-        randomcountry = random.choice(Countries)
-        randomyear = random.choice(Year)
-        TradeData = oldapirequest(randomyear, randomcountry, randomresource)
-        self.assertIsNotNone(TradeData, msg="API call failed!")
-
-    #Test to verify the sql verify function to check for existing data
+    # Test to verify the sql verify function to check for existing data
     def test_verifydatabase(self):
         DBID = ["xx81061912014", "xx81077052003", "xx2846x562012", "2615102032017"]
         for i in DBID:
-            result =  sqlverify(i)
+            result = sqlverify(i)
             self.assertTrue(result, msg="SQL verification failed!")
+
+    # Test to verify the production data retrieval
+    def test_get_prod(self):
+        resource = "Graphite"
+        prod_data = getProd(resource)
+        self.assertIsInstance(
+            prod_data, pd.DataFrame, msg="Production data retrieval failed!"
+        )
+
+    # Test to verify the region creation
+    def test_regions_creation(self):
+        region_dict = {
+            "RegionX": Countries,
+            "RegionY": ["Bulgaria", "Croatia", "Czechia", "Czechoslovakia"],
+        }
+        created_regions = regions(region_dict)
+        self.assertIsInstance(created_regions, dict, msg="Region creation failed!")
+        self.assertIn(
+            "RegionX", created_regions, msg="Region creation did not include Region1"
+        )
+        self.assertIn(
+            "RegionY", created_regions, msg="Region creation did not include Region2"
+        )
