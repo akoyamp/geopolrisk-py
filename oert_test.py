@@ -20,9 +20,10 @@
 # print(result)
 # print("\n")
 
-# -----------------------------------------------------------------
+# -------------------------²----------------------------------------
 
 # test main_comlete()
+
 
 # the main_complete()-function gets an error, because the copied price-table from Libray.db
 # has different HS-Codes - see different HS and HS_price definition on the top test example
@@ -34,6 +35,14 @@ ListofMetals = [
     283691,
     282200,
 ]
+regions = {'Trial' : [
+    "Austria",
+    "Belgium",
+    "Belgium-Luxembourg",
+    "Bulgaria",
+    "Croatia"
+],}
+
 ListofCountries = [
     36,
     124,
@@ -44,9 +53,11 @@ ListofCountries = [
     842,
 ]
 ListofYear = [2018, 2019, 2020]
-from geopolrisk.assessment.utils import get_baci_data
 
-get_baci_data(2019, 276, 260400)
+
+from geopolrisk.assessment.main import gprs_calc
+
+gprs_calc(ListofYear,ListofCountries, ListofMetals)
 
 
 # -----------------------------------------------------------------

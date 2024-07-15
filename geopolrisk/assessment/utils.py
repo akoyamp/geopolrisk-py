@@ -16,7 +16,6 @@ import pandas as pd, os, glob
 from .__init__ import databases, logging, execute_query
 
 tradepath = None
-regionslist = databases.regionslist
 db = databases.directory + "/output"
 
 ########################################
@@ -33,6 +32,83 @@ def replace_func(x):
         else:
             return x
 
+def cvtresource(resource, type="HS"):
+    """
+    Type can be either 'HS' or 'Name'
+    """
+    MapHSdf = databases.production["HS Code Map"]
+    if type == "HS":
+        if resource in MapHSdf["ID"].tolist():
+            return MapHSdf.loc[MapHSdf["ID"] == resource, "HS Code"].iloc[0]
+        else:
+            try:
+                resource = int(resource)
+            except:
+                print("Entered raw material does not exist in our database!")
+                logging.debug(
+                    f"Error while fetching raw material. Entered raw material = {resource}"
+                )
+                raise ValueError
+            if str(resource) in MapHSdf["HS Code"].tolist():
+                return int(resource)
+    elif type == "Name":
+        try:
+            resource = int(resource)
+        except:
+            print("Entered raw material does not exist in our database!")
+            logging.debug(
+                f"Error while fetching raw material. Entered raw material = {resource}"
+            )
+            resource = str(resource)
+        if str(resource) in MapHSdf["HS Code"].astype(str).tolist():
+            return MapHSdf.loc[MapHSdf["HS Code"] == str(resource), "ID"].iloc[0]
+        elif resource in MapHSdf["ID"].tolist():
+            return resource
+        else:
+            print("Entered raw material does not exist in our database!")
+            logging.debug(
+                f"Error while fetching raw material. Entered raw material = {resource}"
+            )
+            raise ValueError
+def cvtcountry(country, type="ISO"):
+    """
+    Type can be either 'ISO' or 'Name'
+    """
+    MapISOdf = databases.production["Country_ISO"]
+    if type == "ISO":
+        if country in MapISOdf["Country"].tolist():
+            return MapISOdf.loc[MapISOdf["Country"] == country, "ISO"].iloc[0]
+        else:
+            try:
+                country = int(country)
+            except:
+                print("Entered country does not exist in our database!")
+                logging.debug(
+                    f"Error while fetching country. Entered country = {country}"
+                )
+                raise ValueError
+            if country in MapISOdf["ISO"].astype(int).tolist():
+                return country
+    elif type == "Name":
+        try:
+            country = int(country)
+        except:
+            print("Entered country does not exist in our database!")
+            logging.debug(
+                    f"Error while fetching country. Entered country = {country}"
+                )
+            country = str(country)
+        if country in MapISOdf["ISO"].astype(int).tolist():
+            return MapISOdf.loc[MapISOdf["ISO"] == country, "Country"].iloc[0]
+        elif country in MapISOdf["Country"].tolist():
+            return country
+        else:
+            print("Entered country does not exist in our database!")
+            logging.debug(
+                f"Error while fetching country. Entered country = {country}"
+            )
+            raise ValueError
+        
 
 def sumproduct(A: list, B: list):
     return sum(i * j for i, j in zip(A, B))
@@ -124,8 +200,8 @@ def getbacidata(
     'cifvalue' -> The value of the traded quantity in 1000 USD
     'partnerWGI' -> The WGI political stability and absence of violence indicator (Normalized) for the partner country
     """
-    baci_data["qty"] = baci_data["qty"].apply(replace_func).astype(float)
-    baci_data["cifvalue"] = baci_data["cifvalue"].apply(replace_func).astype(float)
+    baci_data.loc[:, "qty"] = baci_data["qty"].apply(replace_func).astype(float)
+    baci_data.loc[:, "cifvalue"] = baci_data["cifvalue"].apply(replace_func).astype(float)
     if baci_data is None or isinstance(baci_data, type(None)) or len(baci_data) == 0:
         logging.debug(
             f"Problem with get the baci-data - {baci_data} - period == '{period}') - reporterCode == '{country}' - cmdCode == '{commoditycode}'"
@@ -135,22 +211,33 @@ def getbacidata(
 
 
 def aggregateTrade(
-    period: float, country: list, commoditycode: float, baci_data=databases.baci_trade
+    period: float, country: list, commoditycode: float, data=databases.baci_trade
 ):
     """
     The function is only to aggregate the trade for each partner country in the region.
     """
+    def wgi_func(x):
+        if isinstance(x, float):
+            return x
+        else:
+            if x is None or isinstance(x, type(None)) or x.strip() == "NA":
+                return 0.5
+            else:
+                return x
     SUMQTY, SUMVAL, SUMNUM = [], [], []
     for i, n in enumerate(country):
         baci_data = getbacidata(
-            period, country, commoditycode, baci_data=databases.baci_trade
+            period, cvtcountry(n, type="ISO"), commoditycode, data=databases.baci_trade
         )
-        QTY = baci_data["qty"].tolist()
-        WGI = baci_data["partnerWGI"].tolist()
-        VAL = baci_data["cifvalue"].tolist()
+        if baci_data is None:
+            QTY, WGI, VAL = [0], [0], [0]
+        else:
+            QTY = baci_data["qty"].tolist()
+            WGI = baci_data["partnerWGI"].apply(wgi_func).astype(float).tolist()
+            VAL = baci_data["cifvalue"].tolist()
         SUMQTY.append(sum(QTY))
         SUMVAL.append(sum(VAL))
-        SUMNUM.append(sum(sumproduct(QTY, WGI)))
+        SUMNUM.append(sumproduct(QTY, WGI))
 
     Price = sum(SUMVAL) / sum(SUMQTY)
     """
@@ -181,28 +268,12 @@ def transformdata():
     'Additional Notes': Include any additional relevant information.
     """
     Data = pd.read_excel(file_path, sheet_name="Template")
-    MapHSdf = databases.production["HS Code Map"]
     HS_Code = []
     for resource in Data["Metal"].tolist():
-        if resource in MapHSdf["ID"].tolist():
-            HS_Code.append(MapHSdf.loc[MapHSdf["ID"] == "resource", "HS Code"])
-        else:
-            print("Entered raw material does not exist in our database!")
-            logging.debug(
-                f"Error while fetching raw material. Entered raw material = {resource}"
-            )
-            raise ValueError
-    MapISOdf = databases.production["Country_ISO"]
+        HS_Code.append(cvtresource(resource, type="HS"))
     ISO = []
     for country in Data["Country of Origin"].tolist():
-        if country in MapISOdf["Country"].tolist():
-            ISO.append(MapISOdf.loc[MapISOdf["Country"] == country, "ISO"])
-        else:
-            print("Entered country does not exist in our database!")
-            logging.debug(
-                f"Error while fetching ISO for country. Entered Country = {country}"
-            )
-            raise ValueError
+        ISO.append(cvtcountry(country, type="HS"))
     MapWGIdf = databases.wgi
     wgi = []
     for i, iso in enumerate(ISO):
@@ -270,14 +341,15 @@ def getProd(resource):
     Mapdf = databases.production["HS Code Map"]
     if resource in Mapdf["ID"].tolist():
         MappedTableName = Mapdf.loc[Mapdf["ID"] == resource, "Sheet_name"]
-    elif resource in Mapdf["HS Code"].tolist() and resource != "Not Available":
-        MappedTableName = Mapdf.loc[Mapdf["HS Code"] == resource, "Sheet_name"]
+    elif str(resource) in Mapdf["HS Code"].tolist() and resource != "Not Available":
+        MappedTableName = Mapdf.loc[Mapdf["HS Code"] == str(resource), "Sheet_name"]
     else:
         print("Entered raw material does not exist in our database!")
         logging.debug(
             f"Error while fetching raw material. Entered raw material = {resource}"
         )
         raise ValueError
+    
     """
     The returned dataframe is mapped based on the input resource.
     The output dataframe has the following structure.
@@ -288,7 +360,9 @@ def getProd(resource):
     'unit' -> The units of the value
     'data_source' -> The data source of each value point
     """
-    return databases.production[MappedTableName[0]]
+ 
+    result = databases.production[MappedTableName.iloc[0]]
+    return result
 
 
 ########################################################
@@ -297,8 +371,8 @@ def getProd(resource):
 
 
 def regions(*args):
+    trackregion = 0
     if len(args) != 0:
-        trackregion = 0
         for key, value in args[0].items():
             if type(key) is not str and type(value) is not list:
                 logging.debug(
@@ -323,14 +397,13 @@ def regions(*args):
                 return None
             else:
                 trackregion += 1
-                regionslist[key] = value
+                databases.regionslist[key] = value
     if trackregion > 0:
         databases.regional = True
     # The function must be called before calling any other functions in the core
     # module. The following lines populate the region list with all the countries
     # in the world including EU defined in the init file.
     for i in databases.production["Country_ISO"]["Country"].tolist():
-        if i in regionslist.keys():
+        if i in databases.regionslist.keys():
             logging.debug("Country or region already exists cannot overwrite.")
-        regionslist[i] = [i]
-    return regionslist
+        databases.regionslist[i] = [i]
