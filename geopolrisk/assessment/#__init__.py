@@ -25,6 +25,7 @@ __status__ = "alpha"
 __version__ = "2"
 __data__ = "10 July 2024"
 
+databases = None
 
 # Generic SQL function (multi use)
 def execute_query(query, db_path=""):
@@ -299,15 +300,17 @@ class database:
         "Sweden",
     ]
 
-
-databases = (
-    database()
-)  # Important object that saves all the variables in the class database to be used in the library
+def get_databases():
+    global databases
+    if databases == None:
+        databases = (
+            database()
+        )
+    return databases
 
 ###########################################################
 ## Creating a log object and file for logging the errors ##
 ###########################################################
-
 
 Filename = "Log_File_{:%Y-%m-%d(%H-%M-%S)}.log".format(datetime.now())
 log_level = logging.DEBUG
@@ -322,3 +325,9 @@ try:
     )
 except:
     print("Cannot create log file!")
+
+
+#if __name__ == "__init__":
+#     databases = (
+#     database()
+# )  # Important object that saves all the variables in the class database to be used in the library
