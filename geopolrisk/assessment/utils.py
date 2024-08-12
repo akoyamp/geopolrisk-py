@@ -13,7 +13,7 @@
 # along with geopolrisk-py.  If not, see <https://www.gnu.org/licenses/>.
 
 import pandas as pd, os, glob
-from .__init__ import databases, logging, execute_query
+from .database import databases, logging, execute_query
 
 tradepath = None
 db = databases.directory + "/output"

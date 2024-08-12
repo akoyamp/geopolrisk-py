@@ -300,13 +300,10 @@ class database:
         "Sweden",
     ]
 
-def get_databases():
-    global databases
-    if databases == None:
-        databases = (
-            database()
-        )
-    return databases
+if databases == None:
+    databases = (
+        database()
+    )
 
 ###########################################################
 ## Creating a log object and file for logging the errors ##
@@ -325,9 +322,3 @@ try:
     )
 except:
     print("Cannot create log file!")
-
-
-#if __name__ == "__init__":
-#     databases = (
-#     database()
-# )  # Important object that saves all the variables in the class database to be used in the library

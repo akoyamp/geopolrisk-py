@@ -14,7 +14,7 @@
 
 import itertools
 from tqdm import tqdm
-from .__init__ import databases, logging
+from .database import databases, logging
 from .core import *
 from .utils import *
 

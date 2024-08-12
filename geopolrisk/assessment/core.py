@@ -14,7 +14,7 @@
 
 
 from typing import Union
-from .__init__ import databases, logging
+from .database import databases, logging
 from .utils import *
 
 
