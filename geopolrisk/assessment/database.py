@@ -203,7 +203,7 @@ class database:
             conn = sqlite3.connect(db_path)
             for table_name in tqdm(
                 table_names,
-                desc="Reading tables from the library database.",
+                desc=f"Reading table/s {table_names} from the library database {db_path}.",
             ):
                 if table_name == "baci_trade":
                     query = f"""
