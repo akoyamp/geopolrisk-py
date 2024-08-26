@@ -19,9 +19,9 @@ from datetime import datetime
 from pathlib import Path
 
 logging = logging
-__all__ = ["core", "operations", "console", "gprsplots", "utils", "tests", "main"]
+__all__ = ["core", "console", "utils", "main"]
 __author__ = "Anish Koyamparambath <CyVi- University of Bordeaux>"
-__status__ = "release"
+__status__ = "alpha"
 __version__ = "2"
 __data__ = "10 July 2024"
 
@@ -48,6 +48,8 @@ class database:
     _dwmd = "world_mining_data.db"  # World Mining Data Database
     _dwgi = "wgi.db"  # World Governance Indicator Database
     _dbaci = "baci.db"  # Trade data from BACI HS92
+    def __init__(self):
+        pass
     """
     The first iteration runs the init files that creates a folder 
     "geopolrisk" in the documents folder of the operating system 
@@ -227,32 +229,6 @@ class database:
             print(f"Error to read tables {table_names} from database {db_path} - {e}")
             conn.close()
         return tables
-
-    #######################################################
-    ## Creating database file to store GeoPolRisk Values ##
-    #######################################################
-
-    try:
-        sqlstatement = """CREATE TABLE IF NOT EXISTS "recordData" (
-        	"index"	INTEGER,
-            "id" TEXT NOT NULL,
-        	"country"	TEXT,
-        	"resource"	TEXT,
-        	"year"	INTEGER,
-        	"recycling_rate"	REAL,
-        	"scenario"	REAL,
-        	"geopolrisk"	REAL,
-        	"hhi"	REAL,
-        	"wta"	REAL,
-        	"geopol_cf"	REAL,
-        	"resource_hscode"	INTEGER,
-        	"iso"	INTEGER,
-            "log_ref" TEXT,
-        	PRIMARY KEY("index")
-        );"""
-        execute_query(sqlstatement, db_path=directory + "/output/" + Output)
-    except Exception as e:
-        print(f"Could not create the output database {e}")
 
     # Check if the world_mining_data.db database exists and fetch the required tables
     Database_wmd_path = directory + "/databases/" + _dwmd
