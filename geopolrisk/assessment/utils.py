@@ -27,7 +27,7 @@ def replace_func(x):
     if isinstance(x, float):
         return x
     else:
-        if x.strip() == "NA" or x is None or isinstance(x, type(None)):
+        if x is None or isinstance(x, type(None)) or x.strip() == "NA" or x == " ":
             return 0
         else:
             return x
@@ -39,15 +39,13 @@ def cvtresource(resource, type="HS"):
     MapHSdf = databases.production["HS Code Map"]
     if type == "HS":
         if resource in MapHSdf["ID"].tolist():
-            return MapHSdf.loc[MapHSdf["ID"] == resource, "HS Code"].iloc[0]
+            return int(MapHSdf.loc[MapHSdf["ID"] == resource, "HS Code"].iloc[0])
         else:
             try:
                 resource = int(resource)
             except:
-                print("Entered raw material does not exist in our database!")
-                logging.debug(
-                    f"Error while fetching raw material. Entered raw material = {resource}"
-                )
+                print(f"Entered raw material {resource} does not exist in our database!")
+                logging.debug(f"Entered raw material {resource} does not exist in our database!")
                 raise ValueError
             if str(resource) in MapHSdf["HS Code"].tolist():
                 return int(resource)
@@ -55,21 +53,18 @@ def cvtresource(resource, type="HS"):
         try:
             resource = int(resource)
         except:
-            print("Entered raw material does not exist in our database!")
-            logging.debug(
-                f"Error while fetching raw material. Entered raw material = {resource}"
-            )
+            print(f"Entered raw material '{resource}' does not exist in our database!")
+            logging.debug(f"Entered raw material '{resource}' does not exist in our database!")
             resource = str(resource)
         if str(resource) in MapHSdf["HS Code"].astype(str).tolist():
             return MapHSdf.loc[MapHSdf["HS Code"] == str(resource), "ID"].iloc[0]
         elif resource in MapHSdf["ID"].tolist():
             return resource
         else:
-            print("Entered raw material does not exist in our database!")
-            logging.debug(
-                f"Error while fetching raw material. Entered raw material = {resource}"
-            )
+            print(f"Entered raw material '{resource}' does not exist in our database!")
+            logging.debug(f"Entered raw material '{resource}' does not exist in our database!")
             raise ValueError
+
 def cvtcountry(country, type="ISO"):
     """
     Type can be either 'ISO' or 'Name'
@@ -82,10 +77,8 @@ def cvtcountry(country, type="ISO"):
             try:
                 country = int(country)
             except:
-                print("Entered country does not exist in our database!")
-                logging.debug(
-                    f"Error while fetching country. Entered country = {country}"
-                )
+                print(f"Entered country '{country}' does not exist in our database!")
+                logging.debug(f"Entered country '{country}' does not exist in our database!")
                 raise ValueError
             if country in MapISOdf["ISO"].astype(int).tolist():
                 return country
@@ -93,20 +86,16 @@ def cvtcountry(country, type="ISO"):
         try:
             country = int(country)
         except:
-            print("Entered country does not exist in our database!")
-            logging.debug(
-                    f"Error while fetching country. Entered country = {country}"
-                )
+            print(f"Entered country '{country}' does not exist in our database!")
+            logging.debug(f"Entered country '{country}' does not exist in our database!")
             country = str(country)
         if country in MapISOdf["ISO"].astype(int).tolist():
             return MapISOdf.loc[MapISOdf["ISO"] == country, "Country"].iloc[0]
         elif country in MapISOdf["Country"].tolist():
             return country
         else:
-            print("Entered country does not exist in our database!")
-            logging.debug(
-                f"Error while fetching country. Entered country = {country}"
-            )
+            print(f"Entered country '{country}' does not exist in our database!")
+            logging.debug(f"Entered country '{country}' does not exist in our database!")
             raise ValueError
         
 
@@ -117,23 +106,22 @@ def sumproduct(A: list, B: list):
 def create_id(HS, ISO, Year):
     return str(HS) + str(ISO) + str(Year)
 
-
+# 2024-08-23 - this funktion is not using - deleted
 # Verify if the calculation is already stored in the database to avoid recalculation
-def sqlverify(DBID):
-    try:
-        sql = f"SELECT * FROM recordData WHERE id = '{DBID}';"
-        row = execute_query(
-            f"SELECT * FROM recordData WHERE id = '{DBID}';",
-            db_path=db,
-        )
-    except Exception as e:
-        logging.debug(f"Database error in sqlverify - {e}, {sql}")
-        row = None
-    if not row:
-        return False
-    else:
-        return True
-
+# def sqlverify(DBID):
+#     try:
+#         sql = f"SELECT * FROM recordData WHERE id = '{DBID}';"
+#         row = execute_query(
+#             f"SELECT * FROM recordData WHERE id = '{DBID}';",
+#             db_path=db,
+#         )
+#     except Exception as e:
+#         logging.debug(f"Database error in sqlverify - {e}, {sql}")
+#         row = None
+#     if not row:
+#         return False
+#     else:
+#         return True
 
 def createresultsdf():
     dbpath = databases.directory + "/output/" + databases.Output
@@ -227,7 +215,7 @@ def aggregateTrade(
     SUMQTY, SUMVAL, SUMNUM = [], [], []
     for i, n in enumerate(country):
         baci_data = getbacidata(
-            period, cvtcountry(n, type="ISO"), commoditycode, data=databases.baci_trade
+            period, n, commoditycode, data=data
         )
         if baci_data is None:
             QTY, WGI, VAL = [0], [0], [0]
