@@ -220,7 +220,15 @@ class database:
 	                            REPLACE(TRIM(bacitab.v),'NA', 0) as cifvalue,
                                 (SELECT vwyc.wgi FROM v_wgi_year_country vwyc WHERE bacitab.t = vwyc.Year and bacitab.i = vwyc.country_code) AS partnerWGI
                             from baci_trade bacitab
+                              --where bacitab.k = '260400'
                             """
+                    # Test-Query - read the vieww
+                    # query = f"""
+                    #         select 
+                    #         *
+                    #         from v_baci_trade_with_wgi bacitab
+                    #         --where cmdCode = '260400'
+                    #         """
                 else:
                     query = f"SELECT * FROM '{table_name}'"
                 table_df = pd.read_sql_query(query, conn)
