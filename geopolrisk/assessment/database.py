@@ -79,7 +79,15 @@ class database:
 
     if not os.path.isfile(os.path.join(directory + "/databases/", _dwmd)):
         print(
-            "Database files not found! Copy the required database files into the folder."
+            f"Database file {_dwmd} not found! Copy the required database files into the folder {directory_databases}."
+        )
+    if not os.path.isfile(os.path.join(directory + "/databases/", _dwgi)):
+        print(
+            f"Database file {_dwgi} not found! Copy the required database files into the folder {directory_databases}."
+        )
+    if not os.path.isfile(os.path.join(directory + "/databases/", _dbaci)):
+        print(
+            f"Database file {_dbaci} not found! Copy the required database files into the folder {directory_databases}."
         )
 
     ##############################################

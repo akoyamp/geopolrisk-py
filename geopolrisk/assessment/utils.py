@@ -242,10 +242,17 @@ def aggregateTrade(
 ###################################################
 
 
-def transformdata():
+def transformdata(mode="prod"):
     folder_path = databases.directory + "/databases"
     file_name = "Company data.xlsx"
-    file_path = glob.glob(os.path.join(folder_path, file_name))
+    excel_sheet_name = "Template"
+    # file_path = glob.glob(os.path.join(folder_path, file_name))[0]
+    file_path = os.path.join(folder_path, file_name)
+    # in test-mode - use the excel-file from the test-folder
+    if "test" in mode:
+        test_dir = os.path.abspath("./geopolrisk/tests/")
+        file_path = f"{test_dir}/{file_name}"
+        excel_sheet_name = "Test"
     """
     The template excel file has the following headers
     'Metal': Specify the type of metal.
@@ -255,19 +262,20 @@ def transformdata():
     'Year': The year of the trade
     'Additional Notes': Include any additional relevant information.
     """
-    Data = pd.read_excel(file_path, sheet_name="Template")
+    Data = pd.read_excel(file_path, sheet_name=excel_sheet_name)
     HS_Code = []
     for resource in Data["Metal"].tolist():
         HS_Code.append(cvtresource(resource, type="HS"))
     ISO = []
     for country in Data["Country of Origin"].tolist():
-        ISO.append(cvtcountry(country, type="HS"))
+        ISO.append(cvtcountry(country, type="ISO"))
     MapWGIdf = databases.wgi
     wgi = []
     for i, iso in enumerate(ISO):
         try:
             wgi.append(
-                MapWGIdf.loc[MapWGIdf["country_code"] == iso, Data["Year"].tolist()[i]]
+                # MapWGIdf.loc[MapWGIdf["country_code"] == iso, Data["Year"].tolist()[i]]
+                MapWGIdf.query(f'country_code == "{iso}"')[str(Data["Year"].tolist()[i])].iloc[0]
             )
         except:
             print("The entered year is not available in our database!")

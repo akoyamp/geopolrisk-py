@@ -104,35 +104,22 @@ class TestUtilModul(unittest.TestCase):
         self.assertEqual(sumqty, 3000)
         self.assertEqual(price, 10)
 
-    # TODO - change transformdata-method required - make mock_excel_data usable...
-    # TODO - waiting to get a example excel-file from anish
-    # def test_transformdata(self):
-    #     """Test the transformdata utility function."""
-    #     databases.Output = "output.db"
+    def test_transformdata(self):
+        """Test the transformdata utility function."""
 
-    #     # Mock the databases.wgi DataFrame
-    #     mock_wgi = pd.DataFrame({
-    #         "country_code": ["DEU", "USA"],
-    #         "2022": ["0.5", "0.6"]
-    #     })
-    #     databases.wgi = mock_wgi
+        data = transformdata(mode="test")
 
-    #     # Mock the template Excel file
-    #     mock_excel_data = pd.DataFrame({
-    #         "Metal": ["Copper", "Aluminum"],
-    #         "Country of Origin": ["Germany", "USA"],
-    #         "Quantity (kg)": ["1.0", "2.0"],
-    #         "Value (USD)": ["10", "20"],
-    #         "Year": [2022, 2022]
-    #     })
-
-    #     data = transformdata()
-
-    #     self.assertIsInstance(data, pd.DataFrame)
-    #     self.assertEqual(len(data), 2)
-    #     self.assertEqual(data["cmdCode"].tolist(), ["1001", "7601"])
-    #     self.assertEqual(data["partnerISO"].tolist(), ["276", "840"])
-    #     self.assertEqual(data["partnerWGI"].tolist(), [0.5, 0.6])
+        self.assertIsInstance(data, pd.DataFrame)
+        self.assertEqual(len(data), 5)
+        self.assertEqual(data["cmdCode"].tolist(), [260400, 260400, 260400, 260400, 260400])
+        self.assertEqual(data["partnerISO"].tolist(), [208, 528, 620, 818, 842])
+        self.assertEqual(data["partnerWGI"].tolist(), [
+                                                        '0.326998233795166', 
+                                                        '0.35653903484344485', 
+                                                        '0.32785606384277344', 
+                                                        '0.7056113243103027', 
+                                                        '0.5072010055184364'
+                                                      ])
 
     def test_getProd(self):
         """Test the getProd utility function."""
