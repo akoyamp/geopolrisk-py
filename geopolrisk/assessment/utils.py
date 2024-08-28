@@ -275,7 +275,7 @@ def transformdata(mode="prod"):
         try:
             wgi.append(
                 # MapWGIdf.loc[MapWGIdf["country_code"] == iso, Data["Year"].tolist()[i]]
-                MapWGIdf.query(f'country_code == "{iso}"')[str(Data["Year"].tolist()[i])].iloc[0]
+                float(MapWGIdf.query(f'country_code == "{iso}"')[str(Data["Year"].tolist()[i])].iloc[0])
             )
         except:
             print("The entered year is not available in our database!")

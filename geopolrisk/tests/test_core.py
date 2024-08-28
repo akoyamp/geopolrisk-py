@@ -45,16 +45,16 @@ class TestCoreModul(unittest.TestCase):
 
     def test_importrisk_invalid_country(self):
         """Test importrisk function with an invalid country to ensure it raises ValueError."""
-        resource = "260400"
-        year = 2020
+        resource = 260400
+        year = 2022
         country = ["Invalid Country"]
         with self.assertRaises(ValueError):
             importrisk(resource, year, country)
 
     def test_importrisk_company_valid_input(self):
         """Test importrisk_company function with valid inputs to ensure it returns correct values."""
-        resource = "260400"
-        year = 2020
+        resource = 260400
+        year = 2022
         numerator, total_trade, price = importrisk_company(resource, year)
         
         # Check if numerator, total trade, and price are floats

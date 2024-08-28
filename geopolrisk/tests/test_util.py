@@ -114,11 +114,11 @@ class TestUtilModul(unittest.TestCase):
         self.assertEqual(data["cmdCode"].tolist(), [260400, 260400, 260400, 260400, 260400])
         self.assertEqual(data["partnerISO"].tolist(), [208, 528, 620, 818, 842])
         self.assertEqual(data["partnerWGI"].tolist(), [
-                                                        '0.326998233795166', 
-                                                        '0.35653903484344485', 
-                                                        '0.32785606384277344', 
-                                                        '0.7056113243103027', 
-                                                        '0.5072010055184364'
+                                                        0.326998233795166, 
+                                                        0.35653903484344485, 
+                                                        0.32785606384277344, 
+                                                        0.7056113243103027, 
+                                                        0.5072010055184364
                                                       ])
 
     def test_getProd(self):
