@@ -66,6 +66,7 @@ class database:
         if not os.path.exists(os.path.join(Path.home(), "Documents/geopolrisk/logs")):
             os.makedirs(os.path.join(Path.home(), "Documents/geopolrisk/logs"))
 
+        directory_databases = os.path.join(Path.home(), "Documents/geopolrisk/databases")
         if not os.path.exists(
             os.path.join(Path.home(), "Documents/geopolrisk/databases")
         ):
