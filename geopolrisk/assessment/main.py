@@ -14,7 +14,7 @@
 
 import itertools
 from tqdm import tqdm
-from .__init__ import databases, logging
+from .database import databases, logging
 from .core import *
 from .utils import *
 
@@ -144,5 +144,8 @@ def gprs_calc(period: list, country: list, resource: list, region_dict = {}):
 
         excel_path = databases.directory + "/output/results.xlsx"
         result.to_excel(excel_path, index=False)
+        # add return result for test-cases
+        return result
     except Exception as e:
         logging.debug("Error while recording data into dataframe for regional assessment!", e)
+        

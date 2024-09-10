@@ -25,6 +25,7 @@ __status__ = "alpha"
 __version__ = "2"
 __data__ = "10 July 2024"
 
+databases = None
 
 # Generic SQL function (multi use)
 def execute_query(query, db_path=""):
@@ -65,6 +66,7 @@ class database:
         if not os.path.exists(os.path.join(Path.home(), "Documents/geopolrisk/logs")):
             os.makedirs(os.path.join(Path.home(), "Documents/geopolrisk/logs"))
 
+        directory_databases = os.path.join(Path.home(), "Documents/geopolrisk/databases")
         if not os.path.exists(
             os.path.join(Path.home(), "Documents/geopolrisk/databases")
         ):
@@ -78,7 +80,15 @@ class database:
 
     if not os.path.isfile(os.path.join(directory + "/databases/", _dwmd)):
         print(
-            "Database files not found! Copy the required database files into the folder."
+            f"Database file {_dwmd} not found! Copy the required database files into the folder {directory_databases}."
+        )
+    if not os.path.isfile(os.path.join(directory + "/databases/", _dwgi)):
+        print(
+            f"Database file {_dwgi} not found! Copy the required database files into the folder {directory_databases}."
+        )
+    if not os.path.isfile(os.path.join(directory + "/databases/", _dbaci)):
+        print(
+            f"Database file {_dbaci} not found! Copy the required database files into the folder {directory_databases}."
         )
 
     ##############################################
@@ -202,7 +212,7 @@ class database:
             conn = sqlite3.connect(db_path)
             for table_name in tqdm(
                 table_names,
-                desc="Reading tables from the library database.",
+                desc=f"Reading table/s {table_names} from the library database {db_path}.",
             ):
                 if table_name == "baci_trade":
                     query = f"""
@@ -219,7 +229,15 @@ class database:
 	                            REPLACE(TRIM(bacitab.v),'NA', 0) as cifvalue,
                                 (SELECT vwyc.wgi FROM v_wgi_year_country vwyc WHERE bacitab.t = vwyc.Year and bacitab.i = vwyc.country_code) AS partnerWGI
                             from baci_trade bacitab
+                              --where bacitab.k = '260400'
                             """
+                    # Test-Query - read the vieww
+                    # query = f"""
+                    #         select 
+                    #         *
+                    #         from v_baci_trade_with_wgi bacitab
+                    #         --where cmdCode = '260400'
+                    #         """
                 else:
                     query = f"SELECT * FROM '{table_name}'"
                 table_df = pd.read_sql_query(query, conn)
@@ -299,15 +317,14 @@ class database:
         "Sweden",
     ]
 
-
-databases = (
-    database()
-)  # Important object that saves all the variables in the class database to be used in the library
+if databases == None:
+    databases = (
+        database()
+    )
 
 ###########################################################
 ## Creating a log object and file for logging the errors ##
 ###########################################################
-
 
 Filename = "Log_File_{:%Y-%m-%d(%H-%M-%S)}.log".format(datetime.now())
 log_level = logging.DEBUG

@@ -56,6 +56,7 @@ ListofYear = [2018, 2019, 2020]
 
 
 from geopolrisk.assessment.main import gprs_calc
+# from geopolrisk.assessment.geopolrisk import gprs_calc
 
 gprs_calc(ListofYear,ListofCountries, ListofMetals)
 

@@ -14,7 +14,7 @@
 
 
 from typing import Union
-from .__init__ import databases, logging
+from .database import databases, logging
 from .utils import *
 
 
@@ -116,7 +116,7 @@ def importrisk_company(resource: int, year: int):
     usable format similar to that of the country-level data.
     """
     tradedf = transformdata()
-    df_query = f"(period == '{year}')  & (cmdCode == '{resource}')"
+    df_query = f"(period == {year})  & (cmdCode == {resource})"
     data = tradedf.query(df_query)
     QTY = data["qty"].tolist()
     WGI = data["partnerWGI"].tolist()
