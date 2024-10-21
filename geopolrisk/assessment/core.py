@@ -136,7 +136,7 @@ def importrisk_company(resource: int, year: int):
     return Numerator, TotalTrade, Price
 
 
-def GeoPolRisk(Numerator, TotalTrade, Price, ProdQty, HHI):
+def GeoPolRisk(Numerator, TotalTrade, Price, ProdQty, hhi):
     """
     The GeoPolRisk method has two value outputs: the GeoPolRisk Score,
     a non-dimensional score useful for comparative risk assessment,
@@ -148,7 +148,7 @@ def GeoPolRisk(Numerator, TotalTrade, Price, ProdQty, HHI):
         WTA = Numerator / Denominator
     except:
         logging.debug(f"Check the Numerator and Denominator. Numerator: {Numerator}, Denominator: {Denominator}")
-    Score = HHI * WTA
+    Score = hhi * WTA
     CF = Score * Price
     """
     'Score' : GeoPolRisk Score : float

@@ -39,12 +39,42 @@ def gprs_calc(period: list, country: list, resource: list, region_dict = {}):
     dbid = []
     ctry_db, rm_db, period_db = [], [], []
     regions(region_dict) #Function to define region
-    if databases.regional == False:
-        #Calculation loop for non regional assessment
-        for year, ctry, rm in tqdm(
-            list(itertools.product(period, country, resource)),
-            desc="Calculating the GeoPolRisk: "
-            ):
+    for year, ctry, rm in tqdm(
+        list(itertools.product(period, country, resource)),
+        desc="Calculating the GeoPolRisk: "
+        ):
+        if len(databases.regionslist[cvtcountry(ctry, type="Name")]) > 1:
+            logging.debug("Logged - Multiregional Assessment")
+            try:
+                Numerator, TotalTrade, Price = aggregateTrade(
+                    year, databases.regionslist[ctry], cvtresource(rm, type="HS")
+                )
+            except ValueError:
+                logging.debug("Couldnt calculate the Import Risk - Regional. Check functional error!")
+                break
+            except Exception as e:
+                logging.debug("Unknwon exception at ", e)
+                break
+            try:
+                sum_ProdQty = []
+                for j in databases.regionslist[ctry]:
+                    ProdQty, hhi = HHI(rm, int(year),  cvtcountry(j, type="Name"))
+                    sum_ProdQty.append(ProdQty)
+            except ValueError:
+                logging.debug("Couldnt calculate the HHI and Production Quantity - Regional. Check functional error!")
+                break
+            except Exception as e:
+                logging.debug("Unknwon exception at ", e)
+                break
+            try:
+                Score, CF, IR = GeoPolRisk(Numerator, TotalTrade, Price, sum(sum_ProdQty), hhi)
+            except ValueError:
+                logging.debug("Couldnt calculate the GeoPolRisk - Regional. Check functional error!")
+                break
+            except Exception as e:
+                logging.debug("Unknwon exception at ", e)
+                break
+        else:
             try:
                 ProdQty, hhi = HHI(rm, int(year), ctry)
             except ValueError:
@@ -71,65 +101,18 @@ def gprs_calc(period: list, country: list, resource: list, region_dict = {}):
             except Exception as e:
                 logging.debug("Unknwon exception at ", e)
                 break
-            try:
-                Score_list.append(Score)
-                CF_list.append(CF)
-                hhi_list.append(hhi)
-                ir_list.append(IR)
-                price_list.append(Price)
-                ctry_db.append(cvtcountry(ctry, type="Name"))
-                rm_db.append(cvtresource(rm, type="Name"))
-                period_db.append(year)
-                dbid.append(create_id(cvtresource(rm, type="HS"), cvtcountry(ctry, type="ISO"), year))
-            except Exception as e:
-                logging.debug("Error while recording data for non regional assessment!", e)
-    else:
-        for year, ctry, rm in tqdm(
-            list(itertools.product(period, country, resource)),
-            desc="Calculating the GeoPolRisk: "):
-            try:
-                Numerator, TotalTrade, Price = aggregateTrade(
-                    year, databases.regionslist[ctry], cvtresource(rm, type="HS")
-                )
-            except ValueError:
-                logging.debug("Couldnt calculate the Import Risk - Regional. Check functional error!")
-                break
-            except Exception as e:
-                logging.debug("Unknwon exception at ", e)
-                break
-            try:
-                sum_ProdQty = []
-                for j in databases.regionslist[ctry]:
-                    ProdQty, hhi = HHI(rm, int(year), j)
-                    sum_ProdQty.append(ProdQty)
-            except ValueError:
-                logging.debug("Couldnt calculate the HHI and Production Quantity - Regional. Check functional error!")
-                break
-            except Exception as e:
-                logging.debug("Unknwon exception at ", e)
-                break
-            try:
-                Score, CF, IR = GeoPolRisk(Numerator, TotalTrade, Price, sum(sum_ProdQty), hhi)
-            except ValueError:
-                logging.debug("Couldnt calculate the GeoPolRisk - Regional. Check functional error!")
-                break
-            except Exception as e:
-                logging.debug("Unknwon exception at ", e)
-                break
-            
-            try:
-                Score_list.append(Score)
-                CF_list.append(CF)
-                hhi_list.append(hhi)
-                ir_list.append(IR)
-                price_list.append(Price)
-                ctry_db.append(ctry)
-                rm_db.append(cvtresource(rm, type="Name"))
-                period_db.append(year)
-                dbid.append(create_id(cvtresource(rm, type="HS"), ctry, year))
-            except Exception as e:
-                logging.debug("Error while recording data for regional assessment!", e)
-
+        try:
+            Score_list.append(Score)
+            CF_list.append(CF)
+            hhi_list.append(hhi)
+            ir_list.append(IR)
+            price_list.append(Price)
+            ctry_db.append(cvtcountry(ctry, type="Name"))
+            rm_db.append(cvtresource(rm, type="Name"))
+            period_db.append(year)
+            dbid.append(create_id(cvtresource(rm, type="HS"), cvtcountry(ctry, type="ISO"), year))
+        except Exception as e:
+            logging.debug("Error while recording data for non regional assessment!", e)
     result = createresultsdf()
     try:
         result["DBID"] = dbid
@@ -144,8 +127,9 @@ def gprs_calc(period: list, country: list, resource: list, region_dict = {}):
 
         excel_path = databases.directory + "/output/results.xlsx"
         result.to_excel(excel_path, index=False)
+        writetodb(result)
         # add return result for test-cases
-        return result
+        # return result
     except Exception as e:
         logging.debug("Error while recording data into dataframe for regional assessment!", e)
         

@@ -19,24 +19,19 @@ from datetime import datetime
 from pathlib import Path
 
 logging = logging
-__all__ = ["core", "console", "utils", "main"]
-__author__ = "Anish Koyamparambath <CyVi- University of Bordeaux>"
-__status__ = "alpha"
-__version__ = "2"
-__data__ = "10 July 2024"
 
 databases = None
 
 # Generic SQL function (multi use)
-def execute_query(query, db_path=""):
+def execute_query(query, db_path="", params=None):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     is_select_query = query.strip().lower().startswith("select")
     if is_select_query:
-        cursor.execute(query)
+        cursor.execute(query, params or [])
         results = cursor.fetchall()
     else:
-        cursor.execute(query)
+        cursor.execute(query, params or [])
         results = None
     conn.commit()
     conn.close()
