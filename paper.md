@@ -15,10 +15,10 @@ authors:
   - name: Thomas Schraml
     affiliation: 2
   - name: Christoph Helbig
-	orcid: 0000-0001-6709-373X
+    orcid: 0000-0001-6709-373X
     affiliation: 2
   - name: Guido Sonnemann
-	orcid: 0000-0003-2581-1910
+    orcid: 0000-0003-2581-1910
     affiliation: 1
 
 affiliations:
@@ -26,7 +26,7 @@ affiliations:
     index: 1
   - name: Ecological Resource Technology, University of Bayreuth, Universitaetsstr. 30, 95447 Bayreuth, Germany
     index: 2
-date: 16 October 2024
+date: 21 October 2024
 bibliography: paper.bib
 aas-doi: 10.3847/xxxxx <- update this with the DOI from AAS once you know it.
 aas-journal: The Journal of Open Source Software.
