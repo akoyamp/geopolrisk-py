@@ -1,0 +1,12 @@
+# Editors
+.vscode/
+.idea/
+.eclipse
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# oert-folder
+geopolrisk/oert
