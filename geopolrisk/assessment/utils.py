@@ -303,20 +303,26 @@ def aggregateTrade(
                 return x
 
     SUMQTY, SUMVAL, SUMNUM = [], [], []
-    partnerISO = []
+    pISO = []
+    for n in country:
+        pISO.append(str(cvtcountry(n, type="ISO")))
+    logging.info(f"The partner list is {pISO}")
     for i, n in enumerate(country):
         baci_data = getbacidata(
             period, cvtcountry(n, type="ISO"), commoditycode, data=data
         )
-        partnerISO.append(cvtcountry(n, type="ISO"))
+        logging.debug(baci_data)
+
         if baci_data is None:
             QTY, WGI, VAL = [0], [0], [0]
         else:
-            baci_data = baci_data.copy()
-            baci_data.loc[baci_data["partnerISO"].isin(partnerISO), "partnerWGI"] = 0
-            QTY = baci_data["qty"].tolist()
-            WGI = baci_data["partnerWGI"].apply(wgi_func).astype(float).tolist()
-            VAL = baci_data["cifvalue"].tolist()
+            tradedata = baci_data.copy()
+            logging.debug(tradedata["partnerCode"].tolist())
+            tradedata.loc[tradedata["partnerCode"].isin(pISO), "partnerWGI"] = 0.00
+            logging.debug(tradedata)
+            QTY = tradedata["qty"].tolist()
+            WGI = tradedata["partnerWGI"].apply(wgi_func).astype(float).tolist()
+            VAL = tradedata["cifvalue"].tolist()
         SUMQTY.append(sum(QTY))
         SUMVAL.append(sum(VAL))
         SUMNUM.append(sumproduct(QTY, WGI))
@@ -494,8 +500,8 @@ def regions(*args):
             else:
                 trackregion += 1
                 databases.regionslist[key] = value
-    if trackregion > 0:
-        databases.regional = True
+
+    databases.regional = True
     # The function must be called before calling any other functions in the core
     # module. The following lines populate the region list with all the countries
     # in the world including EU defined in the init file.
