@@ -12,7 +12,7 @@
 # You should have received a copy of the GNU General Public License
 # along with geopolrisk-py.  If not, see <https://www.gnu.org/licenses/>.
 
-import pandas as pd, os, glob
+import pandas as pd, os
 from .database import databases, logging, execute_query
 
 tradepath = None
@@ -32,6 +32,7 @@ def replace_func(x):
         else:
             return x
 
+
 def cvtresource(resource, type="HS"):
     # Function to convert resource inputs, HS to name or name to HS
     """
@@ -45,26 +46,33 @@ def cvtresource(resource, type="HS"):
             try:
                 resource = int(resource)
             except Exception as e:
-                print(f"To HS: Entered raw material {resource} does not exist in our database!")
-                logging.debug(f"To HS: Entered raw material {resource} does not exist in our database!, {e}")
+                logging.debug(
+                    f"To HS: Entered raw material {resource} does not exist in our database!, {e}"
+                )
                 raise ValueError
             if str(resource) in MapHSdf["HS Code"].tolist():
                 return int(resource)
+
     elif type == "Name":
+
         try:
             resource = int(resource)
         except:
-            #print(f"Entered raw material '{resource}' does not exist in our database! Please enter numerical inputs")
-            logging.debug(f"Entered raw material '{resource}' does not exist in our database! Please enter numerical inputs")
+            # print(f"Entered raw material '{resource}' does not exist in our database! Please enter numerical inputs")
+            logging.debug(
+                f"Entered raw material '{resource}' does not exist in our database! Please enter numerical inputs"
+            )
             resource = str(resource)
         if str(resource) in MapHSdf["HS Code"].astype(str).tolist():
             return MapHSdf.loc[MapHSdf["HS Code"] == str(resource), "ID"].iloc[0]
         elif resource in MapHSdf["ID"].tolist():
             return resource
         else:
-            print(f"To Name: Entered raw material '{resource}' does not exist in our database!")
-            logging.debug(f"To Name: Entered raw material '{resource}' does not exist in our database!")
+            logging.debug(
+                f"To Name: Entered raw material '{resource}' does not exist in our database!"
+            )
             raise ValueError
+
 
 def cvtcountry(country, type="ISO"):
     # Function to convert country inputs, ISO to name or name to ISO
@@ -75,35 +83,29 @@ def cvtcountry(country, type="ISO"):
     if type == "ISO":
         if country in MapISOdf["Country"].tolist():
             return MapISOdf.loc[MapISOdf["Country"] == country, "ISO"].iloc[0]
+        elif country in MapISOdf["ISO"].astype(int).tolist():
+            return country
         elif databases.regional == True and country in databases.regionslist:
             return country
         else:
-            try:
-                country = int(country)
-            except Exception as e:
-                print(f"To ISO: Entered country '{country}' does not exist in our database!")
-                logging.debug(f"To ISO: Entered country '{country}' does not exist in our database!, {e}")
-                raise ValueError
-            if country in MapISOdf["ISO"].astype(int).tolist():
-                return country
+            logging.debug(
+                f"To int: Entered country '{country}' does not exist in our database!"
+            )
+            raise ValueError
+
     elif type == "Name":
-        try:
-            country = int(country)
-        except:
-            #print(f"Entered country '{country}' does not exist in our database! Please enter numerical inputs")
-            logging.debug(f"Entered country '{country}' does not exist in our database! Please enter numerical inputs")
-            country = str(country)
         if country in MapISOdf["ISO"].astype(int).tolist():
             return MapISOdf.loc[MapISOdf["ISO"] == country, "Country"].iloc[0]
-        elif country in MapISOdf["Country"].tolist():
+        elif str(country) in MapISOdf["Country"].tolist():
             return country
         elif databases.regional == True and country in databases.regionslist:
             return country
         else:
-            print(f"To Name: Entered country '{country}' does not exist in our database!")
-            logging.debug(f"To Name: Entered country '{country}' does not exist in our database!")
+            logging.debug(
+                f"To Name: Entered country '{country}' does not exist in our database!"
+            )
             raise ValueError
-        
+
 
 def sumproduct(A: list, B: list):
     return sum(i * j for i, j in zip(A, B))
@@ -111,6 +113,7 @@ def sumproduct(A: list, B: list):
 
 def create_id(HS, ISO, Year):
     return str(HS) + str(ISO) + str(Year)
+
 
 # 2024-08-23 - this function is not being used - deleted
 # Verify if the calculation is already stored in the database to avoid recalculation
@@ -128,6 +131,7 @@ def create_id(HS, ISO, Year):
 #         return False
 #     else:
 #         return True
+
 
 def createresultsdf():
     dbpath = databases.directory + "/output/" + databases.Output
@@ -154,7 +158,7 @@ def createresultsdf():
         	"GeoPolRisk Characterization Factor [eq. Kg-Cu/Kg]"	REAL,
         	"HHI"	REAL,
         	"Import Risk" REAL,
-        	"Price"	INTEGER,
+        	"Price"	REAL,
         	PRIMARY KEY("DBID")
         );"""
     row = execute_query(
@@ -163,73 +167,81 @@ def createresultsdf():
     )
     return df
 
+
 def writetodb(dataframe):
     dbpath = databases.directory + "/output/" + databases.Output
     for index, row in dataframe.iterrows():
         check_query = "SELECT 1 FROM recordData WHERE DBID = ?;"
-        exists = execute_query(check_query, db_path=dbpath, params=(row['DBID'],))
+        exists = execute_query(check_query, db_path=dbpath, params=(row["DBID"],))
 
         if exists:
-            update_query = '''
+            update_query = """
                 UPDATE recordData
                 SET 
                     "Country [Economic Entity]" = ?,
                     "Raw Material" = ?,
-                    Year = ?,
+                    "Year" = ?,
                     "GeoPolRisk Score" = ?,
                     "GeoPolRisk Characterization Factor [eq. Kg-Cu/Kg]" = ?,
-                    HHI = ?,
+                    "HHI" = ?,
                     "Import Risk" = ?,
-                    Price = ?
+                    "Price" = ?
                 WHERE DBID = ?;
-            '''
+            """
             params = (
-                row['Country [Economic Entity]'],
-                row['Raw Material'],
-                row['Year'],
-                row['GeoPolRisk Score'],
-                row['GeoPolRisk Characterization Factor [eq. Kg-Cu/Kg]'],
-                row['HHI'],
-                row['Import Risk'],
-                row['Price'],
-                row['DBID']
+                row["Country [Economic Entity]"],
+                row["Raw Material"],
+                row["Year"],
+                row["GeoPolRisk Score"],
+                row["GeoPolRisk Characterization Factor [eq. Kg-Cu/Kg]"],
+                row["HHI"],
+                row["Import Risk"],
+                row["Price"],
+                row["DBID"],
             )
             try:
                 execute_query(update_query, db_path=dbpath, params=params)
             except Exception as e:
-                print("Failed to write to output database, Check logs!")
-                logging.debug(f"Failed to write to output database - Update Query - Dataframe index = {index} | Error = {e}")
+                print(
+                    "Failed to write to output database, Check logs! - Update failed!"
+                )
+                logging.debug(
+                    f"Failed to write to output database - Update Query - Dataframe index = {index} | {update_query} | {row} | Error = {e}"
+                )
         else:
-            insert_query = '''
+            insert_query = """
                 INSERT INTO recordData (
                     DBID,
                     "Country [Economic Entity]",
                     "Raw Material",
-                    Year,
+                    "Year",
                     "GeoPolRisk Score",
                     "GeoPolRisk Characterization Factor [eq. Kg-Cu/Kg]",
-                    HHI,
+                    "HHI",
                     "Import Risk",
-                    Price
+                    "Price"
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
-            '''
+            """
             params = (
-                row['DBID'],
-                row['Country [Economic Entity]'],
-                row['Raw Material'],
-                row['Year'],
-                row['GeoPolRisk Score'],
-                row['GeoPolRisk Characterization Factor [eq. Kg-Cu/Kg]'],
-                row['HHI'],
-                row['Import Risk'],
-                row['Price']
+                row["DBID"],
+                row["Country [Economic Entity]"],
+                row["Raw Material"],
+                row["Year"],
+                row["GeoPolRisk Score"],
+                row["GeoPolRisk Characterization Factor [eq. Kg-Cu/Kg]"],
+                row["HHI"],
+                row["Import Risk"],
+                row["Price"],
             )
             try:
                 execute_query(insert_query, db_path=dbpath, params=params)
             except Exception as e:
-                print("Failed to write to output database, Check logs!")
-                logging.debug(f"Failed to write to output database - Insert Query - Dataframe index = {index} | Error = {e}")
-
+                print(
+                    "Failed to write to output database, Check logs! - Insert failed!"
+                )
+                logging.debug(
+                    f"Failed to write to output database - Insert Query - Dataframe index = {index} | {update_query} | {row} | Error = {e}"
+                )
 
 
 ###################################################
@@ -263,7 +275,9 @@ def getbacidata(
     'partnerWGI' -> The WGI political stability and absence of violence indicator (Normalized) for the partner country
     """
     baci_data.loc[:, "qty"] = baci_data["qty"].apply(replace_func).astype(float)
-    baci_data.loc[:, "cifvalue"] = baci_data["cifvalue"].apply(replace_func).astype(float)
+    baci_data.loc[:, "cifvalue"] = (
+        baci_data["cifvalue"].apply(replace_func).astype(float)
+    )
     if baci_data is None or isinstance(baci_data, type(None)) or len(baci_data) == 0:
         logging.debug(
             f"Problem with get the baci-data - {baci_data} - period == '{period}') - reporterCode == '{country}' - cmdCode == '{commoditycode}'"
@@ -278,6 +292,7 @@ def aggregateTrade(
     """
     The function is only to aggregate the trade for each partner country in the region.
     """
+
     def wgi_func(x):
         if isinstance(x, float):
             return x
@@ -286,14 +301,19 @@ def aggregateTrade(
                 return 0.5
             else:
                 return x
+
     SUMQTY, SUMVAL, SUMNUM = [], [], []
+    partnerISO = []
     for i, n in enumerate(country):
         baci_data = getbacidata(
             period, cvtcountry(n, type="ISO"), commoditycode, data=data
         )
+        partnerISO.append(cvtcountry(n, type="ISO"))
         if baci_data is None:
             QTY, WGI, VAL = [0], [0], [0]
         else:
+            baci_data = baci_data.copy()
+            baci_data.loc[baci_data["partnerISO"].isin(partnerISO), "partnerWGI"] = 0
             QTY = baci_data["qty"].tolist()
             WGI = baci_data["partnerWGI"].apply(wgi_func).astype(float).tolist()
             VAL = baci_data["cifvalue"].tolist()
@@ -349,7 +369,11 @@ def transformdata(mode="prod"):
         try:
             wgi.append(
                 # MapWGIdf.loc[MapWGIdf["country_code"] == iso, Data["Year"].tolist()[i]]
-                float(MapWGIdf.query(f'country_code == "{iso}"')[str(Data["Year"].tolist()[i])].iloc[0])
+                float(
+                    MapWGIdf.query(f'country_code == "{iso}"')[
+                        str(Data["Year"].tolist()[i])
+                    ].iloc[0]
+                )
             )
         except:
             print("The entered year is not available in our database!")
@@ -421,7 +445,7 @@ def getProd(resource):
             f"Error while fetching raw material. Entered raw material = {resource}"
         )
         raise ValueError
-    
+
     """
     The returned dataframe is mapped based on the input resource.
     The output dataframe has the following structure.
@@ -432,7 +456,7 @@ def getProd(resource):
     'unit' -> The units of the value
     'data_source' -> The data source of each value point
     """
- 
+
     result = databases.production[MappedTableName.iloc[0]]
     return result
 
@@ -476,6 +500,4 @@ def regions(*args):
     # module. The following lines populate the region list with all the countries
     # in the world including EU defined in the init file.
     for i in databases.production["Country_ISO"]["Country"].tolist():
-        if i in databases.regionslist.keys():
-            logging.debug("Country or region already exists cannot overwrite.")
         databases.regionslist[i] = [i]

@@ -18,39 +18,48 @@ from .database import databases, logging
 from .utils import *
 
 
-def HHI(resource: Union[str, int], year: int, country: str):
+def HHI(resource: Union[str, int], year: int, country: Union[str, int]):
     """
     Calculates the Herfindahl-Hirschman index of production of resources
     which is normalized to the scale of 0 - 1.
     The dataframe is fetched from a utlity function.
     """
-    proddf = getProd(resource)
+    proddf = getProd(resource).fillna(0)
     proddf = proddf[proddf["Country_Code"] != "DELETE"]
     prod_year = proddf[str(year)].tolist()
     HHI_Num = sumproduct(prod_year, prod_year)
     try:
         hhi = HHI_Num / (sum(prod_year) * sum(prod_year))
     except:
-        logging.debug(f"Error while calculating the HHI. Resource : {resource}, year : {year}")
+        logging.debug(
+            f"Error while calculating the HHI. Resource : {resource}, year : {year}"
+        )
         raise ValueError
     if cvtcountry(country, type="Name") in proddf["Country"].tolist():
         try:
-            ProdQty = float(proddf.loc[proddf["Country"] == cvtcountry(country, type="Name"), str(year)].iloc[0])
+            ProdQty = float(
+                proddf.loc[
+                    proddf["Country"] == cvtcountry(country, type="Name"), str(year)
+                ].iloc[0]
+            )
         except:
-            logging.debug(f"Error while extracting the production quantity, Resource : {resource}, Year: {year}, Country: {country} ")
+            logging.debug(
+                f"Error while extracting the production quantity, Resource : {resource}, Year: {year}, Country: {country} "
+            )
             raise ValueError
     else:
         ProdQty = 0
-    
+
     if proddf["unit"].tolist()[0] == "kg":
         ProdQty = ProdQty / 1000
     elif proddf["unit"].tolist()[0] != "metr. t" and proddf["unit"].tolist()[0] != "kg":
-        raise ValueError
+        logging.info("Raw material not in metric tonne or kilos")
     elif proddf["unit"].tolist()[0] == "Mio m3":
         """
         1 m³ = 0.8 kg = 0.0008 metr. t
         """
         ProdQty = ProdQty * 0.0008
+
     """
     The output includes the production quantity of a resource for a country in a given year and the Herfindahl-Hirschman Indexfor that year.
     'ProdQty' : float
@@ -63,10 +72,11 @@ def importrisk(resource: int, year: int, country: list):
     """
     The second part of the equation of the GeoPolRisk method is referred to as 'import risk'.
     This involves weighting the import quantity with the political stability score.
-    The political stability score is derived from the 
+    The political stability score is derived from the
     Political Stability and Absence of Violence indicator of the Worldwide Governance Indicators.
     For more information, see Koyamparambath et al. (2024).
     """
+
     def wgi_func(x):
         """
         For a country whose political stability score is missing, a score of 0.5 is assigned.
@@ -78,10 +88,14 @@ def importrisk(resource: int, year: int, country: list):
                 return 0.5
             else:
                 return x
-                  
+
     if databases.regional != True:
-        ctry = cvtcountry(country[0], type="ISO")
-        tradedf = getbacidata(year, ctry, resource, data=databases.baci_trade) #Dataframe from the utility function
+        tradedf = getbacidata(
+            year,
+            cvtcountry(country[0], type="ISO"),
+            resource,
+            data=databases.baci_trade,
+        )  # Dataframe from the utility function
         QTY = tradedf["qty"].astype(float).tolist()
         WGI = tradedf["partnerWGI"].apply(wgi_func).astype(float).tolist()
         VAL = tradedf["cifvalue"].astype(float).tolist()
@@ -90,7 +104,9 @@ def importrisk(resource: int, year: int, country: list):
             TotalTrade = sum(QTY)
             Numerator = sumproduct(QTY, WGI)
         except:
-            logging.debug(f"Error while making calculations. Resource: {resource}, Country: {country}, Year: {year}")
+            logging.debug(
+                f"Error while making calculations. Resource: {resource}, Country: {country}, Year: {year}"
+            )
             raise ValueError
     else:
         try:
@@ -98,7 +114,9 @@ def importrisk(resource: int, year: int, country: list):
                 year, country, resource, data=databases.baci_trade
             )
         except:
-            logging.debug(f"The inputs for calculating the 'import risk' dont match, Country: {country}")
+            logging.debug(
+                f"The inputs for calculating the 'import risk' dont match, Country: {country}"
+            )
 
     """
     'Numerator' : float
@@ -112,7 +130,7 @@ def importrisk_company(resource: int, year: int):
     """
     The 'import risk' for a company differs from that of the country's.
     This data is provided in a template in the output folder.
-    The utility function transforms the data into a 
+    The utility function transforms the data into a
     usable format similar to that of the country-level data.
     """
     tradedf = transformdata()
@@ -126,7 +144,9 @@ def importrisk_company(resource: int, year: int):
         TotalTrade = sum(QTY)
         Numerator = sumproduct(QTY, WGI)
     except:
-        logging.debug(f"Error while making calculations. Resource: {resource}, Country: Company, Year: {year}")
+        logging.debug(
+            f"Error while making calculations. Resource: {resource}, Country: Company, Year: {year}"
+        )
         raise ValueError
     """
     'Numerator' : float
@@ -147,9 +167,12 @@ def GeoPolRisk(Numerator, TotalTrade, Price, ProdQty, hhi):
     try:
         WTA = Numerator / Denominator
     except:
-        logging.debug(f"Check the Numerator and Denominator. Numerator: {Numerator}, Denominator: {Denominator}")
+        logging.debug(
+            f"Check the Numerator and Denominator. Numerator: {Numerator}, Denominator: {Denominator}"
+        )
     Score = hhi * WTA
-    CF = Score * Price
+    CF_Cu = 0.409412948  # Average CF of copper for OECD countries for a period from 2017 - 2021
+    CF = (Score * Price) / CF_Cu
     """
     'Score' : GeoPolRisk Score : float
     'CF' : GeoPolitical Supply Risk Potential : float

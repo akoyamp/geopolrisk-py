@@ -13,7 +13,7 @@
 # along with geopolrisk-py.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import sqlite3, pandas as pd, logging, os
+import sqlite3, pandas as pd, logging, os, time
 from tqdm import tqdm
 from datetime import datetime
 from pathlib import Path
@@ -22,21 +22,52 @@ logging = logging
 
 databases = None
 
-# Generic SQL function (multi use)
-def execute_query(query, db_path="", params=None):
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-    is_select_query = query.strip().lower().startswith("select")
-    if is_select_query:
-        cursor.execute(query, params or [])
-        results = cursor.fetchall()
-    else:
-        cursor.execute(query, params or [])
-        results = None
-    conn.commit()
-    conn.close()
-    if is_select_query:
-        return results
+
+def execute_query(query, db_path="", params=None, retries=5, delay=0.1):
+    """
+    Execute an SQL query on a SQLite database with retry mechanism for locked database.
+
+    Args:
+        query (str): SQL query to execute.
+        db_path (str): Path to the SQLite database file.
+        params (tuple or list, optional): Parameters for the SQL query.
+        retries (int, optional): Number of retries if the database is locked. Default is 5.
+        delay (float, optional): Delay between retries in seconds. Default is 0.1 seconds.
+
+    Returns:
+        list or None: Query results for SELECT queries, None for others.
+    """
+    attempts = 0
+    while attempts <= retries:
+        try:
+            conn = sqlite3.connect(db_path)
+            cursor = conn.cursor()
+            is_select_query = query.strip().lower().startswith("select")
+
+            if is_select_query:
+                cursor.execute(query, params or [])
+                results = cursor.fetchall()
+            else:
+                cursor.execute(query, params or [])
+                results = None
+
+            conn.commit()
+            conn.close()
+            if is_select_query:
+                return results
+
+            break  # Exit loop if query succeeds
+
+        except sqlite3.OperationalError as e:
+            if "database is locked" in str(e).lower():
+                attempts += 1
+                if attempts > retries:
+                    raise Exception(
+                        f"Database is locked after {retries} retries."
+                    ) from e
+                time.sleep(delay)  # Wait before retrying
+            else:
+                raise  # Raise other operational errors immediately
 
 
 class database:
@@ -44,8 +75,10 @@ class database:
     _dwmd = "world_mining_data.db"  # World Mining Data Database
     _dwgi = "wgi.db"  # World Governance Indicator Database
     _dbaci = "baci.db"  # Trade data from BACI HS92
+
     def __init__(self):
         pass
+
     """
     The first iteration runs the init files that creates a folder 
     "geopolrisk" in the documents folder of the operating system 
@@ -61,7 +94,9 @@ class database:
         if not os.path.exists(os.path.join(Path.home(), "Documents/geopolrisk/logs")):
             os.makedirs(os.path.join(Path.home(), "Documents/geopolrisk/logs"))
 
-        directory_databases = os.path.join(Path.home(), "Documents/geopolrisk/databases")
+        directory_databases = os.path.join(
+            Path.home(), "Documents/geopolrisk/databases"
+        )
         if not os.path.exists(
             os.path.join(Path.home(), "Documents/geopolrisk/databases")
         ):
@@ -228,7 +263,7 @@ class database:
                             """
                     # Test-Query - read the vieww
                     # query = f"""
-                    #         select 
+                    #         select
                     #         *
                     #         from v_baci_trade_with_wgi bacitab
                     #         --where cmdCode = '260400'
@@ -282,17 +317,14 @@ class database:
     regionslist["EU"] = [
         "Austria",
         "Belgium",
-        "Belgium-Luxembourg",
         "Bulgaria",
         "Croatia",
+        "Cyprus",
         "Czechia",
-        "Czechoslovakia",
         "Denmark",
         "Estonia",
         "Finland",
         "France",
-        "Fmr Dem. Rep. of Germany",
-        "Fmr Fed. Rep. of Germany",
         "Germany",
         "Greece",
         "Hungary",
@@ -312,10 +344,9 @@ class database:
         "Sweden",
     ]
 
+
 if databases == None:
-    databases = (
-        database()
-    )
+    databases = database()
 
 ###########################################################
 ## Creating a log object and file for logging the errors ##
