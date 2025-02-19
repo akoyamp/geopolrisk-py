@@ -1,15 +1,12 @@
-from geopolrisk.assessment.main import gprs_calc
-from geopolrisk.assessment.utils import regions
+import unittest, os
+from geopolrisk.tests.test_case_utils import TestGeoPolRisk
 
-NewRegions = {
-    "EFTA": ["Iceland", "Norway", "Switzerland"],
-    "NAFTA": ["Canada", "Mexico", "USA"],
-}
 
-ListofMetals = [
-    260400,
-]
-ListofCountries = ["EU"]
-ListofYear = [2022]
-regions(NewRegions)
-gprs_calc(ListofYear, ListofCountries, ListofMetals)
+def main():
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestGeoPolRisk))
+    unittest.TextTestRunner(verbosity=3).run(suite)
+
+
+if __name__ == "__main__":
+    main()

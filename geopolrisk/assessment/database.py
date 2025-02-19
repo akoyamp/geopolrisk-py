@@ -179,7 +179,7 @@ class database:
         "Salt (rock, brines, marine)",
         "Selenium",
         "Silver",
-        "Steam Coal ",
+        "Steam Coal",
         "Sulfur (elementar & industrial)",
         "Talc, Steatite & Pyrophyllite",
         "Tantalum (Ta2O5)",
