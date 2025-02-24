@@ -309,6 +309,11 @@ class database:
     #############################################################
 
     production = tables_world_mining_data
+    production["HS Code Map"] = (
+        production["HS Code Map"]
+        .loc[production["HS Code Map"]["HS Code"] != "Not Available"]
+        .dropna(subset=["Symbol"])
+    )
     baci_trade = tables_baci["baci_trade"]
     wgi = tables_wgi["Normalized"]
 

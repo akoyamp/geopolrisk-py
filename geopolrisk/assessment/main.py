@@ -19,13 +19,13 @@ from .core import *
 from .utils import *
 
 
-def gprs_calc(period: list, country: list, resource: list, region_dict={}):
+def gprs_calc(period: list, country: list, rawmaterial: list, region_dict={}):
     """
     A single aggregate function performs all calculations and exports the results as an Excel file.
     The inputs include a list of years, a list of countries,
-    and a list of resources, with an optional dictionary for defining new regions.
-    The lists can contain resource names such as 'Cobalt' and 'Lithium',
-    and country names like 'Japan' and 'Canada', or alternatively, HS codes and ISO digit codes.
+    and a list of raw materials, with an optional dictionary for defining new regions.
+    The lists should contain rawmaterial names such as 'Cobalt' and 'Lithium',
+    and can for country, names like 'Japan' and 'Canada', or ISO digit codes.
 
     For regional assessments, regions must be defined in the dictionary with country names,
     not ISO digit codes.
@@ -34,20 +34,21 @@ def gprs_calc(period: list, country: list, resource: list, region_dict={}):
         'West Europe': ['France', 'Germany', 'Italy', 'Spain', 'Portugal', 'Belgium', 'Netherlands', 'Luxembourg']
         }.
     """
+    database = mapped_baci()
     Score_list, CF_list = [], []
     hhi_list, ir_list, price_list = [], [], []
     dbid = []
     ctry_db, rm_db, period_db = [], [], []
     regions(region_dict)  # Function to define region
     for year, ctry, rm in tqdm(
-        list(itertools.product(period, country, resource)),
+        list(itertools.product(period, country, rawmaterial)),
         desc="Calculating the GeoPolRisk: ",
     ):
         if len(databases.regionslist[cvtcountry(ctry, type="Name")]) > 1:
             logging.debug("Logged - Multiregional Assessment")
             try:
                 Numerator, TotalTrade, Price = aggregateTrade(
-                    year, databases.regionslist[ctry], cvtresource(rm, type="HS")
+                    year, databases.regionslist[ctry], rm, data=database
                 )
             except ValueError:
                 logging.debug(
@@ -94,9 +95,10 @@ def gprs_calc(period: list, country: list, resource: list, region_dict={}):
                 break
             try:
                 Numerator, TotalTrade, Price = importrisk(
-                    cvtresource(rm, type="HS"),
+                    rm,
                     year,
                     databases.regionslist[cvtcountry(ctry, type="Name")],
+                    database,
                 )
             except ValueError:
                 logging.debug(
@@ -123,13 +125,9 @@ def gprs_calc(period: list, country: list, resource: list, region_dict={}):
             ir_list.append(IR)
             price_list.append(Price)
             ctry_db.append(cvtcountry(ctry, type="Name"))
-            rm_db.append(cvtresource(rm, type="Name"))
+            rm_db.append(rm)
             period_db.append(year)
-            dbid.append(
-                create_id(
-                    cvtresource(rm, type="HS"), cvtcountry(ctry, type="ISO"), year
-                )
-            )
+            dbid.append(create_id(rm, cvtcountry(ctry, type="ISO"), year))
         except Exception as e:
             logging.debug("Error while recording data for non regional assessment!", e)
     result = createresultsdf()

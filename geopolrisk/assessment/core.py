@@ -18,13 +18,13 @@ from .database import databases, logging
 from .utils import *
 
 
-def HHI(resource: Union[str, int], year: int, country: Union[str, int]):
+def HHI(rawmaterial: str, year: int, country: Union[str, int]):
     """
-    Calculates the Herfindahl-Hirschman index of production of resources
+    Calculates the Herfindahl-Hirschman index of production of raw materials
     which is normalized to the scale of 0 - 1.
     The dataframe is fetched from a utlity function.
     """
-    proddf = getProd(resource).fillna(0)
+    proddf = getProd(rawmaterial).fillna(0)
     proddf = proddf[proddf["Country_Code"] != "DELETE"]
     prod_year = proddf[str(year)].tolist()
     HHI_Num = sumproduct(prod_year, prod_year)
@@ -32,7 +32,7 @@ def HHI(resource: Union[str, int], year: int, country: Union[str, int]):
         hhi = HHI_Num / (sum(prod_year) * sum(prod_year))
     except:
         logging.debug(
-            f"Error while calculating the HHI. Resource : {resource}, year : {year}"
+            f"Error while calculating the HHI. Raw Material : {rawmaterial}, year : {year}"
         )
         raise ValueError
     if cvtcountry(country, type="Name") in proddf["Country"].tolist():
@@ -44,7 +44,7 @@ def HHI(resource: Union[str, int], year: int, country: Union[str, int]):
             )
         except:
             logging.debug(
-                f"Error while extracting the production quantity, Resource : {resource}, Year: {year}, Country: {country} "
+                f"Error while extracting the production quantity, Raw Material : {rawmaterial}, Year: {year}, Country: {country} "
             )
             raise ValueError
     else:
@@ -61,14 +61,14 @@ def HHI(resource: Union[str, int], year: int, country: Union[str, int]):
         ProdQty = ProdQty * 0.0008
 
     """
-    The output includes the production quantity of a resource for a country in a given year and the Herfindahl-Hirschman Indexfor that year.
+    The output includes the production quantity of a raw material for a country in a given year and the Herfindahl-Hirschman Indexfor that year.
     'ProdQty' : float
     'hhi': float
     """
     return ProdQty, hhi
 
 
-def importrisk(resource: int, year: int, country: list):
+def importrisk(rawmaterial: str, year: int, country: list, data):
     """
     The second part of the equation of the GeoPolRisk method is referred to as 'import risk'.
     This involves weighting the import quantity with the political stability score.
@@ -93,8 +93,8 @@ def importrisk(resource: int, year: int, country: list):
         tradedf = getbacidata(
             year,
             cvtcountry(country[0], type="ISO"),
-            resource,
-            data=databases.baci_trade,
+            rawmaterial,
+            data,
         )  # Dataframe from the utility function
         QTY = tradedf["qty"].astype(float).tolist()
         WGI = tradedf["partnerWGI"].apply(wgi_func).astype(float).tolist()
@@ -105,17 +105,17 @@ def importrisk(resource: int, year: int, country: list):
             Numerator = sumproduct(QTY, WGI)
         except:
             logging.debug(
-                f"Error while making calculations. Resource: {resource}, Country: {country}, Year: {year}"
+                f"Error while making calculations. Raw Material: {rawmaterial}, Country: {country}, Year: {year}"
             )
             raise ValueError
     else:
         try:
             Numerator, TotalTrade, Price = aggregateTrade(
-                year, country, resource, data=databases.baci_trade
+                year, country, rawmaterial, data
             )
-        except:
+        except Exception as e:
             logging.debug(
-                f"The inputs for calculating the 'import risk' dont match, Country: {country}"
+                f"The inputs for calculating the 'import risk' dont match, Country: {country} + Error :{e}"
             )
 
     """
@@ -126,7 +126,7 @@ def importrisk(resource: int, year: int, country: list):
     return Numerator, TotalTrade, Price
 
 
-def importrisk_company(resource: int, year: int):
+def importrisk_company(rawmaterial: int, year: int):
     """
     The 'import risk' for a company differs from that of the country's.
     This data is provided in a template in the output folder.
@@ -134,7 +134,7 @@ def importrisk_company(resource: int, year: int):
     usable format similar to that of the country-level data.
     """
     tradedf = transformdata()
-    df_query = f"(period == {year})  & (cmdCode == {resource})"
+    df_query = f"(period == {year})  & (cmdCode == {rawmaterial})"
     data = tradedf.query(df_query)
     QTY = data["qty"].tolist()
     WGI = data["partnerWGI"].tolist()
@@ -145,7 +145,7 @@ def importrisk_company(resource: int, year: int):
         Numerator = sumproduct(QTY, WGI)
     except:
         logging.debug(
-            f"Error while making calculations. Resource: {resource}, Country: Company, Year: {year}"
+            f"Error while making calculations. Raw Material: {rawmaterial}, Country: Company, Year: {year}"
         )
         raise ValueError
     """
