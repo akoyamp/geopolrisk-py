@@ -20,7 +20,7 @@ from .utils import *
 
 def HHI(rawmaterial: str, year: int, country: Union[str, int]):
     """
-    Calculates the Herfindahl-Hirschman index of production of raw materials
+    Calculates the Herfindahl-Hirschman index of production of raw materials.
     which is normalized to the scale of 0 - 1.
     The dataframe is fetched from a utlity function.
     """
@@ -35,11 +35,11 @@ def HHI(rawmaterial: str, year: int, country: Union[str, int]):
             f"Error while calculating the HHI. Raw Material : {rawmaterial}, year : {year}"
         )
         raise ValueError
-    if cvtcountry(country, type="Name") in proddf["Country"].tolist():
+    if cvtcountry(country, type="ISO") in proddf["Country_Code"].astype(int).tolist():
         try:
             ProdQty = float(
                 proddf.loc[
-                    proddf["Country"] == cvtcountry(country, type="Name"), str(year)
+                    proddf["Country_Code"].astype(int) == cvtcountry(country, type="ISO"), str(year)
                 ].iloc[0]
             )
         except:
