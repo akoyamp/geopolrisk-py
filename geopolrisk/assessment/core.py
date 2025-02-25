@@ -96,18 +96,24 @@ def importrisk(rawmaterial: str, year: int, country: list, data):
             rawmaterial,
             data,
         )  # Dataframe from the utility function
-        QTY = tradedf["qty"].astype(float).tolist()
-        WGI = tradedf["partnerWGI"].apply(wgi_func).astype(float).tolist()
-        VAL = tradedf["cifvalue"].astype(float).tolist()
-        try:
-            Price = sum(VAL) / sum(QTY)
-            TotalTrade = sum(QTY)
-            Numerator = sumproduct(QTY, WGI)
-        except:
+        if tradedf != None:
+            QTY = tradedf["qty"].astype(float).tolist()
+            WGI = tradedf["partnerWGI"].apply(wgi_func).astype(float).tolist()
+            VAL = tradedf["cifvalue"].astype(float).tolist()
+            try:
+                Price = sum(VAL) / sum(QTY)
+                TotalTrade = sum(QTY)
+                Numerator = sumproduct(QTY, WGI)
+            except:
+                logging.debug(
+                    f"Error while making calculations. Raw Material: {rawmaterial}, Country: {country}, Year: {year}"
+                )
+                raise ValueError
+        else:
             logging.debug(
-                f"Error while making calculations. Raw Material: {rawmaterial}, Country: {country}, Year: {year}"
+                f"Data not available for the given inputs, Raw Material: {rawmaterial}, Country: {country}, Year: {year}"
             )
-            raise ValueError
+            Numerator, TotalTrade, Price = 0, 0, 0
     else:
         try:
             Numerator, TotalTrade, Price = aggregateTrade(
@@ -170,6 +176,7 @@ def GeoPolRisk(Numerator, TotalTrade, Price, ProdQty, hhi):
         logging.debug(
             f"Check the Numerator and Denominator. Numerator: {Numerator}, Denominator: {Denominator}"
         )
+        WTA = 0
     Score = hhi * WTA
     CF_Cu = 0.409412948  # Average CF of copper for OECD countries for a period from 2017 - 2021
     CF = (Score * Price) / CF_Cu

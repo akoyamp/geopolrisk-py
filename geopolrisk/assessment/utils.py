@@ -229,8 +229,14 @@ def getbacidata(period: int, country: int, rawmaterial: str, data):
     """
     get the baci-trade-data from the baci_trade dataframe
     """
-    df_query = f"(period == {period}) & (reporterCode == {country}) & (rawMaterial == '{rawmaterial}')"
-    baci_data = data.query(df_query)
+    try:
+        df_query = f"(period == {period}) & (reporterCode == {country}) & (rawMaterial == '{rawmaterial}')"
+        baci_data = data.query(df_query)
+    except Exception as e:
+        logging.debug(
+            f"Error when querying baci database - issue with -- {e}"
+        )
+        return None
     """
     The dataframe is structured as follows:
     'period' -> The year of the trade recorded
@@ -246,16 +252,16 @@ def getbacidata(period: int, country: int, rawmaterial: str, data):
     'partnerWGI' -> The WGI political stability and absence of violence indicator (Normalized) for the partner country
     'Raw Material' -> The Reference name of the commodity traded
     """
-    baci_data.loc[:, "qty"] = baci_data["qty"].apply(replace_func).astype(float)
-    baci_data.loc[:, "cifvalue"] = (
-        baci_data["cifvalue"].apply(replace_func).astype(float)
-    )
     if baci_data is None or isinstance(baci_data, type(None)) or len(baci_data) == 0:
         logging.debug(
-            f"Problem with get the baci-data - {baci_data} - period == {period} - reporterCode == {country} - Raw Material == '{rawmaterial}'"
+            f"baci data error: - {baci_data} - period == {period} - reporterCode == {country} - Raw Material == '{rawmaterial}'"
         )
-        baci_data = None
-    return baci_data
+        return None
+    else:
+        baci_data.loc[:, "qty"] = baci_data["qty"].apply(replace_func).astype(float)
+        baci_data.loc[:, "cifvalue"] = (
+        baci_data["cifvalue"].apply(replace_func).astype(float))
+        return baci_data
 
 
 def aggregateTrade(period: int, country: list, rawmaterial: str, data):
@@ -298,7 +304,13 @@ def aggregateTrade(period: int, country: list, rawmaterial: str, data):
         SUMVAL.append(sum(VAL))
         SUMNUM.append(sumproduct(QTY, WGI))
 
-    Price = sum(SUMVAL) / sum(SUMQTY)
+    if sum(SUMQTY) == 0:
+        logging.debug(
+            f"Total trade for the region is 0, Country: {country}, Raw Material: {rawmaterial}, Year: {period}"
+        )
+        Price = 0
+    else:
+        Price = sum(SUMVAL) / sum(SUMQTY)
     """
     The function returns the numerator of the import risk, 
     The total trade for the region,
