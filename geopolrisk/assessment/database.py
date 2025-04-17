@@ -259,7 +259,7 @@ class database:
 	                            REPLACE(TRIM(bacitab.v),'NA', 0) as cifvalue,
                                 (SELECT vwyc.wgi FROM v_wgi_year_country vwyc WHERE bacitab.t = vwyc.Year and bacitab.i = vwyc.country_code) AS partnerWGI
                             from baci_trade bacitab
-                              --where bacitab.k = '260400'
+                              -- where bacitab.k IN ('760110', '260400') -- only for a better test performance
                             """
                     # Test-Query - read the vieww
                     # query = f"""
@@ -309,11 +309,15 @@ class database:
     #############################################################
 
     production = tables_world_mining_data
-    production["HS Code Map"] = (
-        production["HS Code Map"]
-        .loc[production["HS Code Map"]["HS Code"] != "Not Available"]
-        .dropna(subset=["Symbol"])
-    )
+    # production["HS Code Map"] = (
+    #     production["HS Code Map"]
+    #     .loc[production["HS Code Map"]["HS Code"] != "Not Available"]
+    #     .dropna(subset=["Symbol"])
+    # )
+    filtered_production = production["HS Code Map"].loc[production["HS Code Map"]["HS Code"] != "Not Available"]
+    filtered_production = filtered_production.dropna(subset=["Symbol"])
+    production["HS Code Map"] = filtered_production
+    
     baci_trade = tables_baci["baci_trade"]
     wgi = tables_wgi["Normalized"]
 

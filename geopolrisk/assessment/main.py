@@ -151,3 +151,4 @@ def gprs_calc(period: list, country: list, rawmaterial: list, region_dict={}):
         logging.debug(
             "Error while recording data into dataframe for regional assessment!", e
         )
+    return result

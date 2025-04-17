@@ -33,6 +33,45 @@ def replace_func(x):
         return 0
     return x
 
+def cvtresource(resource, type="HS"):
+    # Function to convert resource inputs, HS to name or name to HS
+    """
+    Type can be either 'HS' or 'Name'
+    """
+    MapHSdf = databases.production["HS Code Map"]
+    if type == "HS":
+        if resource in MapHSdf["Reference ID"].tolist():
+            return int(MapHSdf.loc[MapHSdf["Reference ID"] == resource, "HS Code"].iloc[0])
+        else:
+            try:
+                resource = int(resource)
+            except Exception as e:
+                logging.debug(
+                    f"To HS: Entered raw material {resource} does not exist in our database!, {e}"
+                )
+                raise ValueError
+            if str(resource) in MapHSdf["HS Code"].tolist():
+                return int(resource)
+
+    elif type == "Name":
+
+        try:
+            resource = int(resource)
+        except:
+            # print(f"Entered raw material '{resource}' does not exist in our database! Please enter numerical inputs")
+            logging.debug(
+                f"Entered raw material '{resource}' does not exist in our database! Please enter numerical inputs"
+            )
+            resource = str(resource)
+        if str(resource) in MapHSdf["HS Code"].astype(str).tolist():
+            return MapHSdf.loc[MapHSdf["HS Code"] == str(resource), "Reference ID"].iloc[0]
+        elif resource in MapHSdf["Reference ID"].tolist():
+            return resource
+        else:
+            logging.debug(
+                f"To Name: Entered raw material '{resource}' does not exist in our database!"
+            )
+            raise ValueError
 
 def cvtcountry(country, type="ISO"):
     # Function to convert country inputs, ISO to name or name to ISO
@@ -89,25 +128,6 @@ def sumproduct(A: list, B: list):
 
 def create_id(HS, ISO, Year):
     return str(HS) + str(ISO) + str(Year)
-
-
-# 2024-08-23 - this function is not being used - deleted
-# Verify if the calculation is already stored in the database to avoid recalculation
-# def sqlverify(DBID):
-#     try:
-#         sql = f"SELECT * FROM recordData WHERE id = '{DBID}';"
-#         row = execute_query(
-#             f"SELECT * FROM recordData WHERE id = '{DBID}';",
-#             db_path=db,
-#         )
-#     except Exception as e:
-#         logging.debug(f"Database error in sqlverify - {e}, {sql}")
-#         row = None
-#     if not row:
-#         return False
-#     else:
-#         return True
-
 
 def createresultsdf():
     dbpath = databases.directory + "/output/" + databases.Output
@@ -230,7 +250,7 @@ def getbacidata(period: int, country: int, rawmaterial: str, data):
     get the baci-trade-data from the baci_trade dataframe
     """
     try:
-        df_query = f"(period == {period}) & (reporterCode == {country}) & (rawMaterial == '{rawmaterial}')"
+        df_query = f"(period == '{period}') & (reporterCode == '{country}') & (rawMaterial == {rawmaterial})"
         baci_data = data.query(df_query)
     except Exception as e:
         logging.debug(
@@ -326,8 +346,6 @@ def aggregateTrade(period: int, country: list, rawmaterial: str, data):
 
 
 def transformdata(mode="prod"):
-    def cvtresource():
-        pass
 
     folder_path = databases.directory + "/databases"
     file_name = "Company data.xlsx"
@@ -427,8 +445,8 @@ def getProd(rawmaterial):
     'Symbol' -> Element equivalent to the raw material
     """
     Mapdf = databases.production["HS Code Map"]
-    if rawmaterial in Mapdf["Reference ID"].tolist():
-        MappedTableName = Mapdf.loc[Mapdf["Reference ID"] == rawmaterial, "Sheet_name"]
+    if str(rawmaterial) in Mapdf["HS Code"].tolist():    
+        MappedTableName = Mapdf.query(f'`HS Code` == "{rawmaterial}"')['Sheet_name'].item()
     else:
         print("Entered raw material does not exist in our database!")
         logging.debug(
@@ -447,7 +465,7 @@ def getProd(rawmaterial):
     'data_source' -> The data source of each value point
     """
 
-    result = databases.production[MappedTableName.iloc[0]]
+    result = databases.production[MappedTableName]
     return result
 
 
