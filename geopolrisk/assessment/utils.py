@@ -250,7 +250,7 @@ def getbacidata(period: int, country: int, rawmaterial: str, data):
     get the baci-trade-data from the baci_trade dataframe
     """
     try:
-        df_query = f"(period == '{period}') & (reporterCode == '{country}') & (rawMaterial == {rawmaterial})"
+        df_query = f"(period == '{period}') & (reporterCode == '{country}') & (cmdCode == {rawmaterial})"
         baci_data = data.query(df_query)
     except Exception as e:
         logging.debug(

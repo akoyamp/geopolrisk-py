@@ -26,9 +26,9 @@ def main():
     suite = unittest.TestSuite()
 
     # Add all test cases to the test suite
-    # suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDatabaseModule))
-    # suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUtilModul))
-    # suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMainModul))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDatabaseModule))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUtilModul))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMainModul))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCoreModul))
     
     # Run the test suite

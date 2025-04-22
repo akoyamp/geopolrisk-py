@@ -42,7 +42,7 @@ class TestCoreModul(unittest.TestCase):
         self.assertIsInstance(price, float)
         
         # Check if total trade is greater than zero
-        self.assertGreater(total_trade, 0)
+        self.assertGreater(total_trade, 0.0)
 
     def test_importrisk_invalid_country(self):
         """Test importrisk function with an invalid country to ensure it raises ValueError."""

@@ -90,13 +90,15 @@ def importrisk(rawmaterial: str, year: int, country: list, data):
                 return x
 
     if databases.regional != True:
+        if not cvtcountry(country[0], type="ISO"):
+            raise ValueError("Invalid country")
         tradedf = getbacidata(
             year,
             cvtcountry(country[0], type="ISO"),
             rawmaterial,
             data,
         )  # Dataframe from the utility function
-        if tradedf != None:
+        if tradedf is not None and not tradedf.empty:
             QTY = tradedf["qty"].astype(float).tolist()
             WGI = tradedf["partnerWGI"].apply(wgi_func).astype(float).tolist()
             VAL = tradedf["cifvalue"].astype(float).tolist()
@@ -113,7 +115,7 @@ def importrisk(rawmaterial: str, year: int, country: list, data):
             logging.debug(
                 f"Data not available for the given inputs, Raw Material: {rawmaterial}, Country: {country}, Year: {year}"
             )
-            Numerator, TotalTrade, Price = 0, 0, 0
+            Numerator, TotalTrade, Price = 0.0, 0.0, 0.0
     else:
         try:
             Numerator, TotalTrade, Price = aggregateTrade(

@@ -259,7 +259,7 @@ class database:
 	                            REPLACE(TRIM(bacitab.v),'NA', 0) as cifvalue,
                                 (SELECT vwyc.wgi FROM v_wgi_year_country vwyc WHERE bacitab.t = vwyc.Year and bacitab.i = vwyc.country_code) AS partnerWGI
                             from baci_trade bacitab
-                              -- where bacitab.k IN ('760110', '260400') -- only for a better test performance
+                                -- where bacitab.k IN ('760110', '260400') -- only for a better test performance
                             """
                     # Test-Query - read the vieww
                     # query = f"""
