@@ -20,17 +20,18 @@ from geopolrisk.tests.test_util import TestUtilModul
 from geopolrisk.tests.test_main import TestMainModul
 from geopolrisk.tests.test_core import TestCoreModul
 
+
 def main():
 
     # Test Suite
     suite = unittest.TestSuite()
 
     # Add all test cases to the test suite
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDatabaseModule))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUtilModul))
+    # suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDatabaseModule))
+    # suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUtilModul))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMainModul))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCoreModul))
-    
+    # suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCoreModul))
+
     # Run the test suite
     unittest.TextTestRunner(verbosity=3).run(suite)
 

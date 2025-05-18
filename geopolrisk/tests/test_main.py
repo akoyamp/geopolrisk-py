@@ -56,6 +56,7 @@ class TestMainModul(unittest.TestCase):
         # Assuming databases.regional is True
         databases.regional = True
         result = gprs_calc(self.period, self.country, self.resource, self.region_dict)
+        databases.regional = False
         
         # Check if the result is a DataFrame and has the expected columns
         self.assertIsNotNone(result)

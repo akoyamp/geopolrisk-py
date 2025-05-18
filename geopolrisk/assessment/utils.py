@@ -34,6 +34,14 @@ def replace_func(x):
     return x
 
 
+def format_value(df, col, value):
+    """function that returns the value with or without quotation marks depending on the column type"""
+    if df.dtypes[col] == "object":
+        return f"'{value}'"
+    else:
+        return str(value)
+
+
 def cvtcountry(country, type="ISO"):
     # Function to convert country inputs, ISO to name or name to ISO
     """
@@ -89,24 +97,6 @@ def sumproduct(A: list, B: list):
 
 def create_id(HS, ISO, Year):
     return str(HS) + str(ISO) + str(Year)
-
-
-# 2024-08-23 - this function is not being used - deleted
-# Verify if the calculation is already stored in the database to avoid recalculation
-# def sqlverify(DBID):
-#     try:
-#         sql = f"SELECT * FROM recordData WHERE id = '{DBID}';"
-#         row = execute_query(
-#             f"SELECT * FROM recordData WHERE id = '{DBID}';",
-#             db_path=db,
-#         )
-#     except Exception as e:
-#         logging.debug(f"Database error in sqlverify - {e}, {sql}")
-#         row = None
-#     if not row:
-#         return False
-#     else:
-#         return True
 
 
 def createresultsdf():
@@ -233,7 +223,9 @@ def getbacidata(period: int, country: int, rawmaterial: str, data):
         df_query = f"(period == {period}) & (reporterCode == {country}) & (rawMaterial == '{rawmaterial}')"
         baci_data = data.query(df_query)
     except Exception as e:
-        logging.debug(f"Error when querying baci database - issue with -- {e}")
+        logging.debug(
+            f"Error when querying baci database - issue with -- {e} - Data: {country}, {rawmaterial}, {period}"
+        )
         return None
     """
     The dataframe is structured as follows:
@@ -348,9 +340,7 @@ def transformdata(mode="prod"):
     'Additional Notes': Include any additional relevant information.
     """
     Data = pd.read_excel(file_path, sheet_name=excel_sheet_name)
-    HS_Code = []
-    for resource in Data["Metal"].tolist():
-        HS_Code.append(cvtresource(resource, type="HS"))
+    HS_Code = Data["Metal"].tolist()
     ISO = []
     for country in Data["Country of Origin"].tolist():
         ISO.append(cvtcountry(country, type="ISO"))
@@ -394,7 +384,7 @@ def transformdata(mode="prod"):
     Data["reporterISO"] = [999] * len(ISO)
 
     Data.columns = [
-        "Commodity",
+        "rawMaterial",
         "partnerDesc",
         "qty",
         "cifvalue",

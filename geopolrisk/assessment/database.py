@@ -94,13 +94,18 @@ class database:
         if not os.path.exists(os.path.join(Path.home(), "Documents/geopolrisk/logs")):
             os.makedirs(os.path.join(Path.home(), "Documents/geopolrisk/logs"))
 
-        directory_databases = os.path.join(
-            Path.home(), "Documents/geopolrisk/databases"
-        )
+        # directory_databases = os.path.join(
+        #     Path.home(), "Documents/geopolrisk/databases"
+        # )
         if not os.path.exists(
             os.path.join(Path.home(), "Documents/geopolrisk/databases")
         ):
             os.makedirs(os.path.join(Path.home(), "Documents/geopolrisk/databases"))
+
+        # path to the database files - "lib" directory in the parent directory of the current file
+        directory_databases = os.path.join(
+            Path(__file__).parent.resolve().parent, "lib"
+        )
 
         if not os.path.exists(os.path.join(Path.home(), "Documents/geopolrisk/output")):
             os.makedirs(os.path.join(Path.home(), "Documents/geopolrisk/output"))
@@ -108,15 +113,15 @@ class database:
         print(f"Unable to create directories {e}")
         raise FileNotFoundError
 
-    if not os.path.isfile(os.path.join(directory + "/databases/", _dwmd)):
+    if not os.path.isfile(os.path.join(directory_databases, _dwmd)):
         print(
             f"Database file {_dwmd} not found! Copy the required database files into the folder {directory_databases}."
         )
-    if not os.path.isfile(os.path.join(directory + "/databases/", _dwgi)):
+    if not os.path.isfile(os.path.join(directory_databases, _dwgi)):
         print(
             f"Database file {_dwgi} not found! Copy the required database files into the folder {directory_databases}."
         )
-    if not os.path.isfile(os.path.join(directory + "/databases/", _dbaci)):
+    if not os.path.isfile(os.path.join(directory_databases, _dbaci)):
         print(
             f"Database file {_dbaci} not found! Copy the required database files into the folder {directory_databases}."
         )
@@ -259,7 +264,7 @@ class database:
 	                            REPLACE(TRIM(bacitab.v),'NA', 0) as cifvalue,
                                 (SELECT vwyc.wgi FROM v_wgi_year_country vwyc WHERE bacitab.t = vwyc.Year and bacitab.i = vwyc.country_code) AS partnerWGI
                             from baci_trade bacitab
-                              --where bacitab.k = '260400'
+                                -- where bacitab.k IN ('760110', '260400') -- only for a better test performance
                             """
                     # Test-Query - read the vieww
                     # query = f"""
@@ -279,7 +284,7 @@ class database:
         return tables
 
     # Check if the world_mining_data.db database exists and fetch the required tables
-    Database_wmd_path = directory + "/databases/" + _dwmd
+    Database_wmd_path = os.path.join(directory_databases, _dwmd)
     if check_db_tables(Database_wmd_path, Tables_world_mining_data):
         tables_world_mining_data = extract_tables_to_df(
             Database_wmd_path, Tables_world_mining_data
@@ -289,7 +294,7 @@ class database:
         raise (FileNotFoundError)
 
     # Check if the wgi.db database exists and fetch the required tables
-    Database_wgi_path = directory + "/databases/" + _dwgi
+    Database_wgi_path = os.path.join(directory_databases, _dwgi)
     if check_db_tables(Database_wgi_path, Tables_wgi):
         tables_wgi = extract_tables_to_df(Database_wgi_path, Tables_wgi)
     else:
@@ -297,7 +302,7 @@ class database:
         raise (FileNotFoundError)
 
     # Check if the baci.db exists and fetch the required tables
-    Database_baci_path = directory + "/databases/" + _dbaci
+    Database_baci_path = os.path.join(directory_databases, _dbaci)
     if check_db_tables(Database_baci_path, Tables_baci):
         tables_baci = extract_tables_to_df(Database_baci_path, Tables_baci)
     else:
@@ -309,11 +314,17 @@ class database:
     #############################################################
 
     production = tables_world_mining_data
-    production["HS Code Map"] = (
-        production["HS Code Map"]
-        .loc[production["HS Code Map"]["HS Code"] != "Not Available"]
-        .dropna(subset=["Symbol"])
-    )
+    # production["HS Code Map"] = (
+    #     production["HS Code Map"]
+    #     .loc[production["HS Code Map"]["HS Code"] != "Not Available"]
+    #     .dropna(subset=["Symbol"])
+    # )
+    filtered_production = production["HS Code Map"].loc[
+        production["HS Code Map"]["HS Code"] != "Not Available"
+    ]
+    filtered_production = filtered_production.dropna(subset=["Symbol"])
+    production["HS Code Map"] = filtered_production
+
     baci_trade = tables_baci["baci_trade"]
     wgi = tables_wgi["Normalized"]
 

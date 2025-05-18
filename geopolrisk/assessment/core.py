@@ -70,7 +70,7 @@ def HHI(rawmaterial: str, year: int, country: Union[str, int]):
     return ProdQty, hhi
 
 
-def importrisk(rawmaterial: str, year: int, country: list, data):
+def importrisk(rawmaterial: str, year: int, country: str, data):
     """
     The second part of the equation of the GeoPolRisk method is referred to as 'import risk'.
     This involves weighting the import quantity with the political stability score.
@@ -91,14 +91,18 @@ def importrisk(rawmaterial: str, year: int, country: list, data):
             else:
                 return x
 
+    Numerator, TotalTrade, Price = 0.0, 0.0, 0.0
+
     if databases.regional != True:
+        if not cvtcountry(country, type="ISO"):
+            raise ValueError("Invalid country")
         tradedf = getbacidata(
             year,
-            cvtcountry(country[0], type="ISO"),
+            cvtcountry(country, type="ISO"),
             rawmaterial,
             data,
         )  # Dataframe from the utility function
-        if tradedf != None:
+        if tradedf is not None and not tradedf.empty:
             QTY = tradedf["qty"].astype(float).tolist()
             WGI = tradedf["partnerWGI"].apply(wgi_func).astype(float).tolist()
             VAL = tradedf["cifvalue"].astype(float).tolist()
@@ -115,7 +119,7 @@ def importrisk(rawmaterial: str, year: int, country: list, data):
             logging.debug(
                 f"Data not available for the given inputs, Raw Material: {rawmaterial}, Country: {country}, Year: {year}"
             )
-            Numerator, TotalTrade, Price = 0, 0, 0
+            Numerator, TotalTrade, Price = 0.0, 0.0, 0.0
     else:
         try:
             Numerator, TotalTrade, Price = aggregateTrade(
@@ -134,7 +138,7 @@ def importrisk(rawmaterial: str, year: int, country: list, data):
     return Numerator, TotalTrade, Price
 
 
-def importrisk_company(rawmaterial: int, year: int):
+def importrisk_company(rawmaterial: str, year: int):
     """
     The 'import risk' for a company differs from that of the country's.
     This data is provided in a template in the output folder.
@@ -142,11 +146,13 @@ def importrisk_company(rawmaterial: int, year: int):
     usable format similar to that of the country-level data.
     """
     tradedf = transformdata()
-    df_query = f"(period == {year})  & (cmdCode == {rawmaterial})"
+    df_query = f"(period == {year}) & (rawMaterial == '{rawmaterial}')"
+
     data = tradedf.query(df_query)
-    QTY = data["qty"].tolist()
-    WGI = data["partnerWGI"].tolist()
-    VAL = data["cifvalue"].tolist()
+    print(data)
+    QTY = data["qty"].astype(float).tolist()
+    WGI = data["partnerWGI"].astype(float).tolist()
+    VAL = data["cifvalue"].astype(float).tolist()
     try:
         Price = sum(VAL) / sum(QTY)
         TotalTrade = sum(QTY)
