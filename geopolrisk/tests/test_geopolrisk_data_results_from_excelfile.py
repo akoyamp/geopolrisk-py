@@ -78,8 +78,6 @@ class TestGeoPolRiskPy(unittest.TestCase):
     def filter_trade_data(self, year: int, importer_code: int, rawmaterial: str):
         """
         Filters the trade data DataFrame for a given year, importing country, and raw material.
-        The function matches the HS code of the raw material with the semicolon-separated list
-        of HS codes in the 'Resource HSCODE' column and returns only the matching rows.
 
         Parameters:
             year (int): The year to filter by.
