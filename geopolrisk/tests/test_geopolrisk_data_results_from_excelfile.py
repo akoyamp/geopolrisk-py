@@ -76,19 +76,29 @@ class TestGeoPolRiskPy(unittest.TestCase):
         return self.wgi_data.get((country_code, year), np.nan)
 
     def filter_trade_data(self, year: int, importer_code: int, rawmaterial: str):
-        hs_code = str(self.df_geopolrisk.loc[self.df_geopolrisk['Raw Material'] == rawmaterial, 'HS CODE'].iloc[0])
+        """
+        Filters the trade data DataFrame for a given year, importing country, and raw material.
+        The function matches the HS code of the raw material with the semicolon-separated list
+        of HS codes in the 'Resource HSCODE' column and returns only the matching rows.
 
-        def hs_code_match(cell):
-            codes = str(cell).split(";")
-            return hs_code in codes
+        Parameters:
+            year (int): The year to filter by.
+            importer_code (int): The code of the importing country.
+            rawmaterial (str): The raw material name (used to look up the HS code).
 
-        df_filtered = self.df_trade[
+        Returns:
+            pd.DataFrame: Filtered DataFrame containing only rows matching the criteria.
+        """
+
+        # Filter for the specified year and importing country
+        df = self.df_trade[
             (self.df_trade['Year'] == year) &
             (self.df_trade['Importing Country'] == importer_code) &
-            (self.df_trade['Resource HSCODE'].apply(hs_code_match))
-        ]
-        return df_filtered
-    
+            (self.df_trade['rawMaterial'] == rawmaterial)
+        ].copy()
+
+        return df
+
     def map_trade_data_columns(self, df_excel: pd.DataFrame) -> pd.DataFrame:
         """
         Maps the columns from the Excel 'Trade Data' sheet to the expected
@@ -133,7 +143,6 @@ class TestGeoPolRiskPy(unittest.TestCase):
 
         return df
 
-
     def test_HHI_function(self):
         for rawmaterial in ["Nickel", "Manganese", "Graphite"]:
             df_subset = self.df_geopolrisk[self.df_geopolrisk['Raw Material'] == rawmaterial]
@@ -141,11 +150,17 @@ class TestGeoPolRiskPy(unittest.TestCase):
                 year = int(row['Year'])
                 country_code = int(row['Importer Code'])
                 result = HHI(rawmaterial=rawmaterial, year=year, country=country_code)
+                
                 prodqty = result[0]
                 hhi = result[1]
+                
                 expected_prodqty = row['Domestic Production']
                 expected_hhi = row['HHI']
+                
+                print("\n")
+                print(f"compare ProdQty: calculatete by geopolrisk: {prodqty} value from Excel-File: {expected_prodqty} - for {rawmaterial} {year} {country_code}")
                 self.assertAlmostEqual(prodqty, expected_prodqty, places=2, msg=f"ProdQty mismatch for {rawmaterial} {year} {country_code}")
+                print(f"compare HHI: calculatete by geopolrisk: {hhi} value from Excel-File: {expected_hhi} - for {rawmaterial} {year} {country_code}")
                 self.assertAlmostEqual(hhi, expected_hhi, places=6, msg=f"HHI mismatch for {rawmaterial} {year} {country_code}")
 
     def test_importrisk_function(self):
@@ -163,16 +178,22 @@ class TestGeoPolRiskPy(unittest.TestCase):
                     trade_data_arg = self.map_trade_data_columns(pd.DataFrame(columns=self.df_trade.columns))
                 # hscode = str(row['HS CODE'])
                 result = importrisk(rawmaterial=rawmaterial, year=year, country=importer_code, data=trade_data_arg)
+                
                 numerator = result[0]
                 totaltrade = result[1]
                 price = result[2]
+
                 expected_numerator = row['Numerator']
                 expected_totaltrade = row['Total Trade']
                 expected_price = row['Price']
+                
+                print("\n")
+                print(f"compare Numerator: calculatete by geopolrisk: {numerator} value from Excel-File: {expected_numerator} - for {rawmaterial} {year} {importer_code}")
                 self.assertAlmostEqual(numerator, expected_numerator, places=5, msg=f"Numerator mismatch for {rawmaterial} {year} {importer_code}")
+                print(f"compare TotalTrade: calculatete by geopolrisk: {totaltrade} value from Excel-File: {expected_totaltrade} - for {rawmaterial} {year} {importer_code}")
                 self.assertAlmostEqual(totaltrade, expected_totaltrade, places=5, msg=f"TotalTrade mismatch for {rawmaterial} {year} {importer_code}")
+                print(f"compare Price: calculatete by geopolrisk: {price} value from Excel-File: {expected_price} - for {rawmaterial} {year} {importer_code}")
                 self.assertAlmostEqual(price, expected_price, places=2, msg=f"Price mismatch for {rawmaterial} {year} {importer_code}")
-
 
     def test_GeoPolRisk_function(self):
         for rawmaterial in ["Nickel", "Manganese", "Graphite"]:
@@ -199,14 +220,21 @@ class TestGeoPolRiskPy(unittest.TestCase):
                     hhi=hhi_result[1]
                 )
 
+                score = geopol_result[0]
+                cf = geopol_result[1]
+                wta = geopol_result[2]
+                                
                 expected_score = row['GeoPolRisk Score']
                 expected_cf = row['CF']
                 expected_wta = row['Import Risk (WTA)']
 
-                self.assertAlmostEqual(geopol_result[0], expected_score, places=3, msg=f"GeoPolRisk Score mismatch for {rawmaterial} {year} {importer_code}")
-                self.assertAlmostEqual(geopol_result[1], expected_cf, places=2, msg=f"CF mismatch for {rawmaterial} {year} {importer_code}")
-                self.assertAlmostEqual(geopol_result[2], expected_wta, places=3, msg=f"WTA mismatch for {rawmaterial} {year} {importer_code}")
-
+                print("\n")
+                print(f"compare GeoPolRisk Score: calculatete by geopolrisk: {score} value from Excel-File: {expected_score} - for {rawmaterial} {year} {importer_code}")
+                self.assertAlmostEqual(score, expected_score, places=3, msg=f"GeoPolRisk Score mismatch for {rawmaterial} {year} {importer_code}")
+                print(f"compare CF: calculatete by geopolrisk: {cf} value from Excel-File: {expected_cf} - for {rawmaterial} {year} {importer_code}")
+                self.assertAlmostEqual(cf, expected_cf, places=2, msg=f"CF mismatch for {rawmaterial} {year} {importer_code}")
+                print(f"compare WTA Score: calculatete by geopolrisk: {wta} value from Excel-File: {expected_wta} - for {rawmaterial} {year} {importer_code}")
+                self.assertAlmostEqual(wta, expected_wta, places=3, msg=f"WTA mismatch for {rawmaterial} {year} {importer_code}")
 
 if __name__ == "__main__":
     unittest.main()
