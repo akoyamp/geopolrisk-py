@@ -19,7 +19,10 @@ from geopolrisk.tests.test_database import TestDatabaseModule
 from geopolrisk.tests.test_util import TestUtilModul
 from geopolrisk.tests.test_main import TestMainModul
 from geopolrisk.tests.test_core import TestCoreModul
-from geopolrisk.tests.test_geopolrisk_data_results_from_excelfile import TestGeoPolRiskPy
+from geopolrisk.tests.test_geopolrisk_data_results_from_excelfile import (
+    TestGeoPolRiskPy,
+)
+
 
 def main():
 
@@ -27,13 +30,12 @@ def main():
     suite = unittest.TestSuite()
 
     # Add all test cases to the test suite
-    # suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCoreModul))
-    # suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDatabaseModule))
-    # suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMainModul))
-    # suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUtilModul))  
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCoreModul))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDatabaseModule))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMainModul))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUtilModul))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestGeoPolRiskPy))
 
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestGeoPolRiskPy))  
-    
     # Run the test suite
     unittest.TextTestRunner(verbosity=3).run(suite)
 
