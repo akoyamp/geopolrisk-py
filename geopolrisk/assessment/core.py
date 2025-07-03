@@ -17,6 +17,9 @@ from typing import Union
 from .database import databases, logging
 from .utils import *
 
+if len(databases.regionslist) < 257:
+    regions()
+
 
 def HHI(rawmaterial: str, year: int, country: Union[str, int]):
     """
@@ -26,7 +29,14 @@ def HHI(rawmaterial: str, year: int, country: Union[str, int]):
     """
     proddf = getProd(rawmaterial).fillna(0)
     proddf = proddf[proddf["Country_Code"] != "DELETE"]
-    prod_year = proddf[str(year)].tolist()
+
+    try:
+        prod_year = proddf[str(year)].astype(int).tolist()
+    except Exception as e:
+        logging.debug(
+            f"Error while extracting the production data, Raw Material : {rawmaterial}, Year: {year}, Country: {country} ",
+            e,
+        )
     HHI_Num = sumproduct(prod_year, prod_year)
     try:
         hhi = HHI_Num / (sum(prod_year) * sum(prod_year))
@@ -51,16 +61,26 @@ def HHI(rawmaterial: str, year: int, country: Union[str, int]):
             raise ValueError
     else:
         ProdQty = 0
-
-    if proddf["unit"].tolist()[0] == "kg":
-        ProdQty = ProdQty / 1000
-    elif proddf["unit"].tolist()[0] != "metr. t" and proddf["unit"].tolist()[0] != "kg":
-        logging.info("Raw material not in metric tonne or kilos")
-    elif proddf["unit"].tolist()[0] == "Mio m3":
-        """
-        1 m³ = 0.8 kg = 0.0008 metr. t
-        """
-        ProdQty = ProdQty * 0.0008
+    try:
+        if proddf["unit"].tolist()[0] == "kg":
+            ProdQty = ProdQty / 1000
+        elif (
+            proddf["unit"].tolist()[0] != "metr. t"
+            and proddf["unit"].tolist()[0] != "kg"
+        ):
+            logging.info("Raw material not in metric tonne or kilos")
+        elif proddf["unit"].tolist()[0] == "Mio m3":
+            """
+            1 m³ = 0.8 kg = 0.0008 metr. t
+            """
+            ProdQty = ProdQty * 0.0008
+    except Exception as e:
+        logging.debug(
+            f"Error while converting the production quantities, Raw Material : {rawmaterial}, Year: {year}, Country: {country} "
+            f"Production Qty is {ProdQty} and the dataframe is {proddf}",
+            e,
+        )
+        raise Exception from e
 
     """
     The output includes the production quantity of a raw material for a country in a given year and the Herfindahl-Hirschman Indexfor that year.
@@ -92,43 +112,17 @@ def importrisk(rawmaterial: str, year: int, country: str, data):
                 return x
 
     Numerator, TotalTrade, Price = 0.0, 0.0, 0.0
-
-    if databases.regional != True:
-        if not cvtcountry(country, type="ISO"):
-            raise ValueError("Invalid country")
-        tradedf = getbacidata(
-            year,
-            cvtcountry(country, type="ISO"),
-            rawmaterial,
-            data,
-        )  # Dataframe from the utility function
-        if tradedf is not None and not tradedf.empty:
-            QTY = tradedf["qty"].astype(float).tolist()
-            WGI = tradedf["partnerWGI"].apply(wgi_func).astype(float).tolist()
-            VAL = tradedf["cifvalue"].astype(float).tolist()
-            try:
-                Price = sum(VAL) / sum(QTY)
-                TotalTrade = sum(QTY)
-                Numerator = sumproduct(QTY, WGI)
-            except:
-                logging.debug(
-                    f"Error while making calculations. Raw Material: {rawmaterial}, Country: {country}, Year: {year}"
-                )
-                raise ValueError
-        else:
-            logging.debug(
-                f"Data not available for the given inputs, Raw Material: {rawmaterial}, Country: {country}, Year: {year}"
-            )
-            Numerator, TotalTrade, Price = 0.0, 0.0, 0.0
-    else:
-        try:
-            Numerator, TotalTrade, Price = aggregateTrade(
-                year, country, rawmaterial, data
-            )
-        except Exception as e:
-            logging.debug(
-                f"The inputs for calculating the 'import risk' dont match, Country: {country} + Error :{e}"
-            )
+    if type(country) is not list:
+        ctry = databases.regionslist[cvtcountry(country, type="Name")]
+    else:  # If the country is already a list, use it directly
+        ctry = country
+    try:
+        Numerator, TotalTrade, Price = aggregateTrade(year, ctry, rawmaterial, data)
+    except Exception as e:
+        logging.debug(
+            f"The inputs for calculating the 'import risk' dont match, Country: {country} + Error :{e}"
+        )
+        raise ValueError
 
     """
     'Numerator' : float

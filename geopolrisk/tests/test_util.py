@@ -1,5 +1,6 @@
 import unittest
 import pandas as pd
+import copy
 
 # from geopolrisk.assessment.utils import replace_func, cvtresource, cvtcountry, sumproduct, createresultsdf, create_id
 from geopolrisk.assessment.utils import *
@@ -20,6 +21,16 @@ for i, n in enumerate(Resources):
 
 
 class TestUtilModul(unittest.TestCase):
+
+    def setUp(self):
+        # Deep copy to preserve all original nested data (e.g., DataFrames)
+        self._original_production = copy.deepcopy(databases.production)
+        self._original_regionslist = copy.deepcopy(databases.regionslist)
+
+    def tearDown(self):
+        # Restore the original state
+        databases.production = self._original_production
+        databases.regionslist = self._original_regionslist
 
     def test_replace_func(self):
         """Test the replace_func utility function."""

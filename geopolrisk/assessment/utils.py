@@ -43,52 +43,37 @@ def format_value(df, col, value):
 
 
 def cvtcountry(country, type="ISO"):
-    # Function to convert country inputs, ISO to name or name to ISO
     """
-    Type can be either 'ISO' or 'Name'
     Convert between country name and ISO code.
-    - `type="ISO"`: Convert country name to ISO.
-    - `type="Name"`: Convert ISO to country name.
+    - type='ISO': Convert country name to ISO.
+    - type='Name': Convert ISO to country name.
+    Accepts custom regions listed in `databases.regionslist`.
     """
     MapISOdf = databases.production["Country_ISO"]
     MapISOdf["ISO"] = MapISOdf["ISO"].astype(int)
 
     if type == "ISO":
-        if country in MapISOdf["Country"].tolist():
+        if country in MapISOdf["Country"].values:
             return MapISOdf.loc[MapISOdf["Country"] == country, "ISO"].iloc[0]
-        elif country in MapISOdf["ISO"].astype(int).tolist():
+        elif isinstance(country, int) and country in MapISOdf["ISO"].values:
             return country
-        elif databases.regional == True and country in databases.regionslist:
-            if country in MapISOdf["Country"].values:
-                return MapISOdf.loc[MapISOdf["Country"] == country, "ISO"].values[0]
-            elif isinstance(country, int) and country in MapISOdf["ISO"].values:
-                return country
+        elif country in databases.regionslist:
+            return country
         else:
-            logging.debug(
-                f"To int: Entered country '{country}' does not exist in our database!"
-            )
-            raise ValueError
+            raise ValueError(f"'{country}' not found in country list or regions.")
 
     elif type == "Name":
-        if country in MapISOdf["ISO"].astype(int).tolist():
+        if isinstance(country, int) and country in MapISOdf["ISO"].values:
             return MapISOdf.loc[MapISOdf["ISO"] == country, "Country"].iloc[0]
-        elif str(country) in MapISOdf["Country"].tolist():
+        elif country in MapISOdf["Country"].values:
             return country
-        elif databases.regional == True and country in databases.regionslist:
-            if isinstance(country, int) and country in MapISOdf["ISO"].values:
-                return MapISOdf.loc[MapISOdf["ISO"] == country, "Country"].values[0]
-            elif country in MapISOdf["Country"].values:
-                return country
+        elif country in databases.regionslist:
+            return country
         else:
-            logging.debug(
-                f"To Name: Entered country '{country}' does not exist in our database!"
-            )
-            raise ValueError
-    if databases.regional and country in databases.regionslist:
-        return country
+            raise ValueError(f"'{country}' not found in ISO map or regions.")
 
-    logging.debug(f"Entered country '{country}' does not exist in our database!")
-    raise ValueError(f"Country '{country}' not found.")
+    # Unknown type input
+    raise ValueError(f"Invalid type '{type}'. Use 'ISO' or 'Name'.")
 
 
 def sumproduct(A: list, B: list):
@@ -274,6 +259,11 @@ def aggregateTrade(period: int, country: list, rawmaterial: str, data):
     for n in country:
         pISO.append(int(cvtcountry(n, type="ISO")))
     logging.info(f"The partner list is {pISO}")
+    """
+    The following operations loops through each country in the region
+    and fetches the trade data for the raw material and period.
+    """
+    # This function excludes the neccisity of other operations of calculations for the Import Risk
     for i, n in enumerate(country):
         try:
             baci_data = getbacidata(
@@ -287,7 +277,6 @@ def aggregateTrade(period: int, country: list, rawmaterial: str, data):
             tradedata = baci_data.copy()
             logging.debug(tradedata["partnerCode"].tolist())
             tradedata.loc[tradedata["partnerCode"].isin(pISO), "partnerWGI"] = 0.00
-            logging.debug(tradedata)
             QTY = tradedata["qty"].tolist()
             WGI = tradedata["partnerWGI"].apply(wgi_func).astype(float).tolist()
             VAL = tradedata["cifvalue"].tolist()
@@ -446,6 +435,28 @@ def getProd(rawmaterial):
 
 
 def regions(*args):
+    """
+    This function defines any custom created regions by the user.
+    By default, it includes all the countries in the world based on the list in the library database.
+    The list is populated into a dictionary called 'regionslist' variable created in the database module.
+    The dictionary is structured as follows:
+    {
+        "Region Name": [list of countries in the region],
+        "Region Name 2": [list of countries in the region],
+        }
+    The function can take a dictionary as an argument, where the keys are the region names and the values are lists of countries.
+    The countries can be either the country name or the ISO code.
+    If the country is not found in the ISO list, an error message is printed and the function returns None.
+
+    The default list of countries are populated like this:
+    {
+        "India": ["India"],
+        "China": ["China"],
+        "United States": ["United States"],
+        }
+    This operation double checks the ISO list and the country names in the database.}
+    """
+
     trackregion = 0
     if len(args) != 0:
         for key, value in args[0].items():
@@ -474,10 +485,7 @@ def regions(*args):
                 trackregion += 1
                 databases.regionslist[key] = value
 
-    databases.regional = True
-    # The function must be called before calling any other functions in the core
-    # module. The following lines populate the region list with all the countries
-    # in the world including EU defined in the init file.
+    # Populating the default countries and regions
     for i in databases.production["Country_ISO"]["Country"].tolist():
         databases.regionslist[i] = [i]
 

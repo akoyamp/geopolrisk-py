@@ -4,32 +4,42 @@ from geopolrisk.assessment.utils import databases
 
 # execute this test from the root-folder by "python -m unittest geopolrisk/tests/test_main.py"
 
+
 class TestMainModul(unittest.TestCase):
 
     def setUp(self):
         """Set up test variables for the test cases."""
         self.period = [2018, 2019, 2020]
-        #self.country = ['Japan', 'Canada']
+        # self.country = ['Japan', 'Canada']
         self.country = [
-                        36,
-                        124,
-                        251,
-                        276,
-                        392,
-                        826,
-                        842,
-                       ]
-        #self.resource = ['Cobalt', 'Lithium']
+            36,
+            124,
+            251,
+            276,
+            392,
+            826,
+            842,
+        ]
+        # self.resource = ['Cobalt', 'Lithium']
         self.resource = [
-                        260400,
-                        261000,
-                        260300,
-                        283691,
-                        282200,
-                       ]
-        
+            "Nickel",
+            "Chromite",
+            "Copper",
+            "Lithium",
+            "Cobalt",
+        ]
+
         self.region_dict = {
-            'West Europe': ['France', 'Germany', 'Italy', 'Spain', 'Portugal', 'Belgium', 'Netherlands', 'Luxembourg']
+            "West Europe": [
+                "France",
+                "Germany",
+                "Italy",
+                "Spain",
+                "Portugal",
+                "Belgium",
+                "Netherlands",
+                "Luxembourg",
+            ]
         }
 
     def test_gprs_calc_non_regional(self):
@@ -37,7 +47,7 @@ class TestMainModul(unittest.TestCase):
         # Assuming databases.regional is False
         databases.regional = False
         result = gprs_calc(self.period, self.country, self.resource)
-        
+
         # Check if the result is a DataFrame and has the expected columns
         self.assertIsNotNone(result)
         self.assertIn("DBID", result.columns)
@@ -45,7 +55,9 @@ class TestMainModul(unittest.TestCase):
         self.assertIn("Raw Material", result.columns)
         self.assertIn("Year", result.columns)
         self.assertIn("GeoPolRisk Score", result.columns)
-        self.assertIn("GeoPolRisk Characterization Factor [eq. Kg-Cu/Kg]", result.columns)
+        self.assertIn(
+            "GeoPolRisk Characterization Factor [eq. Kg-Cu/Kg]", result.columns
+        )
         self.assertIn("HHI", result.columns)
         self.assertIn("Import Risk", result.columns)
         self.assertIn("Price", result.columns)
@@ -57,7 +69,7 @@ class TestMainModul(unittest.TestCase):
         databases.regional = True
         result = gprs_calc(self.period, self.country, self.resource, self.region_dict)
         databases.regional = False
-        
+
         # Check if the result is a DataFrame and has the expected columns
         self.assertIsNotNone(result)
         self.assertIn("DBID", result.columns)
@@ -65,7 +77,9 @@ class TestMainModul(unittest.TestCase):
         self.assertIn("Raw Material", result.columns)
         self.assertIn("Year", result.columns)
         self.assertIn("GeoPolRisk Score", result.columns)
-        self.assertIn("GeoPolRisk Characterization Factor [eq. Kg-Cu/Kg]", result.columns)
+        self.assertIn(
+            "GeoPolRisk Characterization Factor [eq. Kg-Cu/Kg]", result.columns
+        )
         self.assertIn("HHI", result.columns)
         self.assertIn("Import Risk", result.columns)
         self.assertIn("Price", result.columns)
@@ -77,5 +91,6 @@ class TestMainModul(unittest.TestCase):
         self.assertIsNotNone(result)
         self.assertEqual(len(result), 0)  # Expecting no results
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

@@ -44,80 +44,44 @@ def gprs_calc(period: list, country: list, rawmaterial: list, region_dict={}):
         list(itertools.product(period, country, rawmaterial)),
         desc="Calculating the GeoPolRisk: ",
     ):
-        if len(databases.regionslist[cvtcountry(ctry, type="Name")]) > 1:
-            logging.debug("Logged - Multiregional Assessment")
-            try:
-                Numerator, TotalTrade, Price = aggregateTrade(
-                    year, databases.regionslist[ctry], rm, data=database
-                )
-            except ValueError:
-                logging.debug(
-                    "Couldnt calculate the Import Risk - Regional. Check functional error!"
-                )
-                break
-            except Exception as e:
-                logging.debug("Unknwon exception at ", e)
-                break
-            try:
-                sum_ProdQty = []
-                for j in databases.regionslist[ctry]:
-                    ProdQty, hhi = HHI(rm, int(year), cvtcountry(j, type="Name"))
-                    sum_ProdQty.append(ProdQty)
+        logging.info(
+            "GeoPolRisk Calculation for Year: %s, Country: %s, Raw Material: %s",
+            year,
+            ctry,
+            rm,
+        )
+        country_list = databases.regionslist[cvtcountry(ctry, type="Name")]
+        try:
+            Numerator, TotalTrade, Price = aggregateTrade(
+                year, country_list, rm, data=database
+            )
+        except Exception as e:
+            logging.debug(
+                "Data aggregation failed for the GeoPolRisk. Check functional error!",
+                e,
+            )
+            break
+        try:
+            sum_ProdQty = []
+            for j in country_list:
+                ProdQty, hhi = HHI(rm, int(year), cvtcountry(j, type="Name"))
+                sum_ProdQty.append(ProdQty)
 
-            except ValueError:
-                logging.debug(
-                    "Couldnt calculate the HHI and Production Quantity - Regional. Check functional error!"
-                )
-                break
-            except Exception as e:
-                logging.debug("Unknwon exception at ", e)
-                break
-            try:
-                Score, CF, IR = GeoPolRisk(
-                    Numerator, TotalTrade, Price, sum(sum_ProdQty), hhi
-                )
-            except ValueError:
-                logging.debug(
-                    "Couldnt calculate the GeoPolRisk - Regional. Check functional error!"
-                )
-                break
-            except Exception as e:
-                logging.debug("Unknwon exception at ", e)
-                break
-        else:
-            try:
-                ProdQty, hhi = HHI(rm, int(year), cvtcountry(ctry, type="Name"))
-            except ValueError:
-                logging.debug("Couldnt calculate the HHI. Check functional error!")
-                break
-            except Exception as e:
-                logging.debug("Unknwon exception at ", e)
-                break
-            try:
-                Numerator, TotalTrade, Price = importrisk(
-                    rm,
-                    year,
-                    databases.regionslist[cvtcountry(ctry, type="Name")],
-                    database,
-                )
-            except ValueError:
-                logging.debug(
-                    "Couldnt calculate the Import Risk. Check functional error!"
-                )
-                break
-            except Exception as e:
-                logging.debug("Unknwon exception at ", e)
-                break
-            try:
-                Score, CF, IR = GeoPolRisk(Numerator, TotalTrade, Price, ProdQty, hhi)
-            except ValueError:
-                logging.debug(
-                    "Couldnt calculate the GeoPolRisk. Check functional error!"
-                )
-                break
-            except Exception as e:
-                logging.debug("Unknwon exception at ", e)
-                break
+        except Exception as e:
+            logging.debug(
+                "Couldnt calculate the HHI and Production Quantity. Check functional error!",
+                e,
+            )
+            break
+        try:
+            Score, CF, IR = GeoPolRisk(
+                Numerator, TotalTrade, Price, sum(sum_ProdQty), hhi
+            )
+        except Exception as e:
+            logging.debug(
+                "Couldnt calculate the GeoPolRisk. Check functional error!", e
+            )
+            break
         try:
             Score_list.append(Score)
             CF_list.append(CF)
@@ -145,10 +109,7 @@ def gprs_calc(period: list, country: list, rawmaterial: list, region_dict={}):
         excel_path = databases.directory + "/output/results.xlsx"
         result.to_excel(excel_path, index=False)
         writetodb(result)
-        # add return result for test-cases
-        # return result
+
     except Exception as e:
-        logging.debug(
-            "Error while recording data into dataframe for regional assessment!", e
-        )
+        logging.debug("Error while recording data into dataframe", e)
     return result
