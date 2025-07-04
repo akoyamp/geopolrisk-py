@@ -8,7 +8,7 @@ from geopolrisk.assessment.core import HHI, importrisk, GeoPolRisk
 
 # Load Excel file once globally for all tests
 EXCEL_PATH = os.path.join(
-    Path(__file__).parent.resolve().parent, "tests", "Testing case - tool.xlsx"
+    Path(__file__).parent.resolve().parent, "tests", "data/Testing case - tool.xlsx"
 )
 
 

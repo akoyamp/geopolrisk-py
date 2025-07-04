@@ -306,9 +306,6 @@ def aggregateTrade(period: int, country: list, rawmaterial: str, data):
 
 
 def transformdata(mode="prod"):
-    def cvtresource():
-        pass
-
     folder_path = databases.directory + "/databases"
     file_name = "Company data.xlsx"
     excel_sheet_name = "Template"
@@ -316,7 +313,7 @@ def transformdata(mode="prod"):
     file_path = os.path.join(folder_path, file_name)
     # in test-mode - use the excel-file from the test-folder
     if "test" in mode:
-        test_dir = os.path.abspath("./geopolrisk/tests/")
+        test_dir = os.path.abspath("./tests/data")
         file_path = f"{test_dir}/{file_name}"
         excel_sheet_name = "Test"
     """

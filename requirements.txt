@@ -1,0 +1,6 @@
+python=3.12
+pandas=2.0.*
+tqdm=4.64.*
+geopy=2.3.*
+openpyxl=3.1.*
+
