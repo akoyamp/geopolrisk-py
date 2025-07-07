@@ -305,12 +305,17 @@ def aggregateTrade(period: int, country: list, rawmaterial: str, data):
 ###########################################################
 
 
-def transformdata(mode="prod"):
-    folder_path = databases.directory + "/databases"
-    file_name = "Company data.xlsx"
-    excel_sheet_name = "Template"
-    # file_path = glob.glob(os.path.join(folder_path, file_name))[0]
-    file_path = os.path.join(folder_path, file_name)
+def transformdata(file_name=None, excel_sheet_name=None, mode="prod"):
+    if file_name is None:
+        folder_path = databases.directory + "/databases"
+        file_name = "Company data.xlsx"
+        excel_sheet_name = "Template"
+        file_path = os.path.join(folder_path, file_name)
+    else:
+        file_path = file_name  # use path as-is if provided
+        if excel_sheet_name is None:
+            excel_sheet_name = "Template"
+
     # in test-mode - use the excel-file from the test-folder
     if "test" in mode:
         test_dir = os.path.abspath("./tests/data")

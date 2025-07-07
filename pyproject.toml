@@ -40,3 +40,8 @@ include = ["geopolrisk*"]
 
 [tool.setuptools.exclude-package-data]
 "*" = ["__pycache__"]
+
+[tool.setuptools.include]
+# These are not installed, but included in sdist
+"docs/**" = true
+"examples/**" = true

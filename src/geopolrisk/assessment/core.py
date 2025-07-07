@@ -30,6 +30,9 @@ def HHI(rawmaterial: str, year: int, country: Union[str, int]):
     proddf = getProd(rawmaterial).fillna(0)
     proddf = proddf[proddf["Country_Code"] != "DELETE"]
 
+    if country == "Company":
+        country = 975  # ASEAN Code (randomly chosen for no country)
+
     try:
         prod_year = proddf[str(year)].astype(int).tolist()
     except Exception as e:
@@ -132,14 +135,16 @@ def importrisk(rawmaterial: str, year: int, country: str, data):
     return Numerator, TotalTrade, Price
 
 
-def importrisk_company(rawmaterial: str, year: int):
+def importrisk_company(
+    rawmaterial: str, year: int, file_name=None, excel_sheet_name=None, mode="prod"
+):
     """
     The 'import risk' for a company differs from that of the country's.
     This data is provided in a template in the output folder.
     The utility function transforms the data into a
     usable format similar to that of the country-level data.
     """
-    tradedf = transformdata()
+    tradedf = transformdata(file_name, excel_sheet_name, mode)
     df_query = f"(period == {year}) & (rawMaterial == '{rawmaterial}')"
 
     data = tradedf.query(df_query)
