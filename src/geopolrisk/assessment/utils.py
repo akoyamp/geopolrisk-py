@@ -205,13 +205,27 @@ def getbacidata(period: int, country: int, rawmaterial: str, data):
     get the baci-trade-data from the baci_trade dataframe
     """
     try:
-        df_query = f"(period == {period}) & (reporterCode == {country}) & (rawMaterial == '{rawmaterial}')"
-        baci_data = data.query(df_query)
+        if "rawMaterial" in data.columns:
+            # Standard format: rawMaterial is string, period and reporterCode are int
+            query = f"(period == {period}) & (reporterCode == {country}) & (rawMaterial == '{rawmaterial}')"
+            baci_data = data.query(query)
+
+        elif "cmdCode" in data.columns:
+            # Alternative format: all fields stored as string
+            query = f"(period == '{period}') & (reporterCode == '{country}') & (cmdCode == {rawmaterial})"
+            baci_data = data.query(query)
+
+        else:
+            logging.debug(
+                "Unknown data format: no 'rawMaterial' or 'cmdCode' column found."
+            )
+            return None
     except Exception as e:
         logging.debug(
-            f"Error when querying baci database - issue with -- {e} - Data: {country}, {rawmaterial}, {period}"
+            f"Error querying BACI data -- {e} -- Data: {country}, {rawmaterial}, {period}"
         )
         return None
+
     """
     The dataframe is structured as follows:
     'period' -> The year of the trade recorded
