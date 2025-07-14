@@ -6,10 +6,10 @@ Usage
 **General Usage**
 -----------------
 
-With the method in the ``main.py`` module, ``gprs_calc``, it is possible to calculate all values of the GeoPolRisk method in one go.  
+With the method in the :ref:`main.py` module, ``gprs_calc``, it is possible to calculate all values of the GeoPolRisk method in one go.  
 See the :ref:`Methods` section of the documentation for more details on the arguments.
 
-The ``utils.py`` module also provides a helper function to list all raw materials available for assessment.  
+The :ref:`utils.py` module also provides a helper function to list all raw materials available for assessment.  
 ``gprs_calc`` takes in three main inputs as lists: raw materials, years, and countries.
 
 .. code-block:: python

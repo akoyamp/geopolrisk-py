@@ -119,7 +119,7 @@ Nevertheless, the supply risk associated with the primary product is inherently 
 Glossary of Terms
 -----------------
 
-.. list-table:: Key Terms in the GeoPolRisk Method
+.. list-table::
    :header-rows: 1
    :widths: 25 75
 

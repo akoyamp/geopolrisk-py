@@ -3,6 +3,8 @@
 Methods
 =======
 
+.. _database.py:
+
 Methods: database.py
 --------------------
 
@@ -37,10 +39,11 @@ The class variables include:
 - ``production``: Contains the entire world mining database as a DataFrame.
 - ``baci_trade``: BACI trade database as a single DataFrame, filtered for model-relevant commodities.
 - ``wgi``: World Governance Indicator for Political Stability and Absence of Violence as a DataFrame.
-- ``regionslist``: A dictionary storing any user-defined custom regions (see ``regions`` function in ``utils.py``).
+- ``regionslist``: A dictionary storing any user-defined custom regions (see ``regions`` function in :ref:`utils.py`).
 
 This module also includes a logging setup for errors and debugging.
 
+.. _utils.py:
 
 Methods: utils.py
 -----------------
@@ -179,10 +182,12 @@ Arguments:
        ]
    }
 
-Other functions such as ``Mapping()`` and ``mapped_baci()`` are used to group multiple HS codes into single raw materials. See the references section for details.
+Other functions such as ``Mapping()`` and ``mapped_baci()`` are used to group multiple HS codes into single raw materials. See the :ref:`References` section for details.
 
 .. note::
    The ``mapped_baci()`` function returns a DataFrame containing the mapped raw materials, countries, years, and aggregated trade values.
+
+.. _core.py:
 
 Methods: core.py
 -----------------
@@ -286,6 +291,8 @@ Returns:
 - ``CF`` (float): Characterization factor for the 'Geopolitical Supply Risk' indicator. Computed as the score × price, normalized by copper.
 - ``WTA`` (float): Weighted trade average. Represents import risk, the second component of GeoPolRisk.
 
+.. _main.py:
+
 Methods: main.py
 -----------------
 
@@ -304,11 +311,11 @@ Arguments:
 - ``period`` (list): List of years to calculate GeoPolRisk for.
 - ``country`` (list): List of ISO 3-digit country codes.
 - ``rawmaterial`` (list): List of raw materials to evaluate.
-- ``region_dict`` (dict): Optional. A dictionary of custom regions. Keys are region names, values are lists of ISO 3-digit country codes. See the ``regions`` function in ``utils.py`` for more details.
+- ``region_dict`` (dict): Optional. A dictionary of custom regions. Keys are region names, values are lists of ISO 3-digit country codes. See the ``regions`` function in :ref:`utils.py` for more details.
 
 Returns:
 
 - ``DataFrame``: A DataFrame containing the GeoPolRisk scores and CFs for each raw material, country, and year.  
   The DataFrame includes columns for raw material, country, year, GeoPolRisk score, CF, and weighted trade average (WTA).  
-  See the references section for details on the DataFrame structure.
+  See the :ref:`References` section for details on the DataFrame structure.
   
