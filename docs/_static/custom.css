@@ -3,3 +3,16 @@ body, p, h1, h2, h3, h4, h5, h6 {
     font-family: 'Calibri', sans-serif;
     text-align: justify;
 }
+
+.right-align {
+    text-align: right;
+}
+
+.acknowledgement {
+    font-size: 0.85em;
+    color: #555;
+    font-style: italic;
+    margin-top: 2em;
+    padding-top: 1em;
+    border-top: 1px solid #ccc;
+}

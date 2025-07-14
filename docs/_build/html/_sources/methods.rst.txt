@@ -1,3 +1,5 @@
+.. _Methods:
+
 Methods
 =======
 
@@ -197,7 +199,7 @@ This module contains the core functionality for calculating the GeoPolRisk metho
 
    Calculates the HHI for a given raw material, year, and country.  
    The HHI is a measure of the concentration of production for a specific raw material in a given country and year.  
-   See the 'background' section for more details.
+   See the :ref:`Background` section for more details.
 
 Arguments:
 
@@ -309,3 +311,4 @@ Returns:
 - ``DataFrame``: A DataFrame containing the GeoPolRisk scores and CFs for each raw material, country, and year.  
   The DataFrame includes columns for raw material, country, year, GeoPolRisk score, CF, and weighted trade average (WTA).  
   See the references section for details on the DataFrame structure.
+  

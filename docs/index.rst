@@ -37,5 +37,4 @@ Contents
    methods
    analysis
    references
-   metadata
    
