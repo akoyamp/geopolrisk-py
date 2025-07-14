@@ -1,7 +1,10 @@
+.. _Usage:
+
 Usage
 =====
 
 **General Usage**
+-----------------
 
 With the method in the ``main.py`` module, ``gprs_calc``, it is possible to calculate all values of the GeoPolRisk method in one go.  
 See the :ref:`Methods` section of the documentation for more details on the arguments.
@@ -52,7 +55,7 @@ The ``utils.py`` module also provides a helper function to list all raw material
 
 
 **Regional Level Assessment**
-=============================
+-----------------------------
 
 There are several ways to calculate values using the GeoPolRisk method, including at the regional level.  
 The ``regions`` function in the ``utils.py`` module allows users to define custom regions using a dictionary.
