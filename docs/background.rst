@@ -63,20 +63,38 @@ The Values of the GeoPolRisk Method
 
 A country, region, trade block, or company is represented as an economic unit. The formula for determining the probability of supply risk attributed to geopolitical factors, commonly referred to as the "GeoPolRisk Score," for a specific material "A" is outlined in Equation 1, taking into account the perspective of the economic unit "c" during a given year. The formula can be interpreted as a composite of two contributing factors: the global production concentration and the import dependency of the metal or mineral.
 
-**Equation 1: Equation to calculate the GeoPolRisk Score**
+**Equation 1: GeoPolRisk Score**
 
 .. math::
 
    \text{GeoPolRisk}_{Ac} = \text{HHI}_A \times \sum_i \left( \frac{g_i \cdot f_{Aic}}{p_{Ac} + F_{Ac}} \right)
 
 Where:
-- :math:`\text{HHI}_A` = Herfindahl-Hirschman Index for commodity A  
+
+- :math:`\text{HHI}_A` = HHI for commodity A  
 - :math:`g_i` = Geopolitical (in)stability of economic unit *i*  
 - :math:`f_{Aic}` = Imports of commodity A from country *i* to economic unit *c*  
 - :math:`F_{Ac}` = Total imports of commodity A to economic unit *c*  
 - :math:`p_{Ac}` = Domestic production of commodity A in economic unit *c*  
 
-The subsequent study introduced a substitutability indicator as a vulnerability to supply risk factor to the GeoPolRisk method. Domestic recycling of resources was also identified as a risk mitigation factor and was included in the method by reduction and redistribution of the import share.
+**Subcomponents:**
+
+**• Herfindahl-Hirschman Index:**
+
+.. math::
+
+   \text{HHI}_A = \frac{\sum_i \left(P_{Ai}^2\right)}{\left(\sum_i P_{Ai}\right)^2}
+
+Where:
+
+- :math:`P_{Ai}` = Production quantity of raw material A in country *i* during the given year  
+
+**• Import Risk:**
+
+.. math::
+
+   \text{ImportRisk}_{Ac} = \sum_i \left( \frac{g_i \cdot f_{Aic}}{p_{Ac} + F_{Ac}} \right)
+
 
 To integrate the method into LCSA, a connection to the functional unit is necessary. A characterization model of the GeoPolRisk method based on the defined cause-effect mechanism was developed to complement environmental LCA. A new characterization model and a modified midpoint indicator were developed to address the identified methodological gaps. The complete equation for the GeoPolRisk midpoint CF of a resource “A” from the perspective of a country “c” in a given year is shown in Equation 2:
 
@@ -86,7 +104,7 @@ To integrate the method into LCSA, a connection to the functional unit is necess
 
    \text{GeoPolRisk}_{Ac} = \text{HHI}_A \times \sum_i \left( \frac{g_i \cdot f_{Aic}}{p_{Ac} + F_{Ac}} \right) \cdot \bar{p}
 
-:math:`\text{HHI}_A` is the Herfindahl-Hirschman Index for resource A, calculated as the sum of the squared production shares of all the countries producing resource A. The GeoPolRisk method weights the import (:math:`f_{Aic}`) of resource A to country *c* from *i* with the political (in)stability indicator of the exporting country (:math:`g_i`). :math:`F_{Ac}` is the total imports to the entity in assessment, and :math:`p_{Ac}` is the domestic production of resource A in entity *c*.
+:math:`\bar{p}` is the price of the raw material.
 
 The CF is called **Geopolitical Supply Risk Potential (GSP)** and is used to evaluate the **Geopolitical Supply Risk (GSR)** of raw materials consumed in a product/product system. The values for the GSP are obtained by dividing the GeoPolRisk midpoint for a given raw material by the respective GeoPolRisk midpoint of copper for the same economic unit and time period, as shown in Equation 3. Here, "A" represents the raw material, "c" represents an economic unit, and "t" refers to the time period (year). At the midpoint level, the indicator seeks to quantify “the risk of relative potential accessibility issues for a product system related to short-term geopolitical and socio-economic aspects.” As an import-based indicator, using the characterization model, the CFs represent the supply risk of a raw material equivalent to the supply risk of importing one kilogram of copper to an economic unit at a given time period. This provides a way to compare the GSR for different processes or product systems using a common reference.
 
@@ -126,20 +144,23 @@ Glossary of Terms
    * - Abbreviation
      - Meaning
    * - GeoPolRisk
-     - Geopolitically related supply risk method
+     - Geopolitically related supply risk method.
+   * - Economic Unit
+     - A country, region, group of countries, or a company — the entity from whose perspective the supply risk is evaluated using the GeoPolRisk method.
    * - GeoPolRisk Score
-     - A non-dimensional supply risk value useful for comparative risk assessment
+     - A non-dimensional supply risk value used for comparative risk assessment.
    * - GSP
-     - Geopolitical Supply Risk Potential – the characterization factor used in Life Cycle Assessment, expressed as kg Cu-eq. per kg
+     - Geopolitical Supply Risk Potential – the characterization factor used in Life Cycle Assessment, expressed as kg Cu-eq/kg.
    * - GSR
-     - Geopolitical Supply Risk – the midpoint impact calculated using the GSP
+     - Geopolitical Supply Risk – the midpoint impact calculated using the GSP.
    * - HHI
-     - Herfindahl-Hirschman Index – indicator for concentration of production of a raw material (normalized to the range 0–1)
+     - Herfindahl-Hirschman Index – indicator of production concentration for a raw material, normalized to a scale from 0 to 1.
+   * - Import Risk
+     - The import share from each trade partner weighted by its political (in)stability index, normalized by the total supply (domestic + imported).
    * - LCA
-     - Life Cycle Assessment – methodology to assess environmental impacts associated with all the stages of a product's life
+     - Life Cycle Assessment – methodology to assess environmental impacts across all stages of a product's life.
    * - LCSA
-     - Life Cycle Sustainability Assessment – integrated framework combining LCA, life cycle costing, and social LCA
-
+     - Life Cycle Sustainability Assessment – an integrated framework combining LCA, life cycle costing, and social LCA.
 
 .. note::
 

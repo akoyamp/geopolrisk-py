@@ -38,3 +38,8 @@ Contents
    analysis
    references
    
+.. toctree::
+   :maxdepth: 1
+   :caption: Notebooks
+
+   notebooks/example.ipynb

@@ -1,12 +1,15 @@
+.. _Usage:
+
 Usage
 =====
 
 **General Usage**
+-----------------
 
-With the method in the ``main.py`` module, ``gprs_calc``, it is possible to calculate all values of the GeoPolRisk method in one go.  
+With the method in the :ref:`main.py` module, ``gprs_calc``, it is possible to calculate all values of the GeoPolRisk method in one go.  
 See the :ref:`Methods` section of the documentation for more details on the arguments.
 
-The ``utils.py`` module also provides a helper function to list all raw materials available for assessment.  
+The :ref:`utils.py` module also provides a helper function to list all raw materials available for assessment.  
 ``gprs_calc`` takes in three main inputs as lists: raw materials, years, and countries.
 
 .. code-block:: python
@@ -52,7 +55,7 @@ The ``utils.py`` module also provides a helper function to list all raw material
 
 
 **Regional Level Assessment**
-=============================
+-----------------------------
 
 There are several ways to calculate values using the GeoPolRisk method, including at the regional level.  
 The ``regions`` function in the ``utils.py`` module allows users to define custom regions using a dictionary.
@@ -75,3 +78,5 @@ You can use the ``gprs_calc`` function in the ``main.py`` module in the same way
 .. admonition:: About the Code
 
    Similar to the general usage of ``gprs_calc``, this call generates an Excel output file and stored in the SQLite3 database.  
+
+You can also explore the :doc:`example notebook <notebooks/example>` for a full calculation walkthrough.

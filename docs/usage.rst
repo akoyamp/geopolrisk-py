@@ -78,3 +78,5 @@ You can use the ``gprs_calc`` function in the ``main.py`` module in the same way
 .. admonition:: About the Code
 
    Similar to the general usage of ``gprs_calc``, this call generates an Excel output file and stored in the SQLite3 database.  
+
+You can also explore the :doc:`example notebook <notebooks/example>` for a full calculation walkthrough.

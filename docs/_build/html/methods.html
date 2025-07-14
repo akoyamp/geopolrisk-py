@@ -3,11 +3,12 @@
 <html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Methods &#8212; geopolrisk-py 2.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=61cd365c" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=6e7de4c1" />
     <script src="_static/documentation_options.js?v=60dbed4a"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
@@ -36,7 +37,7 @@
   <section id="methods">
 <span id="id1"></span><h1>Methods<a class="headerlink" href="#methods" title="Link to this heading">¶</a></h1>
 <section id="methods-database-py">
-<h2>Methods: database.py<a class="headerlink" href="#methods-database-py" title="Link to this heading">¶</a></h2>
+<span id="database-py"></span><h2>Methods: database.py<a class="headerlink" href="#methods-database-py" title="Link to this heading">¶</a></h2>
 <p>This module provides a class for managing the database connection and executing SQL queries. It includes a method called <code class="docutils literal notranslate"><span class="pre">execute_query</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">db_path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
 </pre></div>
@@ -65,12 +66,12 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">production</span></code>: Contains the entire world mining database as a DataFrame.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">baci_trade</span></code>: BACI trade database as a single DataFrame, filtered for model-relevant commodities.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">wgi</span></code>: World Governance Indicator for Political Stability and Absence of Violence as a DataFrame.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">regionslist</span></code>: A dictionary storing any user-defined custom regions (see <code class="docutils literal notranslate"><span class="pre">regions</span></code> function in <code class="docutils literal notranslate"><span class="pre">utils.py</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">regionslist</span></code>: A dictionary storing any user-defined custom regions (see <code class="docutils literal notranslate"><span class="pre">regions</span></code> function in <a class="reference internal" href="#utils-py"><span class="std std-ref">Methods: utils.py</span></a>).</p></li>
 </ul>
 <p>This module also includes a logging setup for errors and debugging.</p>
 </section>
 <section id="methods-utils-py">
-<h2>Methods: utils.py<a class="headerlink" href="#methods-utils-py" title="Link to this heading">¶</a></h2>
+<span id="utils-py"></span><h2>Methods: utils.py<a class="headerlink" href="#methods-utils-py" title="Link to this heading">¶</a></h2>
 <p>This module provides utility functions for the GeoPolRisk method, including:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">replace_func(x)</span></code>: Replaces specific values in a DataFrame column that contain NaN with 0.</p></li>
@@ -185,14 +186,14 @@ Returns values used to compute GeoPolRisk: numerator, quantity, and average pric
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Other functions such as <code class="docutils literal notranslate"><span class="pre">Mapping()</span></code> and <code class="docutils literal notranslate"><span class="pre">mapped_baci()</span></code> are used to group multiple HS codes into single raw materials. See the references section for details.</p>
+<p>Other functions such as <code class="docutils literal notranslate"><span class="pre">Mapping()</span></code> and <code class="docutils literal notranslate"><span class="pre">mapped_baci()</span></code> are used to group multiple HS codes into single raw materials. See the <a class="reference internal" href="references.html#references"><span class="std std-ref">References</span></a> section for details.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">mapped_baci()</span></code> function returns a DataFrame containing the mapped raw materials, countries, years, and aggregated trade values.</p>
 </div>
 </section>
 <section id="methods-core-py">
-<h2>Methods: core.py<a class="headerlink" href="#methods-core-py" title="Link to this heading">¶</a></h2>
+<span id="core-py"></span><h2>Methods: core.py<a class="headerlink" href="#methods-core-py" title="Link to this heading">¶</a></h2>
 <p>This module contains the core functionality for calculating the GeoPolRisk method.</p>
 <p><strong>Function: HHI</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">HHI</span><span class="p">(</span><span class="n">rawmaterial</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">year</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">country</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span>
@@ -282,7 +283,7 @@ See the <a class="reference internal" href="background.html#background"><span cl
 </ul>
 </section>
 <section id="methods-main-py">
-<h2>Methods: main.py<a class="headerlink" href="#methods-main-py" title="Link to this heading">¶</a></h2>
+<span id="main-py"></span><h2>Methods: main.py<a class="headerlink" href="#methods-main-py" title="Link to this heading">¶</a></h2>
 <p><strong>Function: gprs_calc</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gprs_calc</span><span class="p">(</span><span class="n">period</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">country</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">rawmaterial</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">region_dict</span><span class="o">=</span><span class="p">{})</span>
 </pre></div>
@@ -296,13 +297,13 @@ See the <a class="reference internal" href="background.html#background"><span cl
 <li><p><code class="docutils literal notranslate"><span class="pre">period</span></code> (list): List of years to calculate GeoPolRisk for.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">country</span></code> (list): List of ISO 3-digit country codes.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">rawmaterial</span></code> (list): List of raw materials to evaluate.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">region_dict</span></code> (dict): Optional. A dictionary of custom regions. Keys are region names, values are lists of ISO 3-digit country codes. See the <code class="docutils literal notranslate"><span class="pre">regions</span></code> function in <code class="docutils literal notranslate"><span class="pre">utils.py</span></code> for more details.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">region_dict</span></code> (dict): Optional. A dictionary of custom regions. Keys are region names, values are lists of ISO 3-digit country codes. See the <code class="docutils literal notranslate"><span class="pre">regions</span></code> function in <a class="reference internal" href="#utils-py"><span class="std std-ref">Methods: utils.py</span></a> for more details.</p></li>
 </ul>
 <p>Returns:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>: A DataFrame containing the GeoPolRisk scores and CFs for each raw material, country, and year.
 The DataFrame includes columns for raw material, country, year, GeoPolRisk score, CF, and weighted trade average (WTA).
-See the references section for details on the DataFrame structure.</p></li>
+See the <a class="reference internal" href="references.html#references"><span class="std std-ref">References</span></a> section for details on the DataFrame structure.</p></li>
 </ul>
 </section>
 </section>
@@ -328,7 +329,6 @@ See the references section for details on the DataFrame structure.</p></li>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="background.html">Background</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html#regional-level-assessment"><strong>Regional Level Assessment</strong></a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Methods</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#methods-database-py">Methods: database.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#methods-utils-py">Methods: utils.py</a></li>
@@ -338,7 +338,13 @@ See the references section for details on the DataFrame structure.</p></li>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="analysis.html">Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
-<li class="toctree-l1"><a class="reference internal" href="references.html#list-of-raw-materials-and-mapped-hs-codes"><strong>List of Raw Materials and Mapped HS Codes</strong></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notebooks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example.html">Import main calculation function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example.html#testing-individual-functions-for-the-same-list">Testing individual functions for the same list</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example.html#testing-company-level-functions-using-same-data-as-above">Testing company level functions using same data as above</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example.html#testing-regional-data">Testing Regional Data</a></li>
 </ul>
 
 <div class="relations">
