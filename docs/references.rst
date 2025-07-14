@@ -472,6 +472,6 @@ The following table presents the Harmonized System (HS) codes mapped to the raw 
 .. raw:: html
 
    <div class="acknowledgement">
-     This documentation of the excel file was completed with the support of Vijay Varma, as his internship objective in the first year of the Master's in EBA (2024–2025) at IAE Bordeaux.
+     This documentation of the excel file was completed with the support of Panyam Vijay Madhu, as his internship objective in the first year of the Master's in EBA (2024–2025) at IAE Bordeaux.
      <a href="https://www.researchgate.net/profile/Vijay-Varma-7" target="_blank">View his profile on ResearchGate</a>.
    </div>
