@@ -17,6 +17,7 @@ import sqlite3, pandas as pd, logging, os, time
 from tqdm import tqdm
 from datetime import datetime
 from pathlib import Path
+import shutil
 
 logging = logging
 
@@ -75,54 +76,111 @@ class database:
     _dwmd = "world_mining_data.db"  # World Mining Data Database
     _dwgi = "wgi.db"  # World Governance Indicator Database
     _dbaci = "baci.db"  # Trade data from BACI HS92
+    _company_data_excel = "Company data.xlsx"  # Company data Excel file
 
     def __init__(self):
         pass
 
     """
-    The first iteration runs the init files that creates a folder 
-    "geopolrisk" in the documents folder of the operating system 
-    and all the required subfolders. The user must then copy all 
-    the required database files into the "databases" folder in 
-    the newly created "geopolrisk".
+    Creating a log object and file for logging the errors
+    """
+
+    def init_logging(log_directory):
+        Filename = "Log_File_{:%Y-%m-%d(%H-%M-%S)}.log".format(datetime.now())
+        log_level = logging.DEBUG
+        try:
+            logging.basicConfig(
+                level=log_level,
+                format="""%(asctime)s | %(levelname)s | %(threadName)-10s |
+                %(filename)s:%(lineno)s - %(funcName)20s() |
+                    %(message)s""",
+                filename=log_directory + "/" + Filename,
+                filemode="w",
+            )
+        except:
+            print("Cannot create log file!")
+
+    """
+    Creates the necessary directories in the user's Documents folder if they do not already exist.
     """
     try:
+        # Define the main directory path
         directory = os.path.join(Path.home(), "Documents/geopolrisk")
-        if not os.path.exists(os.path.join(Path.home(), "Documents/geopolrisk")):
-            os.makedirs(os.path.join(Path.home(), "Documents/geopolrisk"))
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+            print(f"Created directory: {directory}")
 
-        if not os.path.exists(os.path.join(Path.home(), "Documents/geopolrisk/logs")):
-            os.makedirs(os.path.join(Path.home(), "Documents/geopolrisk/logs"))
+        # Define the logs directory path
+        logs_directory = os.path.join(directory, "logs")
+        if not os.path.exists(logs_directory):
+            os.makedirs(logs_directory)
+            print(f"Created directory: {logs_directory}")
 
-        # directory_databases = os.path.join(
-        #     Path.home(), "Documents/geopolrisk/databases"
-        # )
-        if not os.path.exists(
-            os.path.join(Path.home(), "Documents/geopolrisk/databases")
-        ):
-            os.makedirs(os.path.join(Path.home(), "Documents/geopolrisk/databases"))
+        # init logging
+        init_logging(logs_directory)
 
-        # path to the database files - "lib" directory in the parent directory of the current file
-        directory_databases = os.path.join(
-            Path(__file__).parent.resolve().parent, "lib"
-        )
+        # Define the databases directory path
+        databases_directory = os.path.join(directory, "databases")
+        if not os.path.exists(databases_directory):
+            os.makedirs(databases_directory)
+            logging.info(f"Created directory: {databases_directory}")
 
-        if not os.path.exists(os.path.join(Path.home(), "Documents/geopolrisk/output")):
-            os.makedirs(os.path.join(Path.home(), "Documents/geopolrisk/output"))
+        # Define the output directory path
+        output_directory = os.path.join(directory, "output")
+        if not os.path.exists(output_directory):
+            os.makedirs(output_directory)
+            logging.info(f"Created directory: {output_directory}")
+
     except Exception as e:
-        print(f"Unable to create directories {e}")
+        print(f"Unable to create directories: {e}")
+        logging.error(f"Unable to create directories: {e}")
         raise FileNotFoundError
 
+    # path to the database files - "lib" directory in the parent directory of the current file
+    directory_databases = os.path.join(Path(__file__).parent.resolve().parent, "lib")
+
+    """
+    Copies the 'Company data.xlsx' file from the lib directory to the databases directory
+    if it does not already exist in the databases directory.
+    """
+    try:
+        # Define the source and destination paths
+        source_path = os.path.join(
+            Path(__file__).parent.resolve().parent, "lib", _company_data_excel
+        )
+        destination_path = os.path.join(databases_directory, _company_data_excel)
+
+        # Check if the source file exists
+        if not os.path.isfile(source_path):
+            logging.warning(f"Source file not found: {source_path}")
+        # Check if the destination file already exists
+        elif os.path.isfile(destination_path):
+            logging.info(f"Destination file already exists: {destination_path}")
+        # Copy the file
+        else:
+            shutil.copy2(source_path, destination_path)
+            logging.info(
+                f"Copied file {_company_data_excel} from {source_path} to {destination_path}"
+            )
+
+    except Exception as e:
+        logging.error(f"Unable to copy {_company_data_excel}: {e}")
+
+    """
+    Checks if the required database files are present in the databases directory "lib".
+    """
+    directory_databases = os.path.join(Path(__file__).parent.resolve().parent, "lib")
+
     if not os.path.isfile(os.path.join(directory_databases, _dwmd)):
-        print(
+        logging.warning(
             f"Database file {_dwmd} not found! Copy the required database files into the folder {directory_databases}."
         )
     if not os.path.isfile(os.path.join(directory_databases, _dwgi)):
-        print(
+        logging.warning(
             f"Database file {_dwgi} not found! Copy the required database files into the folder {directory_databases}."
         )
     if not os.path.isfile(os.path.join(directory_databases, _dbaci)):
-        print(
+        logging.warning(
             f"Database file {_dbaci} not found! Copy the required database files into the folder {directory_databases}."
         )
 
@@ -364,21 +422,3 @@ class database:
 
 if databases == None:
     databases = database()
-
-###########################################################
-## Creating a log object and file for logging the errors ##
-###########################################################
-
-Filename = "Log_File_{:%Y-%m-%d(%H-%M-%S)}.log".format(datetime.now())
-log_level = logging.DEBUG
-try:
-    logging.basicConfig(
-        level=log_level,
-        format="""%(asctime)s | %(levelname)s | %(threadName)-10s |
-          %(filename)s:%(lineno)s - %(funcName)20s() |
-            %(message)s""",
-        filename=databases.directory + "/logs/" + Filename,
-        filemode="w",
-    )
-except:
-    print("Cannot create log file!")
