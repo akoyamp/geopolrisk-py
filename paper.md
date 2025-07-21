@@ -63,10 +63,7 @@ $\bar{p}$ is the price of the raw material. To enable comparison between materia
 Equation 3:
 
 $$
-
-GSP*{Act} = \frac{GeoPolRisk_Midpoint*{Act}}{GeoPolRisk_Midpoint\_{\text{Copper}}}
-
-
+\text{GSP}_{\text{Act}} = \frac{\text{GeoPolRisk\_Midpoint}_{\text{Act}}}{\text{GeoPolRisk\_Midpoint}_{\text{Copper}}}
 $$
 
 # Statement of Need
