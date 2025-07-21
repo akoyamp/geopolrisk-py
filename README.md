@@ -27,6 +27,4 @@ The _'geopolrisk-py'_ library offers several features to enhance its functionali
 
 # After installation
 
-A folder in the Documents directory of the installed user is created after importing the library for the first time named "geopolrisk". Three sub folders are created: _'database'_, _'logs'_, and _'output'_. Copy the [Company data.xlsx](https://github.com/akoyamp/geopolrisk-py/tree/main/geopolrisk-py/lib/) to the directory _'geopolrisk/database/'_ created in the documents folder to use it.
-The _'logs'_ folder stores the logs of the assessment.
-The _'output'_ folder stores a database containing the results of the assessment and also the exports of the results.
+For detailed guidance on how to use the library, please refer to the official documentation at https://geopolrisk-py.readthedocs.io/en/latest/. It includes explanations of each module, a step-by-step user guide, and a description of the underlying method. An example Jupyter notebook is also provided to demonstrate a typical workflow. This notebook is available both in the online documentation and in the `examples` folder of the repository.

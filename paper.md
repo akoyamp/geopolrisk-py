@@ -40,7 +40,7 @@ The Geopolitical Supply Risk (GeoPolRisk) method assesses raw material criticali
 
 The GeoPolRisk method is an import-based indicator [@Gemechu2015] developed to integrate the criticality of raw materials into the Area of Protection ‘natural resources’, as proposed by [@Sonnemann2015]. It is designed to evaluate the supply risk of importing raw materials from a trade (country, trade block, region, group of countries, or company/organization) perspective during a specific period. Since its inception, the method has evolved to incorporate multiple components of resource criticality [@Cimprich2019].
 
-The core of the method is the GeoPolRisk Score, which reflects the probability of supply disruption due to geopolitical factors for a given raw material “A” and economic unit “c” during a specific year. As shown in Equation 1, this score is composed of two main components: (i) the global production concentration, represented by the Herfindahl-Hirschman Index (HHI) $HHI_A$, and (ii) the import dependence of the economic unit or also refered to as "import risk", which accounts for how much of the raw material is imported from politically unstable sources.
+The core of the method is the GeoPolRisk Score, which represents the probability of supply disruption due to geopolitical factors for a given raw material “A” and economic unit “c” during a specific year. As shown in Equation 1, this score is composed of two main components: (i) the global production concentration, represented by the Herfindahl-Hirschman Index (HHI) $HHI_A$, and (ii) the import dependence of the economic unit or also refered to as "import risk", which accounts for how much of the raw material is imported from politically unstable sources.
 
 Equation 1:
 

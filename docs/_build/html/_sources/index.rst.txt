@@ -14,7 +14,7 @@ Citation
 
 .. code-block:: bibtex
 
-   @software{edges,
+   @software{geopolrisk-py,
      author    = {Anish Koyamparambath, Thomas Schraml, Christoph Helbig, Guido Sonnemann},
      title     = {geopolrisk-py: A Python-Based Library to Operationalize the Geopolitical Supply Risk Method for use in Life Cycle Assessment and Comparative Risk Assessment},
      version   = {2.0},
@@ -35,7 +35,7 @@ Contents
    background
    usage
    methods
-   analysis
+   company
    references
    
 .. toctree::
