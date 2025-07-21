@@ -55,16 +55,17 @@ To integrate this method into life cycle impact assessment by associating the Ge
 Equation 2:
 
 $$
-GeoPolRisk\_Midpoint_{Ac} = HHI_A \cdot \sum_i \left( \frac{g_i \cdot f_{Aic}}{p_{Ac} + F_{Ac}} \right) \cdot \bar{p}
+\text{GeoPolRisk\_Midpoint}_{Ac} = HHI_A \cdot \sum_i \left( \frac{g_i \cdot f_{Aic}}{p_{Ac} + F_{Ac}} \right) \cdot \bar{p}
+$$
 
-$\bar{p}$ is the price of the raw material. To enable comparison between materials and product systems, the midpoint factor is normalized using copper as a reference. The value for copper is calculated as an average of all the countries and for 5 years. This yields the Geopolitical Supply Risk Potential (GSP) [@Koyamparambath2024], as shown in Equation 3. The GSP has units of kg$_{\text{Cu}}$-eq/kg$_A$ and is refered to as the characterization factor (CF) for the Geopolitical Supply Risk indicator.
+$\bar{p}$ is the price of the raw material. To enable comparison between materials and product systems, the midpoint factor is normalized using copper as a reference. The value for copper is calculated as an average of all the countries and for 5 years. This yields the Geopolitical Supply Risk Potential (GSP) [@Koyamparambath2024], as shown in Equation 3. The GSP has units of kg Cu-eq/kg$_A$ and is refered to as the characterization factor (CF) for the Geopolitical Supply Risk indicator.
 
 Equation 3:
-
 
 $$
 
 GSP*{Act} = \frac{GeoPolRisk_Midpoint*{Act}}{GeoPolRisk_Midpoint\_{\text{Copper}}}
+
 
 $$
 
@@ -114,4 +115,6 @@ Anish Koyamparambath: Writing - original draft, writing - review & editing, meth
 Thomas Schraml: Software, validation
 Christoph Helbig: Methodology, writing - review & editing
 Guido Sonnemann: Conceptualization, writing – review & editing, supervision
+
+$$
 $$
