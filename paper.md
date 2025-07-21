@@ -38,7 +38,7 @@ The Geopolitical Supply Risk (GeoPolRisk) method assesses raw material criticali
 
 # The GeoPolRisk Method
 
-The GeoPolRisk method is an import-based indicator [@Gemechu2015] developed to integrate the criticality of raw materials into the Area of Protection ‘natural resources’, as proposed by [@Sonnemann2015]. It is designed to evaluate the supply risk of importing raw materials from a trade (country, trade block, region, group of countries, or company/organization) perspective during a specific period. Since its inception, the method has evolved to incorporate multiple components of resource criticality [@Cimprich2019].
+The GeoPolRisk method is an import-based indicator [@Gemechu2015] developed to integrate the criticality of raw materials into the Area of Protection ‘natural resources’ in LCA, as proposed by [@Sonnemann2015]. It is designed to evaluate the supply risk of importing raw materials from the perspective of an economic unit (country, trade block, region, group of countries, or company/organization) during a specific period. Since its inception, the method has evolved to incorporate multiple components of resource criticality [@Cimprich2019].
 
 The core of the method is the GeoPolRisk Score, which represents the probability of supply disruption due to geopolitical factors for a given raw material “A” and economic unit “c” during a specific year. As shown in Equation 1, this score is composed of two main components: (i) the global production concentration, represented by the Herfindahl-Hirschman Index (HHI) $HHI_A$, and (ii) the import dependence of the economic unit or also refered to as "import risk", which accounts for how much of the raw material is imported from politically unstable sources.
 
@@ -50,20 +50,22 @@ $$
 
 Here, $g_i$ is the political (in-)stability of exporter $i$, $f_{Aic}$ is the amount of raw material $A$ imported by $c$ from $i$, $p_{Ac}$ is the domestic production, and $F_{Ac}$ is the total imports.
 
-To integrate this method into life cycle impact assessment by associating the GeoPolRisk score with mass of the raw material, a factor is developed by multiplying the score with the market price of the material, yielding the GeoPolRisk Midpoint [@Santillan-Saldivar2022] in Equation 2. This value represents the potential value of raw material at imminent risk per kilogram of raw material consumed.
+To integrate this method into life cycle impact assessment by associating the GeoPolRisk score with mass of the raw material, a factor is developed by multiplying the score with the market price of the material, yielding the GeoPolRisk Midpoint [@Santillan-Saldivar2022](Equation 2). This value represents the potential value of raw material at imminent risk per kilogram of raw material consumed.
 
 Equation 2:
 
 $$
-GeoPolRisk\_Midpoint_{Ac} = HHI_A \cdot \sum_i \left( \frac{g_i \cdot f_{Aic}}{p_{Ac} + F_{Ac}} \right) \cdot p'
-$$
+GeoPolRisk\_Midpoint_{Ac} = HHI_A \cdot \sum_i \left( \frac{g_i \cdot f_{Aic}}{p_{Ac} + F_{Ac}} \right) \cdot \bar{p}
 
-To enable comparison between materials and product systems, the midpoint factor is normalized using copper as a reference. The value for copper is calculated as an average of all the countries and for 5 years. This yields the Geopolitical Supply Risk Potential (GSP) [@Koyamparambath2024], as shown in Equation 3. The GSP has units of kg$_{\text{Cu-eq}}$/kg$_A$ and is refered to as the characterization factor (CF) for the Geopolitical Supply Risk indicator.
+$\bar{p}$ is the price of the raw material. To enable comparison between materials and product systems, the midpoint factor is normalized using copper as a reference. The value for copper is calculated as an average of all the countries and for 5 years. This yields the Geopolitical Supply Risk Potential (GSP) [@Koyamparambath2024], as shown in Equation 3. The GSP has units of kg$_{\text{Cu}}$-eq/kg$_A$ and is refered to as the characterization factor (CF) for the Geopolitical Supply Risk indicator.
 
 Equation 3:
 
+
 $$
-GSP_{Act} = \frac{GeoPolRisk\_Midpoint_{Act}}{GeoPolRisk\_Midpoint_{\text{Copper}}}
+
+GSP*{Act} = \frac{GeoPolRisk_Midpoint*{Act}}{GeoPolRisk_Midpoint\_{\text{Copper}}}
+
 $$
 
 # Statement of Need
@@ -108,7 +110,8 @@ This library was developed in collaboration with the Ecological Resource Technol
 
 # Author contributions
 
-Anish Koyamparambath: Writing - original draft, writing - review & editing, methodology, data curation, software, validation  
-Thomas Schraml: Software, validation  
-Christoph Helbig: Methodology, writing - review & editing  
+Anish Koyamparambath: Writing - original draft, writing - review & editing, methodology, data curation, software, validation
+Thomas Schraml: Software, validation
+Christoph Helbig: Methodology, writing - review & editing
 Guido Sonnemann: Conceptualization, writing – review & editing, supervision
+$$
