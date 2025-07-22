@@ -45,9 +45,9 @@ The following table presents the Harmonized System (HS) codes mapped to the raw 
    * - Raw Material
      - Supply Chain Stage
      - Symbol
-     - HS Code
+     - HS Code primary
      - HS Code - Additional
-     - HS Codes Description
+     - Primary HS Code Description
    * - Aluminium
      - Processing
      - Al
@@ -330,7 +330,6 @@ The following table presents the Harmonized System (HS) codes mapped to the raw 
      - 711011
      -
        - 711019
-       - 711290
        - 711510
      - Platinum, unwrought or in semi-manufactured forms or in powder form
    * - Potash
