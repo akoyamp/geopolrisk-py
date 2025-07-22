@@ -1,47 +1,49 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "geopolrisk-py"
-version = "2.0"  # update as needed
+version = "2.0.0"
 description = "Python library for geopolitical supply risk assessment (GeoPolRisk)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "GPL-3.0-or-later" }
 authors = [
   { name = "Anish Koyamparambath", email = "anish.koyamparambath@u-bordeaux.fr" },
-  { name = "Thomas Schraml", email = "Thomas.Schraml@uni-bayreuth.de"}
+  { name = "Thomas Schraml", email = "Thomas.Schraml@uni-bayreuth.de" }
 ]
-license = { text = "GPL-3.0-or-later" }
-readme = "README.md"
-keywords = ["LCA", "criticality", "geopolitical", "supply‑risk", "raw‑materials"]
+keywords = ["LCA", "criticality", "geopolitical", "supply-risk", "raw-materials"]
 classifiers = [
+  "Development Status :: 4 - Beta",
   "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
   "Programming Language :: Python :: 3",
-  "Operating System :: OS Independent"
+  "Programming Language :: Python :: 3.10",
+  "Operating System :: OS Independent",
+  "Topic :: Scientific/Engineering"
 ]
-requires-python = ">=3.10"
+dependencies = [
+  "pandas==2.2.2",
+  "tqdm==4.66.4",
+  "geopy==2.4.1",
+  "openpyxl==3.1.2"
+]
 
 [project.urls]
-Home = "https://github.com/akoyamp/geopolrisk-py"
-Documentation = "https://geopolrisk-py.readthedocs.io/en/latest/"
-Repository = "https://github.com/akoyamp/geopolrisk-py"
+"Homepage" = "https://github.com/akoyamp/geopolrisk-py"
+"Documentation" = "https://geopolrisk-py.readthedocs.io/en/latest/"
+"Source" = "https://github.com/akoyamp/geopolrisk-py"
 
-[project.dependencies]
-pandas = "2.2.2"
-tqdm = "4.66.4"
-geopy = "2.4.1"
-openpyxl = "3.1.2"
+[tool.setuptools]
+include-package-data = true
+zip-safe = false
 
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["geopolrisk*"]
 
 [tool.setuptools.package-data]
-"geopolrisk.lib" = ["*.xlsx", "*.db"]
+geopolrisk = ["**/*.xlsx", "**/*.db"]
 
 [tool.setuptools.exclude-package-data]
 "*" = ["__pycache__"]
-
-[tool.setuptools.include]
-# These are not installed, but included in sdist
-"docs/**" = true
-"examples/**" = true
