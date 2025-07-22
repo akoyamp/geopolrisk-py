@@ -1,0 +1,28 @@
+/* Force all headings to be left-aligned */
+.rst-content h1,
+.rst-content h2,
+.rst-content h3,
+.rst-content h4,
+.rst-content h5,
+.rst-content h6 {
+    text-align: left !important;
+}
+
+.rst-content p {
+    text-align: justify;
+}
+
+
+.right-align {
+    text-align: right;
+}
+
+.acknowledgement {
+    font-size: 0.85em;
+    color: #555;
+    font-style: italic;
+    margin-top: 2em;
+    padding-top: 1em;
+    border-top: 1px solid #ccc;
+}
+

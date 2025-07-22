@@ -1,0 +1,5 @@
+include README.md
+recursive-include src/geopolrisk/lib *.xlsx *.db
+recursive-include docs *
+recursive-include examples *
+exclude **/__pycache__/*

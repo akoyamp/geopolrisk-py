@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Background &#8212; geopolrisk-py 2.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=61cd365c" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=6e7de4c1" />
+    <script src="_static/documentation_options.js?v=60dbed4a"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Usage" href="usage.html" />
+    <link rel="prev" title="GeoPolRisk-py Documentation" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="background">
+<span id="id1"></span><h1>Background<a class="headerlink" href="#background" title="Link to this heading">¶</a></h1>
+<section id="the-geopolrisk-method">
+<h2>The GeoPolRisk Method<a class="headerlink" href="#the-geopolrisk-method" title="Link to this heading">¶</a></h2>
+<p>The GeoPolRisk method was developed to quantify the supply risk of raw materials within a product to a country, region, or group of countries. It was proposed to complement Life Cycle Assessment (LCA) in the form of a midpoint characterization factor (CF) for Life Cycle Sustainability Assessment (LCSA).</p>
+<p>The method quantifies supply risk as a function of the global production concentration of the raw material and the trade partner’s import shares weighted by their political instability. The production concentration is evaluated with the normalized Herfindahl-Hirschman Index (HHI) (from 0 to 1) for raw material extraction or processing, and the political instability is estimated using the Worldwide Governance Indicators.</p>
+<p>Since its inception, the method has evolved, incorporating several dimensions of resource criticality.</p>
+</section>
+<section id="history-of-geopolrisk-method-at-a-glance">
+<h2>History of GeoPolRisk Method at a Glance<a class="headerlink" href="#history-of-geopolrisk-method-at-a-glance" title="Link to this heading">¶</a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Publication</p></th>
+<th class="head"><p>Contribution</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Sonnemann et al. (2015) <a class="footnote-reference brackets" href="#id28" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>13<span class="fn-bracket">]</span></a></p></td>
+<td><ul class="simple">
+<li><p>Initial proposal for integration of raw material criticality into the LCSA framework.</p></li>
+<li><p>Identification of supply risk as a potential indicator to address resource accessibility in LCA.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Gemechu et al. (2015) <a class="footnote-reference brackets" href="#id19" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a></p></td>
+<td><ul class="simple">
+<li><p>Definition of the geopolitical supply risk indicator (GeoPolRisk) to integrate raw material criticality within LCSA.</p></li>
+<li><p>First application of the method to a set of 14 resources from the perspective of 7 economies.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Gemechu et al. (2016) <a class="footnote-reference brackets" href="#id20" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a></p></td>
+<td><ul class="simple">
+<li><p>Application of the GeoPolRisk method to the previous 14 studied resources in the inventory of electric vehicles.</p></li>
+<li><p>Comparison between the contribution of the analyzed resources to supply risk and other environmental impacts from an LCA perspective.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Helbig et al. (2016) <a class="footnote-reference brackets" href="#id21" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></a></p></td>
+<td><ul class="simple">
+<li><p>Introduction of domestic production as a risk mitigating factor in the calculation of the geopolitical supply risk.</p></li>
+<li><p>Application of the method to multiple stages in the petrochemical supply chain of polyacrylonitrile-based carbon fibers.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Cimprich et al. (2017a) <a class="footnote-reference brackets" href="#id16" id="id6" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p></td>
+<td><ul class="simple">
+<li><p>Introduction of substitutability indicators as a risk mitigating factor in the calculation of geopolitical supply risk.</p></li>
+<li><p>Application of the method to selected resources in the inventory of electric vehicles and dental X-ray machines.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Cimprich et al. (2017b) <a class="footnote-reference brackets" href="#id17" id="id7" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p></td>
+<td><ul class="simple">
+<li><p>Definition of a characterization model for the application of the GeoPolRisk method as a complement to environmental LCA.</p></li>
+<li><p>Application to the inventory of conventional and electric vehicles.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Cimprich et al. (2019) <a class="footnote-reference brackets" href="#id18" id="id8" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p></td>
+<td><ul class="simple">
+<li><p>Review and comparison of methods for product-level supply risk assessment.</p></li>
+<li><p>Identification of methodological gaps in the impact pathway based on geopolitical supply risk.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Santillán-Saldivar et al. (2020) <a class="footnote-reference brackets" href="#id25" id="id9" role="doc-noteref"><span class="fn-bracket">[</span>10<span class="fn-bracket">]</span></a></p></td>
+<td><ul class="simple">
+<li><p>Definition of the GeoPolEndpoint method to measure socio-economic impacts at the endpoint level associated with the use of critical raw materials.</p></li>
+<li><p>Application of the GeoPolEndpoint method to four relevant resources in the inventory of lithium-ion batteries from the perspective of the country members of the OECD.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Santillán-Saldivar et al. (2021) <a class="footnote-reference brackets" href="#id26" id="id10" role="doc-noteref"><span class="fn-bracket">[</span>11<span class="fn-bracket">]</span></a></p></td>
+<td><ul class="simple">
+<li><p>Introduction of recycling as a risk mitigating factor in the calculation of the geopolitical supply risk indicator.</p></li>
+<li><p>Application to 13 resources or groups of resources under different recycling scenarios from the perspective of the European Union.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Koyamparambath et al. (2022) <a class="footnote-reference brackets" href="#id22" id="id11" role="doc-noteref"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></a></p></td>
+<td><ul class="simple">
+<li><p>Using the GeoPolRisk method for comparative risk assessment.</p></li>
+<li><p>Application to the case of raw materials used in batteries and fossil fuels for 6 different economic units from 2000–2018.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Santillán-Saldivar et al. (2022) <a class="footnote-reference brackets" href="#id27" id="id12" role="doc-noteref"><span class="fn-bracket">[</span>12<span class="fn-bracket">]</span></a></p></td>
+<td><ul class="simple">
+<li><p>Redefinition of the characterization model to measure the supply risk potential based on the geopolitical supply risk indicator as a complement to environmental LCA.</p></li>
+<li><p>Integration of a truly mass-based midpoint indicator in line with the previously published endpoint impact pathways associated with geopolitical supply risk.</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Koyamparambath et al. (2024) <a class="footnote-reference brackets" href="#id24" id="id13" role="doc-noteref"><span class="fn-bracket">[</span>9<span class="fn-bracket">]</span></a></p></td>
+<td><ul class="simple">
+<li><p>Operationalizing the characterization model with spatially and temporally differentiated characterization factors for 42 raw materials.</p></li>
+<li><p>Application to the case of photovoltaic laminate demonstrating the complementarity of the GeoPolRisk method with LCA indicators.</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="the-values-of-the-geopolrisk-method">
+<h2>The Values of the GeoPolRisk Method<a class="headerlink" href="#the-values-of-the-geopolrisk-method" title="Link to this heading">¶</a></h2>
+<p>A country, region, trade block, or company is represented as an economic unit. The formula for determining the probability of supply risk attributed to geopolitical factors, commonly referred to as the “GeoPolRisk Score,” for a specific material “A” is outlined in Equation 1, taking into account the perspective of the economic unit “c” during a given year. The formula can be interpreted as a composite of two contributing factors: the global production concentration and the import dependency of the metal or mineral.</p>
+<p><strong>Equation 1: GeoPolRisk Score</strong></p>
+<div class="math notranslate nohighlight">
+\[\text{GeoPolRisk}_{Ac} = \text{HHI}_A \times \sum_i \left( \frac{g_i \cdot f_{Aic}}{p_{Ac} + F_{Ac}} \right)\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\text{HHI}_A\)</span> = HHI for commodity A</p></li>
+<li><p><span class="math notranslate nohighlight">\(g_i\)</span> = Geopolitical (in)stability of economic unit <em>i</em></p></li>
+<li><p><span class="math notranslate nohighlight">\(f_{Aic}\)</span> = Imports of commodity A from country <em>i</em> to economic unit <em>c</em></p></li>
+<li><p><span class="math notranslate nohighlight">\(F_{Ac}\)</span> = Total imports of commodity A to economic unit <em>c</em></p></li>
+<li><p><span class="math notranslate nohighlight">\(p_{Ac}\)</span> = Domestic production of commodity A in economic unit <em>c</em></p></li>
+</ul>
+<p><strong>Subcomponents:</strong></p>
+<p><strong>• Herfindahl-Hirschman Index:</strong></p>
+<div class="math notranslate nohighlight">
+\[\text{HHI}_A = \frac{\sum_i \left(P_{Ai}^2\right)}{\left(\sum_i P_{Ai}\right)^2}\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P_{Ai}\)</span> = Production quantity of raw material A in country <em>i</em> during the given year</p></li>
+</ul>
+<p><strong>• Import Risk:</strong></p>
+<div class="math notranslate nohighlight">
+\[\text{ImportRisk}_{Ac} = \sum_i \left( \frac{g_i \cdot f_{Aic}}{p_{Ac} + F_{Ac}} \right)\]</div>
+<p>To integrate the method into LCSA, a connection to the functional unit is necessary. A characterization model of the GeoPolRisk method based on the defined cause-effect mechanism was developed to complement environmental LCA. A new characterization model and a modified midpoint indicator were developed to address the identified methodological gaps. The complete equation for the GeoPolRisk midpoint CF of a resource “A” from the perspective of a country “c” in a given year is shown in Equation 2:</p>
+<p><strong>Equation 2: The midpoint characterization factor for the GeoPolRisk method</strong></p>
+<div class="math notranslate nohighlight">
+\[\text{GeoPolRisk}_{Ac} = \text{HHI}_A \times \sum_i \left( \frac{g_i \cdot f_{Aic}}{p_{Ac} + F_{Ac}} \right) \cdot \bar{p}\]</div>
+<p><span class="math notranslate nohighlight">\(\bar{p}\)</span> is the price of the raw material.</p>
+<p>The CF is called <strong>Geopolitical Supply Risk Potential (GSP)</strong> and is used to evaluate the <strong>Geopolitical Supply Risk (GSR)</strong> of raw materials consumed in a product/product system. The values for the GSP are obtained by dividing the GeoPolRisk midpoint for a given raw material by the respective GeoPolRisk midpoint of copper for the same economic unit and time period, as shown in Equation 3. Here, “A” represents the raw material, “c” represents an economic unit, and “t” refers to the time period (year). At the midpoint level, the indicator seeks to quantify “the risk of relative potential accessibility issues for a product system related to short-term geopolitical and socio-economic aspects.” As an import-based indicator, using the characterization model, the CFs represent the supply risk of a raw material equivalent to the supply risk of importing one kilogram of copper to an economic unit at a given time period. This provides a way to compare the GSR for different processes or product systems using a common reference.</p>
+<p><strong>Equation 3: The GeoPolRisk characterization model to calculate the Geopolitical Supply Risk Potential</strong></p>
+<div class="math notranslate nohighlight">
+\[\text{GSP}_{Act} = \frac{\text{GeoPolRisk midpoint}_{Act}}{\text{GeoPolRisk midpoint (Copper)}_{ct}}\]</div>
+<p>The characterization model uses trade data from a comprehensive disaggregated database for bilateral trade flows known as the Database for International Trade Analysis (BACI). The traded price is calculated using the “free on board value,” a mechanism commonly used in international trade that considers the cost, insurance, and freight of a product being transported from the seller to the buyer. Global mine production data were obtained from the <em>World Mining Data - 2021</em> report published by the Austrian Federal Ministry of Finance.</p>
+<a class="reference internal image-reference" href="_images/characterization_model.png"><img alt="Characterization model of the GeoPolRisk method" class="align-center" src="_images/characterization_model.png" style="width: 100%;" />
+</a>
+</section>
+<section id="application-of-the-method">
+<h2>Application of the Method<a class="headerlink" href="#application-of-the-method" title="Link to this heading">¶</a></h2>
+<p>Mapping the CFs of the GeoPolRisk method to LCI elementary flows presents a challenge primarily arising from the inherent nature of supply risk associated with the traded commodity. Within the context of LCA, the traded commodity refers to the intermediate flow obtained from a mining activity. LCA characterizes the impacts associated with elementary flows, encompassing inputs and outputs. Consequently, applying CFs directly to intermediate flows becomes impractical, as they cannot be automatically traced unless unit processes are considered.</p>
+<p>To address this limitation, we assume that, in mining activities in ecoinvent, the elementary input flow of the mineral extracted from the ground is in the same range as the intermediate output flow of the mineral being produced. This assumption is true for most of the mining activities in ecoinvent, except for activities where mineral processing waste is high and mining activities where elementary flows are allocated to co-products having different economic values. This assumption enables the application of CFs to elementary rather than intermediate flows, rendering the GeoPolRisk method feasible in this context.</p>
+<p>The GeoPolRisk method takes on the perspective of an economic unit and time period while calculating the CFs for raw materials. Ideally, the geographic location of the elementary flow where the activity occurs is utilized to apply the corresponding CF and calculate the GSR of the product system. However, within the ecoinvent processes, activities involve a combination of flows originating from various geographical locations, and to address this challenge, a potential solution is to assume that all activities occur within a specific geographic location, except for mining activities, and apply the specific CFs to all elementary flows.</p>
+<p>Nevertheless, the supply risk associated with the primary product is inherently linked to the location of its manufacturing. This is because there’s an assumption that the supply risk linked to intermediate products is at least equal to, if not greater than, the supply risk of the raw materials required for producing the intermediate product in the same location where the primary product is made.</p>
+</section>
+<section id="glossary-of-terms">
+<h2>Glossary of Terms<a class="headerlink" href="#glossary-of-terms" title="Link to this heading">¶</a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Abbreviation</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>GeoPolRisk</p></td>
+<td><p>Geopolitically related supply risk method.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Economic Unit</p></td>
+<td><p>A country, region, group of countries, or a company — the entity from whose perspective the supply risk is evaluated using the GeoPolRisk method.</p></td>
+</tr>
+<tr class="row-even"><td><p>GeoPolRisk Score</p></td>
+<td><p>A non-dimensional supply risk value used for comparative risk assessment.</p></td>
+</tr>
+<tr class="row-odd"><td><p>GSP</p></td>
+<td><p>Geopolitical Supply Risk Potential – the characterization factor used in Life Cycle Assessment, expressed as kg Cu-eq/kg.</p></td>
+</tr>
+<tr class="row-even"><td><p>GSR</p></td>
+<td><p>Geopolitical Supply Risk – the midpoint impact calculated using the GSP.</p></td>
+</tr>
+<tr class="row-odd"><td><p>HHI</p></td>
+<td><p>Herfindahl-Hirschman Index – indicator of production concentration for a raw material, normalized to a scale from 0 to 1.</p></td>
+</tr>
+<tr class="row-even"><td><p>Import Risk</p></td>
+<td><p>The import share from each trade partner weighted by its political (in)stability index, normalized by the total supply (domestic + imported).</p></td>
+</tr>
+<tr class="row-odd"><td><p>LCA</p></td>
+<td><p>Life Cycle Assessment – methodology to assess environmental impacts across all stages of a product’s life.</p></td>
+</tr>
+<tr class="row-even"><td><p>LCSA</p></td>
+<td><p>Life Cycle Sustainability Assessment – an integrated framework combining LCA, life cycle costing, and social LCA.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The contents of this page are based on published work by Koyamparambath A. (2023) <a class="footnote-reference brackets" href="#id23" id="id14" role="doc-noteref"><span class="fn-bracket">[</span>8<span class="fn-bracket">]</span></a> and Koyamparambath et al. (2024) <a class="footnote-reference brackets" href="#id24" id="id15" role="doc-noteref"><span class="fn-bracket">[</span>9<span class="fn-bracket">]</span></a>.</p>
+</div>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">¶</a></h2>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id16" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">1</a><span class="fn-bracket">]</span></span>
+<p>Cimprich A., Karim K.S., Young S.B. (2017a). Extending the geopolitical supply risk method: Material “substitutability” indicators applied to electric vehicles and dental X-ray equipment. <em>International Journal of Life Cycle Assessment</em>, 23(10), 2024–2042.</p>
+</aside>
+<aside class="footnote brackets" id="id17" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">2</a><span class="fn-bracket">]</span></span>
+<p>Cimprich A., Young S.B., Helbig C., Gemechu E.D., Thorenz A., Tuma A., Sonnemann G. (2017b). Extension of geopolitical supply risk methodology: characterization model applied to conventional and electric vehicles. <em>Journal of Cleaner Production</em>, 162, 754–763.</p>
+</aside>
+<aside class="footnote brackets" id="id18" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id8">3</a><span class="fn-bracket">]</span></span>
+<p>Cimprich A., Bach V., Helbig C., Thorenz A., Schrijvers D., Sonnemann G., Young S.B., Sonderegger T., Berger M. (2019). Raw material criticality assessment as a complement to environmental life cycle assessment: examining methods for product-level supply risk assessment. <em>Journal of Industrial Ecology</em>, 23, 1226–1236.</p>
+</aside>
+<aside class="footnote brackets" id="id19" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">4</a><span class="fn-bracket">]</span></span>
+<p>Gemechu E.D., Helbig C., Sonnemann G., Thorenz A., Tuma A. (2015). Import-based Indicator for the geopolitical supply risk of raw materials in life cycle sustainability assessments. <em>Journal of Industrial Ecology</em>, 20(1), 154–165.</p>
+</aside>
+<aside class="footnote brackets" id="id20" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">5</a><span class="fn-bracket">]</span></span>
+<p>Gemechu E.D., Sonnemann G., Young S.B. (2016). Geopolitical-related supply risk assessment as a complement to environmental impact assessment: the case of electric vehicles. <em>International Journal of Life Cycle Assessment</em>. <a class="reference external" href="https://doi.org/10.1007/s11367-015-0917-4G">https://doi.org/10.1007/s11367-015-0917-4G</a></p>
+</aside>
+<aside class="footnote brackets" id="id21" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">6</a><span class="fn-bracket">]</span></span>
+<p>Helbig C., Gemechu E.D., Pillain B., Young S.B., Thorenz A., Tuma A., Sonnemann G. (2016). Extending the geopolitical supply risk indicator: application of life cycle sustainability assessment to the petrochemical supply chain of polyacrylonitrile-based carbon fibers. <em>Journal of Cleaner Production</em>, 137, 1170–1178.</p>
+</aside>
+<aside class="footnote brackets" id="id22" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id11">7</a><span class="fn-bracket">]</span></span>
+<p>Koyamparambath A., Santillán-Saldivar J., McLellan B., Sonnemann G. (2022). Supply risk evolution of raw materials for batteries and fossil fuels for selected OECD countries (2000–2018). <em>Resources Policy</em>, 75, 102465.</p>
+</aside>
+<aside class="footnote brackets" id="id23" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id14">8</a><span class="fn-bracket">]</span></span>
+<p>Koyamparambath A. (2023). <em>Mise en oeuvre et élargissement d’une méthode d’évaluation de la criticité du cycle de vie à l’aide de techniques informatiques</em> (Doctoral dissertation, University of Bordeaux).</p>
+</aside>
+<aside class="footnote brackets" id="id24" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>9<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id13">1</a>,<a role="doc-backlink" href="#id15">2</a>)</span>
+<p>Koyamparambath A., Loubet P., Young S.B., Sonnemann G. (2024). Spatially and temporally differentiated characterization factors for supply risk of abiotic resources in life cycle assessment. <em>Resources, Conservation and Recycling</em>, 209, 107801. <a class="reference external" href="https://doi.org/10.1016/j.resconrec.2024.107801">https://doi.org/10.1016/j.resconrec.2024.107801</a>.</p>
+</aside>
+<aside class="footnote brackets" id="id25" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id9">10</a><span class="fn-bracket">]</span></span>
+<p>Santillán-Saldivar J., Gaugler T., Helbig C., Rathgeber A., Sonnemann G., Thorenz A., Tuma A. (2020). Design of an endpoint indicator for mineral resource supply risks in life cycle sustainability assessment: The case of Li-ion batteries. <em>Journal of Industrial Ecology</em>, 2020, 1–12. <a class="reference external" href="https://doi.org/10.1111/jiec.13094">https://doi.org/10.1111/jiec.13094</a></p>
+</aside>
+<aside class="footnote brackets" id="id26" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id10">11</a><span class="fn-bracket">]</span></span>
+<p>Santillán-Saldivar J., Cimprich A., Shaikh N., Laratte B., Young S.B., Sonnemann G. (2021). How recycling mitigates supply risks of critical raw materials: extension of the geopolitical supply risk methodology applied to information and communication technologies in the European Union. <em>Resources, Conservation and Recycling</em>, 164, 2021. <a class="reference external" href="https://doi.org/10.1016/j.resconrec.2020.105108">https://doi.org/10.1016/j.resconrec.2020.105108</a></p>
+</aside>
+<aside class="footnote brackets" id="id27" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id12">12</a><span class="fn-bracket">]</span></span>
+<p>Santillán-Saldivar J., Gemechu E., Muller S., Villeneuve J., Young S.B., Sonnemann G. (2022). An improved resource midpoint characterization method for supply risk of resources: integrated assessment of Li-ion batteries. <em>International Journal of Life Cycle Assessment</em>, 27, 457–468. <a class="reference external" href="https://doi.org/10.1007/s11367-022-02027-y">https://doi.org/10.1007/s11367-022-02027-y</a></p>
+</aside>
+<aside class="footnote brackets" id="id28" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">13</a><span class="fn-bracket">]</span></span>
+<p>Sonnemann G., Gemechu E.D., Adibi N., De Bruille V., Bulle C. (2015). From a critical review to a conceptual framework for integrating the criticality of resources into Life Cycle Sustainability Assessment. <em>Journal of Cleaner Production</em>. <a class="reference external" href="https://doi.org/10.1016/j.jclepro.2015.01.082">https://doi.org/10.1016/j.jclepro.2015.01.082</a></p>
+</aside>
+</aside>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">geopolrisk-py</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Background</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-geopolrisk-method">The GeoPolRisk Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#history-of-geopolrisk-method-at-a-glance">History of GeoPolRisk Method at a Glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-values-of-the-geopolrisk-method">The Values of the GeoPolRisk Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#application-of-the-method">Application of the Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#glossary-of-terms">Glossary of Terms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="methods.html">Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="company.html">Company-specific risk assessment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notebooks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example.html">Different types of typical usage of the package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">GeoPolRisk-py Documentation</a></li>
+      <li>Next: <a href="usage.html" title="next chapter">Usage</a></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Anish Koyamparambath.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.3.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/background.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

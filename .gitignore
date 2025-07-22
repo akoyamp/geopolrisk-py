@@ -8,5 +8,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# oert-folder
-geopolrisk/oert
+# lock-files
+*~lock*
+
+# build output folder
+build/
+dist/
+geopolrisk_py.egg-info/

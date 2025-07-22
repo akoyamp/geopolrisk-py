@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Company-specific risk assessment &#8212; geopolrisk-py 2.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=61cd365c" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=6e7de4c1" />
+    <script src="_static/documentation_options.js?v=60dbed4a"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="References" href="references.html" />
+    <link rel="prev" title="Methods" href="methods.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="company-specific-risk-assessment">
+<h1>Company-specific risk assessment<a class="headerlink" href="#company-specific-risk-assessment" title="Link to this heading">¶</a></h1>
+<section id="prepare-the-excel-file">
+<h2>Prepare the Excel File<a class="headerlink" href="#prepare-the-excel-file" title="Link to this heading">¶</a></h2>
+<p>The first time the package is run, an Excel file is automatically copied to a folder located at:</p>
+<p><code class="docutils literal notranslate"><span class="pre">Documents/geopolrisk/databases</span></code></p>
+<p>The typical path on a Windows system will look like:</p>
+<p><code class="docutils literal notranslate"><span class="pre">C:\Users\your_username\Documents\geopolrisk\databases</span></code></p>
+<p>The Excel file contains the following columns:</p>
+<ul class="simple">
+<li><p><strong>Metal</strong>: Use the name of the metal or raw material that corresponds to the commodity. Please refer to the <a class="reference internal" href="references.html#references"><span class="std std-ref">References</span></a> section for the correct nomenclature.</p></li>
+<li><p><strong>Country of Origin</strong>: Use either the ISO country name or the ISO 3-digit code for the country from which the commodity is imported.</p></li>
+<li><p><strong>Quantity (kg)</strong>: Quantity of the imported commodity in kilograms.</p></li>
+<li><p><strong>Value (USD)</strong>: Value of the imported commodity in US dollars.</p></li>
+<li><p><strong>Year</strong>: Reference year.</p></li>
+<li><p><strong>Additional Notes</strong>: Any internal notes or comments (these are not used in the calculation).</p></li>
+</ul>
+<p>There is no master function for calculating the GeoPolRisk values based on company-level trade data. The calculation must be performed step-by-step.</p>
+</section>
+<section id="import-the-functions">
+<h2>Import the Functions<a class="headerlink" href="#import-the-functions" title="Link to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">geopolrisk.assessment.core</span> <span class="kn">import</span> <span class="n">HHI</span><span class="p">,</span> <span class="n">importrisk_company</span><span class="p">,</span> <span class="n">GeoPolRisk</span>
+</pre></div>
+</div>
+<p>First, use the <cite>HHI</cite> function to calculate the concentration of production for a given metal and year.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ProductionQuantity</span><span class="p">,</span> <span class="n">hhi</span> <span class="o">=</span> <span class="n">HHI</span><span class="p">(</span><span class="s2">&quot;Nickel&quot;</span><span class="p">,</span> <span class="mi">2022</span><span class="p">,</span> <span class="s2">&quot;Company&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The function takes the following parameters:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">RawMaterial</span></code>: The raw material name (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;Nickel&quot;</span></code>). This must match the nomenclature used in the Excel file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Year</span></code>: The reference year (e.g., <code class="docutils literal notranslate"><span class="pre">2022</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Country</span></code>: Use the string <code class="docutils literal notranslate"><span class="pre">&quot;Company&quot;</span></code> to indicate company-level assessment instead of a country.</p></li>
+</ul>
+<p>Next, use the <code class="docutils literal notranslate"><span class="pre">importrisk_company</span></code> function to retrieve the company’s import risk for the specified raw material and year.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Num_Company</span><span class="p">,</span> <span class="n">TotalTrade_Company</span><span class="p">,</span> <span class="n">Price_Company</span> <span class="o">=</span> <span class="n">importrisk_company</span><span class="p">(</span><span class="s2">&quot;Nickel&quot;</span><span class="p">,</span> <span class="mi">2022</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then calculate the GeoPolRisk values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Values_Company</span> <span class="o">=</span> <span class="n">GeoPolRisk</span><span class="p">(</span>
+    <span class="n">Num_Company</span><span class="p">,</span>
+    <span class="n">TotalTrade_Company</span><span class="p">,</span>
+    <span class="n">Price_Company</span><span class="p">,</span>
+    <span class="n">ProductionQuantity</span><span class="p">,</span>
+    <span class="n">hhi</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="create-the-output-dataframe">
+<h2>Create the Output DataFrame<a class="headerlink" href="#create-the-output-dataframe" title="Link to this heading">¶</a></h2>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">createresultsdf</span></code> utility to structure the results in a pandas DataFrame:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">geopolrisk.assessment.utils</span> <span class="kn">import</span> <span class="n">createresultsdf</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">createresultsdf</span><span class="p">()</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;DBID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Company&quot;</span><span class="p">]</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;Country [Economic Entity]&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Company&quot;</span><span class="p">]</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;Raw Material&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Nickel&quot;</span><span class="p">]</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;Year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;2022&quot;</span><span class="p">]</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;GeoPolRisk Score&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">Values_Company</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;GeoPolRisk Characterization Factor [eq. Kg-Cu/Kg]&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">Values_Company</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;HHI&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">hhi</span><span class="p">]</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;Import Risk&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">Values_Company</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;Price&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">Price_Company</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">geopolrisk-py</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="methods.html">Methods</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Company-specific risk assessment</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#prepare-the-excel-file">Prepare the Excel File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#import-the-functions">Import the Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-the-output-dataframe">Create the Output DataFrame</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notebooks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example.html">Different types of typical usage of the package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="methods.html" title="previous chapter">Methods</a></li>
+      <li>Next: <a href="references.html" title="next chapter">References</a></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Anish Koyamparambath.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.3.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/company.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
