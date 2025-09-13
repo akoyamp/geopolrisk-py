@@ -2,3 +2,4 @@ pandas
 tqdm
 geopy
 openpyxl
+fastapi[standard]
