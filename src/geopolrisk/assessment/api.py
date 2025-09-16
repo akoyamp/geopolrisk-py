@@ -23,12 +23,12 @@ def serialize_df(df: pd.DataFrame):
     }
 
 @app.get("/status")
-def read_root():
+def status():
     return {"status": "ok"}
 
 
 @app.get("/raw_materials")
-def read_root():
+def raw_materials():
     return {"raw_materials": utils.default_rmlist()}
 
 
