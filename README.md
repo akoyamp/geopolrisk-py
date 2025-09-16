@@ -28,3 +28,44 @@ The _'geopolrisk-py'_ library offers several features to enhance its functionali
 # After installation
 
 For detailed guidance on how to use the library, please refer to the official documentation at https://geopolrisk-py.readthedocs.io/en/latest/. It includes explanations of each module, a step-by-step user guide, and a description of the underlying method. An example Jupyter notebook is also provided to demonstrate a typical workflow. This notebook is available both in the online documentation and in the `examples` folder of the repository.
+
+# Run through the JSON API, in Docker
+
+First, build it
+
+```
+docker build -t akoyamp/geopolrisk:latest .
+```
+
+or with your custom name
+
+```bash
+docker build -t <name of the image> .
+```
+
+See the comments at the top of the `Dockerfile` for more information.
+
+Then run it to access it locally
+
+```
+docker run -p 127.0.0.1:8001:8000 akoyamp/geopolrisk:latest
+```
+
+or with a custom port
+
+```
+docker run -p <your host port>:8000 <the image name>
+```
+
+and query it
+
+```bash
+curl -X POST \
+  http://127.0.0.1:8001/gprs_calc \
+  -H "Content-Type: application/json" \
+  -d '{"years": [2019, 2020, 2021, 2022], "countries": ["China", "Germany", 842, 36]}'
+```
+
+## API documentation
+
+See available methods under `src/geopolrisk/assessment/api.py`.

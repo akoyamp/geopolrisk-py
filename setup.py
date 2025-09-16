@@ -25,6 +25,7 @@ setup(
         "tqdm==4.66.4",
         "geopy==2.4.1",
         "openpyxl==3.1.2",
+        "fastapi[standard]==0.116"
     ],
     project_urls={
         "Home": "https://github.com/akoyamp/geopolrisk-py",

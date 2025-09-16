@@ -26,7 +26,8 @@ dependencies = [
   "pandas==2.2.2",
   "tqdm==4.66.4",
   "geopy==2.4.1",
-  "openpyxl==3.1.2"
+  "openpyxl==3.1.2",
+  "fastapi[standard]==0.116"
 ]
 
 [project.urls]

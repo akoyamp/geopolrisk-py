@@ -19,7 +19,7 @@ from .core import *
 from .utils import *
 
 
-def gprs_calc(period: list, country: list, rawmaterial: list, region_dict={}):
+def gprs_calc(period: list, country: list, rawmaterial: list, region_dict={}, export_to_xlsx: bool=True, write_to_db: bool=True):
     """
     A single aggregate function performs all calculations and exports the results as an Excel file.
     The inputs include a list of years, a list of countries,
@@ -106,9 +106,11 @@ def gprs_calc(period: list, country: list, rawmaterial: list, region_dict={}):
         result["Import Risk"] = ir_list
         result["Price"] = price_list
 
-        excel_path = databases.directory + "/output/results.xlsx"
-        result.to_excel(excel_path, index=False)
-        writetodb(result)
+        if export_to_xlsx:
+            excel_path = databases.directory + "/output/results.xlsx"
+            result.to_excel(excel_path, index=False)
+        if write_to_db:
+            writetodb(result)
 
     except Exception as e:
         logging.debug("Error while recording data into dataframe", e)
