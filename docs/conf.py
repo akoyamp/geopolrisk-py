@@ -9,7 +9,7 @@
 project = "geopolrisk-py"
 copyright = "2025, Anish Koyamparambath"
 author = "Anish Koyamparambath"
-release = "2.0"
+release = "2.0,0"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
