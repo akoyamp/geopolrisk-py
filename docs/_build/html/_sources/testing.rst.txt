@@ -1,11 +1,11 @@
 Testing
-=======
+========
 
 The test suite is included in the source repository and is intended to verify
 the correctness and internal consistency of the GeoPolRisk implementation.
 
 What is tested
---------------
+---------------
 
 The tests validate:
 
@@ -18,7 +18,7 @@ The tests are designed to ensure that numerical results are reproducible and
 that changes to the code do not break existing functionality.
 
 How to run the tests
--------------------
+---------------------
 
 Tests are not included in the PyPI distribution and must be run from a cloned
 copy of the repository.
@@ -61,7 +61,7 @@ functions) and integration or regression tests (end-to-end consistency against
 a reference calculation).
 
 Core computation tests (``test_core.py``)
------------------------------------------
+------------------------------------------
 
 This module focuses on the numerical core of the GeoPolRisk method.
 
@@ -78,7 +78,7 @@ This module focuses on the numerical core of the GeoPolRisk method.
   numerators), rather than masking them.
 
 Database utility tests (``test_database.py``)
----------------------------------------------
+----------------------------------------------
 
 This module tests the low-level SQLite interaction utilities used by the
 library.

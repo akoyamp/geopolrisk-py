@@ -17,10 +17,10 @@ Citation
    @software{geopolrisk-py,
      author    = {Anish Koyamparambath, Thomas Schraml, Christoph Helbig, Guido Sonnemann},
      title     = {geopolrisk-py: A Python-Based Library to Operationalize the Geopolitical Supply Risk Method for use in Life Cycle Assessment and Comparative Risk Assessment},
-     version   = {2.0},
+     version   = {2.0.0},
      doi       = {},
      url       = {https://github.com/akoyamp/geopolrisk-py},
-     year      = {2025},
+     year      = {2026},
      publisher = {Zenodo},
      license   = {GPL-3.0}
    }
@@ -39,6 +39,7 @@ Contents
    company
    references
    testing
+   contribution
    
 .. toctree::
    :maxdepth: 1

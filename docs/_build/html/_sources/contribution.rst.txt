@@ -1,5 +1,5 @@
 Contributing and Support
-=======================
+=========================
 
 Community contributions
 -----------------------

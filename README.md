@@ -25,7 +25,7 @@ The _'geopolrisk-py'_ library offers several features to enhance its functionali
 - **Custom Region Creation**: Users can define regions or groups of countries not available in the background database. This allows for trade aggregation and region-specific supply risk analysis, a capability supported by **'utils.py'** and **'core.py'** functions.
 - **Company-Specific Risk Assessment**: A standout feature is the ability to calculate supply risk based on company-specific trade data. Using a predefined Excel template available in the repository, users can input their trade data, which the library then processes using **'transformdata'** and other relevant functions. For example, **'importrisk_company'** in **'core.py'** calculates the second component of the GeoPolRisk method (weighted import risk), tailored to the company's unique trade mix. This feature enables companies to model different supply risk scenarios based on their specific supply chains and compare them to national averages.
 
-## Installation
+# Installation
 
 ### Requirements
 
@@ -54,7 +54,7 @@ No assumptions, no extras knowledge required.
 
 ---
 
-## Testing
+# Testing
 
 The full test suite is provided in the source repository and is executed via a single entry-point script.
 This ensures that all tests are run in a controlled and reproducible way, independent of how `pytest` discovers files.
@@ -90,7 +90,7 @@ This command executes all tests and reports any failures directly to the console
 For detailed guidance on how to use the library, please refer to the official documentation at https://geopolrisk-py.readthedocs.io/en/latest/. It includes explanations of each module, a step-by-step user guide, and a description of the underlying method. An example Jupyter notebook is also provided to demonstrate a typical workflow. This notebook is available both in the online documentation and in the `examples` folder of the repository.
 
 
-## Support and Contact
+# Support and Contact
 
 For bug reports, feature requests, and technical questions, please use the
 GitHub issue tracker:
