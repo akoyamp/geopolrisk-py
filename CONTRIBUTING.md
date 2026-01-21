@@ -29,13 +29,29 @@ We welcome ideas to improve the library! You can:
 - Suggest a new raw material mapping
 - Propose a new supply risk indicator or methodology extension
 
----
+### Submitting code changes  ← (small addition)
+
+Contributions of code should be submitted via pull requests on GitHub.
+Please ensure that existing tests pass before opening a pull request.
 
 ## Development Setup
 
-1. **Clone the repo**:
+Clone the repository locally:
 
-   ```bash
-   git clone https://github.com/akoyamp/geopolrisk-py.git
-   cd geopolrisk-py
-   ```
+```bash
+git clone https://github.com/akoyamp/geopolrisk-py.git
+cd geopolrisk-py
+```
+
+## Support and Contact
+
+For bug reports, feature requests, and technical questions, please use the
+GitHub issue tracker:
+
+[https://github.com/akoyamp/geopolrisk-py/issues](https://github.com/akoyamp/geopolrisk-py/issues)
+
+For questions related to the GeoPolRisk method, interpretation of results,
+or academic use of the software, you may also contact the corresponding author:
+
+Anish Koyamparambath
+Email: [anish.koyam@hotmail.com](mailto:anish.koyam@hotmail.com)

@@ -25,6 +25,80 @@ The _'geopolrisk-py'_ library offers several features to enhance its functionali
 - **Custom Region Creation**: Users can define regions or groups of countries not available in the background database. This allows for trade aggregation and region-specific supply risk analysis, a capability supported by **'utils.py'** and **'core.py'** functions.
 - **Company-Specific Risk Assessment**: A standout feature is the ability to calculate supply risk based on company-specific trade data. Using a predefined Excel template available in the repository, users can input their trade data, which the library then processes using **'transformdata'** and other relevant functions. For example, **'importrisk_company'** in **'core.py'** calculates the second component of the GeoPolRisk method (weighted import risk), tailored to the company's unique trade mix. This feature enables companies to model different supply risk scenarios based on their specific supply chains and compare them to national averages.
 
+## Installation
+
+### Requirements
+
+* Python >= 3.10 and < 3.12
+* pip
+
+The Python version is intentionally restricted to this range because geopolrisk-py depends on scientific Python libraries that are stable and well tested within these versions, and because this range aligns with integration into other tools (for example, Brightway-based workflows).
+
+### Install from PyPI
+
+```bash
+pip install geopolrisk-py
+```
+
+### Install from source (development version)
+
+```bash
+git clone https://github.com/akoyamp/geopolrisk-py.git
+cd geopolrisk-py
+pip install -e .
+```
+
+Below is a **clean, copy-paste-ready README section**, written to **end this entire pytest/conda confusion** by giving users **one deterministic Git-based way** to run the full test suite via `run_test.py`.
+
+No assumptions, no extras knowledge required.
+
+---
+
+## Testing
+
+The full test suite is provided in the source repository and is executed via a single entry-point script.
+This ensures that all tests are run in a controlled and reproducible way, independent of how `pytest` discovers files.
+
+### What the test suite does
+
+Running the test suite verifies that:
+
+* Core GeoPolRisk calculations (HHI, import risk, GeoPolRisk score, characterization factor) behave as expected
+* Data handling, mappings, and utility functions operate correctly
+* The library functions correctly as an integrated system, not just at the individual function level
+
+The tests are intended to validate numerical correctness and internal consistency of the implementation.
+
+### How to run the tests
+
+1. Move into the tests directory:
+
+```bash
+cd tests
+```
+
+2. Run the full test suite using the provided script:
+
+```bash
+python run_test.py
+```
+
+This command executes all tests and reports any failures directly to the console.
+
 # After installation
 
 For detailed guidance on how to use the library, please refer to the official documentation at https://geopolrisk-py.readthedocs.io/en/latest/. It includes explanations of each module, a step-by-step user guide, and a description of the underlying method. An example Jupyter notebook is also provided to demonstrate a typical workflow. This notebook is available both in the online documentation and in the `examples` folder of the repository.
+
+
+## Support and Contact
+
+For bug reports, feature requests, and technical questions, please use the
+GitHub issue tracker:
+
+https://github.com/akoyamp/geopolrisk-py/issues
+
+For questions related to the GeoPolRisk method, interpretation of results,
+or academic use of the software, you may also contact the corresponding author:
+
+Anish Koyamparambath  
+Email: anish.koyam@hotmail.com

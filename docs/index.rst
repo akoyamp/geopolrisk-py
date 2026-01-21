@@ -32,11 +32,13 @@ Contents
    :maxdepth: 2
    :caption: Contents:
 
+   installation
    background
    usage
    methods
    company
    references
+   testing
    
 .. toctree::
    :maxdepth: 1

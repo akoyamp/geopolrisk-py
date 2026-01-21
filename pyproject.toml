@@ -4,13 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "geopolrisk-py"
-version = "2.0.0"
+version = "2.0.0.beta2"
 description = "Python library for geopolitical supply risk assessment (GeoPolRisk)"
 readme = "README.md"
-requires-python = ">=3.10"
-license = { text = "GPL-3.0-or-later" }
+requires-python = ">=3.10,<3.12"
 authors = [
-  { name = "Anish Koyamparambath", email = "anish.koyamparambath@u-bordeaux.fr" },
+  { name = "Anish Koyamparambath", email = "anish.koyam@hotmail.com" },
   { name = "Thomas Schraml", email = "Thomas.Schraml@uni-bayreuth.de" }
 ]
 keywords = ["LCA", "criticality", "geopolitical", "supply-risk", "raw-materials"]
@@ -23,10 +22,11 @@ classifiers = [
   "Topic :: Scientific/Engineering"
 ]
 dependencies = [
-  "pandas==2.2.2",
-  "tqdm==4.66.4",
-  "geopy==2.4.1",
-  "openpyxl==3.1.2"
+  "setuptools>=61.0",
+  "pandas<=2.3.3",
+  "tqdm>=4.66.4",
+  "geopy>=2.4.1",
+  "openpyxl>=3.1.2"
 ]
 
 [project.urls]
@@ -34,7 +34,14 @@ dependencies = [
 "Documentation" = "https://geopolrisk-py.readthedocs.io/en/latest/"
 "Source" = "https://github.com/akoyamp/geopolrisk-py"
 
+[project.optional-dependencies]
+testing = [
+    "setuptools",
+    "pytest",
+]
+
 [tool.setuptools]
+license-files = ["LICENSE.txt"]
 include-package-data = true
 zip-safe = false
 
