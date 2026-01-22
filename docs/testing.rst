@@ -36,21 +36,19 @@ copy of the repository.
 
    pip install -e ".[testing]"
 
-3. Move into the tests directory:
+3. Run the full test suite **from the repository root directory**:
 
 .. code-block:: bash
 
-   cd tests
+   python tests/run_test.py
 
-4. Run the full test suite using the provided script:
-
-.. code-block:: bash
-
-   python run_test.py
+The test runner must be executed from the project root (i.e. the directory
+containing ``pyproject.toml``). Running the script from inside the ``tests/``
+directory may lead to file path resolution errors, in particular when tests
+access reference Excel files stored under ``tests/data/``.
 
 This script executes the complete test suite and reports any failures directly
 to the console.
-
 
 Test suite overview
 ---------------------
@@ -120,9 +118,8 @@ This module tests the user-facing orchestration function ``gprs_calc`` in
 - Confirms that an empty raw material list returns an empty result rather than
   failing unexpectedly.
 
-Regression tests against a reference tool case
-(``test_geopolrisk_data_results_from_excelfile.py``)
-----------------------------------------------------
+Regression tests against a reference tool case: (``test_geopolrisk_data_results_from_excelfile.py``)
+------------------------------------------------------------------------------------------------------
 
 This module provides higher-confidence checks by comparing computed results
 against a fixed reference dataset extracted from a tool-based Excel test case.
@@ -136,5 +133,3 @@ against a fixed reference dataset extracted from a tool-based Excel test case.
 - Validates ``GeoPolRisk`` end-to-end by comparing the final score and derived
   outputs against the reference values, ensuring that the full calculation chain
   remains consistent with the documented tool case.
-
-

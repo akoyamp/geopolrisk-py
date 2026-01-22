@@ -33,52 +33,7 @@ The library is organised into four core modules:
 This restriction is intentional and enforced in the package metadata.
 Using a newer Python version (e.g. 3.12 or 3.13) will result in installation errors.
 
-To avoid issues, it is strongly recommended to install the library **inside a virtual environment created with Python 3.11**.
-
-### Create a virtual environment with Python 3.11 (recommended)
-
-Choose **one** of the following methods.
-
-#### Option A — `venv` (recommended for most users)
-
-Requires Python 3.11 to be installed on the system.
-
-```bash
-# Windows
-py -3.11 -m venv venv
-
-# macOS / Linux
-python3.11 -m venv venv
-```
-
-Activate the environment:
-
-```bash
-# Windows
-venv\Scripts\activate
-
-# macOS / Linux
-source venv/bin/activate
-```
-
-Verify the Python version **before installing anything**:
-
-```bash
-python --version
-# Must show Python 3.11.x
-```
-
----
-
-#### Option B — Conda (Anaconda / Miniconda)
-
-```bash
-conda create -n geopolrisk-env python=3.11
-conda activate geopolrisk-env
-python --version
-```
-
----
+To avoid issues, it is strongly recommended to install the library **inside a virtual environment created with Python 3.11**. An possibility is presented in the [documentation](https://geopolrisk-py.readthedocs.io/en/latest/installation.html)
 
 ### Install from PyPI
 
@@ -95,51 +50,22 @@ git clone https://github.com/akoyamp/geopolrisk-py.git
 cd geopolrisk-py
 pip install -e .
 ```
-
 ## Testing
 
-The full test suite is included in the source repository and must be run from a local clone. Tests are **not** distributed via PyPI.
+The full automated test suite is provided **only in the source repository** and is documented separately.
 
-### Prerequisites
+Please refer to the dedicated test documentation located in:
 
-* Python **3.11** virtual environment active
-* Repository cloned locally
-
-Install test dependencies:
-
-```bash
-pip install -e ".[testing]"
+```
+tests/README.md
 ```
 
-> **Note**
-> If you encounter an error stating that your Python version is not supported, verify that `python --version` reports **Python 3.11.x**. The test dependencies enforce the same version constraints as the library itself.
+That document contains:
 
-### Running the tests
-
-Tests are executed via a single entry-point script to ensure deterministic execution.
-
-```bash
-cd tests
-python run_test.py
-```
-
-This runs the complete test suite and reports any failures directly to the console.
-
-## Purpose of the tests
-
-The test suite is designed to:
-
-* Detect unintended numerical changes
-* Ensure reproducibility of GeoPolRisk calculations
-* Validate end-to-end workflows against reference results
-* Protect existing functionality during refactoring or extension
-
-## Notes for contributors
-
-* Always create environments with an explicit Python version (`python3.11`)
-* Verify the Python version immediately after activation
-* Never commit virtual environment directories (`venv/`, `.venv/`, `env/`)
-* New features or bug fixes should include corresponding tests
+* The scope and structure of the test suite
+* Python version requirements
+* Environment creation instructions
+* Exact commands required to run all tests via the provided test runner
 
 ## After installation
 
@@ -157,4 +83,3 @@ For questions related to the GeoPolRisk method, interpretation of results, or ac
 
 **Anish Koyamparambath**
 Email: [anish.koyam@hotmail.com](mailto:anish.koyam@hotmail.com)
-

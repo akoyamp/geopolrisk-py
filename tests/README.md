@@ -4,7 +4,6 @@ This directory contains the automated test suite for **geopolrisk-py**. The test
 
 The suite includes unit tests for core computational components, as well as integration and regression tests that validate the full calculation workflow against established reference results.
 
-
 ## Test scope and structure
 
 The test suite is organised by functional scope as follows:
@@ -24,7 +23,6 @@ The test suite is organised by functional scope as follows:
 * **`test_geopolrisk_data_results_from_excelfile.py`**
   Provides regression tests that compare computed results against reference values derived from an Excel-based test case. These tests ensure that end-to-end results remain consistent with a known reference implementation.
 
-
 ## Running the tests
 
 Tests are not included in the PyPI distribution and must be executed from a cloned copy of the repository.
@@ -38,59 +36,8 @@ cd geopolrisk-py
 
 ## 2. Create a Python environment (Python 3.11 required)
 
-**Python 3.11 is mandatory.**
-Always specify the version explicitly when creating the environment.
-
-Choose **one** of the following methods.
-
----
-
-### Option A — `venv` (recommended)
-
-Requires Python 3.11 to be installed on the system.
-
-```bash
-# Windows
-py -3.11 -m venv venv
-
-# macOS / Linux
-python3.11 -m venv venv
-```
-
----
-
-### Option B — Conda (Anaconda / Miniconda)
-
-Recommended for users already working in Conda-based workflows.
-
-```bash
-conda create -n geopolrisk-env python=3.11
-conda activate geopolrisk-env
-```
-
----
-
-### Option C — `virtualenv`
-
-Requires Python 3.11 to be installed.
-
-```bash
-pip install virtualenv
-virtualenv -p python3.11 venv
-```
-
----
-
-### Option D — `pipenv`
-
-Requires Python 3.11 to be installed.
-
-```bash
-pip install pipenv
-pipenv --python 3.11 install -e ".[testing]"
-```
-
----
+**Python 3.11 is required for running the test suite.**
+The Python version must be specified explicitly when creating the environment.
 
 ## 3. Activate and verify the environment
 
@@ -100,31 +47,13 @@ Activate the environment created above and **verify the Python version**.
 python --version
 ```
 
-The output **must** be:
-
-```
-Python 3.11.x
-```
-
-> **Important**
-> If the version is incorrect:
->
-> * Deactivate the environment
-> * Delete it
-> * Recreate it using an explicit Python 3.11 command
-> * Verify the version *before* installing any packages
-
----
-
 ## 4. Install test dependencies
 
-If dependencies were not installed during environment creation:
+If test dependencies were not installed during environment creation:
 
 ```bash
 pip install -e ".[testing]"
 ```
-
----
 
 ## 5. Run the test suite
 
@@ -142,16 +71,17 @@ The test suite is intended to:
 * Ensure reproducibility of GeoPolRisk results
 * Safeguard against regressions introduced by refactoring or feature extensions
 
-
 ## Notes for contributors
 
 Contributors are strongly encouraged to run the full test suite before submitting pull requests. New features or bug fixes should include corresponding tests where appropriate.
 
 Best practices:
+
 * Always specify the Python version explicitly during environment creation
 * Verify the active Python version immediately after activation
 * Never commit environment directories (`venv/`, `env/`, `.venv/`) to version control
 
 Recommended setup:
+
 * General users: `python3.11 -m venv venv`
 * Data science workflows: `conda create -n geopolrisk-env python=3.11`

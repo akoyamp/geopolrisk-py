@@ -68,17 +68,15 @@ copy of the repository.</p>
 </pre></div>
 </div>
 <ol class="arabic simple" start="3">
-<li><p>Move into the tests directory:</p></li>
+<li><p>Run the full test suite <strong>from the repository root directory</strong>:</p></li>
 </ol>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>tests
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>tests/run_test.py
 </pre></div>
 </div>
-<ol class="arabic simple" start="4">
-<li><p>Run the full test suite using the provided script:</p></li>
-</ol>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>run_test.py
-</pre></div>
-</div>
+<p>The test runner must be executed from the project root (i.e. the directory
+containing <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>). Running the script from inside the <code class="docutils literal notranslate"><span class="pre">tests/</span></code>
+directory may lead to file path resolution errors, in particular when tests
+access reference Excel files stored under <code class="docutils literal notranslate"><span class="pre">tests/data/</span></code>.</p>
 <p>This script executes the complete test suite and reports any failures directly
 to the console.</p>
 </section>
@@ -148,9 +146,9 @@ the same expected output schema.</p></li>
 <li><p>Confirms that an empty raw material list returns an empty result rather than
 failing unexpectedly.</p></li>
 </ul>
-<p>Regression tests against a reference tool case
-(<code class="docutils literal notranslate"><span class="pre">test_geopolrisk_data_results_from_excelfile.py</span></code>)
-—————————————————-</p>
+</section>
+<section id="regression-tests-against-a-reference-tool-case-test-geopolrisk-data-results-from-excelfile-py">
+<h2>Regression tests against a reference tool case: (<code class="docutils literal notranslate"><span class="pre">test_geopolrisk_data_results_from_excelfile.py</span></code>)<a class="headerlink" href="#regression-tests-against-a-reference-tool-case-test-geopolrisk-data-results-from-excelfile-py" title="Link to this heading">¶</a></h2>
 <p>This module provides higher-confidence checks by comparing computed results
 against a fixed reference dataset extracted from a tool-based Excel test case.</p>
 <ul class="simple">
@@ -200,6 +198,7 @@ remains consistent with the documented tool case.</p></li>
 <li class="toctree-l2"><a class="reference internal" href="#database-utility-tests-test-database-py">Database utility tests (<code class="docutils literal notranslate"><span class="pre">test_database.py</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#utility-and-data-handling-tests-test-util-py">Utility and data-handling tests (<code class="docutils literal notranslate"><span class="pre">test_util.py</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#main-workflow-tests-test-main-py">Main workflow tests (<code class="docutils literal notranslate"><span class="pre">test_main.py</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#regression-tests-against-a-reference-tool-case-test-geopolrisk-data-results-from-excelfile-py">Regression tests against a reference tool case: (<code class="docutils literal notranslate"><span class="pre">test_geopolrisk_data_results_from_excelfile.py</span></code>)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="contribution.html">Contributing and Support</a></li>

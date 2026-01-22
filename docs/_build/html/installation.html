@@ -42,24 +42,43 @@
 <li><p>Python <strong>≥ 3.10 and &lt; 3.12</strong></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">pip</span></code></p></li>
 </ul>
-<p>The Python version is intentionally restricted to this range.
-<code class="docutils literal notranslate"><span class="pre">geopolrisk-py</span></code> depends on scientific Python libraries that are stable and well tested within these versions.
+<p>The Python version is intentionally restricted to this range and is strictly enforced by the package metadata.
+Installing <code class="docutils literal notranslate"><span class="pre">geopolrisk-py</span></code> with a newer Python version (for example Python 3.12 or 3.13) will result in an installation error.</p>
+<p><code class="docutils literal notranslate"><span class="pre">geopolrisk-py</span></code> depends on scientific Python libraries that are stable and well tested within these versions.
 This ensures compatibility with integration into other Python-based life cycle assessment tools, in particular Brightway.</p>
 <p>The library relies on common scientific Python packages such as <code class="docutils literal notranslate"><span class="pre">pandas</span></code> and <code class="docutils literal notranslate"><span class="pre">openpyxl</span></code>, as well as standard library modules (e.g. <code class="docutils literal notranslate"><span class="pre">sqlite3</span></code>).
 All required runtime dependencies are declared in the package metadata and are installed automatically.</p>
 </section>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
-<section id="install-from-pypi-recommended">
-<h3>Install from PyPI (recommended)<a class="headerlink" href="#install-from-pypi-recommended" title="Link to this heading">¶</a></h3>
-<p>The recommended way to install <code class="docutils literal notranslate"><span class="pre">geopolrisk-py</span></code> is via PyPI using <code class="docutils literal notranslate"><span class="pre">pip</span></code>:</p>
+</section>
+<section id="create-a-virtual-environment-recommended">
+<h2>Create a virtual environment (recommended)<a class="headerlink" href="#create-a-virtual-environment-recommended" title="Link to this heading">¶</a></h2>
+<p>It is strongly recommended to install <code class="docutils literal notranslate"><span class="pre">geopolrisk-py</span></code> inside a virtual environment created
+explicitly with Python 3.10 or 3.11.</p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">venv</span></code> (pip-based workflow):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3.11<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
+<span class="nb">source</span><span class="w"> </span>venv/bin/activate
+python<span class="w"> </span>--version
+</pre></div>
+</div>
+<p>Using <code class="docutils literal notranslate"><span class="pre">conda</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>geopolrisk-env<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.11
+conda<span class="w"> </span>activate<span class="w"> </span>geopolrisk-env
+python<span class="w"> </span>--version
+</pre></div>
+</div>
+</section>
+<section id="install-from-pypi">
+<h2>Install from PyPI<a class="headerlink" href="#install-from-pypi" title="Link to this heading">¶</a></h2>
+<p>The recommended way to install <code class="docutils literal notranslate"><span class="pre">geopolrisk-py</span></code> is via PyPI using <code class="docutils literal notranslate"><span class="pre">pip</span></code>.
+Ensure that the active Python interpreter satisfies the version requirement.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>geopolrisk-py
 </pre></div>
 </div>
-<p>This installs the latest released version together with all required dependencies.</p>
 </section>
 <section id="install-from-source-development-version">
-<h3>Install from source (development version)<a class="headerlink" href="#install-from-source-development-version" title="Link to this heading">¶</a></h3>
+<h2>Install from source (development version)<a class="headerlink" href="#install-from-source-development-version" title="Link to this heading">¶</a></h2>
 <p>To install the development version from the GitHub repository:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/akoyamp/geopolrisk-py.git
 <span class="nb">cd</span><span class="w"> </span>geopolrisk-py
@@ -67,7 +86,6 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
 </pre></div>
 </div>
 <p>This option is intended for developers or users who wish to inspect, modify, or test the source code directly.</p>
-</section>
 </section>
 <section id="package-availability">
 <h2>Package availability<a class="headerlink" href="#package-availability" title="Link to this heading">¶</a></h2>
@@ -98,6 +116,9 @@ A <code class="docutils literal notranslate"><span class="pre">conda-forge</span
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation and Requirements</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-a-virtual-environment-recommended">Create a virtual environment (recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-from-pypi">Install from PyPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-from-source-development-version">Install from source (development version)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#package-availability">Package availability</a></li>
 </ul>
 </li>
