@@ -1,40 +1,88 @@
 # The geopolrisk-py library documentation
 
-The Geopolitical Supply Risk (GeoPolRisk) method assesses raw material criticality in Life Cycle Assessment, complementing traditional resource and environmental impact indicators. It is also applied for comparative risk assessment. However, calculating values for the GeoPolRisk method, such as characterization factors for the Geopolitical Supply Risk indicator and the supply risk score for comparative assessment, can be complex. To address this, the _'geopolrisk-py'_ library has been developed to operationalize the method, simplifying the calculation process. This library processes data inputs like raw material names, countries, and years, making it more accessible. A notable feature is its ability to serve as a company-specific supply risk assessment tool.
+The **geopolrisk-py** library implements the Geopolitical Supply Risk (GeoPolRisk) method for assessing raw material criticality in Life Cycle Assessment. It complements traditional resource and environmental indicators and can also be applied in comparative risk assessment.
 
-# Features of the `geopolrisk-py` Library
+The GeoPolRisk method relies on multiple data sources and non-trivial calculations, including characterization factors and supply risk scores. The **geopolrisk-py** library operationalizes the method by providing a structured and reproducible implementation that processes inputs such as raw materials, countries, and years. In addition to generic assessments, the library supports **company specific supply risk analysis**, allowing users to evaluate risks based on their own trade data.
 
-The _geopolrisk-py_ library is organized into four modules: `database.py`, `core.py`, `main.py`, and `utils.py`, each with specific roles to facilitate the calculation of the GeoPolRisk method.
+## Features of the `geopolrisk-py` library
 
-1. **database.py**: This module is responsible for loading all the essential background data required for the library’s operations. The necessary data includes mining production data (from world mining data) [@FMRA2023], trade data (from BACI for past years) [@cepii_baci_2024], and governance indicators (from the World Bank) [@WorldBank2024]. These datasets are stored in a SQLite3 database, which is updated annually and available in the repository. Upon installation, the library sets up a folder in the Document folder in the user's home directory with three subfolders:
+The library is organised into four core modules:
 
-   - **databases**: - Contains the input template (company_data.xlsx), which users can populate for company-level risk assessments.
-   - **output**: This folder stores the SQLite3 database and Excel output files generated after calculations.
-   - **logs**: For debugging errors encountered during the process.
+1. **`database.py`**
+   Handles loading and management of background data required by the method, including mining production data (World Mining Data), trade data (BACI), and governance indicators (World Bank). These datasets are stored in a SQLite database that is distributed with the repository and updated annually. Upon first use, the library creates a dedicated folder in the user’s home directory containing:
 
-2. **core.py**: This module implements the main computational logic of the GeoPolRisk method. It calculates each component of the method, including HHI, import risk, and the resulting GeoPolRisk score and the CFs. These calculations rely on background data that links raw material and country names to standardized identifiers. The module is responsible for executing the equations that define the method, using pre-processed and structured inputs provided by the supporting modules.
+   * `databases`: input templates and background data
+   * `output`: generated SQLite databases and Excel result files
+   * `logs`: log files for debugging and traceability
 
-3. **utils.py**: This module handles the data preparation required for GeoPolRisk calculations. It maps defined raw material and country names to Harmonized System codes and ISO 3-digit codes, ensuring compatibility with the underlying database. It also aligns raw material production data with corresponding commodity trade data, which may include multiple overlapping HS codes, and aggregates them into a consolidated dataset. In effect, `utils.py` performs all the backend transformation and standardization needed to bridge data with the model’s requirements. It supports core.py by ensuring that inputs are clean, consistent, and ready for computation.
+2. **`core.py`**
+   Implements the numerical core of the GeoPolRisk method, including calculation of HHI, import risk, GeoPolRisk scores, and characterization factors. This module executes the equations defining the method using structured inputs prepared by supporting modules.
 
-4. **main.py**: This module provides a one-stop interface that integrates the entire workflow. It allows users to define a list of raw materials, years, and economic units, and then manages the process of calling the appropriate functions from core.py, using data handled by utils.py. The outputs including the components of the GeoPolRisk method (HHI, import risk & price) along with the values (GeoPolRisk score & CF) are saved in both Excel and SQLite formats in an organized folder structure. This module is designed to simplify the application of the method for larger-scale or repeated assessments.
+3. **`utils.py`**
+   Provides data preparation and harmonisation utilities. It maps raw material and country names to standardized identifiers (HS codes, ISO codes), aligns production and trade datasets, aggregates overlapping trade codes, and ensures data consistency before calculations.
 
-### Unique Features of the _geopolrisk-py_ Library
+4. **`main.py`**
+   Provides a user-facing interface that orchestrates the full workflow. Users define raw materials, years, and economic units, and the module coordinates calls to the core and utility functions. Results are written to Excel and SQLite outputs in a structured directory layout.
 
-The _'geopolrisk-py'_ library offers several features to enhance its functionality:
+## Installation
 
-- **Custom Region Creation**: Users can define regions or groups of countries not available in the background database. This allows for trade aggregation and region-specific supply risk analysis, a capability supported by **'utils.py'** and **'core.py'** functions.
-- **Company-Specific Risk Assessment**: A standout feature is the ability to calculate supply risk based on company-specific trade data. Using a predefined Excel template available in the repository, users can input their trade data, which the library then processes using **'transformdata'** and other relevant functions. For example, **'importrisk_company'** in **'core.py'** calculates the second component of the GeoPolRisk method (weighted import risk), tailored to the company's unique trade mix. This feature enables companies to model different supply risk scenarios based on their specific supply chains and compare them to national averages.
+### Python requirements (important)
 
-# Installation
+**geopolrisk-py requires Python ≥ 3.10 and < 3.12.**
 
-### Requirements
+This restriction is intentional and enforced in the package metadata.
+Using a newer Python version (e.g. 3.12 or 3.13) will result in installation errors.
 
-* Python >= 3.10 and < 3.12
-* pip
+To avoid issues, it is strongly recommended to install the library **inside a virtual environment created with Python 3.11**.
 
-The Python version is intentionally restricted to this range because geopolrisk-py depends on scientific Python libraries that are stable and well tested within these versions, and because this range aligns with integration into other tools (for example, Brightway-based workflows).
+### Create a virtual environment with Python 3.11 (recommended)
+
+Choose **one** of the following methods.
+
+#### Option A — `venv` (recommended for most users)
+
+Requires Python 3.11 to be installed on the system.
+
+```bash
+# Windows
+py -3.11 -m venv venv
+
+# macOS / Linux
+python3.11 -m venv venv
+```
+
+Activate the environment:
+
+```bash
+# Windows
+venv\Scripts\activate
+
+# macOS / Linux
+source venv/bin/activate
+```
+
+Verify the Python version **before installing anything**:
+
+```bash
+python --version
+# Must show Python 3.11.x
+```
+
+---
+
+#### Option B — Conda (Anaconda / Miniconda)
+
+```bash
+conda create -n geopolrisk-env python=3.11
+conda activate geopolrisk-env
+python --version
+```
+
+---
 
 ### Install from PyPI
+
+Once the correct Python environment is active:
 
 ```bash
 pip install geopolrisk-py
@@ -48,57 +96,65 @@ cd geopolrisk-py
 pip install -e .
 ```
 
-Below is a **clean, copy-paste-ready README section**, written to **end this entire pytest/conda confusion** by giving users **one deterministic Git-based way** to run the full test suite via `run_test.py`.
+## Testing
 
-No assumptions, no extras knowledge required.
+The full test suite is included in the source repository and must be run from a local clone. Tests are **not** distributed via PyPI.
 
----
+### Prerequisites
 
-# Testing
+* Python **3.11** virtual environment active
+* Repository cloned locally
 
-The full test suite is provided in the source repository and is executed via a single entry-point script.
-This ensures that all tests are run in a controlled and reproducible way, independent of how `pytest` discovers files.
+Install test dependencies:
 
-### What the test suite does
+```bash
+pip install -e ".[testing]"
+```
 
-Running the test suite verifies that:
+> **Note**
+> If you encounter an error stating that your Python version is not supported, verify that `python --version` reports **Python 3.11.x**. The test dependencies enforce the same version constraints as the library itself.
 
-* Core GeoPolRisk calculations (HHI, import risk, GeoPolRisk score, characterization factor) behave as expected
-* Data handling, mappings, and utility functions operate correctly
-* The library functions correctly as an integrated system, not just at the individual function level
+### Running the tests
 
-The tests are intended to validate numerical correctness and internal consistency of the implementation.
-
-### How to run the tests
-
-1. Move into the tests directory:
+Tests are executed via a single entry-point script to ensure deterministic execution.
 
 ```bash
 cd tests
-```
-
-2. Run the full test suite using the provided script:
-
-```bash
 python run_test.py
 ```
 
-This command executes all tests and reports any failures directly to the console.
+This runs the complete test suite and reports any failures directly to the console.
 
-# After installation
+## Purpose of the tests
 
-For detailed guidance on how to use the library, please refer to the official documentation at https://geopolrisk-py.readthedocs.io/en/latest/. It includes explanations of each module, a step-by-step user guide, and a description of the underlying method. An example Jupyter notebook is also provided to demonstrate a typical workflow. This notebook is available both in the online documentation and in the `examples` folder of the repository.
+The test suite is designed to:
 
+* Detect unintended numerical changes
+* Ensure reproducibility of GeoPolRisk calculations
+* Validate end-to-end workflows against reference results
+* Protect existing functionality during refactoring or extension
 
-# Support and Contact
+## Notes for contributors
 
-For bug reports, feature requests, and technical questions, please use the
-GitHub issue tracker:
+* Always create environments with an explicit Python version (`python3.11`)
+* Verify the Python version immediately after activation
+* Never commit virtual environment directories (`venv/`, `.venv/`, `env/`)
+* New features or bug fixes should include corresponding tests
 
-https://github.com/akoyamp/geopolrisk-py/issues
+## After installation
 
-For questions related to the GeoPolRisk method, interpretation of results,
-or academic use of the software, you may also contact the corresponding author:
+Detailed usage instructions are available in the official documentation:
+[https://geopolrisk-py.readthedocs.io/en/latest/](https://geopolrisk-py.readthedocs.io/en/latest/)
 
-Anish Koyamparambath  
-Email: anish.koyam@hotmail.com
+The documentation includes module-level explanations, a step-by-step user guide, and example workflows. A Jupyter notebook demonstrating typical usage is provided both online and in the `examples` folder of the repository.
+
+## Support and contact
+
+For bug reports and feature requests, please use the GitHub issue tracker:
+[https://github.com/akoyamp/geopolrisk-py/issues](https://github.com/akoyamp/geopolrisk-py/issues)
+
+For questions related to the GeoPolRisk method, interpretation of results, or academic use, contact:
+
+**Anish Koyamparambath**
+Email: [anish.koyam@hotmail.com](mailto:anish.koyam@hotmail.com)
+
