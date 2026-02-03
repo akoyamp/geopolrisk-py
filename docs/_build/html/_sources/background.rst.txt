@@ -12,6 +12,21 @@ The method quantifies supply risk as a function of the global production concent
 
 Since its inception, the method has evolved, incorporating several dimensions of resource criticality.
 
+Third party data sources and licenses
+------------------------------------
+
+The GeoPolRisk method relies on several external data sources for mining production, international trade, and governance indicators. These data sources are provided by third parties and are subject to their respective licenses and terms of use, as defined by the original data providers.
+
+Mining production statistics are based on *World Mining Data*, published by the Austrian Federal Ministry of Finance. The licensing and terms of use are specified in the official documentation and on the publisher’s website:
+`World Mining Data – Austrian Federal Ministry of Finance <https://www.bmf.gv.at/en/topics/mining/mineral-resources-policy/wmd.html>`_
+
+International trade data are sourced from the BACI database developed by CEPII and derived from UN Comtrade data. BACI is distributed under the **Etalab Open License 2.0**, as specified by CEPII:
+`BACI database – CEPII <https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37>`_
+
+Governance indicators are obtained from the Worldwide Governance Indicators project of the World Bank. These data are licensed under the **Creative Commons Attribution 4.0 International (CC BY 4.0)** license:
+`Worldwide Governance Indicators – World Bank <https://data360.worldbank.org/en/dataset/WB_WGI>`_
+
+
 History of GeoPolRisk Method at a Glance
 ----------------------------------------
 
