@@ -1,3 +1,5 @@
+.. _Testing:
+
 Testing
 ========
 
@@ -40,7 +42,7 @@ copy of the repository.
 
 .. code-block:: bash
 
-   python tests/run_test.py
+   python tests/run_tests.py
 
 The test runner must be executed from the project root (i.e. the directory
 containing ``pyproject.toml``). Running the script from inside the ``tests/``
