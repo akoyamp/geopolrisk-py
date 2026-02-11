@@ -32,4 +32,5 @@ For questions related to the GeoPolRisk method, interpretation of results, or
 academic use of the software, users may contact the corresponding author:
 
 Anish Koyamparambath  
-anish.koyam@hotmail.com
+`anish.koyam@hotmail.com <mailto:anish.koyam@hotmail.com>`_
+

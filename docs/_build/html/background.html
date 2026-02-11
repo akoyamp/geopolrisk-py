@@ -1,60 +1,110 @@
+
+
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<html lang="en" data-content_root="./">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Background &mdash; geopolrisk-py 2.0,0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=4dcc649a" />
 
-    <title>Background &#8212; geopolrisk-py 2.0,0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
-    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
-    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=4dcc649a" />
-    <script src="_static/documentation_options.js?v=9828d03b"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+    <link rel="shortcut icon" href="_static/GPRS.ico"/>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=9828d03b"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Usage" href="usage.html" />
-    <link rel="prev" title="Installation and Requirements" href="installation.html" />
-   
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
+    <link rel="prev" title="Installation and Requirements" href="installation.html" /> 
+</head>
 
-  
-  
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
 
-  </head><body>
-  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
           
+          
+          <a href="index.html" class="icon icon-home">
+            geopolrisk-py
+              <img src="_static/GPRS.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and Requirements</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Background</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-geopolrisk-method">The GeoPolRisk Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#history-of-geopolrisk-method-at-a-glance">History of GeoPolRisk Method at a Glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-values-of-the-geopolrisk-method">The Values of the GeoPolRisk Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#application-of-the-method">Application of the Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#glossary-of-terms">Glossary of Terms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="methods.html">Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="company.html">Company-specific risk assessment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contribution.html">Contributing and Support</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notebooks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example.html">Typical Use Cases of the Library</a></li>
+</ul>
 
-          <div class="body" role="main">
-            
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">geopolrisk-py</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Background</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/background.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
   <section id="background">
-<span id="id1"></span><h1>Background<a class="headerlink" href="#background" title="Link to this heading">¶</a></h1>
+<span id="id1"></span><h1>Background<a class="headerlink" href="#background" title="Link to this heading"></a></h1>
 <section id="the-geopolrisk-method">
-<h2>The GeoPolRisk Method<a class="headerlink" href="#the-geopolrisk-method" title="Link to this heading">¶</a></h2>
+<h2>The GeoPolRisk Method<a class="headerlink" href="#the-geopolrisk-method" title="Link to this heading"></a></h2>
 <p>The GeoPolRisk method was developed to quantify the supply risk of raw materials within a product to a country, region, or group of countries. It was proposed to complement Life Cycle Assessment (LCA) in the form of a midpoint characterization factor (CF) for Life Cycle Sustainability Assessment (LCSA).</p>
 <p>The method quantifies supply risk as a function of the global production concentration of the raw material and the trade partner’s import shares weighted by their political instability. The production concentration is evaluated with the normalized Herfindahl-Hirschman Index (HHI) (from 0 to 1) for raw material extraction or processing, and the political instability is estimated using the Worldwide Governance Indicators.</p>
 <p>Since its inception, the method has evolved, incorporating several dimensions of resource criticality.</p>
 </section>
-<section id="third-party-data-sources-and-licenses">
-<h2>Third party data sources and licenses<a class="headerlink" href="#third-party-data-sources-and-licenses" title="Link to this heading">¶</a></h2>
-<p>The GeoPolRisk method relies on several external data sources for mining production, international trade, and governance indicators. These data sources are provided by third parties and are subject to their respective licenses and terms of use, as defined by the original data providers.</p>
-<p>Mining production statistics are based on <em>World Mining Data</em>, published by the Austrian Federal Ministry of Finance. The licensing and terms of use are specified in the official documentation and on the publisher’s website:
-<a class="reference external" href="https://www.bmf.gv.at/en/topics/mining/mineral-resources-policy/wmd.html">World Mining Data – Austrian Federal Ministry of Finance</a></p>
-<p>International trade data are sourced from the BACI database developed by CEPII and derived from UN Comtrade data. BACI is distributed under the <strong>Etalab Open License 2.0</strong>, as specified by CEPII:
-<a class="reference external" href="https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37">BACI database – CEPII</a></p>
-<p>Governance indicators are obtained from the Worldwide Governance Indicators project of the World Bank. These data are licensed under the <strong>Creative Commons Attribution 4.0 International (CC BY 4.0)</strong> license:
-<a class="reference external" href="https://data360.worldbank.org/en/dataset/WB_WGI">Worldwide Governance Indicators – World Bank</a></p>
-</section>
 <section id="history-of-geopolrisk-method-at-a-glance">
-<h2>History of GeoPolRisk Method at a Glance<a class="headerlink" href="#history-of-geopolrisk-method-at-a-glance" title="Link to this heading">¶</a></h2>
+<h2>History of GeoPolRisk Method at a Glance<a class="headerlink" href="#history-of-geopolrisk-method-at-a-glance" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 25.0%" />
@@ -154,7 +204,7 @@
 </table>
 </section>
 <section id="the-values-of-the-geopolrisk-method">
-<h2>The Values of the GeoPolRisk Method<a class="headerlink" href="#the-values-of-the-geopolrisk-method" title="Link to this heading">¶</a></h2>
+<h2>The Values of the GeoPolRisk Method<a class="headerlink" href="#the-values-of-the-geopolrisk-method" title="Link to this heading"></a></h2>
 <p>A country, region, trade block, or company is represented as an economic unit. The formula for determining the probability of supply risk attributed to geopolitical factors, commonly referred to as the “GeoPolRisk Score,” for a specific material “A” is outlined in Equation 1, taking into account the perspective of the economic unit “c” during a given year. The formula can be interpreted as a composite of two contributing factors: the global production concentration and the import dependency of the metal or mineral.</p>
 <p><strong>Equation 1: GeoPolRisk Score</strong></p>
 <div class="math notranslate nohighlight">
@@ -192,14 +242,14 @@
 </a>
 </section>
 <section id="application-of-the-method">
-<h2>Application of the Method<a class="headerlink" href="#application-of-the-method" title="Link to this heading">¶</a></h2>
+<h2>Application of the Method<a class="headerlink" href="#application-of-the-method" title="Link to this heading"></a></h2>
 <p>Mapping the CFs of the GeoPolRisk method to LCI elementary flows presents a challenge primarily arising from the inherent nature of supply risk associated with the traded commodity. Within the context of LCA, the traded commodity refers to the intermediate flow obtained from a mining activity. LCA characterizes the impacts associated with elementary flows, encompassing inputs and outputs. Consequently, applying CFs directly to intermediate flows becomes impractical, as they cannot be automatically traced unless unit processes are considered.</p>
 <p>To address this limitation, we assume that, in mining activities in ecoinvent, the elementary input flow of the mineral extracted from the ground is in the same range as the intermediate output flow of the mineral being produced. This assumption is true for most of the mining activities in ecoinvent, except for activities where mineral processing waste is high and mining activities where elementary flows are allocated to co-products having different economic values. This assumption enables the application of CFs to elementary rather than intermediate flows, rendering the GeoPolRisk method feasible in this context.</p>
 <p>The GeoPolRisk method takes on the perspective of an economic unit and time period while calculating the CFs for raw materials. Ideally, the geographic location of the elementary flow where the activity occurs is utilized to apply the corresponding CF and calculate the GSR of the product system. However, within the ecoinvent processes, activities involve a combination of flows originating from various geographical locations, and to address this challenge, a potential solution is to assume that all activities occur within a specific geographic location, except for mining activities, and apply the specific CFs to all elementary flows.</p>
 <p>Nevertheless, the supply risk associated with the primary product is inherently linked to the location of its manufacturing. This is because there’s an assumption that the supply risk linked to intermediate products is at least equal to, if not greater than, the supply risk of the raw materials required for producing the intermediate product in the same location where the primary product is made.</p>
 </section>
 <section id="glossary-of-terms">
-<h2>Glossary of Terms<a class="headerlink" href="#glossary-of-terms" title="Link to this heading">¶</a></h2>
+<h2>Glossary of Terms<a class="headerlink" href="#glossary-of-terms" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 25.0%" />
@@ -246,7 +296,7 @@
 </div>
 </section>
 <section id="references">
-<h2>References<a class="headerlink" href="#references" title="Link to this heading">¶</a></h2>
+<h2>References<a class="headerlink" href="#references" title="Link to this heading"></a></h2>
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="id16" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">1</a><span class="fn-bracket">]</span></span>
@@ -306,92 +356,34 @@
 </section>
 
 
+           </div>
           </div>
-          
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation and Requirements" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="usage.html" class="btn btn-neutral float-right" title="Usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Anish Koyamparambath.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="Main">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">geopolrisk-py</a></h1>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
 
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and Requirements</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Background</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#the-geopolrisk-method">The GeoPolRisk Method</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#third-party-data-sources-and-licenses">Third party data sources and licenses</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#history-of-geopolrisk-method-at-a-glance">History of GeoPolRisk Method at a Glance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#the-values-of-the-geopolrisk-method">The Values of the GeoPolRisk Method</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#application-of-the-method">Application of the Method</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#glossary-of-terms">Glossary of Terms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="methods.html">Methods</a></li>
-<li class="toctree-l1"><a class="reference internal" href="company.html">Company-specific risk assessment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
-<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contribution.html">Contributing and Support</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Notebooks</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/example.html">Typical Use Cases of the Library</a></li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="installation.html" title="previous chapter">Installation and Requirements</a></li>
-      <li>Next: <a href="usage.html" title="next chapter">Usage</a></li>
-  </ul></li>
-</ul>
-</div>
-<search id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</search>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-
-
-
-
-
-
-
-
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &#169;2025, Anish Koyamparambath.
-      
-      |
-      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
-      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
-      
-      |
-      <a href="_sources/background.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
-
-    
-
-    
-  </body>
+</body>
 </html>

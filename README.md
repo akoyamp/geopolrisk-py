@@ -24,23 +24,35 @@ The library is organised into four core modules:
 4. **`main.py`**
    Provides a user-facing interface that orchestrates the full workflow. Users define raw materials, years, and economic units, and the module coordinates calls to the core and utility functions. Results are written to Excel and SQLite outputs in a structured directory layout.
 
+## License
+
+The source code of `geopolrisk-py` is licensed under the **GNU General Public License v3.0 (GPL-3.0)**. A copy of the license is provided in the `LICENSE` file at the root of this repository.
+
+The GPL-3.0 license applies to the original software implementation developed for the GeoPolRisk method.
+
+Structured database files distributed with this package may contain derived data originating from third-party sources (e.g. World Mining Data, BACI, and Worldwide Governance Indicators). These underlying data remain subject to the licenses and terms of use defined by their respective original providers and are not relicensed under GPL-3.0.
+
 ## Third party data sources and licenses
 
 The GeoPolRisk method relies on several external data sources for mining production, international trade, and governance indicators. These data sources are provided by third parties and are subject to their respective licenses and terms of use, as defined by the original data providers.
 
+All databases distributed with this library are structured specifically for the operational implementation of the GeoPolRisk method. They are provided solely for use within this methodological context and are not intended to serve as standalone general-purpose data repositories.
+
 ### World Mining Data (WMD)
-Mining production statistics are based on *World Mining Data*, published by the Austrian Federal Ministry of Finance.  
+
+Mining production statistics are based on *World Mining Data*, published by the Austrian Federal Ministry of Finance. The production data included in this package are derived from World Mining Data and have been processed and structured specifically for use within the GeoPolRisk methodology. They do not constitute or claim to represent the official World Mining Data publication.
+
 The licensing and terms of use are specified in the official documentation and on the publisher’s website:  
 [World Mining Data – Austrian Federal Ministry of Finance](https://www.bmf.gv.at/en/topics/mining/mineral-resources-policy/wmd.html)
 
 ### BACI international trade database
-International trade data are sourced from the BACI database developed by CEPII and derived from UN Comtrade data.  
-BACI is distributed under the **Etalab Open License 2.0**, as specified by CEPII:  
+
+International trade data are sourced from the BACI database developed by CEPII and derived from UN Comtrade data. BACI is distributed under the **Etalab Open License 2.0**, as specified by CEPII:  
 [BACI database – CEPII](https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37)
 
 ### Worldwide Governance Indicators (WGI)
-Governance indicators are obtained from the Worldwide Governance Indicators project of the World Bank.  
-These data are licensed under the **Creative Commons Attribution 4.0 International (CC BY 4.0)** license:  
+
+Governance indicators are obtained from the Worldwide Governance Indicators project of the World Bank. These data are licensed under the **Creative Commons Attribution 4.0 International (CC BY 4.0)** license:  
 [Worldwide Governance Indicators – World Bank](https://data360.worldbank.org/en/dataset/WB_WGI)
 
 ## Installation

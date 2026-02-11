@@ -46,5 +46,5 @@ Contents
    :caption: Notebooks
 
    notebooks/example.ipynb
-   Download the notebook: :download:`example notebook <notebooks/example.ipynb>`
+Download the notebook: :download:`example notebook <notebooks/example.ipynb>`
 
