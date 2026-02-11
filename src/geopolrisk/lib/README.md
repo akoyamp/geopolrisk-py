@@ -50,17 +50,12 @@ All databases distributed within this folder are structured specifically for the
 
 Mining production statistics are based on *World Mining Data*, published by the Austrian Federal Ministry of Finance. The production data included in this package are derived from World Mining Data and have been processed and structured specifically for use within the GeoPolRisk methodology. They do not constitute or claim to represent the official World Mining Data publication.
 
-Licensing and terms of use:
-[World Mining Data – Austrian Federal Ministry of Finance](https://www.bmf.gv.at/en/topics/mining/mineral-resources-policy/wmd.html)
+Licensing and terms of use: [World Mining Data – Austrian Federal Ministry of Finance](https://www.bmf.gv.at/en/topics/mining/mineral-resources-policy/wmd.html)
 
 ### BACI international trade database
 
-International trade data are sourced from the BACI database developed by CEPII and derived from UN Comtrade data. BACI is distributed under the **Etalab Open License 2.0**, as specified by CEPII:
-
-[BACI database – CEPII](https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37)
+International trade data are sourced from the BACI database developed by CEPII and derived from UN Comtrade data. BACI is distributed under the **Etalab Open License 2.0**, as specified by CEPII: [BACI database – CEPII](https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37)
 
 ### Worldwide Governance Indicators (WGI)
 
-Governance indicators are obtained from the Worldwide Governance Indicators project of the World Bank. These data are licensed under the **Creative Commons Attribution 4.0 International (CC BY 4.0)** license:
-
-[Worldwide Governance Indicators – World Bank](https://data360.worldbank.org/en/dataset/WB_WGI)
+Governance indicators are obtained from the Worldwide Governance Indicators project of the World Bank. These data are licensed under the **Creative Commons Attribution 4.0 International (CC BY 4.0)** license: [Worldwide Governance Indicators – World Bank](https://data360.worldbank.org/en/dataset/WB_WGI)

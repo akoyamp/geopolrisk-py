@@ -42,18 +42,15 @@ All databases distributed with this library are structured specifically for the 
 
 Mining production statistics are based on *World Mining Data*, published by the Austrian Federal Ministry of Finance. The production data included in this package are derived from World Mining Data and have been processed and structured specifically for use within the GeoPolRisk methodology. They do not constitute or claim to represent the official World Mining Data publication.
 
-The licensing and terms of use are specified in the official documentation and on the publisher’s website:  
-[World Mining Data – Austrian Federal Ministry of Finance](https://www.bmf.gv.at/en/topics/mining/mineral-resources-policy/wmd.html)
+The licensing and terms of use are specified in the official documentation and on the publisher’s website: [World Mining Data – Austrian Federal Ministry of Finance](https://www.bmf.gv.at/en/topics/mining/mineral-resources-policy/wmd.html)
 
 ### BACI international trade database
 
-International trade data are sourced from the BACI database developed by CEPII and derived from UN Comtrade data. BACI is distributed under the **Etalab Open License 2.0**, as specified by CEPII:  
-[BACI database – CEPII](https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37)
+International trade data are sourced from the BACI database developed by CEPII and derived from UN Comtrade data. BACI is distributed under the **Etalab Open License 2.0**, as specified by CEPII: [BACI database – CEPII](https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37)
 
 ### Worldwide Governance Indicators (WGI)
 
-Governance indicators are obtained from the Worldwide Governance Indicators project of the World Bank. These data are licensed under the **Creative Commons Attribution 4.0 International (CC BY 4.0)** license:  
-[Worldwide Governance Indicators – World Bank](https://data360.worldbank.org/en/dataset/WB_WGI)
+Governance indicators are obtained from the Worldwide Governance Indicators project of the World Bank. These data are licensed under the **Creative Commons Attribution 4.0 International (CC BY 4.0)** license: [Worldwide Governance Indicators – World Bank](https://data360.worldbank.org/en/dataset/WB_WGI)
 
 ## Installation
 
@@ -100,17 +97,16 @@ That document contains:
 
 ## After installation
 
-Detailed usage instructions are available in the official documentation:
-[https://geopolrisk-py.readthedocs.io/en/latest/](https://geopolrisk-py.readthedocs.io/en/latest/)
+Detailed usage instructions are available in the official documentation: [https://geopolrisk-py.readthedocs.io/en/latest/](https://geopolrisk-py.readthedocs.io/en/latest/)
 
 The documentation includes module-level explanations, a step-by-step user guide, and example workflows. A Jupyter notebook demonstrating typical usage is provided both online and in the `examples` folder of the repository.
 
 ## Support and contact
 
-For bug reports and feature requests, please use the GitHub issue tracker:
-[https://github.com/akoyamp/geopolrisk-py/issues](https://github.com/akoyamp/geopolrisk-py/issues)
+For bug reports and feature requests, please use the GitHub issue tracker: [https://github.com/akoyamp/geopolrisk-py/issues](https://github.com/akoyamp/geopolrisk-py/issues)
 
 For questions related to the GeoPolRisk method, interpretation of results, or academic use, contact:
 
 **Anish Koyamparambath**
+
 Email: [anish.koyam@hotmail.com](mailto:anish.koyam@hotmail.com)

@@ -60,7 +60,7 @@ layer of the library. Together, they provide a mix of unit tests (individual
 functions) and integration or regression tests (end-to-end consistency against
 a reference calculation).
 
-Core computation tests (``test_core.py``)
+Core computation tests
 ------------------------------------------
 
 This module focuses on the numerical core of the GeoPolRisk method.
@@ -77,7 +77,7 @@ This module focuses on the numerical core of the GeoPolRisk method.
   explicit when provided with non-physical values (for example, negative
   numerators), rather than masking them.
 
-Database utility tests (``test_database.py``)
+Database utility tests
 ----------------------------------------------
 
 This module tests the low-level SQLite interaction utilities used by the
@@ -88,7 +88,7 @@ library.
 - Verifies that SELECT queries return the expected number of rows and expected
   content, confirming that query execution and retrieval behave correctly.
 
-Utility and data-handling tests (``test_util.py``)
+Utility and data-handling tests
 --------------------------------------------------
 
 This module tests the supporting functions in ``utils.py`` that prepare and
@@ -107,7 +107,7 @@ transform data for the GeoPolRisk computations.
 - Region creation: verifies that user-defined regions are added to the internal
   region registry in a consistent manner.
 
-Main workflow tests (``test_main.py``)
+Main workflow tests
 --------------------------------------
 
 This module tests the user-facing orchestration function ``gprs_calc`` in
@@ -120,7 +120,7 @@ This module tests the user-facing orchestration function ``gprs_calc`` in
 - Confirms that an empty raw material list returns an empty result rather than
   failing unexpectedly.
 
-Regression tests against a reference tool case: (``test_geopolrisk_data_results_from_excelfile.py``)
+Regression tests against a reference tool case:
 ------------------------------------------------------------------------------------------------------
 
 This module provides higher-confidence checks by comparing computed results
