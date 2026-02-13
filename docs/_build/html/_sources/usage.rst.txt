@@ -54,6 +54,13 @@ The :ref:`utils.py` module also provides a helper function to list all raw mater
    - ``Price``: Average bilateral traded price of the raw material
 
 
+.. important::
+
+   If you upgraded from a previous version of ``geopolrisk-py``, ensure that any existing
+   ``Documents/geopolrisk`` folder has been removed before running ``gprs_calc``.
+   Older local databases may contain an outdated schema and can cause SQLite errors.
+   See the installation section on upgrading for details.
+
 Regional Level Assessment
 --------------------------
 

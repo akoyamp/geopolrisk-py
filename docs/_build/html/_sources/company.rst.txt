@@ -23,6 +23,18 @@ The Excel file contains the following columns:
 
 There is no master function for calculating the GeoPolRisk values based on company-level trade data. The calculation must be performed step-by-step.
 
+Important note for running the example
+---------------------------------------
+
+The Excel file contains two sheets:
+
+- ``test``: Contains example data provided with the package.
+- ``template``: The sheet used by the ``importrisk_company`` function.
+
+The example calculation in this documentation requires that the example data from the ``test`` sheet be copied manually into the ``template`` sheet before executing the functions.
+
+If the ``template`` sheet is empty, or if it does not contain matching rows for the selected raw material and year (e.g., ``Nickel`` and ``2022``), the function will return an empty DataFrame and the calculation will not proceed.
+
 Import the Functions
 --------------------
 

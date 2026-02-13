@@ -54,6 +54,7 @@
 <li class="toctree-l1"><a class="reference internal" href="methods.html">Methods</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Company-specific risk assessment</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#prepare-the-excel-file">Prepare the Excel File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#important-note-for-running-the-example">Important note for running the example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#import-the-functions">Import the Functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#create-the-output-dataframe">Create the Output DataFrame</a></li>
 </ul>
@@ -109,6 +110,16 @@
 <li><p><strong>Additional Notes</strong>: Any internal notes or comments (these are not used in the calculation).</p></li>
 </ul>
 <p>There is no master function for calculating the GeoPolRisk values based on company-level trade data. The calculation must be performed step-by-step.</p>
+</section>
+<section id="important-note-for-running-the-example">
+<h2>Important note for running the example<a class="headerlink" href="#important-note-for-running-the-example" title="Link to this heading"></a></h2>
+<p>The Excel file contains two sheets:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">test</span></code>: Contains example data provided with the package.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">template</span></code>: The sheet used by the <code class="docutils literal notranslate"><span class="pre">importrisk_company</span></code> function.</p></li>
+</ul>
+<p>The example calculation in this documentation requires that the example data from the <code class="docutils literal notranslate"><span class="pre">test</span></code> sheet be copied manually into the <code class="docutils literal notranslate"><span class="pre">template</span></code> sheet before executing the functions.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">template</span></code> sheet is empty, or if it does not contain matching rows for the selected raw material and year (e.g., <code class="docutils literal notranslate"><span class="pre">Nickel</span></code> and <code class="docutils literal notranslate"><span class="pre">2022</span></code>), the function will return an empty DataFrame and the calculation will not proceed.</p>
 </section>
 <section id="import-the-functions">
 <h2>Import the Functions<a class="headerlink" href="#import-the-functions" title="Link to this heading"></a></h2>

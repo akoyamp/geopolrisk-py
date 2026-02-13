@@ -137,6 +137,13 @@ Also, the results are stored in a SQLite3 database in the same directory as the 
 <li><p><code class="docutils literal notranslate"><span class="pre">Price</span></code>: Average bilateral traded price of the raw material</p></li>
 </ul>
 </div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>If you upgraded from a previous version of <code class="docutils literal notranslate"><span class="pre">geopolrisk-py</span></code>, ensure that any existing
+<code class="docutils literal notranslate"><span class="pre">Documents/geopolrisk</span></code> folder has been removed before running <code class="docutils literal notranslate"><span class="pre">gprs_calc</span></code>.
+Older local databases may contain an outdated schema and can cause SQLite errors.
+See the installation section on upgrading for details.</p>
+</div>
 </section>
 <section id="regional-level-assessment">
 <h2>Regional Level Assessment<a class="headerlink" href="#regional-level-assessment" title="Link to this heading"></a></h2>
