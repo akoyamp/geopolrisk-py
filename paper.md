@@ -48,7 +48,7 @@ $$
 
 Here, $g_i$ is the political (in)stability of exporter $i$, $f_{Aic}$ is the amount of raw material $A$ imported by $c$ from $i$, $p_{Ac}$ is the domestic production, and $F_{Ac}$ is the total imports.
 
-To integrate this method into life cycle impact assessment by associating the GeoPolRisk score with mass of the raw material, a factor is developed by multiplying the score with the market price of the material, yielding the GeoPolRisk Midpoint [@SantillanSaldivar2022](Equation 2). This value represents the potential value of raw material at imminent risk per kilogram of raw material consumed.
+To integrate this method into life cycle impact assessment by associating the GeoPolRisk score with mass of the raw material, a factor is developed by multiplying the score with the market price of the material, yielding the GeoPolRisk Midpoint (Equation 2) [@SantillanSaldivar2022]. This value represents the potential value of raw material at imminent risk per kilogram of raw material consumed.
 
 Equation 2:
 
