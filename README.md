@@ -1,4 +1,14 @@
-# The geopolrisk-py library documentation
+# The geopolrisk-py library
+
+<div style="text-align:center; white-space: nowrap;">
+  <img src="https://img.shields.io/badge/Python-3.10%2B-blue?style=flat-square" />
+  <img src="https://img.shields.io/badge/Geopolitical%20Supply%20Risk%20Assessment-grey?style=flat-square" />
+  <img src="https://img.shields.io/badge/Life%20Cycle%20Assessment-grey?style=flat-square" />
+  <img src="https://img.shields.io/badge/Comparative%20Risk%20Assessment-grey?style=flat-square" />
+  <a href="https://doi.org/10.21105/joss.09600">
+    <img src="https://joss.theoj.org/papers/10.21105/joss.09600/status.svg" alt="DOI badge" />
+  </a>
+</div>
 
 The **geopolrisk-py** library implements the Geopolitical Supply Risk (GeoPolRisk) method for assessing raw material criticality in Life Cycle Assessment. It complements traditional resource and environmental indicators and can also be applied in comparative risk assessment.
 

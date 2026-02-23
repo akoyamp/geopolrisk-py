@@ -1,0 +1,50 @@
+cff-version: "1.2.0"
+authors:
+- family-names: Koyamparambath
+  given-names: Anish
+  orcid: "https://orcid.org/0000-0003-0839-0552"
+- family-names: Schraml
+  given-names: Thomas
+- family-names: Helbig
+  given-names: Christoph
+  orcid: "https://orcid.org/0000-0001-6709-373X"
+- family-names: Sonnemann
+  given-names: Guido
+  orcid: "https://orcid.org/0000-0003-2581-1910"
+contact:
+- family-names: Koyamparambath
+  given-names: Anish
+  orcid: "https://orcid.org/0000-0003-0839-0552"
+doi: 10.5281/zenodo.18713988
+message: If you use this software, please cite our article in the
+  Journal of Open Source Software.
+preferred-citation:
+  authors:
+  - family-names: Koyamparambath
+    given-names: Anish
+    orcid: "https://orcid.org/0000-0003-0839-0552"
+  - family-names: Schraml
+    given-names: Thomas
+  - family-names: Helbig
+    given-names: Christoph
+    orcid: "https://orcid.org/0000-0001-6709-373X"
+  - family-names: Sonnemann
+    given-names: Guido
+    orcid: "https://orcid.org/0000-0003-2581-1910"
+  date-published: 2026-02-21
+  doi: 10.21105/joss.09600
+  issn: 2475-9066
+  issue: 118
+  journal: Journal of Open Source Software
+  publisher:
+    name: Open Journals
+  start: 9600
+  title: "geopolrisk-py: A Python-Based Library to Operationalize the
+    Geopolitical Supply Risk Method for use in Life Cycle Assessment and
+    Comparative Risk Assessment"
+  type: article
+  url: "https://joss.theoj.org/papers/10.21105/joss.09600"
+  volume: 11
+title: "geopolrisk-py: A Python-Based Library to Operationalize the
+  Geopolitical Supply Risk Method for use in Life Cycle Assessment and
+  Comparative Risk Assessment"

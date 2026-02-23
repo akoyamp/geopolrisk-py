@@ -18,12 +18,15 @@ Citation
      author    = {Anish Koyamparambath, Thomas Schraml, Christoph Helbig, Guido Sonnemann},
      title     = {geopolrisk-py: A Python-Based Library to Operationalize the Geopolitical Supply Risk Method for use in Life Cycle Assessment and Comparative Risk Assessment},
      version   = {2.0.0},
-     doi       = {},
+     doi       = {10.21105/joss.09600},
      url       = {https://github.com/akoyamp/geopolrisk-py},
      year      = {2026},
-     publisher = {Zenodo},
+     publisher = {Zenodo: https://doi.org/10.5281/zenodo.18713988},
      license   = {GPL-3.0}
    }
+
+.. image:: https://joss.theoj.org/papers/10.21105/joss.09600/status.svg
+   :target: https://doi.org/10.21105/joss.09600
 
 Contents
 --------
