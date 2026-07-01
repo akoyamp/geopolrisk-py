@@ -15,3 +15,11 @@ __pycache__/
 build/
 dist/
 geopolrisk_py.egg-info/
+src/geopolrisk/assessment/lib/Old
+tools/Raw/*
+tools/Old py
+tools/Outputs/*
+src/geopolrisk/lib/Old/baci.db
+src/geopolrisk/lib/Old/wgi.db
+src/geopolrisk/lib/Old/world_mining_data.db
+tests/run_tests.py

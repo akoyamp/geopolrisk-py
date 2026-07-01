@@ -9,7 +9,7 @@
   <title>Usage &mdash; geopolrisk-py 2.0,0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
-      <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+      <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
       <link rel="stylesheet" type="text/css" href="_static/custom.css?v=4dcc649a" />
 
   
@@ -96,6 +96,8 @@
 <h2>General Usage<a class="headerlink" href="#general-usage" title="Link to this heading"></a></h2>
 <p>With the method in the <a class="reference internal" href="methods.html#main-py"><span class="std std-ref">Methods: main.py</span></a> module, <code class="docutils literal notranslate"><span class="pre">gprs_calc</span></code>, it is possible to calculate all values of the GeoPolRisk method in one go.
 See the <a class="reference internal" href="methods.html#methods"><span class="std std-ref">Methods</span></a> section of the documentation for more details on the arguments.</p>
+<p>The bundled background database distributed with <code class="docutils literal notranslate"><span class="pre">geopolrisk-py</span></code> is updated through <strong>2024</strong>.
+An upcoming feature will allow users to export importable characterization factors for <strong>SimaPro</strong>, <strong>openLCA</strong>, and <strong>Brightway</strong>.</p>
 <p>The <a class="reference internal" href="methods.html#utils-py"><span class="std std-ref">Methods: utils.py</span></a> module also provides a helper function to list all raw materials available for assessment.
 <code class="docutils literal notranslate"><span class="pre">gprs_calc</span></code> takes in three main inputs as lists: raw materials, years, and countries.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">geopolrisk.assessment.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_rmlist</span>
@@ -108,7 +110,7 @@ See the <a class="reference internal" href="methods.html#methods"><span class="s
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">geopolrisk.assessment.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">gprs_calc</span>
 
-<span class="n">year_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">2020</span><span class="p">,</span> <span class="mi">2021</span><span class="p">,</span> <span class="mi">2022</span><span class="p">]</span>  <span class="c1"># Currently limited to 2022 (GeoPolRisk-py V2)</span>
+<span class="n">year_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">2022</span><span class="p">,</span> <span class="mi">2023</span><span class="p">,</span> <span class="mi">2024</span><span class="p">]</span>  <span class="c1"># Supported through 2024 in the current database release</span>
 <span class="n">country_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;China&quot;</span><span class="p">,</span> <span class="s2">&quot;Germany&quot;</span><span class="p">,</span> <span class="mi">842</span><span class="p">,</span> <span class="mi">36</span><span class="p">]</span>  <span class="c1"># Countries can be given as names or ISO 3-digit codes</span>
 
 <span class="n">gprs_calc</span><span class="p">(</span><span class="n">year_list</span><span class="p">,</span> <span class="n">country_list</span><span class="p">,</span> <span class="n">rawmaterials_list</span><span class="p">)</span>
@@ -155,7 +157,7 @@ The <code class="docutils literal notranslate"><span class="pre">regions</span><
 <span class="p">}</span>
 
 <span class="n">rawmaterials_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Nickel&quot;</span><span class="p">,</span> <span class="s2">&quot;Cobalt&quot;</span><span class="p">,</span> <span class="s2">&quot;Manganese&quot;</span><span class="p">]</span>
-<span class="n">year_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">2020</span><span class="p">,</span> <span class="mi">2021</span><span class="p">,</span> <span class="mi">2022</span><span class="p">]</span>
+   <span class="n">year_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">2022</span><span class="p">,</span> <span class="mi">2023</span><span class="p">,</span> <span class="mi">2024</span><span class="p">]</span>
 <span class="n">country_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;West Europe&quot;</span><span class="p">,</span> <span class="s2">&quot;China&quot;</span><span class="p">,</span> <span class="s2">&quot;India&quot;</span><span class="p">]</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">geopolrisk.assessment.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">gprs_calc</span>

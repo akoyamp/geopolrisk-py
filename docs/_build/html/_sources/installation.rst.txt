@@ -27,7 +27,7 @@ Structured database files distributed with this package may contain derived data
 
 
 Third party data sources and licenses
-------------------------------------
+-------------------------------------
 
 The GeoPolRisk method relies on several external data sources for mining production, international trade, and governance indicators. These data sources are provided by third parties and are subject to their respective licenses and terms of use, as defined by the original data providers.
 
@@ -96,6 +96,9 @@ Package availability
 
 ``geopolrisk-py`` is currently distributed via **PyPI**.
 A ``conda-forge`` package is not available at this time.
+
+The packaged background database in the current release is updated through **2024**.
+An upcoming feature will provide exportable characterization factor files for **SimaPro**, **openLCA**, and **Brightway**.
 
 
 Upgrading from a previous version

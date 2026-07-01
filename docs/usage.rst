@@ -9,6 +9,9 @@ General Usage
 With the method in the :ref:`main.py` module, ``gprs_calc``, it is possible to calculate all values of the GeoPolRisk method in one go.  
 See the :ref:`Methods` section of the documentation for more details on the arguments.
 
+The bundled background database distributed with ``geopolrisk-py`` is updated through **2024**.
+An upcoming feature will allow users to export importable characterization factors for **SimaPro**, **openLCA**, and **Brightway**.
+
 The :ref:`utils.py` module also provides a helper function to list all raw materials available for assessment.  
 ``gprs_calc`` takes in three main inputs as lists: raw materials, years, and countries.
 
@@ -25,7 +28,7 @@ The :ref:`utils.py` module also provides a helper function to list all raw mater
 
    from geopolrisk.assessment.main import gprs_calc
 
-   year_list = [2019, 2020, 2021, 2022]  # Currently limited to 2022 (GeoPolRisk-py V2)
+   year_list = [2021, 2022, 2023, 2024]  # Supported through 2024 in the current database release
    country_list = ["China", "Germany", 842, 36]  # Countries can be given as names or ISO 3-digit codes
 
    gprs_calc(year_list, country_list, rawmaterials_list)
@@ -76,7 +79,7 @@ You can use the ``gprs_calc`` function in the ``main.py`` module in the same way
    }
 
    rawmaterials_list = ["Nickel", "Cobalt", "Manganese"]
-   year_list = [2019, 2020, 2021, 2022]
+      year_list = [2021, 2022, 2023, 2024]
    country_list = ["West Europe", "China", "India"]
 
    from geopolrisk.assessment.main import gprs_calc

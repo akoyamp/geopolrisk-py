@@ -28,7 +28,7 @@ from test_database import TestDatabaseModule
 from test_util import TestUtilModul
 from test_main import TestMainModul
 from test_core import TestCoreModul
-from test_geopolrisk_data_results_from_excelfile import (
+from test_excelfiles import (
     TestGeoPolRiskPy,
 )
 

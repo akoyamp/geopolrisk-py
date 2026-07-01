@@ -476,30 +476,31 @@ def regions(*args):
     trackregion = 0
     if len(args) != 0:
         for key, value in args[0].items():
-            if type(key) is not str and type(value) is not list:
+            if not isinstance(key, str) or not isinstance(value, list):
                 logging.debug(
                     "Dictionary input to regions does not match required type."
                 )
                 return None
-            Print_Error = [
+            print_error = [
                 x
                 for x in value
                 if str(x) not in databases.production["Country_ISO"]["Country"].tolist()
                 and str(x)
                 not in databases.production["Country_ISO"]["ISO"].astype(str).tolist()
             ]
-            if len(Print_Error) != 0:
+            if len(print_error) != 0:
                 logging.debug(
                     "Error in creating a region! "
                     "Following list of countries not"
                     " found in the ISO list {}. "
                     "Please conform with the ISO list or use"
-                    " 3 digit ISO country codes.".format(Print_Error)
+                    " 3 digit ISO country codes.".format(print_error)
                 )
-                return None
-            else:
-                trackregion += 1
-                databases.regionslist[key] = value
+            valid_countries = [x for x in value if x not in print_error]
+            if len(valid_countries) == 0:
+                continue
+            trackregion += 1
+            databases.regionslist[key] = valid_countries
 
     # Populating the default countries and regions
     for i in databases.production["Country_ISO"]["Country"].tolist():

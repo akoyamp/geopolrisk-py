@@ -1,0 +1,673 @@
+{
+  "name": "Brightway mapping",
+  "metadata": {
+    "software": "Brightway 2",
+    "biosphere": "biosphere3",
+    "biosphere_version": "3",
+    "version": "2",
+    "author": "Anish Koyamparambath"
+  },
+  "cfs": {
+    "Aluminium": [
+      {
+        "flow": "Aluminium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "a45cd247-3532-4e27-bddc-b519fdb5e08f",
+        "unit": "kilogram"
+      }
+    ],
+    "Antimony": [
+      {
+        "flow": "Antimony",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "47262180-8308-5d4c-9332-c77617e032ef",
+        "unit": "kilogram"
+      }
+    ],
+    "Arsenic": [
+      {
+        "flow": "Arsenic",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "e16fd15c-0ebc-55ba-8d3b-9704f13663cb",
+        "unit": "kilogram"
+      }
+    ],
+    "Asbestos": [
+      {
+        "flow": "Chrysotile",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "c5f5aeb8-7558-4a0c-9594-27621b9cfbc5",
+        "unit": "kilogram"
+      }
+    ],
+    "Baryte": [
+      {
+        "flow": "Barium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "240177d8-6f3b-43f5-8d1e-0c18114dfa02",
+        "unit": "kilogram"
+      }
+    ],
+    "Bauxite": [
+      {
+        "flow": "Aluminium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "a45cd247-3532-4e27-bddc-b519fdb5e08f",
+        "unit": "kilogram"
+      }
+    ],
+    "Bentonite": [
+      {
+        "flow": "Clay, bentonite",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "93806a54-46f5-409c-99c5-4144a1e73b5d",
+        "unit": "kilogram"
+      }
+    ],
+    "Beryllium": [
+      {
+        "flow": "Beryllium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "68f7bc03-0665-55a1-bd99-96530eab30e2",
+        "unit": "kilogram"
+      }
+    ],
+    "Bismuth": [
+      {
+        "flow": "Bismuth",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "0124b342-4bdd-5cbf-ba2a-dce8a259755c",
+        "unit": "kilogram"
+      }
+    ],
+    "Boron": [
+      {
+        "flow": "Boron",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "b053aa52-bfac-5435-a0b1-4ca374b0e991",
+        "unit": "kilogram"
+      },
+      {
+        "flow": "Borax",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "eead2933-c2be-4a53-a0bd-bd33b67e4145",
+        "unit": "kilogram"
+      },
+      {
+        "flow": "Colemanite",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "ec72c523-9e1a-466a-98c3-e4098e90fd27",
+        "unit": "kilogram"
+      },
+      {
+        "flow": "Ulexite",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "d0696f95-6cb3-453b-b849-c99ba9c90c28",
+        "unit": "kilogram"
+      }
+    ],
+    "Cadmium": [
+      {
+        "flow": "Cadmium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "bf377e4f-3a95-4ce2-a9ba-66ee31f00f60",
+        "unit": "kilogram"
+      }
+    ],
+    "Chromite": [
+      {
+        "flow": "Chromium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "e189e2d4-3d3f-4ada-b302-91611784311f",
+        "unit": "kilogram"
+      }
+    ],
+    "Cobalt": [
+      {
+        "flow": "Cobalt",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "d0779a5e-6969-4144-954e-ceb81fb83f15",
+        "unit": "kilogram"
+      }
+    ],
+    "Coking Coal": [
+      {
+        "flow": "Coal, hard",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "b6d0042d-0ef8-49ed-9162-a07ff1ccf750",
+        "unit": "kilogram"
+      }
+    ],
+    "Copper": [
+      {
+        "flow": "Copper",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "a9ac40a0-9bea-4c48-afa7-66aa6eb90624",
+        "unit": "kilogram"
+      }
+    ],
+    "Crude oil": [
+      {
+        "flow": "Oil, crude",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "88d06db9-59a1-4719-9174-afeb1fa4026a",
+        "unit": "kilogram"
+      }
+    ],
+    "Diatomite": [
+      {
+        "flow": "Diatomite",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "9877ce00-65f8-4c0c-9fcf-92aa53a2c9c0",
+        "unit": "kilogram"
+      }
+    ],
+    "Feldspar": [
+      {
+        "flow": "Feldspar",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "26296ec9-ff93-41e6-bbbf-6175af04284d",
+        "unit": "kilogram"
+      }
+    ],
+    "Fluorspar": [
+      {
+        "flow": "Fluorspar",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "0fa4f51e-b0dc-5d11-84d3-b32f0f3c88d5",
+        "unit": "kilogram"
+      },
+      {
+        "flow": "Fluorine",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "3048af84-1d72-5e3f-a739-b2d7fa7d4773",
+        "unit": "kilogram"
+      }
+    ],
+    "Germanium": [
+      {
+        "flow": "Germanium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "d3e547dc-1a29-5ece-8dbb-bd9c0ad3cc46",
+        "unit": "kilogram"
+      }
+    ],
+    "Gold": [
+      {
+        "flow": "Gold",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "d080e6a4-42c6-484e-b5d7-d74693aec7d9",
+        "unit": "kilogram"
+      }
+    ],
+    "Graphite": [
+      {
+        "flow": "Graphite",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "5666353e-2db2-41d3-8414-404709151422",
+        "unit": "kilogram"
+      }
+    ],
+    "Gypsum": [
+      {
+        "flow": "Gypsum",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "11a2a7b1-ab2f-47b8-9e29-6f33d5207fa6",
+        "unit": "kilogram"
+      }
+    ],
+    "Iron": [
+      {
+        "flow": "Iron",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "8ce3ff02-7a1e-48e3-881e-3248b944f28a",
+        "unit": "kilogram"
+      }
+    ],
+    "Kaolin": [
+      {
+        "flow": "Kaolinite",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "81ff5c0b-c44f-534e-a55e-8fc017e33dd2",
+        "unit": "kilogram"
+      }
+    ],
+    "Lead": [
+      {
+        "flow": "Lead",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "fbcb9c7a-eea7-4694-ba6c-568e01d28883",
+        "unit": "kilogram"
+      }
+    ],
+    "Lignite": [
+      {
+        "flow": "Coal, brown",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "024c9722-1e88-412b-8c4b-10c532be8dca",
+        "unit": "kilogram"
+      }
+    ],
+    "Lithium": [
+      {
+        "flow": "Lithium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "7d2c1cdd-a64a-5936-a577-5b82db0c0d1b",
+        "unit": "kilogram"
+      },
+      {
+        "flow": "Spodumene",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "5324b57a-96f1-4dc3-9dc5-544881960f4f",
+        "unit": "kilogram"
+      }
+    ],
+    "Magnesite": [
+      {
+        "flow": "Magnesite",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "a4bab069-74a9-5b4c-8d6e-5ca984cd9ecd",
+        "unit": "kilogram"
+      }
+    ],
+    "Manganese": [
+      {
+        "flow": "Manganese",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "c2586875-bb56-4b1e-84c5-5ff255a1108b",
+        "unit": "kilogram"
+      },
+      {
+        "flow": "Pyrolusite",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "aaceb467-2e6a-464e-9a0f-2545e31850ba",
+        "unit": "kilogram"
+      }
+    ],
+    "Mercury": [
+      {
+        "flow": "Mercury",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "54b9cbd0-65df-4fd3-8a19-dd3b8eccc619",
+        "unit": "kilogram"
+      },
+      {
+        "flow": "Cinnabar",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "15545dca-018d-4f7f-aa1f-796b707180af",
+        "unit": "kilogram"
+      }
+    ],
+    "Molybdenum": [
+      {
+        "flow": "Molybdenum",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "e5a3dff5-72dc-5287-893c-597dd4a19566",
+        "unit": "kilogram"
+      }
+    ],
+    "Natural gas": [
+      {
+        "flow": "Gas, natural",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "7c337428-fb1b-45c7-bbb2-2ee4d29e17ba",
+        "unit": "standard cubic meter"
+      }
+    ],
+    "Nickel": [
+      {
+        "flow": "Nickel",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "974213ef-1ba0-40e5-bc7b-52ef099e9e09",
+        "unit": "kilogram"
+      }
+    ],
+    "Niobium": [
+      {
+        "flow": "Niobium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "8de8befc-efa2-5d07-a58b-b29ea97a3f41",
+        "unit": "kilogram"
+      }
+    ],
+    "Palladium": [
+      {
+        "flow": "Palladium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "edc69c63-a776-4dbf-acbf-e0368914980a",
+        "unit": "kilogram"
+      }
+    ],
+    "Phosphate": [
+      {
+        "flow": "Phosphorus",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "483ae3c5-4eb0-46e4-b811-a72ad391716b",
+        "unit": "kilogram"
+      }
+    ],
+    "Platinum": [
+      {
+        "flow": "Platinum",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "d13b2665-505d-49e2-8edd-dc966b0342af",
+        "unit": "kilogram"
+      }
+    ],
+    "Rare earth": [
+      {
+        "flow": "Scandium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "7f9f9b59-35a0-584d-ad5e-07da01dde768",
+        "unit": "kilogram",
+        "rare_earth_group": "REE"
+      },
+      {
+        "flow": "Yttrium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "89b567f2-2cab-503e-b796-42cba72fce16",
+        "unit": "kilogram",
+        "rare_earth_group": "HREE"
+      },
+      {
+        "flow": "Lanthanum",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "176598c1-699c-5dd8-8c33-d269ff7f5edd",
+        "unit": "kilogram",
+        "rare_earth_group": "LREE"
+      },
+      {
+        "flow": "Cerium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "4057f8b4-f20a-59c9-9bb7-fdeaf5ad106d",
+        "unit": "kilogram",
+        "rare_earth_group": "LREE"
+      },
+      {
+        "flow": "Praseodymium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "35da65ff-7287-571d-b859-13d398ac5182",
+        "unit": "kilogram",
+        "rare_earth_group": "LREE"
+      },
+      {
+        "flow": "Neodymium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "db0c855c-e9ef-58d9-97cc-960e646fc882",
+        "unit": "kilogram",
+        "rare_earth_group": "LREE"
+      },
+      {
+        "flow": "Samarium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "cf791833-26bc-5207-a9bd-6ddcd8ac7625",
+        "unit": "kilogram",
+        "rare_earth_group": "LREE"
+      },
+      {
+        "flow": "Europium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "3d73ec21-de4d-5b68-b504-4ef59e15bd0e",
+        "unit": "kilogram",
+        "rare_earth_group": "LREE"
+      },
+      {
+        "flow": "Gadolinium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "f55e2203-ef91-50bf-8f5a-119bb210522c",
+        "unit": "kilogram",
+        "rare_earth_group": "HREE"
+      },
+      {
+        "flow": "Terbium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "6ec6a8a8-4c94-5bc5-93c5-62928fcf3935",
+        "unit": "kilogram",
+        "rare_earth_group": "HREE"
+      },
+      {
+        "flow": "Dysprosium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "9e28eac3-49f9-5a0d-a8d0-dc4e071ad9e6",
+        "unit": "kilogram",
+        "rare_earth_group": "HREE"
+      },
+      {
+        "flow": "Holmium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "f2f53dc8-8e09-511f-8dd2-4bae3625ba27",
+        "unit": "kilogram",
+        "rare_earth_group": "HREE"
+      },
+      {
+        "flow": "Erbium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "110a04f0-af53-5499-b22e-79b1b91e5a66",
+        "unit": "kilogram",
+        "rare_earth_group": "HREE"
+      },
+      {
+        "flow": "Thulium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "a34e010c-6f68-5c79-8b45-2955b91f7dc2",
+        "unit": "kilogram",
+        "rare_earth_group": "HREE"
+      },
+      {
+        "flow": "Ytterbium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "ea659cca-fe3d-5b03-90d2-60719a862874",
+        "unit": "kilogram",
+        "rare_earth_group": "HREE"
+      },
+      {
+        "flow": "Lutetium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "d9a2f8e5-f04a-5ffa-8c75-8133ac7f525c",
+        "unit": "kilogram",
+        "rare_earth_group": "HREE"
+      }
+    ],
+    "Rhodium": [
+      {
+        "flow": "Rhodium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "4803f22f-6950-489b-914d-fa953a8081f6",
+        "unit": "kilogram"
+      }
+    ],
+    "Selenium": [
+      {
+        "flow": "Selenium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "5f47f918-1c32-5870-b992-db91f843ff34",
+        "unit": "kilogram"
+      }
+    ],
+    "Silver": [
+      {
+        "flow": "Silver",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "361a64cb-ab76-4a72-9ea1-c07d6a20c124",
+        "unit": "kilogram"
+      }
+    ],
+    "Steam Coal": [
+      {
+        "flow": "Coal, hard",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "b6d0042d-0ef8-49ed-9162-a07ff1ccf750",
+        "unit": "kilogram"
+      },
+      {
+        "flow": "Coal, brown",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "024c9722-1e88-412b-8c4b-10c532be8dca",
+        "unit": "kilogram"
+      }
+    ],
+    "Sulfur": [
+      {
+        "flow": "Sulfur",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "852281f6-db73-4250-84d3-86b569fce0c1",
+        "unit": "kilogram"
+      }
+    ],
+    "Tantalum": [
+      {
+        "flow": "Tantalum",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "775fdf03-b0bb-5c25-b14d-107231d5b2f0",
+        "unit": "kilogram"
+      }
+    ],
+    "Tellurium": [
+      {
+        "flow": "Tellurium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "7b6da1f2-e191-5a77-ae06-af96201f5803",
+        "unit": "kilogram"
+      }
+    ],
+    "Tin": [
+      {
+        "flow": "Tin",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "53d5ef26-66d8-4536-afa2-2f6b114189ba",
+        "unit": "kilogram"
+      }
+    ],
+    "Titanium": [
+      {
+        "flow": "Titanium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "2f033407-6060-4e1e-868c-9f362d10fdb2",
+        "unit": "kilogram"
+      }
+    ],
+    "Tungsten": [
+      {
+        "flow": "Tungsten",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "ebcc1f0c-6b19-501d-86a4-629df2a457b5",
+        "unit": "kilogram"
+      }
+    ],
+    "Uranium": [
+      {
+        "flow": "Uranium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "2ba5e39b-adb6-4767-a51d-90c1cf32fe98",
+        "unit": "kilogram"
+      }
+    ],
+    "Vanadium": [
+      {
+        "flow": "Vanadium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "c9c4b80a-73dd-415a-92fb-f877595651c1",
+        "unit": "kilogram"
+      }
+    ],
+    "Zinc": [
+      {
+        "flow": "Zinc",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "be73218b-18af-492e-96e6-addd309d1e32",
+        "unit": "kilogram"
+      }
+    ],
+    "Zirconium": [
+      {
+        "flow": "Zirconium",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "cd2932c5-a486-4bf1-99b8-815d8a7ce11a",
+        "unit": "kilogram"
+      },
+      {
+        "flow": "Zirconia, as baddeleyite",
+        "category": "natural resource / in ground",
+        "database": "biosphere3",
+        "code": "e07b4402-abe3-4346-8c42-051c5983bd1e",
+        "unit": "kilogram"
+      }
+    ]
+  }
+}

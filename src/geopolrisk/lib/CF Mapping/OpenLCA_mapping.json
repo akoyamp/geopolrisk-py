@@ -1,0 +1,1485 @@
+{
+  "name": "OpenLCA mapping",
+  "metadata": {
+    "software": "OpenLCA 2.6",
+    "ecoinvent": "ecoinvent 3.12",
+    "version": "2",
+    "author": "Anish Koyamparambath"
+  },
+  "cfs": {
+    "Aluminium": [
+      {
+        "flow": "Aluminium",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Aluminium",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Aluminium, 24% in bauxite, 11% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      }
+    ],
+    "Antimony": [
+      {
+        "flow": "Antimony",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Antimony",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Arsenic": [
+      {
+        "flow": "Arsenic",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Arsenic",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Arsenic ion",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Asbestos": [
+      {
+        "flow": "Chrysotile",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Baryte": [
+      {
+        "flow": "Barite",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Barite, 15% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      }
+    ],
+    "Bauxite": [
+      {
+        "flow": "Bauxite",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Bentonite": [
+      {
+        "flow": "Clay, bentonite",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Beryllium": [
+      {
+        "flow": "Beryllium",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Bismuth": [
+      {
+        "flow": "Bismuth",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Bismuth",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Boron": [
+      {
+        "flow": "Boron",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Boron",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Cadmium": [
+      {
+        "flow": "Cadmium",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Cadmium",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Cadmium II",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Cadmium, 0.30% in sulfide, Cd 0.18%, Pb, Zn, Ag, In, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      }
+    ],
+    "Chromite": [
+      {
+        "flow": "Chromium ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Chromium, 25.5% in chromite, 11.6% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      }
+    ],
+    "Cobalt": [
+      {
+        "flow": "Cobalt",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Cobalt",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Cobalt II",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Cobalt, Co 5.0E-2%, in mixed ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      }
+    ],
+    "Coking Coal": [
+      {
+        "flow": "Coal, bituminous, 24.8 MJ per kg",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "metallurgical coal",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Copper": [
+      {
+        "flow": "Copper",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Copper",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Copper ore (1.2%)",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Copper ore, 0.14%",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Copper ore, 4%",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Copper ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Copper ore, sulfidic",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Copper, 0.52% in sulfide, Cu 0.27% and Mo 8.2E-3% in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Copper, 0.52% in sulfide, Cu 0.27% and Mo 8.2E-3% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Copper, 0.59% in sulfide, Cu 0.22% and Mo 8.2E-3% in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Copper, 0.59% in sulfide, Cu 0.22% and Mo 8.2E-3% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Copper, 0.97% in sulfide, Cu 0.36% and Mo 4.1E-2% in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Copper, 0.97% in sulfide, Cu 0.36% and Mo 4.1E-2% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Copper, 0.99% in sulfide, Cu 0.36% and Mo 8.2E-3% in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Copper, 0.99% in sulfide, Cu 0.36% and Mo 8.2E-3% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Copper, 1.13% in sulfide, Cu 0.76% and Ni 0.76% in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Copper, 1.13% in sulfide, Cu 0.76% and Ni 0.76% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Copper, 1.18% in sulfide, Cu 0.39% and Mo 8.2E-3% in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Copper, 1.18% in sulfide, Cu 0.39% and Mo 8.2E-3% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Copper, 1.25% in sulfide, Cu 0.24% and Zn 0,1% in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Copper, 1.42% in sulfide, Cu 0.81% and Mo 8.2E-3% in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Copper, 1.42% in sulfide, Cu 0.81% and Mo 8.2E-3% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Copper, 2.19% in sulfide, Cu 1.83% and Mo 8.2E-3% in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Copper, 2.19% in sulfide, Cu 1.83% and Mo 8.2E-3% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Copper, Cu 0.2%, in mixed ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Copper, Cu 0.2%, in mixed ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Copper, Cu 0.38%, Au 9.7E-4%, Ag 9.7E-4%, Zn 0.63%, Pb 0.014%, in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Copper, Cu 0.38%, in mixed ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Copper, Cu 3.2E+0%, Pt 2.5E-4%, Pd 7.3E-4%, Rh 2.0E-5%, Ni 2.3E+0% in ore",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Copper, Cu 3.2E+0%, Pt 2.5E-4%, Pd 7.3E-4%, Rh 2.0E-5%, Ni 2.3E+0% in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Copper, Cu 5.2E-2%, Pt 4.8E-4%, Pd 2.0E-4%, Rh 2.4E-5%, Ni 3.7E-2% in ore",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Copper, Cu 5.2E-2%, Pt 4.8E-4%, Pd 2.0E-4%, Rh 2.4E-5%, Ni 3.7E-2% in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Copper, Cu 6.8E-1%, in mixed ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Copper, Gold, Ore (1.07% Cu, 0.54 g/t Au)",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Copper, Gold, Silver, ore (0.51% Cu, 0.6 g/t Au, 1.5 g/t Ag)",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Copper, Gold, Silver, ore (1.0% Cu, 0.4 g/t Au, 66 g/t Ag)",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Copper, Gold, Silver, ore (1.1% Cu, 0.01 g/t Au, 2.86 g/t Ag)",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Copper, Gold, Silver, ore (1.13% Cu, 1.05 g/t Au, 3.72 g/t Ag)",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Copper, Gold, Silver, ore (1.16% Cu, 0.002 g/t Au, 1.06 g/t Ag)",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Copper, Gold, Silver, ore (1.7% Cu, 0.7 g/t Au, 3.5 g/t Ag)",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Copper, Silver, ore (3.3% Cu, 5.5 g/t Ag)",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Copper-Molybdenum-Gold-Silver ore (1.13% CU, 0.02% Mo, 0.01 g/t Au, 2.8 Ag)",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Cu, Cu 3.2E+0%, Pt 2.5E-4%, Pd 7.3E-4%, Rh 2.0E-5%, Ni 2.3E+0% in ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Cu, Cu 5.2E-2%, Pt 4.8E-4%, Pd 2.0E-4%, Rh 2.4E-5%, Ni 3.7E-2% in ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      }
+    ],
+    "Crude oil": [
+      {
+        "flow": "Oil, crude",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Oil, crude, 38400 MJ per m3",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Oil, crude, 38400 MJ per m3, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Oil, crude, 41 MJ per kg",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Oil, crude, 41 MJ per kg, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Oil, crude, 42 MJ per kg, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Oil, crude, 42.6 MJ per kg",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Oil, crude, 42.6 MJ per kg, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Oil, crude, 42.7 MJ per kg, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Oil, crude, feedstock, 41 MJ per kg",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Oil, crude, feedstock, 41 MJ per kg, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Oil, crude, feedstock, 42 MJ per kg",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Oil, crude, feedstock, 42 MJ per kg, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      }
+    ],
+    "Diatomite": [
+      {
+        "flow": "Diatomite",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Feldspar": [
+      {
+        "flow": "Feldspar",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Fluorspar": [
+      {
+        "flow": "Fluorspar",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Germanium": [
+      {
+        "flow": "Germanium",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Germanium",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Gold": [
+      {
+        "flow": "Gold",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Gold",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Gold, Au 1.1E-4%, Ag 4.2E-3%, in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Gold, Au 1.1E-4%, Ag 4.2E-3%, in ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Gold, Au 1.3E-4%, Ag 4.6E-5%, in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Gold, Au 1.3E-4%, Ag 4.6E-5%, in ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Gold, Au 1.4E-4%, in ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Gold, Au 1.8E-4%, in mixed ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Gold, Au 1.8E-4%, in mixed ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Gold, Au 2.1E-4%, Ag 2.1E-4%, in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Gold, Au 2.1E-4%, Ag 2.1E-4%, in ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Gold, Au 4.3E-4%, in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Gold, Au 4.3E-4%, in ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Gold, Au 4.9E-5%, in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Gold, Au 4.9E-5%, in ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Gold, Au 5.4E-4%, Ag 1.5E-5%, in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Gold, Au 5.4E-4%, Ag 1.5E-5%, in ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Gold, Au 6.7E-4%, in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Gold, Au 6.7E-4%, in ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Gold, Au 6.8E-4%, Ag 1.5E-4%, in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Gold, Au 6.8E-4%, Ag 1.5E-4%, in ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Gold, Au 7.1E-4%, in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Gold, Au 7.1E-4%, in ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Gold, Au 9.7E-4%, Ag 9.7E-4%, Zn 0.63%, Cu 0.38%, Pb 0.014%, in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Gold, Au 9.7E-4%, in mixed ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Gold, Au 9.7E-5%, Ag 7.6E-5%, in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Gold, Au 9.7E-5%, Ag 7.6E-5%, in ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      }
+    ],
+    "Graphite": [
+      {
+        "flow": "Graphite",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Gypsum": [
+      {
+        "flow": "Gypsum",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Iron": [
+      {
+        "flow": "Iron",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Iron",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Iron ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Iron, 46% in ore, 25% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Iron, 72% in magnetite, 14% in crude ore",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Iron, 72% in magnetite, 14% in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Kaolin": [
+      {
+        "flow": "Kaolin",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Kaolin ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Kaolinite",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Kaolinite, 24% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      }
+    ],
+    "Lead": [
+      {
+        "flow": "Lead",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Lead",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Lead ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Lead, 5%, in sulfide, Pb 2.97% and Zn 5.34% in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Lead, 5.0% in sulfide, Pb 3.0%, Zn, Ag, Cd, In, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Lead, Pb 0.014%, Au 9.7E-4%, Ag 9.7E-4%, Zn 0.63%, Cu 0.38%, in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Lead, Pb 0.014%, in mixed ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Lead, Pb 3.6E-1%, in mixed ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Lead, Pb 3.6E-1%, in mixed ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Lead, zinc ore (4.6%, 0.6%)",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Lignite": [
+      {
+        "flow": "Lignite, 11 MJ per kg",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Lithium": [
+      {
+        "flow": "Lithium",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Lithium",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Lithium I",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Lithium, 0.15% in brine, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      }
+    ],
+    "Magnesite": [
+      {
+        "flow": "Magnesite",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Magnesite, 60% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      }
+    ],
+    "Manganese": [
+      {
+        "flow": "Manganese",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Manganese",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Manganese II",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Manganese ore (R.O.M.)",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Manganese ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Manganese, 35.7% in sedimentary deposit, 14.2% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      }
+    ],
+    "Mercury": [
+      {
+        "flow": "Mercury",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Mercury",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Molybdenum": [
+      {
+        "flow": "Molybdenum",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Molybdenum",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Molybdenum VI",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Molybdenum, 0.010% in sulfide, Mo 8.2E-3% and Cu 1.83% in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Molybdenum, 0.010% in sulfide, Mo 8.2E-3% and Cu 1.83% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Molybdenum, 0.014% in sulfide, Mo 8.2E-3% and Cu 0.81% in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Molybdenum, 0.014% in sulfide, Mo 8.2E-3% and Cu 0.81% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Molybdenum, 0.016% in sulfide, Mo 8.2E-3% and Cu 0.27% in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Molybdenum, 0.016% in sulfide, Mo 8.2E-3% and Cu 0.27% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Molybdenum, 0.022% in sulfide, Mo 8.2E-3% and Cu 0, Nickel, 1,13% in sulfides, 0,76% in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Molybdenum, 0.022% in sulfide, Mo 8.2E-3% and Cu 0.",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Molybdenum, 0.022% in sulfide, Mo 8.2E-3% and Cu 0.22% in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Molybdenum, 0.022% in sulfide, Mo 8.2E-3% and Cu 0.22% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Molybdenum, 0.022% in sulfide, Mo 8.2E-3% and Cu 0.36% in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Molybdenum, 0.022% in sulfide, Mo 8.2E-3% and Cu 0.36% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Molybdenum, 0.025% in sulfide, Mo 8.2E-3% and Cu 0.39% in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Molybdenum, 0.025% in sulfide, Mo 8.2E-3% and Cu 0.39% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Molybdenum, 0.11% in sulfide, Mo 0.41% and Cu 0.36% in crude ore",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Molybdenum, 0.11% in sulfide, Mo 0.41% and Cu 0.36% in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Molybdenum, 0.11% in sulfide, Mo 4.1E-2% and Cu 0.36% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      }
+    ],
+    "Natural gas": [
+      {
+        "flow": "Gas, natural",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Gas, natural, 30.3 MJ per kg, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Gas, natural, 35 MJ per m3, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Gas, natural, 36.6 MJ per m3, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Gas, natural, 46.8 MJ per kg, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Gas, natural, feedstock, 35 MJ per m3, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Gas, natural, feedstock, 46.8 MJ per kg, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      }
+    ],
+    "Nickel": [
+      {
+        "flow": "Ni, Ni 2.3E+0%, Pt 2.5E-4%, Pd 7.3E-4%, Rh 2.0E-5%, Cu 3.2E+0% in ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Ni, Ni 3.7E-2%, Pt 4.8E-4%, Pd 2.0E-4%, Rh 2.4E-5%, Cu 5.2E-2% in ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Nickel",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Nickel",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Nickel ore, 1.6%",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Nickel ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Nickel, 1.13% in sulfide, Ni 0.76% and Cu 0.76% in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Nickel, 1.13% in sulfide, Ni 0.76% and Cu 0.76% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Nickel, 1.13% in sulfides, 0.76% in crude ore",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Nickel, 1.13% in sulfides, 0.76% in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Nickel, 1.98% in silicates, 1.04% in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Nickel, 1.98% in silicates, 1.04% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Nickel, Ni 2.3E+0%, Pt 2.5E-4%, Pd 7.3E-4%, Rh 2.0E-5%, Cu 3.2E+0% in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Nickel, Ni 2.5E+0%, in mixed ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Nickel, Ni 3.7E-2%, Pt 4.8E-4%, Pd 2.0E-4%, Rh 2.4E-5%, Cu 5.2E-2% in ore",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Nickel, Ni 3.7E-2%, Pt 4.8E-4%, Pd 2.0E-4%, Rh 2.4E-5%, Cu 5.2E-2% in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Niobium": [
+      {
+        "flow": "niobium",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Niobium",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Palladium": [
+      {
+        "flow": "Palladium",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Palladium",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Palladium II",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Palladium, Pd 1.6E-6%, in mixed ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Palladium, Pd 2.0E-4%, Pt 4.8E-4%, Rh 2.4E-5%, Ni 3.7E-2%, Cu 5.2E-2% in ore",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Palladium, Pd 2.0E-4%, Pt 4.8E-4%, Rh 2.4E-5%, Ni 3.7E-2%, Cu 5.2E-2% in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Palladium, Pd 7.3E-4%, Pt 2.5E-4%, Rh 2.0E-5%, Ni 2.3E+0%, Cu 3.2E+0% in ore",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Palladium, Pd 7.3E-4%, Pt 2.5E-4%, Rh 2.0E-5%, Ni 2.3E+0%, Cu 3.2E+0% in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Pd, Pd 2.0E-4%, Pt 4.8E-4%, Rh 2.4E-5%, Ni 3.7E-2%, Cu 5.2E-2% in ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Pd, Pd 7.3E-4%, Pt 2.5E-4%, Rh 2.0E-5%, Ni 2.3E+0%, Cu 3.2E+0% in ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      }
+    ],
+    "Phosphate": [
+      {
+        "flow": "Phosphate ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      }
+    ],
+    "Platinum": [
+      {
+        "flow": "Platinum",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Platinum",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Platinum, Pt 2.5E-4%, Pd 7.3E-4%, Rh 2.0E-5%, Ni 2.3E+0%, Cu 3.2E+0% in ore",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Platinum, Pt 2.5E-4%, Pd 7.3E-4%, Rh 2.0E-5%, Ni 2.3E+0%, Cu 3.2E+0% in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Platinum, Pt 4.7E-7%, in mixed ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Platinum, Pt 4.8E-4%, Pd 2.0E-4%, Rh 2.4E-5%, Ni 3.7E-2%, Cu 5.2E-2% in ore",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Platinum, Pt 4.8E-4%, Pd 2.0E-4%, Rh 2.4E-5%, Ni 3.7E-2%, Cu 5.2E-2% in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Pt, Pt 2.5E-4%, Pd 7.3E-4%, Rh 2.0E-5%, Ni 2.3E+0%, Cu 3.2E+0% in ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Pt, Pt 4.8E-4%, Pd 2.0E-4%, Rh 2.4E-5%, Ni 3.7E-2%, Cu 5.2E-2% in ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      }
+    ],
+    "Rare earth": [
+      {
+        "flow": "Cerium",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Cerium, 24% in bastnasite, 2.4% in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Dysprosium",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Erbium",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Europium",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Europium, 0.06% in bastnasite, 0.006% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "gadolinium",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Gadolinium ground",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Gadolinium, 0.15% in bastnasite, 0.015% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Holmium",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Lanthanum",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Lanthanum, 7.2% in bastnasite, 0.72% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Lutetium",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Neodymium",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Neodymium, 4% in bastnasite, 0.4% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Neodymium, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Praseodymium",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Praseodymium, 0.42% in bastnasite, 0.042% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Samarium",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Samarium, 0.3% in bastnasite, 0.03% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Scandium",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Terbium",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Thulium",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Yttrium",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Yttrium",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Rhodium": [
+      {
+        "flow": "Rh, Rh 2.0E-5%, Pt 2.5E-4%, Pd 7.3E-4%, Ni 2.3E+0%, Cu 3.2E+0% in ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Rh, Rh 2.4E-5%, Pt 4.8E-4%, Pd 2.0E-4%, Ni 3.7E-2%, Cu 5.2E-2% in ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Rhodium",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Rhodium III",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Rhodium, Rh 1.6E-7%, in mixed ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Rhodium, Rh 2,0E-5%, Pt 2,5E-4%, Pd 7,3E-4%, Ni 2,3E+0%, Cu 3,2E+0% in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Rhodium, Rh 2,4E-5%, Pt 4,8E-4%, Pd 2,0E-4%, Ni 3,7E-2%, Cu 5,2E-2% in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Selenium": [
+      {
+        "flow": "Selenium",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Selenium",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Selenium IV",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Silver": [
+      {
+        "flow": "Silver",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Silver",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Silver I",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Silver, 0.007% in sulfide, Ag 0.004%, Pb, Zn, Cd, In",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Silver, 0.007% in sulfide, Ag 0.004%, Pb, Zn, Cd, In, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Silver, 0.01% in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Silver, 3.2ppm in sulfide, Ag 1.2ppm, Cu and Te, in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Silver, 3.2ppm in sulfide, Ag 1.2ppm, Cu and Te, in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Silver, Ag 1.5E-4%, Au 6.8E-4%, in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Silver, Ag 1.5E-4%, Au 6.8E-4%, in ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Silver, Ag 1.5E-5%, Au 5.4E-4%, in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Silver, Ag 1.5E-5%, Au 5.4E-4%, in ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Silver, Ag 1.8E-6%, in mixed ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Silver, Ag 2.1E-4%, Au 2.1E-4%, in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Silver, Ag 2.1E-4%, Au 2.1E-4%, in ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Silver, Ag 4.2E-3%, Au 1.1E-4%, in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Silver, Ag 4.2E-3%, Au 1.1E-4%, in ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Silver, Ag 4.6E-5%, Au 1.3E-4%, in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Silver, Ag 4.6E-5%, Au 1.3E-4%, in ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Silver, Ag 5.4E-3%, in mixed ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Silver, Ag 5.4E-3%, in mixed ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Silver, Ag 7.6E-5%, Au 9.7E-5%, in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Silver, Ag 7.6E-5%, Au 9.7E-5%, in ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Silver, Ag 9.7E-4%, Au 9.7E-4%, Zn 0.63%, Cu 0.38%, Pb 0.014%, in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Silver, Ag 9.7E-4%, in mixed ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      }
+    ],
+    "Steam Coal": [
+      {
+        "flow": "Coal, 18 MJ per kg",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Coal, 18 MJ per kg, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Coal, 26.4 MJ per kg, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Coal, 29.3 MJ per kg, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Coal, hard",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Coal, hard, 30.7 MJ per kg",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Coal, hard, 30.7 MJ per kg, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Energy, from coal",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Energy, from coal, brown",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Sulfur": [
+      {
+        "flow": "S, bonded, naturally occurring",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Sulfur",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Sulfur",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Sulfur, bonded",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Tantalum": [
+      {
+        "flow": "Tantalum",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "tantalum",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Tantalum, 81.9% in tantalite, 1.6E-4% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      }
+    ],
+    "Tellurium": [
+      {
+        "flow": "Tellurium",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Tellurium",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Tellurium, 0.5ppm in sulfide, Te 0.2ppm, Cu and Ag, in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      }
+    ],
+    "Tin": [
+      {
+        "flow": "Tin",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Tin",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Tin ion",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Tin, 79% in cassiterite, 0.1% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      }
+    ],
+    "Titanium": [
+      {
+        "flow": "TiO2, 45-60% in Ilmenite",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "TiO2, 45-60% in Ilmenite, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "TiO2, 54% in ilmenite, 18% in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "TiO2, 54% in ilmenite, 2.6% in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "TiO2, 95% in rutile, 0.40% in crude ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Titanium",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Titanium",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Titanium ion",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Titanium ore",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Tungsten": [
+      {
+        "flow": "Tungsten",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Tungsten",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Uranium": [
+      {
+        "flow": "Uranium",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Uranium",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Uranium ore, 1,11 GJ per kg",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Uranium oxide (U308), 332 GJ per kg, in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Uranium oxide, 332 GJ per kg, in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Uranium, 2291 GJ per kg",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Uranium, 2291 GJ per kg",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Uranium, 2291 GJ per kg, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Uranium, 451 GJ per kg",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Uranium, 451 GJ per kg",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Uranium, 560 GJ per kg",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Uranium, 560 GJ per kg",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Vanadium": [
+      {
+        "flow": "Vanadium",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Vanadium",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Vanadium V",
+        "category": "Elementary flows/Resource/unspecified"
+      }
+    ],
+    "Zinc": [
+      {
+        "flow": "Zinc",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Zinc",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Zinc 9%, Lead 5%, in sulfide",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Zinc 9%, Lead 5%, in sulfide, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Zinc, 9.0% in sulfide, Zn 5.3%, Pb, Ag, Cd, In, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Zinc, Zn 0.63%, Au 9.7E-4%, Ag 9.7E-4%, Cu 0.38%, Pb 0.014%, in ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Zinc, Zn 0.63%, in mixed ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Zinc, Zn 3.1%, in mixed ore",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Zinc, Zn 3.1%, in mixed ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      }
+    ],
+    "Zirconium": [
+      {
+        "flow": "Zirconium",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Zirconium",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Zirconium, 50% in zircon, 0.39% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      }
+    ]
+  }
+}
