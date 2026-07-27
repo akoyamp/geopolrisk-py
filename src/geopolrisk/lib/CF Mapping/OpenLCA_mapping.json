@@ -8,18 +8,6 @@
   },
   "cfs": {
     "Aluminium": [
-      {
-        "flow": "Aluminium",
-        "category": "Elementary flows/Resource/in ground"
-      },
-      {
-        "flow": "Aluminium",
-        "category": "Elementary flows/Resource/unspecified"
-      },
-      {
-        "flow": "Aluminium, 24% in bauxite, 11% in crude ore, in ground",
-        "category": "Elementary flows/Resource/in ground"
-      }
     ],
     "Antimony": [
       {
@@ -38,10 +26,6 @@
       },
       {
         "flow": "Arsenic",
-        "category": "Elementary flows/Resource/unspecified"
-      },
-      {
-        "flow": "Arsenic ion",
         "category": "Elementary flows/Resource/unspecified"
       }
     ],
@@ -65,6 +49,18 @@
       {
         "flow": "Bauxite",
         "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Aluminium",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Aluminium",
+        "category": "Elementary flows/Resource/unspecified"
+      },
+      {
+        "flow": "Aluminium, 24% in bauxite, 11% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
       }
     ],
     "Bentonite": [
@@ -72,6 +68,7 @@
         "flow": "Clay, bentonite",
         "category": "Elementary flows/Resource/unspecified"
       }
+
     ],
     "Beryllium": [
       {
@@ -146,10 +143,7 @@
       }
     ],
     "Coking Coal": [
-      {
-        "flow": "Coal, bituminous, 24.8 MJ per kg",
-        "category": "Elementary flows/Resource/unspecified"
-      },
+
       {
         "flow": "metallurgical coal",
         "category": "Elementary flows/Resource/unspecified"
@@ -654,6 +648,14 @@
       },
       {
         "flow": "Magnesite, 60% in crude ore, in ground",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Magnesium",
+        "category": "Elementary flows/Resource/in ground"
+      },
+      {
+        "flow": "Magnesium ore",
         "category": "Elementary flows/Resource/in ground"
       }
     ],

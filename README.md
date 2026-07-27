@@ -14,8 +14,8 @@ The **geopolrisk-py** library implements the Geopolitical Supply Risk (GeoPolRis
 
 The GeoPolRisk method relies on multiple data sources and non-trivial calculations, including characterization factors and supply risk scores. The **geopolrisk-py** library operationalizes the method by providing a structured and reproducible implementation that processes inputs such as raw materials, countries, and years. In addition to generic assessments, the library supports **company specific supply risk analysis**, allowing users to evaluate risks based on their own trade data.
 
-The current **2.0.1** release includes an updated bundled database covering source data through **2024**.
-An upcoming feature will allow users to export importable characterization factors for **SimaPro**, **openLCA**, and **Brightway**.
+The current **2.0.2** release includes an updated bundled database covering source data through **2024**.
+Export of importable characterization factors for **openLCA** is available, while support for **SimaPro** and **Brightway** is coming.
 
 ## Features of the `geopolrisk-py` library
 
@@ -115,7 +115,7 @@ Detailed usage instructions are available in the official documentation: [https:
 
 The documentation includes module-level explanations, a step-by-step user guide, and example workflows. A Jupyter notebook demonstrating typical usage is provided both online and in the `examples` folder of the repository.
 
-Planned interoperability improvements include export support for characterization factors in formats that can be imported into **SimaPro**, **openLCA**, and **Brightway**.
+Interoperability now includes **openLCA** characterization-factor export via `geopolrisk.assessment.utils.olca_cf(results_df, location)`.
 
 ## Support and contact
 

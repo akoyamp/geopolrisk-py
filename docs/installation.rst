@@ -98,7 +98,7 @@ Package availability
 A ``conda-forge`` package is not available at this time.
 
 The packaged background database in the current release is updated through **2024**.
-An upcoming feature will provide exportable characterization factor files for **SimaPro**, **openLCA**, and **Brightway**.
+Export of importable characterization factors for **openLCA** is available, while support for **SimaPro** and **Brightway** is coming.
 
 
 Upgrading from a previous version

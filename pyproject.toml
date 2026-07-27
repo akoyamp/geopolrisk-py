@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "geopolrisk-py"
-version = "2.0.1"
+version = "2.0.2"
 description = "Python library for geopolitical supply risk assessment (GeoPolRisk)"
 readme = "README.md"
 requires-python = ">=3.10,<3.12"

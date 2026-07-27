@@ -182,6 +182,30 @@ Arguments:
        ]
    }
 
+**Function: olca_cf**
+
+.. code-block:: python
+
+   olca_cf(df, location)
+
+.. admonition:: About the method
+
+   Converts GeoPolRisk results into an **openLCA** import-ready Excel file using
+   the OpenLCA flow mapping in ``geopolrisk/lib/CF Mapping/OpenLCA_mapping.json``.
+   The export creates one sheet per economic unit and year, with columns:
+   ``Flow``, ``Category``, ``Factor``, ``Unit``, ``Uncertainity``, ``Location``.
+
+Arguments:
+
+- ``df`` (DataFrame): Results dataframe containing economic entity, year, raw material,
+  and GeoPolRisk characterization factor columns.
+- ``location`` (str): Output path for the Excel file, or a directory where
+  ``OpenLCA_CF.xlsx`` will be written.
+
+Returns:
+
+- ``str``: The path to the generated Excel file.
+
 Other functions such as ``Mapping()`` and ``mapped_baci()`` are used to group multiple HS codes into single raw materials. See the :ref:`References` section for details.
 
 .. note::

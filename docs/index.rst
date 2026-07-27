@@ -10,8 +10,8 @@ However, calculating values for the GeoPolRisk method—such as **characterizati
 
 To simplify this, the **`geopolrisk-py`** library has been developed to operationalize the method. It streamlines calculations by processing data inputs such as raw material names, countries, and years. A key feature is its ability to serve as a **company-specific supply risk assessment tool**.
 
-The current release of **``geopolrisk-py`` 2.0.1** includes an updated bundled database covering source data through **2024**.
-An upcoming feature will allow users to export importable characterization factors for **SimaPro**, **openLCA**, and **Brightway**.
+The current release of **``geopolrisk-py`` 2.0.2** includes an updated bundled database covering source data through **2024**.
+Export of importable characterization factors for **openLCA** is available, while support for **SimaPro** and **Brightway** is coming.
 
 Citation
 --------

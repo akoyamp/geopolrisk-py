@@ -12,6 +12,7 @@
 # You should have received a copy of the GNU General Public License
 # along with geopolrisk-py.  If not, see <https://www.gnu.org/licenses/>.
 
+import json
 import pandas as pd, os
 from .database import databases, logging, execute_query
 
@@ -613,7 +614,139 @@ def mapped_baci():
         logging.debug(f"Error in mapped_baci function: {e}")
         raise
 
-
 def default_rmlist():
     hs_map = Mapping()
     return list(hs_map.keys())
+
+
+def olca_cf(df: pd.DataFrame, location: str):
+    """
+    Export OpenLCA characterization-factor tables from GeoPolRisk results.
+
+    Creates one sheet per Economic Unit + Year with columns:
+    Flow, Category, Factor, Unit, Uncertainity, Location
+    """
+    if not isinstance(df, pd.DataFrame) or df.empty:
+        raise ValueError("Input 'df' must be a non-empty pandas DataFrame.")
+
+    econ_candidates = ["Country [Economic Entity]", "Economic Unit", "Country"]
+    year_candidates = ["Year", "period"]
+    raw_candidates = ["Raw Material", "rawMaterial"]
+    factor_candidates = [
+        "GeoPolRisk Characterization Factor [eq. Kg-Cu/Kg]",
+        "GeoPolRisk Characterization Factor",
+    ]
+
+    def _pick_column(candidates):
+        for col in candidates:
+            if col in df.columns:
+                return col
+        return None
+
+    econ_col = _pick_column(econ_candidates)
+    year_col = _pick_column(year_candidates)
+    raw_col = _pick_column(raw_candidates)
+    factor_col = _pick_column(factor_candidates)
+
+    missing_cols = []
+    if econ_col is None:
+        missing_cols.append("Economic Unit column")
+    if year_col is None:
+        missing_cols.append("Year column")
+    if raw_col is None:
+        missing_cols.append("Raw Material column")
+    if factor_col is None:
+        missing_cols.append("GeoPolRisk Characterization Factor column")
+
+    if missing_cols:
+        raise ValueError(f"Missing required columns: {', '.join(missing_cols)}")
+
+    mapping_path = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)),
+        "lib",
+        "CF Mapping",
+        "OpenLCA_mapping.json",
+    )
+
+    with open(mapping_path, "r", encoding="utf-8") as f:
+        mapping = json.load(f)
+
+    cfs_map = mapping.get("cfs", {})
+
+    # Keep per economic-unit/year data in memory before export.
+    grouped_results = {}
+    unique_pairs = df[[econ_col, year_col]].drop_duplicates()
+    for _, pair in unique_pairs.iterrows():
+        econ_unit = pair[econ_col]
+        year = pair[year_col]
+        group_key = f"{econ_unit}_{year}"
+        grouped_results[group_key] = df[
+            (df[econ_col] == econ_unit) & (df[year_col] == year)
+        ].copy()
+
+    output_columns = [
+        "Flow",
+        "Category",
+        "Factor",
+        "Unit",
+        "Uncertainity",
+        "Location",
+    ]
+
+    if os.path.isdir(location):
+        output_file = os.path.join(location, "OpenLCA_CF.xlsx")
+    else:
+        output_file = location
+
+    used_sheet_names = set()
+
+    def _sheet_name(name):
+        invalid_chars = ["[", "]", ":", "*", "?", "/", "\\"]
+        for ch in invalid_chars:
+            name = name.replace(ch, "_")
+        name = str(name)
+        if len(name) > 31:
+            name = name[:31]
+
+        if name not in used_sheet_names:
+            used_sheet_names.add(name)
+            return name
+
+        idx = 1
+        while True:
+            suffix = f"_{idx}"
+            base = name[: 31 - len(suffix)]
+            candidate = f"{base}{suffix}"
+            if candidate not in used_sheet_names:
+                used_sheet_names.add(candidate)
+                return candidate
+            idx += 1
+
+    with pd.ExcelWriter(output_file, engine="openpyxl") as writer:
+        for group_key, group_df in grouped_results.items():
+            rm_cf = group_df[[raw_col, factor_col]].dropna(subset=[raw_col])
+            rm_cf = rm_cf.drop_duplicates(subset=[raw_col], keep="first")
+
+            rows = []
+            for _, row in rm_cf.iterrows():
+                raw_material = row[raw_col]
+                factor_value = row[factor_col]
+                mapped_flows = cfs_map.get(str(raw_material), [])
+
+                for flow_data in mapped_flows:
+                    rows.append(
+                        {
+                            "Flow": flow_data.get("flow", ""),
+                            "Category": flow_data.get("category", ""),
+                            "Factor": factor_value,
+                            "Unit": "kg-Cu/kg",
+                            "Uncertainity": "None",
+                            "Location": "",
+                        }
+                    )
+
+            output_df = pd.DataFrame(rows, columns=output_columns)
+            sheet = _sheet_name(group_key)
+            output_df.to_excel(writer, sheet_name=sheet, index=False)
+
+    return output_file

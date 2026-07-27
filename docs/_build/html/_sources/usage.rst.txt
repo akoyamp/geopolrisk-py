@@ -10,7 +10,7 @@ With the method in the :ref:`main.py` module, ``gprs_calc``, it is possible to c
 See the :ref:`Methods` section of the documentation for more details on the arguments.
 
 The bundled background database distributed with ``geopolrisk-py`` is updated through **2024**.
-An upcoming feature will allow users to export importable characterization factors for **SimaPro**, **openLCA**, and **Brightway**.
+You can export **openLCA**-ready characterization factors from a results dataframe using ``olca_cf(df, location)``, which writes one sheet per economic unit and year.
 
 The :ref:`utils.py` module also provides a helper function to list all raw materials available for assessment.  
 ``gprs_calc`` takes in three main inputs as lists: raw materials, years, and countries.
